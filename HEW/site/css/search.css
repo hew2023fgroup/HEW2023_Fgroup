@@ -1,0 +1,153 @@
+@charset "utf-8";
+
+div#box{
+  display: flex;
+  margin: 0 auto 100px auto;
+  width: 1200px;
+}
+
+nav#search_nav{
+  width: 250px;
+  height: auto;
+}
+nav#search_nav ul{}
+nav#search_nav ul li{
+  margin: 0 0 13px 0;
+  position: relative;
+}
+.search_nav_title{
+  padding: 0 0 7px 5px;
+}
+nav#search_nav ul li::after{
+  content: "";
+  display: block;
+  width: 250px;
+  height: 0px;
+  position: absolute;
+  bottom: -7px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+nav#search_nav ul li a{
+  width: 240px;
+  padding: 7px 0 7px 5px;
+  display: block;
+  text-decoration: none;
+  color: #000;
+  font-size: 1rem;
+  position: relative;
+
+/*  background-color: #ddd;*/
+}
+nav#search_nav ul li a::after{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  margin: auto;
+  content: "";
+  vertical-align: middle;
+  width: 0.4em;   /* arrow size */
+  height: 0.4em;  /* arrow size */
+  border-top: 1px solid #808080;  /* thickness, color */
+  border-right: 1px solid #808080;
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+
+/*                    SEARCH_MAIN                    */
+main#m-search{
+  width: 900px;
+  height: auto;
+  margin: 0 0 0 50px;
+}
+main#m-search h1{
+  margin: 0 0 30px 0;
+  font-weight: normal;
+  font-size: 1.3rem;
+}
+
+.main-display{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.main-display p{
+  font-size: 1.1rem;
+}
+.main-display p input{}
+
+.selectbox{
+  margin: 0 0 0 420px;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+.selectbox::after {
+  position: absolute;
+  right: 15px;
+  width: 10px;
+  height: 7px;
+  background-color: #535353;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  content: '';
+  pointer-events: none;
+}
+.selectbox select{
+  appearance: none;
+  min-width: 150px;
+  height: 2em;
+  padding: .4em calc(.8em + 30px) .4em .8em;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #333333;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.main-display .keep{}
+.main-display .keep a{
+  padding: 2px 5px 2px 5px;
+  text-decoration: none;
+  color: red;
+  border: 1px solid red;
+}
+
+
+
+.wrap_product_search{
+  display: flex;
+  flex-wrap: wrap;/* 考えて改行しましょう */
+  /* width: 1100px; */
+  width: auto;
+  margin: 0 auto 50px auto;
+  padding: 0 0 0 0;
+}
+
+.wrap_product_search div.product{
+  width: 20%;
+  padding: 10px 13px 20px 13px;
+}
+.wrap_product_search div.product a{
+  text-decoration: none;
+  color: #000;
+
+  display: block;
+}
+.wrap_product_search .product a figure{
+  overflow: hidden;
+}
+.wrap_product_search .product a figure img{
+  max-width: 100%;
+}
+.wrap_product_search .product a p{
+  margin: 0 0 9px 0;
+  font-size: 0.8rem;
+  line-height: 20px;
+}
+.wrap_product_search .product a span{
+  font-size: 0.8rem;
+}

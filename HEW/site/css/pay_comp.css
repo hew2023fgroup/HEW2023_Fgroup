@@ -1,0 +1,267 @@
+@charset "utf-8";
+
+ul li{
+  list-style: none;
+}
+main#m-pay_comp{
+  width: 650px;
+  height: auto;
+  margin: 0 auto 0 auto;
+  position: relative;
+}
+main#m-pay_comp::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -60px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+h1{
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+/*                    tittle                    */
+/*                あっちこっちで使ってる               */
+.title{}
+
+/*                    注文番号                    */
+.num-box{
+  margin: 20px 0 10px 0;
+  display: flex;
+}
+.num-box h2{
+  margin: 0 0 10px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+  position: relative;
+}
+.order-num{
+  margin: 0 0 0 5px;
+  font-size: 1.1rem;
+}
+
+/*                    注文内容                    */
+.intro-box{
+  margin: 20px 0 40px 0;
+}
+.intro-box h3{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.intro{
+  margin: 0 0 5px 0;
+  display: flex;
+  position: relative;
+}
+.intro span{
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+}
+.intro .content{
+  position: absolute;
+  top: 0;
+  left: 115px;
+}
+
+
+/*                    支払方法                    */
+.payment-box{
+  margin: 20px 0 40px 0;
+}
+.payment-box h4{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.payment{
+  display: flex;
+  position: relative;
+}
+.payment span{
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+}
+.payment .content{
+  position: absolute;
+  top: 0;
+  left: 115px;
+}
+
+
+/*                    配送方法                    */
+.delivery-box{
+  margin: 20px 0 40px 0;
+}
+.delivery-box h5{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.delivery{
+  display: flex;
+  position: relative;
+}
+.delivery span{
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+}
+.delivery .content{
+  position: absolute;
+  top: 0;
+  left: 115px;
+}
+
+
+/*                    お届け日時                    */
+.day-box{
+  margin: 20px 0 40px 0;
+}
+.day-box h6{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.day{
+  display: flex;
+  position: relative;
+}
+.day span{
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  transform: translateY(-50%);
+}
+.day .content{
+  position: absolute;
+  top: 0;
+  left: 115px;
+}
+
+
+
+/*                    販売価格                    */
+.price{
+  margin: 20px 0 30px 0;
+}
+.price h5{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.textbox-003{
+  margin: 0 0 8px 0;
+  min-width: 628px;
+  padding: 8px 10px;
+  border: 1px solid #969da3;
+  border-radius: 3px;
+  color: #333;
+  font-size: 1em;
+  line-height: 1.5rem;
+  text-align: right;
+}
+.textbox-003::placeholder {
+  color: #999;
+  text-align: right;
+}
+
+
+
+/*                    h1 h2 h3 h4の下線                    */
+h1::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.intro-box h3::after{
+  content: "";
+  display: block;
+  width: 510px;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.payment-box h4::after{
+  content: "";
+  display: block;
+  width: 510px;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.delivery-box h5::after{
+  content: "";
+  display: block;
+  width: 510px;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.day-box h6::after{
+  content: "";
+  display: block;
+  width: 510px;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+
+
+/*                    出品、下書き                    */
+.next{
+  margin: 10px 0 180px 0;
+  text-align: center;
+  position: relative;
+}
+.next ul{
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%,-50%);
+}
+.next ul li{
+  margin: 10px 0 30px 0;
+}
+.next ul li a{
+  display: block;
+  padding: 7px 40px 7px 40px;
+  text-decoration: none;
+  font-size: 1rem;
+  border: 1px solid #a9a9a9;
+  border-radius: 3px;
+}
+.btn05{
+  background-color: red;
+  color: #fff;
+}
