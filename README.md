@@ -1,10 +1,10 @@
-# githubの運用方法(斜体は一度行ったら次回以降行う必要なし)
+# githubの運用方法(<font color="Red">！</font>は一度行ったら次回以降行う必要なし)
 ## 1.ローカルリポジトリの作成
-*作業したい場所にフォルダを作る*
+<font color="Red">！</font>作業したい場所にフォルダを作る
 gitからcdコマンドで作成したフォルダのディレクトリに遷移する
-*「git init」でローカルリポジトリの作成 → 「Initialized empty Git repository in ~」と表示されれば成功*
+<font color="Red">！</font>「git init」でローカルリポジトリの作成 → 「Initialized empty Git repository in ~」と表示されれば成功
 ## 2.リモートリポジトリの環境をクローンする
-*「git clone リモートリポジトリのurl」で作業環境をクローンする*
+<font color="Red">！</font>「git clone リモートリポジトリのurl」で作業環境をクローンする
 ## 3.作業
 「git branch ブランチ名」でブランチを作成
 「git checkout ブランチ名」で指定したブランチに移動
@@ -12,7 +12,7 @@ gitからcdコマンドで作成したフォルダのディレクトリに遷移
 ## 4.作業後
 「git commit -m "コミットコメント"」でgitに変更した処理を登録
 ## 5.リモートリポジトリにプッシュ
-*「git remote add origin リモートリポジトリのurl」でリモートリポジトリをgitに追加*
+<font color="Red">！</font>「git remote add origin リモートリポジトリのurl」でリモートリポジトリをgitに追加
 プッシュ前に作業環境の更新がないかを確認。なければ次へ
 	→作業環境(develop)の更新があった場合は「git pull develop」で作業環境を更新
 「git push origin ブランチ名」でcommitに登録した変更処理をリモートリポジトリに反映する
