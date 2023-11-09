@@ -22,7 +22,7 @@ git push -u origin master
 
 ## リモートから変更を取得する
 ```bash
-git pull <ブランチ名>
+git pull origin <ブランチ名>
 ```
 
 ## ファイルの登録
