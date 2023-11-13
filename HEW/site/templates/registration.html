@@ -33,8 +33,7 @@
 
     <main id="registration-wrap">
 
-      <!-- method="post" action="/register/" の追加 -->
-      <form class="registration" method="post" action="/register/">
+      <form class="registration">
         <h1>新規登録</h1>
 
         <div class="username-box">
@@ -49,13 +48,11 @@
 
         <div class="password-box">
           <p>パスワード</p>
-          <!-- passeord <- password -->
-          <input type="password" name="password" id="password" required="required">
+          <input type="password" name="passeord" id="password" required="required">
         </div>
 
         <div class="new">
-          <!-- {{ url_for('LoginPage') }} の追加 -->
-          <a href="{{ url_for('LoginPage') }}">ログインはこちら ></a>
+          <a href="login.html">ログインはこちら ></a>
         </div>
 
         <div class="btn-box">
