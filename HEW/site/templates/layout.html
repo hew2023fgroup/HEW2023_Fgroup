@@ -10,10 +10,9 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/common.css">
-    <link rel="stylesheet" type="text/css" href="css/viewlog.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/mypage.css"> -->
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/layout.css">
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -27,7 +26,7 @@
     <div id="wrap">
 
       <figure>
-        <a href="index.html"><img src="images/logo.png"></a>
+        <a href="index.html"><img src="../static/images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -70,84 +69,52 @@
 
           <li class="nav_title02">設定</li>
           <li><a href="personal.html">個人情報編集</a></li>
-          <li><a href="layout.html">レイアウト編集</a></li>
+          <li><a href="layout.hyml">レイアウト編集</a></li>
           <li><a href="login.html">ログアウト</a></li>
         </ul>
       </nav>
 
-      <main id="m-favorite">
-        <h1>閲覧履歴</h1>
+      <main id="m-layout">
+        <h1>テーマ</h1>
+        <div class="color-box">
+          <ul>
+            <li class="dark">ダーク</li>
+            <li class="white0">ホワイト</li>
+            <li class="custom">カスタム</li>
+          </ul>
+        </div>
 
+        <h2>カスタム</h2>
+        <div id="contents">
 
-        <div class="favorite-product">
-
-          <div class="product-box">
-            <a href="product.html">
-
-              <div class="products">
-                <figure>
-                  <img src="images/sample02.png">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">二段 お弁当箱 赤 黒 二個 セット</p>
-
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">1480</p>
-                  </div>
-                </div>
-
-              </div>
-            </a>
+          <div class="contents-detail">
+            <p>フォントサイズ</p>
+            <input type="text" class="textbox-001" placeholder="1rem"/>
           </div>
 
-
-
-          <div class="product-box">
-            <a href="product.html">
-
-              <div class="products">
-                <figure>
-                  <img src="images/sample03.png">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">スーパーマリオメーカー２</p>
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">3700</p>
-                  </div>
-                </div>
-
-              </div>
-            </a>
+          <div class="contents-detail">
+            <p>フォントカラー</p>
+            <input type="text" class="textbox-001" placeholder="#000"/>
           </div>
 
+          <div class="contents-detail">
+            <p>背景色</p>
+            <input type="text" class="textbox-001" placeholder="#FFF"/>
+          </div>
 
-
-          <div class="product-box">
-            <a href="product.html">
-
-              <div class="products">
-                <figure>
-                  <img src="images/sample05.png">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">ディズニー シェリーメイ キャップ 帽子</p>
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">4000</p>
-                  </div>
-                </div>
-
-              </div>
-            </a>
+          <div class="contents-detail">
+            <p>ズーム</p>
+            <input type="text" class="textbox-001" placeholder="100%"/>
           </div>
 
         </div>
 
-
-
-
+        <div class="which">
+          <ul>
+            <li class="which_btn01"><a href="layout.html">リセット</a></li>
+            <li class="which_btn02"><a href="#">保存</a></li>
+          </ul>
+        </div>
       </main>
 
     </div>

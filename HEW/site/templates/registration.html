@@ -10,8 +10,8 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/registration.css">
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -26,15 +26,21 @@
 
     <header>
       <figure>
-        <img src="images/logo.png">
+        <img src="../static/images/logo.png">
       </figure>
     </header>
 
 
-    <main id="login-wrap">
+    <main id="registration-wrap">
 
-      <form class="login">
-        <h1>ログイン</h1>
+      <form class="registration">
+        <h1>新規登録</h1>
+
+        <div class="username-box">
+          <p>ユーザーネーム</p>
+          <input type="text" name="username" id="username" required="required">
+        </div>
+
         <div class="email-box">
           <p>メールアドレス</p>
           <input type="text" name="email" id="email" required="required">
@@ -46,7 +52,7 @@
         </div>
 
         <div class="new">
-          <a href="registration.html">新規登録はこちら ></a>
+          <a href="login.html">ログインはこちら ></a>
         </div>
 
         <div class="btn-box">

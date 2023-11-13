@@ -10,9 +10,10 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/common.css">
-    <link rel="stylesheet" type="text/css" href="css/mypage.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/viewlog.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/mypage.css"> -->
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -26,7 +27,7 @@
     <div id="wrap">
 
       <figure>
-        <a href="index.html"><img src="images/logo.png"></a>
+        <a href="index.html"><img src="../static/images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -74,58 +75,79 @@
         </ul>
       </nav>
 
-      <main id="m-mypage">
-        <div id="profile">
-          <div class="prof_detail">
-            <img src="images/profile.png">
-            <p class="name">光源氏</p>
-            <div class="rate-form">
-              <input id="star5" type="radio" name="rate" value="5">
-              <label for="star5">★</label>
-              <input id="star4" type="radio" name="rate" value="4">
-              <label for="star4">★</label>
-              <input id="star3" type="radio" name="rate" value="3">
-              <label for="star3">★</label>
-              <input id="star2" type="radio" name="rate" value="2">
-              <label for="star2">★</label>
-              <input id="star1" type="radio" name="rate" value="1">
-              <label for="star1">★</label>
-            </div>
+      <main id="m-favorite">
+        <h1>閲覧履歴</h1>
+
+
+        <div class="favorite-product">
+
+          <div class="product-box">
+            <a href="product.html">
+
+              <div class="products">
+                <figure>
+                  <img src="../static/images/sample02.png">
+                </figure>
+
+                <div class="product-intro">
+                  <p class="product-name">二段 お弁当箱 赤 黒 二個 セット</p>
+
+                  <div class="price-box">
+                    <p class="mark">¥</p><p class="price">1480</p>
+                  </div>
+                </div>
+
+              </div>
+            </a>
           </div>
 
-          <div id="mypage_nav">
-            <ul>
-              <li><a href="favorite.html"><img src="images/heart.png"><p>いいね一覧</p></a></li>
-              <li><a href="saved_search.html"><img src="images/search.png"><p>保存した検索条件</p></a></li>
-              <li><a href="buy_list.html"><img src="images/buy.png"><p>購入した商品</p></a></li>
-              <li><a href="sell_list.html"><img src="images/sell.png"><p>出品した商品</p></a></li>
-            </ul>
+
+
+          <div class="product-box">
+            <a href="product.html">
+
+              <div class="products">
+                <figure>
+                  <img src="../static/images/sample03.png">
+                </figure>
+
+                <div class="product-intro">
+                  <p class="product-name">スーパーマリオメーカー２</p>
+                  <div class="price-box">
+                    <p class="mark">¥</p><p class="price">3700</p>
+                  </div>
+                </div>
+
+              </div>
+            </a>
           </div>
 
-          <div id="point-money-box">
-            <div class="bar"></div>
 
-            <div class="point-money">
-              <div class="money-box">
-                <p>売上金</p>
-                <div class="money">
-                  <p class="mark">¥</p>
-                  <span class="price">1540</span>
+
+          <div class="product-box">
+            <a href="product.html">
+
+              <div class="products">
+                <figure>
+                  <img src="../static/images/sample05.png">
+                </figure>
+
+                <div class="product-intro">
+                  <p class="product-name">ディズニー シェリーメイ キャップ 帽子</p>
+                  <div class="price-box">
+                    <p class="mark">¥</p><p class="price">4000</p>
+                  </div>
                 </div>
-              </div>
 
-              <div class="point-box">
-                <p>サービス内マネー</p>
-                <div class="point">
-                  <p class="mark">¥</p>
-                  <span class="price">1600</span>
-                </div>
               </div>
-            </div>
-
+            </a>
           </div>
 
         </div>
+
+
+
+
       </main>
 
     </div>
