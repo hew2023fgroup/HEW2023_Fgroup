@@ -80,44 +80,65 @@
         <h1>アカウント</h1>
 
         <div class="prof-edit">
-          <p>プロフィール編集</p>
-          <p>画像</p>
+          <p class="edit-title">プロフィール編集</p>
+          <p class="photo">画像</p>
           <figure>
             <img src="images/icon.png">
           </figure>
-          <p>ニックネーム</p>
-          <input type="text" class="textbox-001" placeholder="ニックネーム"/>
+          <p class="txt">ニックネーム</p>
+          <input type="text" class="textbox-001" placeholder="ニックネーム" value="田中正造" />
         </div>
 
-        <div>
-          <p>住所一覧</p>
-          <span>新しい住所を登録</span>
+
+        <div class="address-edit">
+          <p class="edit-title">住所一覧</p>
+          <div class="address-box">
+            <p class="address-name">国会議事堂</p>
+            <p class="post-code"><span>&#12306;</span>100-0014</p>
+            <p class="address">東京都 千代田区 永田町1-7-1</p>
+          </div>
+          <a href="#">&plus; 新しい住所を登録</a>
         </div>
 
-        <div>
-          <p>メール・パスワード</p>
-          <p>メールアドレス</p>
-          <p>現在のパスワード</p>
+
+        <div class="mail-edit">
+          <p class="edit-title">メール・パスワード</p>
+
+          <p class="txt">メールアドレス</p>
+          <input type="text" class="textbox-001" placeholder="メールアドレス" value="HalNagoya@gmail.com"/>
+
+          <p class="txt">現在のパスワード</p>
           <input type="text" class="textbox-001" placeholder="現在のパスワード"/>
-          <p>新しいのパスワード</p>
+
+          <p class="txt">新しいのパスワード</p>
           <input type="text" class="textbox-001" placeholder="新しいパスワード"/>
-          <p>新しいのパスワード確認</p>
+
+          <p class="txt">新しいのパスワード確認</p>
           <input type="text" class="textbox-001" placeholder="新しいパスワード確認"/>
         </div>
 
-        <div>
-          <p>個人情報</p>
-          <p>氏名・生年月日・住所</p>
+
+        <div class="personal-edit">
+          <h2>個人情報</h2>
+          <p class="edit-title">氏名・生年月日・住所</p>
           <p>氏名・生年月日</p>
-          <p>姓名（セイメイ）</p>
+          <div class="personal-name">
+            <p class="name">姓名</p>
+            <p>（<span class="katakana">セイメイ</span>）</p>
+          </div>
+          <div>
+            <p class="year"></p>
+            <p class="month"></p>
+            <p class="day"></p>
+          </div>
           <p>YYYY/MM/DD</p>
 
           <p>現住所</p>
           <p>東京都</p>
         </div>
 
-        <div>
-          <p>性別</p>
+        <div class="gender-edit">
+          <p class="edit-title">性別</p>
           <label class="selectbox">
           <select>
             <option hidden>選択してください</option>
