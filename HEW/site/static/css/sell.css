@@ -1,0 +1,245 @@
+@charset "utf-8";
+
+p{
+  font-size: 0.9rem;
+}
+ul li{
+  list-style: none;
+}
+main#m-sell{
+  width: 650px;
+  height: auto;
+  margin: 0 auto 0 auto;
+}
+
+
+.title{
+  margin: 25px 0 8px 0;
+}
+h1{
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.5rem;
+}
+
+
+/*                    出品画像                    */
+.sell-images{
+  margin: 20px 0 40px 0;
+}
+.sell-images p{}
+input#file{
+  width: 650px;
+  padding: 20px 0 20px 0;
+  justify-content: center;
+  border: 1px solid #000;
+}
+
+
+/*                    商品の詳細                    */
+.detail{
+  margin: 20px 0 40px 0;
+}
+.detail h2{
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+  position: relative;
+}
+.detail p{}
+.detail ul{
+  margin: 0 0 8px 0;
+}
+.detail ul li{
+  list-style: none;
+}
+.detail ul li a{
+  font-size: 0.9rem;
+}
+.selectbox{
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+.selectbox::after {
+  position: absolute;
+  right: 15px;
+  width: 10px;
+  height: 7px;
+  background-color: #535353;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  content: '';
+  pointer-events: none;
+}
+.selectbox select{
+  appearance: none;
+  min-width: 650px;
+  height: 3em;
+  padding: .4em calc(.8em + 30px) .4em .8em;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #333333;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+
+
+/*                    商品名と説明                    */
+.intro{
+  margin: 20px 0 40px 0;
+}
+.intro h3{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.intro p{}
+.textbox-001{
+  margin: 0 0 8px 0;
+  min-width: 628px;
+  padding: 8px 10px;
+  border: 1px solid #969da3;
+  border-radius: 3px;
+  color: #333;
+  font-size: 1em;
+  line-height: 1.5rem;
+}
+.textbox-001::placeholder {
+  color: #999;
+}
+.textbox-002 {
+  min-width: 628px;
+  min-height: 200px;
+  padding: 8px 10px;
+  border: 1px solid #969da3;
+  border-radius: 3px;
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+}
+.textbox-002::placeholder {
+  color: #999;
+}
+
+
+
+/*                    配達について                    */
+.delivery{
+  margin: 20px 0 40px 0;
+}
+.delivery h4{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.delivery p{}
+
+
+
+/*                    販売価格                    */
+.price{
+  margin: 20px 0 30px 0;
+}
+.price h5{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.textbox-003{
+  margin: 0 0 8px 0;
+  min-width: 628px;
+  padding: 8px 10px;
+  border: 1px solid #969da3;
+  border-radius: 3px;
+  color: #333;
+  font-size: 1em;
+  line-height: 1.5rem;
+  text-align: right;
+}
+.textbox-003::placeholder {
+  color: #999;
+  text-align: right;
+}
+
+
+
+/*                    h1の下線                    */
+.detail h2::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.intro h3::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.delivery h4::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.price h5::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+
+
+/*                    出品、下書き                    */
+.sell{
+  margin: 130px 0 300px 0;
+  text-align: center;
+  position: relative;
+}
+.sell ul{
+  position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+}
+.sell ul li{
+  margin: 30px 0 30px 0;
+}
+.sell ul li a{
+  display: block;
+  width: 400px;
+  height: 30px;
+  padding: 14px 0 0 0;
+  text-decoration: none;
+  font-size: 1rem;
+  border: 1px solid #a9a9a9;
+}
+.btn05{
+  background-color: red;
+  color: #fff;
+}
+.btn06{
+  color: #000;
+}

@@ -1,0 +1,40 @@
+div.db-table{
+    margin-bottom: 30px;
+}
+
+div.flex{
+    display: flex;
+}
+
+div.flex h2{
+    margin-right: 10px;
+}
+
+div.spacebetween{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.field{
+    display: block;
+    background-color: #fff;
+    width: auto;
+    border: solid 1px #000;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.field li{
+    list-style: none;
+}
+
+/* 選択ページハイライト */
+li:nth-child(5){
+    border-radius: 5px;
+    background-color: #eee;
+}
+
+a.nav{
+    color: black;
+    text-decoration: none;
+}
