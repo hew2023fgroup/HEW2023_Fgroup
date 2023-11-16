@@ -36,14 +36,6 @@ def register():
         conn = conn_db()
         cursor = conn.cursor()
         
-        # AccountIDの最高値を取得
-        sql = "SELECT MAX(AccountID) FROM Account;"
-        cursor.execute(sql)
-        max_id = cursor.fetchone()[0]
-        # 値がない場合は「0」
-        if max_id is None:
-            max_id = 0
-        
         # 既に登録されているメールアドレス
         sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
         cursor.execute(sql)
@@ -55,7 +47,7 @@ def register():
 
         # メールアドレスが登録されていない場合
         # INSERT
-        sql = "INSERT INTO Account (AccountID, UserName, Password, MailAddress) VALUES ({0}, '{1}', '{2}', '{3}');".format(max_id + 1, username, password, email)
+        sql = "INSERT INTO Account (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');".format(username, password, email)
         cursor.execute(sql)
         conn.commit()
         cursor.close()
