@@ -1,6 +1,10 @@
 from flask import Flask, redirect, url_for, render_template, request
 import mysql.connector
 
+# __pycache__を作成しないコマンド(みんなもこれを入力しておこう)
+import sys
+sys.dont_write_bytecode = True
+
 app = Flask(__name__)
 
 # SQL
