@@ -10,8 +10,9 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/registration.css">
+    <!--  render_templateが使用できないため、以下の二行変更 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -57,6 +58,12 @@
           <!-- {{ url_for('LoginPage') }} の追加 -->
           <a href="{{ url_for('LoginPage') }}">ログインはこちら ></a>
         </div>
+        
+        <!-- エラーメッセージの追加 -->
+        {% if MailMessage %}
+          <!-- スタイルタグでCSS付けてるから変更してもOK -->
+          <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
+        {% endif %}
 
         <div class="btn-box">
           <input type="submit" value="完了" id="btn">
