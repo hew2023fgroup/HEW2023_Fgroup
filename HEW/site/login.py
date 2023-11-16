@@ -38,19 +38,18 @@ def login():
         email = request.form['email']
         password = request.form['password']
         
+        # SELECT
         conn = conn_db()
         cursor = conn.cursor()
-        
-        # SELECT
         sql = "SELECT MailAddress, Password FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';".format(email, password)
         cursor.execute(sql)
         
         # 認証
         user = cursor.fetchone()
-        
         if user:
-            # 成功(Indexページへ移動)
-            return redirect(url_for("IndexPage"))
+            # 成功
+            return render_template("index.html")
         else:
-            # 失敗(Loginページへ戻る)
-            return redirect(url_for("LoginPage"))
+            # 失敗
+            PassMessage = "！！メールアドレスとパスワードが一致しません！！"
+            return render_template("login.html", PassMessage=PassMessage)
