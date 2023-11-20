@@ -10,8 +10,9 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+    <!--  render_templateが使用できないため、以下の二行変更 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -23,18 +24,18 @@
 
   <body>
 
-
     <header>
       <figure>
         <img src="../static/images/logo.png">
       </figure>
     </header>
 
-
     <main id="login-wrap">
 
-      <form class="login">
+      <!-- method="post" action="/login/" の追加 -->
+      <form class="login" method="post" action="/login/">
         <h1>ログイン</h1>
+        
         <div class="email-box">
           <p>メールアドレス</p>
           <input type="text" name="email" id="email" required="required">
@@ -42,12 +43,20 @@
 
         <div class="password-box">
           <p>パスワード</p>
-          <input type="password" name="passeord" id="password" required="required">
+          <!-- passeord <- password -->
+          <input type="password" name="password" id="password" required="required">
         </div>
 
         <div class="new">
-          <a href="registration.html">新規登録はこちら ></a>
+          <!-- {{ url_for('RegistrationPage') }} の追加 -->
+          <a href="{{ url_for('RegistrationPage') }}">新規登録はこちら ></a>
         </div>
+
+        <!-- エラーメッセージの追加 -->
+        {% if PassMessage %}
+          <!-- スタイルタグでCSS付けてるから変更してもOK -->
+          <p style="color: red; text-align: center; font-weight: bold;">{{ PassMessage }}</p>
+        {% endif %}
 
         <div class="btn-box">
           <input type="submit" value="完了" id="btn">
