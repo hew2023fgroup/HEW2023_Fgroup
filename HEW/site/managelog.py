@@ -27,7 +27,7 @@ def conn_db():
         host = "127.0.0.1",
         user = "root" ,
         passwd="P@ssw0rd",
-        db ="hetest"
+        db ="hew"
     )
     return conn
 #manageuserで表示する,情報をselect取り出し
