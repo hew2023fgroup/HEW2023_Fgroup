@@ -1,5 +1,54 @@
-from flask import Flask , render_template , request ,url_for , redirect
-import mysql.connector #mysql-connector-python読み込む
+from flask import Flask, render_template, request, url_for, redirect
+import mysql.connector
+
+app = Flask(__name__)
+
+# db接続
+def conn_db():
+    conn = mysql.connector.connect(
+        host="127.0.0.1",
+        user="root",
+        passwd="P@ssw0rd",
+        db="hew"
+    )
+    return conn
+
+# manageuserで表示する情報をselect取り出し
+@app.route("/manageuser")
+def userdelete():
+    conn = conn_db()
+    cursor = conn.cursor()
+    sql = "select * from account"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    return render_template("manageuser.html", result=result)
+
+# 削除するとき
+@app.route("/delete/", methods=["GET"])
+def user_delete():
+    conn = None
+    cursor = None
+
+    try:
+        id = request.args.get("id", "")
+        conn = conn_db()
+        cursor = conn.cursor()
+        # id(0の値)を消す
+        sql = "delete from account where AccountID={0};".format(id)
+        cursor.execute(sql)
+        conn.commit()
+    except mysql.connector.ProgrammingError as e:
+        print(e)
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
+
+    return redirect(url_for("manageuser"))
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 #特定のMailAddressの場合の遷移判定/login.pyにいれたほうがいいかも
 
@@ -20,49 +69,3 @@ import mysql.connector #mysql-connector-python読み込む
 
 #manageuser
 #dbの接続hetestからかえる(feature#4)
-app = Flask(__name__)
-#db接続
-def conn_db():
-    conn = mysql.connector.connect(
-        host = "127.0.0.1",
-        user = "root" ,
-        passwd="P@ssw0rd",
-        db ="hew"
-    )
-    return conn
-#manageuserで表示する,情報をselect取り出し
-@app.route("/manageuser")
-def userdelete():
-    conn = conn_db()
-    cursor = conn.cursor()
-    sql = "select * from account"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    return render_template("manageuser.html", records=result)
-
-#削除するとき
-@app.route("/delete/",methods=["GET"])
-def user_delete():
-    conn=""
-    cursor=""
-    
-    try:
-        id = request.args.get("id","")
-        conn=conn_db()
-        cursor = conn.cursor()
-        #id(0の値)を消す
-        sql = "delete from account where AccountID={0};".format(id)
-        cursor.execute(sql)
-        conn.commit()
-#例外
-    except mysql.connector.ProgrammingError as e:
-        print(e)
-        
-    finally:
-        if cursor !="":
-            cursor.close()
-            
-        if conn.connection_id !="":
-            conn.close()
-            
-    return render_template(url_for("manageuser.html"))
