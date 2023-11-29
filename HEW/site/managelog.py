@@ -19,7 +19,7 @@ import mysql.connector #mysql-connector-python読み込む
 #---------------------------------------------------
 
 #manageuser
-#dbの接続hetestからかえる(Kakusuu_profmanage_1)
+#dbの接続hetestからかえる(feature#4)
 app = Flask(__name__)
 #db接続
 def conn_db():
