@@ -38,7 +38,7 @@ def userdelete():
     sql = "select * from account"
     cursor.execute(sql)
     result = cursor.fetchall()
-    return render_template("manageuser.html", result=result)
+    return render_template("manageuser.html", records=result)
 
 #削除するとき
 @app.route("/delete/",methods=["GET"])
