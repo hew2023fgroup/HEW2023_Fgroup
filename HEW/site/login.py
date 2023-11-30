@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, session
 import mysql.connector
 
 app = Flask(__name__)
@@ -48,6 +48,16 @@ def login():
         user = cursor.fetchone()
         if user:
             # 成功
+            
+            # ↓8行追加-出品機能のAccountID用
+            get = '''
+                   SELECT AccountID, UserName, MailAddress 
+                   FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
+                  '''.format(email, password)
+            cursor.execute(get)
+            you = cursor.fetchall()
+            # セッションへログイン情報を保存
+            session['you'] = you
             return render_template("index.html")
         else:
             # 失敗
