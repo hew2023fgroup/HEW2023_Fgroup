@@ -53,7 +53,7 @@ def TrendPage():
 # ------------------------------------------------------------
 
 # /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
+@app.route('/register/',methods=['POST'])   # 小濱俊史
 def register():
     if request.method == 'POST':
         
@@ -87,7 +87,7 @@ def register():
         return render_template("login.html")
    
 # /login/
-@app.route('/login/', methods=['POST']) #小濱俊史
+@app.route('/login/', methods=['POST']) # 小濱俊史
 def login():
     if request.method == 'POST':
         
@@ -124,7 +124,7 @@ def login():
             return render_template("login.html", PassMessage=PassMessage)
 
 # /sell/
-@app.route('/sell/', methods=['POST'])  #小濱俊史
+@app.route('/sell/', methods=['POST'])  # 小濱俊史
 def Sell():    
     if request.method == 'POST':
         you_list = session.get('you')
