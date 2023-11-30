@@ -227,16 +227,14 @@ input#file{
 .sell ul li{
   margin: 30px 0 30px 0;
 }
-.sell ul li input{
+.sell ul li a{
   display: block;
   width: 400px;
-  padding: 10px 0 10px 0;
-  cursor: pointer;
+  height: 30px;
+  padding: 14px 0 0 0;
+  text-decoration: none;
   font-size: 1rem;
   border: 1px solid #a9a9a9;
-}
-.sell ul li input:hover{
-  opacity: 0.7;
 }
 .btn05{
   background-color: red;
