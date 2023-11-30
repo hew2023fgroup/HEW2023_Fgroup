@@ -54,7 +54,7 @@ def Sell():
         
         # 結合後削除!!!!!!!
         AccountID = 1
-    
+        
         # フォーム
         sellimgs = request.files.getlist('sellimg')
         selltit = request.form['selltit']
@@ -74,7 +74,7 @@ def Sell():
         print("price:", price)
         
         # ファイルを保存(送信した画像数分imgsへ挿入)
-        upload_path = "static/images/"
+        upload_path = "static/images/sell/"
         imgs = []
         for sellimg in sellimgs:
             sellimg.save(os.path.join(upload_path, sellimg.filename))
