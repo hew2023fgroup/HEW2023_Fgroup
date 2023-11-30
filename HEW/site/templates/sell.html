@@ -10,9 +10,10 @@
 
     <title>Varia Free</title>
 
-    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/common.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/sell.css">
+    <!-- 以下の3行 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sell.css') }}">    
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -26,7 +27,8 @@
     <div id="wrap">
 
       <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
+        <!-- url_forへの修正 -->
+        <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -38,16 +40,19 @@
 
       <nav>
         <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
+          <!-- url_forへの修正 -->
+          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
+
+          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <li><a href="index.html">おすすめ</a></li>
-          <li><a href="#">トレンド</a></li>
+          <!-- url_forへの修正 -->
+          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
+          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
       </div>
 
@@ -56,68 +61,102 @@
 
     <main id="m-sell">
 
-
       <h1>商品の出品</h1>
 
-      <div class="sell-images">
-        <p class="title">出品画像</p>
-        <input type="file" name="example" id="file" accept="image/jpeg, image/png">
-      </div>
+      <!-- formタグの追加 -->
+      <form action="/sell/" method="POST" enctype="multipart/form-data">
 
-      <div class="detail">
-        <h2>商品の詳細</h2>
-        <p class="title">カテゴリー</p>
-        <ul>
-          <li><a href="#">&lt; カテゴリーを選択する</a></li>
-        </ul>
-        <p class="title">商品の状態</p>
-        <label class="selectbox">
-          <select>
-            <option hidden>選択してください</option>
-            <option>新品、未使用</option>
-            <option>未使用に近い</option>
-            <option>目立った傷汚れなし</option>
-            <option>やや傷や汚れあり</option>
-            <option>傷や汚れあり</option>
-            <option>全体的に状態が悪い</option>
-          </select>
-        </label>
-      </div>
+        <div class="sell-images">
+          <p class="title">出品画像</p>
+          <!-- name="sellimg" id="sellimg" multiple-->
+          <input type="file" name="sellimg" id="sellimg" accept="image/*" required multiple>
+        </div>
+  
+        <div class="detail">
+          <h2>商品の詳細</h2>
+          <p class="title">カテゴリー</p>
+          <label class="selectbox">
+            <select name="scategoryid" id="scategoryid" required>
+              <!-- value=""の追加 -->
+              <!--  value="" disabled selectedの追加 -->
+              <option value="" disabled selected>選択してください</option>
+              <option value="1">レディース</option>
+              <option value="2">メンズ</option>
+              <option value="3">ベビー・キッズ</option>
+              <option value="4">インテリア・住まい・小物</option>
+              <option value="5">本・音楽・ゲーム</option>
+              <option value="6">おもちゃ・ホビー・グッズ</option>
+              <option value="7">コスメ・香水・美容</option>
+              <option value="8">家電・スマホ・カメラ</option>
+              <option value="9">スポーツ・レジャー</option>
+              <option value="10">ハンドメイド</option>
+              <option value="11">チケット</option>
+              <option value="12">その他</option>
+            </select>
+          </label>
+      
+          <p class="title">商品の状態</p>
+          <label class="selectbox">
+            <select name="status" id="status" required>
+              <!-- value=""の追加 -->
+              <!--  value="" disabled selectedの追加 -->
+              <option value="" disabled selected>選択してください</option>
+              <option value="1">新品、未使用</option>
+              <option value="2">未使用に近い</option>
+              <option value="3">目立った傷汚れなし</option>
+              <option value="4">やや傷や汚れあり</option>
+              <option value="5">傷や汚れあり</option>
+              <option value="6">全体的に状態が悪い</option>
+            </select>
+          </label>
+        </div>
+  
+        <div class="intro">
+          <h3>商品名と説明</h3>
+          <p class="title">商品名</p>
+          <!-- name="selltitle" id="selltitile" -->
+          <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" required>
+          <p class="title">商品の説明</p>
+          <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required>
+          <!-- <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など"></textarea> -->
+        </div>
+  
+        <div class="delivery">
+          <h4>送料について</h4>
+          <p class="title">出品者負担 出品する商品の重さ</p>
+          <label class="selectbox">
+            <select name="postage" id="postage" required>
+              <!--  value="" disabled selectedの追加 -->
+              <option value="" disabled selected>選択してください</option>
+              <!-- 数字を全角から修正 -->
+              <!-- value=""の追加 -->
+              <option value="1">小(~ 3kg未満)</option>
+              <option value="2">中(3kg以上 ~ 10kg未満)</option>
+              <option value="3">大(10kg以上 ~)</option>
+            </select>
+          </label>
+        </div>
+  
+        <div class="price">
+          <h5>販売価格</h5>
+          <p class="title">販売価格(¥300〜9,999,999)</p>
+          <!-- inputタグへ変更、cssが崩れた -->
+          <input type="text" name="price" id="price" class="textbox-003" placeholder="0" required>
+        </div>
 
-      <div class="intro">
-        <h3>商品名と説明</h3>
-        <p class="title">商品名</p>
-        <input type="text" class="textbox-001" placeholder="商品名"/>
-        <p class="title">商品の説明</p>
-        <textarea class="textbox-002" placeholder="色、素材、重さ、定価、など"></textarea>
-      </div>
+        <div class="sell">
+          <ul>
+            <!-- inputタグへ変更 cssが未設定 -->
+            <input class="btn05" type="submit" value="出品する">
+            <!-- <li><a class="btn05" href="#">出品する</a></li> -->
 
-      <div class="delivery">
-        <h4>送料について</h4>
-        <p class="title">出品者負担 出品する商品の重さ</p>
-        <label class="selectbox">
-          <select>
-            <option hidden>選択してください</option>
-            <option>小（~ ３kg未満）</option>
-            <option>中（３kg以上 ~ １０kg未満）</option>
-            <option>大（１０kg以上 ~）</option>
-          </select>
-        </label>
-      </div>
+            <!-- inputタグへ変更 cssが未設定 -->
+            <input class="btn06" type="button" value="下書きに保存する">
+            <!-- <li><a class="btn06" href="#">下書きに保存する</a></li> -->
+          </ul>
+        </div>
 
-      <div class="price">
-        <h5>販売価格</h5>
-        <p class="title">販売価格(¥300〜9,999,999)</p>
-        <input type="text" class="textbox-003" placeholder="0"/>
-      </div>
-
-      <div class="sell">
-        <ul>
-          <li><a class="btn05" href="#">出品する</a></li>
-          <li><a class="btn06" href="#">下書きに保存する</a></li>
-        </ul>
-      </div>
-
+      </form>
 
     </main>
 
