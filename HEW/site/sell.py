@@ -14,11 +14,14 @@ def conn_db():
         host = "127.0.0.1",
         user = "root",
         passwd = "P@ssw0rd",
-        db = "img"
+        db = "hew"
     )
     return conn
 
 # 出品ページ確認用------------------------------------------------------------
+@app.route('/index')
+def IndexPage():
+    return render_template("index.html")
 @app.route('/mypage')
 def MyPage():
     return render_template("mypage.html")
