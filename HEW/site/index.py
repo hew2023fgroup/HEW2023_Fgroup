@@ -21,22 +21,26 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # RenderTemplate------------------------------------------------------------
-@app.route('/register')
+@app.route('/register') # 小濱俊史
 def RegistrationPage():
     return render_template("registration.html")
-@app.route('/login')
+
+@app.route('/login') # 小濱俊史
 def LoginPage():
     return render_template("login.html")
+
 @app.route('/index')
 def IndexPage():
     return render_template("index.html")
-@app.route('/sell')
+
+@app.route('/sell') # 小濱俊史
 def SellPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
         print(UserName, "でログイン中...")
     return render_template("sell.html")
+
 @app.route('/mypage')
 def MyPage():
     return render_template("mypage.html")
