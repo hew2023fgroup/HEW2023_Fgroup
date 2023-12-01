@@ -21,22 +21,26 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # RenderTemplate------------------------------------------------------------
-@app.route('/register')
+@app.route('/register') # 小濱俊史
 def RegistrationPage():
     return render_template("registration.html")
-@app.route('/login')
+
+@app.route('/login') # 小濱俊史
 def LoginPage():
     return render_template("login.html")
+
 @app.route('/index')
 def IndexPage():
     return render_template("index.html")
-@app.route('/sell')
+
+@app.route('/sell') # 小濱俊史
 def SellPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
         print(UserName, "でログイン中...")
     return render_template("sell.html")
+
 @app.route('/mypage')
 def MyPage():
     return render_template("mypage.html")
@@ -49,7 +53,7 @@ def TrendPage():
 # ------------------------------------------------------------
 
 # /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
+@app.route('/register/',methods=['POST'])   # 小濱俊史
 def register():
     if request.method == 'POST':
         
@@ -83,7 +87,7 @@ def register():
         return render_template("login.html")
    
 # /login/
-@app.route('/login/', methods=['POST']) #小濱俊史
+@app.route('/login/', methods=['POST']) # 小濱俊史
 def login():
     if request.method == 'POST':
         
@@ -120,7 +124,7 @@ def login():
             return render_template("login.html", PassMessage=PassMessage)
 
 # /sell/
-@app.route('/sell/', methods=['POST'])  #小濱俊史
+@app.route('/sell/', methods=['POST'])  # 小濱俊史
 def Sell():    
     if request.method == 'POST':
         you_list = session.get('you')
