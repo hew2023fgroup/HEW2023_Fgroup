@@ -31,19 +31,19 @@
                 <p>{{ record[1] }}</p>
                 
                 <h2>性 名</h2>
-                <p>{{ record[2] }}</p>
+                <p>{{ record[7] }}</p>
 
                 <h2>生年月日</h2>
-                <p>{{ record[3] }}</p>
-
-                <h2>メールアドレス</h2>
                 <p>{{ record[4] }}</p>
 
+                <h2>メールアドレス</h2>
+                <p>{{ record[6] }}</p>
+
                 <h2>パスワード</h2>
-                <p>{{ record[5] }}</p>
+                <p>{{ record[2] }}</p>
 
                 <h2>金額</h2>
-                <p>{{ record[6] }}円</p>
+                <p>{{ record[10] }}円</p>
                 
                 <form method="POST" action="{{ url_for('edituser') }}">
                     <input type="hidden" name="user_id" value="{{ record[0] }}">
