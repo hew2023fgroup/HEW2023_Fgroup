@@ -15,7 +15,7 @@ def conn_db():
 
 # manageuserで表示する情報をselect取り出し
 @app.route("/manageuser")
-def userdelete():
+def manageuser():
     conn = conn_db()
     cursor = conn.cursor()
     sql = "select * from account"
@@ -42,13 +42,11 @@ def user_delete():
     finally:
         if cursor is not None:
             cursor.close()
-        if conn is not None:
+        elif conn is not None:
             conn.close()
 
     return redirect(url_for("manageuser"))
 
-if __name__ == "__main__":
-    app.run(debug=True)
 
 #特定のMailAddressの場合の遷移判定/login.pyにいれたほうがいいかも
 
