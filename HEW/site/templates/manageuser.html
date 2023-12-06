@@ -14,55 +14,63 @@
 <body>
     <div id="wrap">
         <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
         </figure>
     </div>
-    {% for record in result %}
     <div id="content">
         <main>
             <h1>ユーザー</h1>
             <hr>
-
+            
+        {% for record in result %}
             <div class="content">
                 <h2>ユーザーID</h2>
-<!-- recordの値動かして各項目に合わせる -->
-                <p>{{record[1]}}</p>
+                <p>{{ record[0] }}</p>
 
                 <h2>名前</h2>
-                <p>{{record[2]}}</p>
+                <p>{{ record[1] }}</p>
                 
                 <h2>性 名</h2>
-                <p>{{record[3]}}</p>
-
+                <p>{{ record[2] }}</p>
 
                 <h2>生年月日</h2>
-                <p>{{record[4]}}</p>
+                <p>{{ record[3] }}</p>
 
                 <h2>メールアドレス</h2>
-                <p>{{record[5]}}</p>
+                <p>{{ record[4] }}</p>
 
                 <h2>パスワード</h2>
-                <p>{{record[6]}}</p>
+                <p>{{ record[5] }}</p>
 
                 <h2>金額</h2>
-                <p>{{record[7]}}円</p>
-                <a href="/delete/?id={{record[0]}}">
-                    削除
-                </a>
+                <p>{{ record[6] }}円</p>
+                
+                <form method="POST" action="{{ url_for('edituser') }}">
+                    <input type="hidden" name="user_id" value="{{ record[0] }}">
+                    <!-- 編集に必要なフォームを追加 -->
+                    <label for="new_email">新しいメールアドレス:</label>
+                    <input type="text" id="new_email" name="new_email" required>
+                    
+                    <button type="submit">編集</button>
+                </form>
+                <!-- さくじょ -->
+                <form method="POST" action="{{ url_for('deleteuser') }}">
+                    <input type="hidden" name="user_id" value="{{ record[0] }}">
+                    <button type="submit">削除</button>
+                </form>
             </div>
-        
-    {% endfor %}
+        {% endfor %}
         </main>
 
-    <nav>
-        <ul>
-            <li><a href="index.html" class="nav">ホーム</a></li>
-            <li><a href="managetop.html" class="nav">トップ</a></li>
-            <li><a href="managepage.html" class="nav">ページ</a></li>
-            <li><a href="manageuser.html" class="nav">ユーザー</a></li>
-            <li><a href="managedb.html" class="nav">データベース</a></li>
-        </ul>
-    </nav>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}" class="nav">ホーム</a></li>
+                <li><a href="{{ url_for('managetop') }}" class="nav">トップ</a></li>
+                <li><a href="{{ url_for('managepage') }}" class="nav">ページ</a></li>
+                <li><a href="{{ url_for('manageuser') }}" class="nav">ユーザー</a></li>
+                <li><a href="{{ url_for('managedb') }}" class="nav">データベース</a></li>
+            </ul>
+        </nav>
     </div>
     <footer>
         <h1>#VariaFree</h1>
