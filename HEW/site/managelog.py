@@ -88,7 +88,7 @@ def edituser():
         conn = conn_db()
         cursor = conn.cursor()
 
-        sql = "UPDATE account SET Email=%s WHERE AccountID=%s"
+        sql = "UPDATE account SET MailAddress=%s WHERE AccountID=%s"
         cursor.execute(sql, (new_email, user_id))
         conn.commit()
 
