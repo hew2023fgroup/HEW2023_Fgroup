@@ -30,6 +30,33 @@ def ManagePage():
 def ManagedbPage():
     return render_template("managedb.html")
 
+@app.route('/favorite')
+def FavoritePage():
+    return render_template("favorite.html")
+
+@app.route('/mylist')
+def MylistPage():
+    return render_template("mylist.html")
+
+@app.route('/mypage')
+def MyPage():
+    return render_template("mypage.html")
+
+@app.route('/personal')
+def PersonalPage():
+    return render_template("personal.html")
+
+@app.route('/product')
+def ProductPage():
+    return render_template("product.html")
+
+@app.route('/sell')
+def sellPage():
+    return render_template("sell.html")
+
+@app.route('/viewlog')
+def ViewlogPage():
+    return render_template("viewlog.html")
 # ユーザー情報を表示
 @app.route("/manageuser")
 def ManageuserPage():
