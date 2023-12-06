@@ -32,7 +32,7 @@ def ManagedbPage():
 
 # ユーザー情報を表示
 @app.route("/manageuser")
-def manageuser():
+def ManageuserPage():
     conn = conn_db()
     cursor = conn.cursor()
     try:
@@ -72,7 +72,7 @@ def adduser():
         if conn:
             conn.close()
 
-    return redirect(url_for("manageuser"))
+    return redirect(url_for("ManageuserPage"))
 
 # ユーザー情報を編集
 @app.route("/edituser", methods=["POST"])
@@ -100,7 +100,7 @@ def edituser():
         if conn:
             conn.close()
 
-    return redirect(url_for("manageuser"))
+    return redirect(url_for("ManageuserPage"))
 
 # ユーザーを削除
 @app.route("/deleteuser", methods=["POST"])
@@ -126,7 +126,7 @@ def deleteuser():
         if conn:
             conn.close()
 
-    return redirect(url_for("manageuser"))
+    return redirect(url_for("ManageuserPage"))
 
 
 #特定のMailAddressの場合の遷移判定/login.pyにいれたほうがいいかも
