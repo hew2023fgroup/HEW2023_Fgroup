@@ -1,7 +1,3 @@
-#pychach
-import sys
-sys.dont_write_bytecode = True
-
 from flask import Flask, redirect, url_for, render_template, request, session
 import mysql.connector,os
 
@@ -21,26 +17,20 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # RenderTemplate------------------------------------------------------------
-@app.route('/register') # 小濱俊史
+@app.route('/register')
 def RegistrationPage():
     return render_template("registration.html")
-
-@app.route('/login') # 小濱俊史
+@app.route('/')
 def LoginPage():
     return render_template("login.html")
 
-@app.route('/index')
-def IndexPage():
-    return render_template("index.html")
-
-@app.route('/sell') # 小濱俊史
+@app.route('/sell')
 def SellPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
         print(UserName, "でログイン中...")
     return render_template("sell.html")
-
 @app.route('/mypage')
 def MyPage():
     return render_template("mypage.html")
@@ -50,10 +40,13 @@ def FavoritePage():
 @app.route('/trend')
 def TrendPage():
     return render_template("trend.html")
+@app.route('/pay')
+def PayPage():
+    return render_template("pay_comp.html")
 # ------------------------------------------------------------
 
 # /register/
-@app.route('/register/',methods=['POST'])   # 小濱俊史
+@app.route('/register/',methods=['POST'])   #小濱俊史
 def register():
     if request.method == 'POST':
         
@@ -87,7 +80,7 @@ def register():
         return render_template("login.html")
    
 # /login/
-@app.route('/login/', methods=['POST']) # 小濱俊史
+@app.route('/login/', methods=['POST']) #小濱俊史
 def login():
     if request.method == 'POST':
         
@@ -117,14 +110,15 @@ def login():
             
             # セッションへログイン情報を保存
             session['you'] = you
-            return render_template("index.html")
+            # render_template("index.html")から変更
+            return redirect(url_for('IndexPage'))
         else:
             # 失敗
             PassMessage = "！！メールアドレスとパスワードが一致しません！！"
             return render_template("login.html", PassMessage=PassMessage)
 
 # /sell/
-@app.route('/sell/', methods=['POST'])  # 小濱俊史
+@app.route('/sell/', methods=['POST'])  #小濱俊史
 def Sell():    
     if request.method == 'POST':
         you_list = session.get('you')
@@ -181,3 +175,79 @@ def Sell():
         cursor.close()
         
         return render_template('sell.html')
+
+
+
+# 仮の商品(簡易/詳細)ページ ----------------------------------------------------------
+# /index
+@app.route('/index')
+def IndexPage():
+    
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    sql = '''
+           SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG 
+           FROM Sell
+           JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+           LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+           WHERE Buy.SellID IS NULL
+           GROUP BY Sell.SellID;
+          '''
+    cursor.execute(sql)
+    sells = cursor.fetchall()
+    print(sells)
+    
+    conn.commit()
+    cursor.close()
+    
+    return render_template("index.html", sells=sells)
+
+# /product/<sellid>
+@app.route('/product/<sellid>')
+def ProductPage(sellid):
+    
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    sql = '''
+           SELECT Name, Price FROM Sell WHERE SellID = '{0}';
+          '''.format(sellid)
+    cursor.execute(sql)
+    product = cursor.fetchone()
+    
+    print(product, "ページへアクセス中")
+    return render_template("product.html", sellid=sellid, product=product)
+# --------------------------- 削除予定 ---------------------------------
+    
+
+# /buy/
+@app.route('/buy/', methods=['POST'])  #小濱俊史
+def Buy():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        sellid = request.form['sellid']
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        print('''
+              {0}さんが購入した商品
+              SellID:{1}
+            '''.format(sellid,AccountID))
+        
+        sql = '''
+               INSERT INTO Buy (SellID, AccountID) VALUES ({0},{1});
+              '''.format(sellid, AccountID)
+        cursor.execute(sql)
+        
+        conn.commit()
+        cursor.close()
+        
+        return redirect(url_for('IndexPage'))
+    
+if __name__ == ("__main__"):
+    app.run(host="localhost", port=8000, debug=True)
