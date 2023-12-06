@@ -13,7 +13,8 @@ def conn_db():
     )
     return conn
 
-#各ページへの遷移
+#---------------------------------------------------
+#各ページへの遷移(manageページにある分だけ)
 @app.route('/index')
 def IndexPage():
     return render_template("index.html")
@@ -57,21 +58,50 @@ def SellPage():
 @app.route('/viewlog')
 def ViewlogPage():
     return render_template("viewlog.html")
+
+#-------------------------------------------------------
+
 # ユーザー情報を表示
+# Accountデータとそれに付随する情報をすべて一覧表示(住所や性別も外部キーのままでなくvalueを表示)
 @app.route("/manageuser")
 def ManageuserPage():
+    #DB接続オブジェクトの取得
     conn = conn_db()
-    cursor = conn.cursor()
+    
     try:
-        sql = "SELECT * FROM account"
+        # sql実行処理のコピー
+        cursor = conn.cursor()
+        
+        # AccountとSexとAddressを内部結合して実行
+        sql = "select ac.AccountID,ac.UserName,ac.Password,ac.ProfIMG,ac.Birthday,s.Sex,ac.MailAddress,ac.KanjiName,ac.Furigana,ac.RegistDate,ac.Money,ad.Address,ad.POST from Account as ac, Sex as s, Address as ad WHERE ac.SexID = s.SexID and ac.AccountID = ad.AccountID;"
         cursor.execute(sql)
-        result = cursor.fetchall()
-        return render_template("manageuser.html", result=result)
-    except mysql.connector.Error as e:
+        
+        # recordsに格納(exp:全データ数が3行なら3タプルがrecordsリストに格納されている状態)
+        records = cursor.fetchall()
+        return render_template("manageuser.html", result=records)
+        
+        
+    except(mysql.connector.errors.ProgrammingError) as e:
         print(e)
     finally:
         cursor.close()
         conn.close()
+    
+
+# @app.route("/manageuser")
+# def ManageuserPage():
+#     conn = conn_db()
+#     cursor = conn.cursor()
+#     try:
+#         sql = "SELECT * FROM account"
+#         cursor.execute(sql)
+#         result = cursor.fetchall()
+#         return render_template("manageuser.html", result=result)
+#     except mysql.connector.Error as e:
+#         print(e)
+#     finally:
+#         cursor.close()
+#         conn.close()
 
 # 新しいユーザーをデータベースに追加
 @app.route("/adduser", methods=["POST"])
@@ -141,7 +171,7 @@ def deleteuser():
         conn = conn_db()
         cursor = conn.cursor()
 
-        sql = "DELETE FROM account WHERE AccountID=%s"
+        sql = "delete ad from Address as ad JOIN Account as ac ON ad.AccountID = ac.AccountID WHERE ac.AccountID = %s;"
         cursor.execute(sql, (user_id,))
         conn.commit()
 
@@ -163,15 +193,7 @@ def deleteuser():
 
 
 #    if MailAddress == 'hoge@hoge':
-#       return redirect(url_for('managetop'))
+#       return redirect(url_for('ManagetopPage'))
 #その他のuserはindex.htmlに遷移
 #    else:
 #        return render_template('index.html')
-
-#@app.route('/managetop')
-#def managetop():
-#    return render_template('managetop.html')
-#---------------------------------------------------
-
-#manageuser
-#dbの接続hetestからかえる(feature#4)
