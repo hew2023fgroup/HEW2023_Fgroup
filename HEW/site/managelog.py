@@ -51,7 +51,7 @@ def ProductPage():
     return render_template("product.html")
 
 @app.route('/sell')
-def sellPage():
+def SellPage():
     return render_template("sell.html")
 
 @app.route('/viewlog')
