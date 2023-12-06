@@ -170,7 +170,7 @@ def deleteuser():
 
         conn = conn_db()
         cursor = conn.cursor()
-
+#岡郁也
         sql = "delete ad from Address as ad JOIN Account as ac ON ad.AccountID = ac.AccountID WHERE ac.AccountID = %s;"
         cursor.execute(sql, (user_id,))
         conn.commit()
