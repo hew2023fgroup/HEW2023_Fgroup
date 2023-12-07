@@ -33,6 +33,12 @@
                 <h2>性 名</h2>
                 <p>{{ record[7] }}</p>
 
+                <h2>フリガナ</h2>
+                <p>{{ record[8] }}</p>
+                
+                <h2>性別</h2>
+                <p>{{ record[5] }}</p>
+
                 <h2>生年月日</h2>
                 <p>{{ record[4] }}</p>
 
@@ -44,6 +50,12 @@
 
                 <h2>金額</h2>
                 <p>{{ record[10] }}円</p>
+                
+                <h2>登録日時</h2>
+                <p>{{ record[9] }}</p>
+                <h2>住所</h2>
+                <p>{{ record[12] }}</p>
+                <p>{{ record[11] }}</p>
                 
                 <form method="POST" action="{{ url_for('edituser') }}">
                     <input type="hidden" name="user_id" value="{{ record[0] }}">
