@@ -195,8 +195,7 @@ def IndexPage():
         FROM Sell
         JOIN SellIMG ON Sell.SellID = SellIMG.SellID
         LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-        WHERE Buy.SellID IS NULL
-        GROUP BY Sell.SellID;
+        WHERE Buy.SellID IS NULL;
         '''
     cursor.execute(sql)
     sells = cursor.fetchall()
