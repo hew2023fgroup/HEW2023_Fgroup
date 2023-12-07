@@ -69,7 +69,7 @@
 
       <div class="wrap_product">
 
-        <div class="product">
+        <!-- <div class="product">
           <a href="product.html">
             <figure>
               <img src="../static/images/doraemon.png" alt="">
@@ -77,109 +77,21 @@
             <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
             <span>¥18,700</span>
           </a>
-        </div>
+        </div> -->
 
+        <!-- 以下for文の追加(仮) -->
+        {% for row in sells %}
         <div class="product">
-          <a href="product.html">
+          <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
             <figure>
-              <img src="../static/images/doraemon.png" alt="">
+              <img src="{{ row[3] }}" alt="sellimg" width="215px">
             </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
+              <p>{{ row[1] }}</p>
+              <span>{{ row[2] }}</span>
           </a>
         </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-        <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div>
-
-      </div>
+        {% endfor %}
+      
     </main>
 
 
