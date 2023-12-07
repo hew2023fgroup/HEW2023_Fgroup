@@ -38,16 +38,18 @@
 
       <nav>
         <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
+          <!-- url_forへの修正 -->
+          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
+          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <li><a href="index.html">おすすめ</a></li>
-          <li><a href="#">トレンド</a></li>
+          <!-- url_forへの修正 -->
+          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
+          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
       </div>
 
@@ -58,10 +60,9 @@
 
 
       <h1>決済完了</h1>
-
       <div class="num-box">
-        <h2>注文番号：</h2>
-        <p class="order-num">23948217</p>
+        <h2>注文番号:</h2>
+        <p class="order-num">{{ buy[0] }}</p>
       </div>
 
       <div class="intro-box">
@@ -69,23 +70,23 @@
 
         <div class="intro">
           <p class="title">タイトル</p>
-          <span>：</span>
-          <p class="content">ドライヤー</p>
+          <span>:</span>
+          <p class="content">{{ buy[2] }}</p>
         </div>
         <div class="intro">
           <p class="title">値段</p>
-          <span>：</span>
-          <p class="content">3500</p>
+          <span>:</span>
+          <p class="content">{{ buy[3] }}円</p>
         </div>
-        <div class="intro">
+        <!-- <div class="intro">
           <p class="title">メーカー</p>
-          <span>：</span>
+          <span>:</span>
           <p class="content">丸亀製麺</p>
-        </div>
+        </div> -->
         <div class="intro">
           <p class="title">出品者</p>
-          <span>：</span>
-          <p class="content">本田翼</p>
+          <span>:</span>
+          <p class="content">{{ buy[4] }}</p>
         </div>
       </div>
 
@@ -93,8 +94,8 @@
         <h4>支払情報</h4>
         <div class="payment">
           <p class="title">支払方法</p>
-          <span>：</span>
-          <p class="content">電子pay</p>
+          <span>:</span>
+          <p class="content">VariablePay</p>
         </div>
       </div>
 
@@ -102,8 +103,8 @@
         <h5>配送方法</h5>
         <div class="payment">
           <p class="title">配送料</p>
-          <span>：</span>
-          <p class="content">1350</p>
+          <span>:</span>
+          <p class="content">{{ buy[5] }}円</p>
         </div>
       </div>
 
@@ -111,14 +112,14 @@
         <h6>予定</h6>
         <div class="day">
           <p class="title">お届け日時</p>
-          <span>：</span>
-          <p class="content">15:30 ~ 16:30</p>
+          <span>:</span>
+          <p class="content">{{ delidate }}</p>
         </div>
       </div>
 
       <div class="next">
         <ul>
-          <li><a class="btn05" href="#">次へ</a></li>
+          <li><a href="{{ url_for('IndexPage') }}" class="btn05">次へ</a></li>
         </ul>
       </div>
 
