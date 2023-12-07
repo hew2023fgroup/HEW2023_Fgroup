@@ -73,7 +73,10 @@ def ManageuserPage():
         cursor = conn.cursor()
         
         # AccountとSexとAddressを内部結合して実行
-        sql = "select ac.AccountID,ac.UserName,ac.Password,ac.ProfIMG,ac.Birthday,s.Sex,ac.MailAddress,ac.KanjiName,ac.Furigana,ac.RegistDate,ac.Money,ad.Address,ad.POST from Account as ac, Sex as s, Address as ad WHERE ac.SexID = s.SexID and ac.AccountID = ad.AccountID;"
+        sql = '''select ac.AccountID,ac.UserName,ac.Password,ac.ProfIMG,ac.Birthday,
+            s.Sex,ac.MailAddress,ac.KanjiName,ac.Furigana,ac.RegistDate,ac.Money,ad.Address,ad.POST
+            from Account as ac, Sex as s, Address as ad
+            WHERE ac.SexID = s.SexID and ac.AccountID = ad.AccountID;'''
         cursor.execute(sql)
         
         # recordsに格納(exp:全データ数が3行なら3タプルがrecordsリストに格納されている状態)
