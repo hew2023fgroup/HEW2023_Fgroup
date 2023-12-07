@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 import mysql.connector,os
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -74,9 +75,10 @@ def register():
                (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
               '''.format(username, password, email)
         cursor.execute(sql)
+        # CLOSE
         conn.commit()
         cursor.close()
-        
+        conn.close()
         return render_template("login.html")
    
 # /login/
@@ -110,7 +112,11 @@ def login():
             
             # セッションへログイン情報を保存
             session['you'] = you
-            # render_template("index.html")から変更
+            
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
             return redirect(url_for('IndexPage'))
         else:
             # 失敗
@@ -171,9 +177,10 @@ def Sell():
                   '''.format(img, sellid)
             cursor.execute(img)
         
+        # CLOSE
         conn.commit()
         cursor.close()
-        
+        conn.close()
         return render_template('sell.html')
 
 
@@ -187,20 +194,20 @@ def IndexPage():
     cursor = conn.cursor()
     
     sql = '''
-           SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG 
-           FROM Sell
-           JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-           LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-           WHERE Buy.SellID IS NULL
-           GROUP BY Sell.SellID;
-          '''
+        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG 
+        FROM Sell
+        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+        LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+        WHERE Buy.SellID IS NULL
+        GROUP BY Sell.SellID;
+        '''
     cursor.execute(sql)
     sells = cursor.fetchall()
-    print(sells)
     
+    # CLOSE
     conn.commit()
     cursor.close()
-    
+    conn.close()
     return render_template("index.html", sells=sells)
 
 # /product/<sellid>
@@ -211,12 +218,16 @@ def ProductPage(sellid):
     cursor = conn.cursor()
     
     sql = '''
-           SELECT Name, Price FROM Sell WHERE SellID = '{0}';
-          '''.format(sellid)
+        SELECT Name, Price FROM Sell WHERE SellID = '{0}';
+        '''.format(sellid)
     cursor.execute(sql)
     product = cursor.fetchone()
+    print("アクセス中の商品 ->",product[0])
     
-    print(product, "ページへアクセス中")
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
     return render_template("product.html", sellid=sellid, product=product)
 # --------------------------- 削除予定 ---------------------------------
     
@@ -230,24 +241,73 @@ def Buy():
         
         sellid = request.form['sellid']
         
+        # セッション取得
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
-            
-        print('''
-              {0}さんが購入した商品
-              SellID:{1}
-            '''.format(sellid,AccountID))
-        
+                
         sql = '''
-               INSERT INTO Buy (SellID, AccountID) VALUES ({0},{1});
-              '''.format(sellid, AccountID)
+            INSERT INTO Buy (SellID, AccountID) VALUES ({0},{1});
+            '''.format(sellid, AccountID)
         cursor.execute(sql)
+        buyid = cursor.lastrowid
+        print('''
+              「購入されました」
+              購入者AccountID:{0}
+              SellID:{1}
+              BuyID:{2}
+              '''.format(sellid,AccountID,buyid))
         
+        # CLOSE
         conn.commit()
         cursor.close()
-        
-        return redirect(url_for('IndexPage'))
+        conn.close()
+        return redirect(url_for('PayPage',buyid=buyid))
+
+# /pay
+@app.route('/pay/<int:buyid>')  # 小濱俊史
+def PayPage(buyid):
+    conn = conn_db()
+    cursor = conn.cursor()
     
+    pay_sql = '''
+        SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, Account.UserName, Postage.Price
+        FROM Buy
+        INNER JOIN Sell ON Buy.SellID = Sell.SellID
+        INNER JOIN Account ON Sell.AccountID = Account.AccountID
+        INNER JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Buy.BuyID = {0};
+        '''.format(buyid)
+    cursor.execute(pay_sql)
+    buy = cursor.fetchone()
+    
+    del_sql = '''
+        SELECT Buy.DateTime
+        FROM Buy
+        WHERE Buy.BuyID = {0};
+        '''.format(buyid)
+    cursor.execute(del_sql)
+    buydate = cursor.fetchone()
+    
+    # 配達日時指定プログラム
+    if buydate:
+        # リストから変換
+        buydate = buydate[0]
+        # 文字列へ変換
+        buydate = datetime.strptime(str(buydate), '%Y-%m-%d %H:%M:%S')
+        # +48時間(配達したい日時へ設定)
+        delidate = buydate + timedelta(hours=48)
+        # 形式変更
+        delidate = delidate.strftime('%Y/%m/%d頃 予定')
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template("pay_comp.html", buy=buy, delidate=delidate)
+    else:
+        return render_template("pay_comp.html", buy=buy, delidate='NULL')
+    
+# 実行
 if __name__ == ("__main__"):
     app.run(host="localhost", port=8000, debug=True)
