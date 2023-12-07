@@ -41,9 +41,6 @@ def FavoritePage():
 @app.route('/trend')
 def TrendPage():
     return render_template("trend.html")
-@app.route('/pay')
-def PayPage():
-    return render_template("pay_comp.html")
 # ------------------------------------------------------------
 
 # /register/
