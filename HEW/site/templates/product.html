@@ -81,20 +81,29 @@
         </ul>
       </div>
 
+      <!-- 表示内容を変更(仮) -->
       <div class="intro">
-        <p class="intro_name">VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-        <span>¥18,700</span>
+        <!-- <p class="intro_name">VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p> -->
+        <p class="intro_name">{{ product[0] }}</p>
+        <p class="intro_name">{{ sellid }}</p>
+        <!-- <span>¥18,700</span> -->
+        <span>{{ product[1] }}円</span>
         <div class="intro_detail_box">
           <p class="intro_detail">※こちらの価格には消費税、送料が含まれています。</p>
         </div>
 
         <div class="shopping">
-          <a href="pay_comp.html">
+          <!-- formタグ, buttonタグへ変更 -->
+          <form action="/buy/" method="post">
+            <input type="hidden" name="sellid" value="{{ sellid }}">
+            <button type="submit" >購入手続きへ</button>
+          </form>
+          <!-- <a href="pay_comp.html">
             <p>購入手続きへ</p>
             <div class="plus-box">
                <span class="dli-plus"></span>
             </div>
-          </a>
+          </a> -->
         </div>
 
         <div id="product-info">
