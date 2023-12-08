@@ -147,7 +147,7 @@ def Sell():
         print("price:", price)
         
         # ファイルを保存(送信した画像数分imgsへ挿入)
-        upload_path = "static/images/sell/"
+        upload_path = "HEW/site/static/images/sell/"
         imgs = []
         for sellimg in sellimgs:
             sellimg.save(os.path.join(upload_path, sellimg.filename))
