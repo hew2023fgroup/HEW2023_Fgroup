@@ -2,6 +2,9 @@ from flask import Flask, redirect, url_for, render_template, request, session
 import mysql.connector,os
 from datetime import datetime, timedelta
 
+# カレントディレクトリをスクリプトディレクトリに固定
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 app = Flask(__name__)
 
 # SQL
@@ -147,11 +150,12 @@ def Sell():
         print("price:", price)
         
         # ファイルを保存(送信した画像数分imgsへ挿入)
-        upload_path = "HEW/site/static/images/sell/"
+        upload_path = "static/images/sell/"
         imgs = []
         for sellimg in sellimgs:
-            sellimg.save(os.path.join(upload_path, sellimg.filename))
-            imgs.append(os.path.join(upload_path, sellimg.filename))
+            img_path = os.path.join(upload_path, sellimg.filename)
+            sellimg.save(img_path)
+            imgs.append(img_path)
         print(imgs)
         
         conn = conn_db()
@@ -191,11 +195,12 @@ def IndexPage():
     cursor = conn.cursor()
     
     sql = '''
-        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG 
+        SELECT Sell.SellID, Sell.Name, Sell.Price, MIN(SellIMG.SellIMG)
         FROM Sell
         JOIN SellIMG ON Sell.SellID = SellIMG.SellID
         LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-        WHERE Buy.SellID IS NULL;
+        WHERE Buy.SellID IS NULL
+        GROUP BY Sell.SellID
         '''
     cursor.execute(sql)
     sells = cursor.fetchall()
