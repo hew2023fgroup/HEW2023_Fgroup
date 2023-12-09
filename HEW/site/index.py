@@ -27,7 +27,6 @@ def RegistrationPage():
 @app.route('/')
 def LoginPage():
     return render_template("login.html")
-
 @app.route('/sell')
 def SellPage():
     you_list = session.get('you')
@@ -35,9 +34,6 @@ def SellPage():
         AccountID, UserName, MailAddress = you_list[0]
         print(UserName, "でログイン中...")
     return render_template("sell.html")
-@app.route('/mypage')
-def MyPage():
-    return render_template("mypage.html")
 @app.route('/favorite')
 def FavoritePage():
     return render_template("favorite.html")
@@ -132,7 +128,9 @@ def Sell():
             AccountID, UserName, MailAddress = you_list[0]
         
         # フォーム
-        sellimgs = request.files.getlist('sellimg')
+        # sellimgs = request.files.getlist('sellimg')
+        sellimg_main = request.files.get('sellimg-main')
+        sellimgs_sub = request.files.getlist('sellimg-sub')
         selltit = request.form['selltit']
         overview = request.form['overview']
         scategoryid = request.form['scategoryid']
@@ -140,44 +138,53 @@ def Sell():
         status = request.form['status']
         price = request.form['price']
         
-        # 入力確認
-        print("AccountID:", AccountID)
-        print("selltit:", selltit)
-        print("overview:", overview)
-        print("scategory:", scategoryid)
-        print("postage:", postage)
-        print("status:", status)
-        print("price:", price)
-        
-        # ファイルを保存(送信した画像数分imgsへ挿入)
+        # 保存先パス
         upload_path = "static/images/sell/"
+        
+        # サムネイルファイル保存
+        mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
+        sellimg_main.save(mainimg_path)
+        
+        # サブファイル保存(送信した画像数分imgsへ挿入)
         imgs = []
-        for sellimg in sellimgs:
+        for sellimg in sellimgs_sub:
             img_path = os.path.join(upload_path, sellimg.filename)
             sellimg.save(img_path)
             imgs.append(img_path)
-        print(imgs)
         
         conn = conn_db()
         cursor = conn.cursor()
         
         # SellのINSERT
-        sell = '''
+        sell_sql = '''
                 INSERT INTO Sell 
                 (Name, Price, PostageID, StatusID, Overview, SCategoryID, AccountID) 
                 VALUES ('{0}',{1},{2},{3},'{4}',{5},{6});
                '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
-        cursor.execute(sell)
+        cursor.execute(sell_sql)
         sellid = cursor.lastrowid
-        print("SellID",sellid)
         
-        # IMGのINSERT(imgsの数分同じSellIDでINSERT)
-        for img in imgs:
-            img = '''
-                   INSERT INTO SellIMG (SellIMG, SellID) VALUES ('{0}',{1});
-                  '''.format(img, sellid)
-            cursor.execute(img)
+        print('''
+              「出品完了」
+              SellID:{0}
+              Name:{1}
+              サムネイル:{2}
+              サブ:{3}
+              '''.format(sellid,selltit,mainimg_path,imgs))
         
+        # サムネイルファイルのINSERT
+        mainimg_sql = '''
+        INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
+        '''.format(mainimg_path, sellid)
+        cursor.execute(mainimg_sql)
+        
+        # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
+        for subimg in imgs:
+            subimg_sql = '''
+            INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
+            '''.format(subimg, sellid)
+            cursor.execute(subimg_sql)
+            
         # CLOSE
         conn.commit()
         cursor.close()
@@ -195,11 +202,11 @@ def IndexPage():
     cursor = conn.cursor()
     
     sql = '''
-        SELECT Sell.SellID, Sell.Name, Sell.Price, MIN(SellIMG.SellIMG)
+        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
         FROM Sell
         JOIN SellIMG ON Sell.SellID = SellIMG.SellID
         LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-        WHERE Buy.SellID IS NULL
+        WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01
         GROUP BY Sell.SellID
         '''
     cursor.execute(sql)
@@ -229,7 +236,7 @@ def ProductPage(sellid):
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("product.html", sellid=sellid, product=product)
+    return render_template("product.html", sellid=sellid, product=product, error=request.args.get('error'))
 # --------------------------- 削除予定 ---------------------------------
     
 
@@ -240,30 +247,71 @@ def Buy():
         conn = conn_db()
         cursor = conn.cursor()
         
-        sellid = request.form['sellid']
-        
         # セッション取得
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
                 
-        sql = '''
-            INSERT INTO Buy (SellID, AccountID) VALUES ({0},{1});
-            '''.format(sellid, AccountID)
-        cursor.execute(sql)
-        buyid = cursor.lastrowid
-        print('''
-              「購入されました」
-              購入者AccountID:{0}
-              SellID:{1}
-              BuyID:{2}
-              '''.format(sellid,AccountID,buyid))
+        sellid = request.form['sellid']
         
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return redirect(url_for('PayPage',buyid=buyid))
+        # 所持金SELECT
+        wal_sql = '''
+        SELECT Money FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(wal_sql)
+        wallet = cursor.fetchone()[0]
+        
+        # 金額SELECT
+        pri_sql = '''
+        SELECT Price FROM Sell 
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(pri_sql)
+        price = cursor.fetchone()[0]
+        
+        # 所持金が足りているか
+        balance = int(wallet) - int(price)
+        if balance >= 0:
+            
+            # 所持金UPDATE
+            paid_sql = '''
+            UPDATE Account 
+            SET Money = {0}
+            WHERE AccountID = {1};
+            '''.format(balance,AccountID)
+            cursor.execute(paid_sql)
+            
+            # 購入INSERT
+            buy_sql = '''
+                INSERT INTO Buy (SellID, AccountID) VALUES ({0},{1});
+                '''.format(sellid, AccountID)
+            cursor.execute(buy_sql)
+            buyid = cursor.lastrowid
+            print('''
+                「購入されました」
+                購入者AccountID:{0}
+                SellID:{1} ... {2}円
+                BuyID:{3}
+                Wallet:{4}円 -> {5}円
+                '''.format(AccountID,sellid,price,buyid,wallet,balance))
+            
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PayPage',buyid=buyid))
+        
+        else:    
+            error = '所持金が足りません'
+            
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('ProductPage',sellid=sellid,error=error))
+            
+        
 
 # /pay
 @app.route('/pay/<int:buyid>')  # 小濱俊史
@@ -271,6 +319,7 @@ def PayPage(buyid):
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 決済情報SELECT
     pay_sql = '''
         SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, Account.UserName, Postage.Price
         FROM Buy
@@ -282,6 +331,7 @@ def PayPage(buyid):
     cursor.execute(pay_sql)
     buy = cursor.fetchone()
     
+    # 購入日時SELECT
     del_sql = '''
         SELECT Buy.DateTime
         FROM Buy
@@ -306,9 +356,90 @@ def PayPage(buyid):
         cursor.close()
         conn.close()
         return render_template("pay_comp.html", buy=buy, delidate=delidate)
-    else:
-        return render_template("pay_comp.html", buy=buy, delidate='NULL')
     
+# /mypage
+@app.route('/mypage')   # 小濱俊史
+def MyPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    # 売り上げSELECT
+    proc_sql = '''
+    SELECT SUM(Sell.Price)
+    FROM Sell
+    JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Sell.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(proc_sql)
+    proceed = cursor.fetchone()[0]
+    
+    # 所持金SELECT
+    mone_sql = '''
+    SELECT money 
+    FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(mone_sql)
+    money = cursor.fetchone()
+    money = money[0]
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("mypage.html", proceed=proceed, money=money, UserName=UserName)
+
+# /charge
+@app.route('/charge', methods=['POST'])   # 小濱俊史
+def ChargePage():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        charge = request.form['charge']
+            
+        # 所持金SELECT
+        out_sql = '''
+        SELECT money 
+        FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(out_sql)
+        money = cursor.fetchone()
+        money = money[0]
+        
+        charged = int(money) + int(charge)
+        
+        # 所持金UPDATE
+        in_sql = '''
+        UPDATE Account
+        SET money = {0}
+        WHERE AccountID = {1};
+        '''.format(charged,AccountID)
+        cursor.execute(in_sql)
+        
+        print('''
+              「チャージされました」
+              前：{0}
+              後：{1}
+              '''.format(money,charged))
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return  redirect(url_for('MyPage'))
+
 # 実行
 if __name__ == ("__main__"):
     app.run(host="localhost", port=8000, debug=True)
