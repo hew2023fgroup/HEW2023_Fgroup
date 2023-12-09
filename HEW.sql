@@ -38,13 +38,13 @@ CREATE TABLE `Sell` (
   `ScategoryID` int,
   `AccountID` int,
   `Datetime` datetime DEFAULT (now()),
-  `draft` bit(1)
+  `draft` bit(1) DEFAULT 1
 );
 
 CREATE TABLE `SellIMG` (
   `SellIMGID` int PRIMARY KEY AUTO_INCREMENT,
   `SellIMG` varchar(2000),
-  `ThumbnailFlg` bit(1),
+  `ThumbnailFlg` bit(1) DEFAULT 1,
   `SellID` int
 );
 
