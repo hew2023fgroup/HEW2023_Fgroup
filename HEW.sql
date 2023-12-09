@@ -277,4 +277,4 @@ INSERT INTO Address(Address,POST,AccountID) VALUES("愛知県名古屋市中村�
 
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("Sample商品データ",2000,1,2,2,"サンプルデータです。最終的には削除するデータです。",6,1,0);
 
-INSERT INTO SellIMG(SellIMG,SellID) VALUES("HEW/site/static/images/sell/Product (1).jpeg",1);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/Product (1).jpeg",1);
