@@ -67,8 +67,12 @@
 
         <div class="sell-images">
           <p class="title">出品画像</p>
-          <!-- name="sellimg" id="sellimg" multiple-->
-          <input type="file" name="sellimg" id="sellimg" accept="image/*" required multiple>
+          <!-- id,name="sellimg-main/sub"に変更 -->
+          <p>サムネイル(単数)</p>
+          <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required>
+
+          <p>その他(複数)</p>
+          <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple>
         </div>
   
         <div class="detail">
@@ -116,7 +120,7 @@
           <!-- name="selltitle" id="selltitile" -->
           <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" required>
           <p class="title">商品の説明</p>
-          <!--<input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required>-->
+          <!-- <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required> -->
           <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" required></textarea>
         </div>
   
