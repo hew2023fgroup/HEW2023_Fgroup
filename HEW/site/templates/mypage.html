@@ -83,7 +83,7 @@
             <img src="../static/images/profile.png">
             <p class="name">{{ UserName }}</p>
             <div class="rate-form">
-              <input id="star5" type="radio" name="rate" value="5">
+              <!-- <input id="star5" type="radio" name="rate" value="5">
               <label for="star5">★</label>
               <input id="star4" type="radio" name="rate" value="4">
               <label for="star4">★</label>
@@ -92,7 +92,16 @@
               <input id="star2" type="radio" name="rate" value="2">
               <label for="star2">★</label>
               <input id="star1" type="radio" name="rate" value="1">
-              <label for="star1">★</label>
+              <label for="star1">★</label> -->
+              
+              <!-- 雑な表示の仕方 -->
+              {% for i in range(5) %}
+                {% if i < 5 - avg_evalate %}
+                <label style="color:#ccc;">★</label>
+                {% else %}
+                <label style="color:#ffcc00;">★</label>
+                {% endif %}
+              {% endfor %}
             </div>
           </div>
 
@@ -146,7 +155,7 @@
               function Submit() {
                   return confirm('チャージしますか？');
               }
-          </script>
+            </script>
 
           </div>
 
