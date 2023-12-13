@@ -46,16 +46,14 @@ def TrendPage():
 @app.route('/register/',methods=['POST'])   #小濱俊史
 def register():
     if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
         
-        # フォーム
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        # 既に登録されているメールアドレス
+        # 登録済みメールアドレスSELECT
         sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
         cursor.execute(sql)
         existing_user = cursor.fetchone()
@@ -64,13 +62,13 @@ def register():
             MailMessage = "！！既に登録されたアドレスです！！"
             return render_template("registration.html", MailMessage=MailMessage)
 
-        # メールアドレスが登録されていない場合
-        # INSERT
+        # メールアドレス未登録のINSERT
         sql = '''
-               INSERT INTO Account 
-               (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
-              '''.format(username, password, email)
+        INSERT INTO Account 
+        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
+        '''.format(username, password, email)
         cursor.execute(sql)
+        
         # CLOSE
         conn.commit()
         cursor.close()
@@ -81,28 +79,27 @@ def register():
 @app.route('/login/', methods=['POST']) #小濱俊史
 def login():
     if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
         
-        # フォーム
         email = request.form['email']
         password = request.form['password']
         
-        # SELECT
-        conn = conn_db()
-        cursor = conn.cursor()
+        # パスワード認証のSELECT
         sql = '''
-               SELECT MailAddress, Password 
-               FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
-              '''.format(email, password)
+        SELECT MailAddress, Password 
+        FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
+        '''.format(email, password)
         cursor.execute(sql)
+        user = cursor.fetchone()
         
         # 認証
-        user = cursor.fetchone()
         if user:
             # 成功
             get = '''
-                   SELECT AccountID, UserName, MailAddress 
-                   FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
-                  '''.format(email, password)
+            SELECT AccountID, UserName, MailAddress 
+            FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
+            '''.format(email, password)
             cursor.execute(get)
             you = cursor.fetchall()
             
@@ -123,12 +120,14 @@ def login():
 @app.route('/sell/', methods=['POST'])  #小濱俊史
 def Sell():    
     if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
         
-        # フォーム
-        # sellimgs = request.files.getlist('sellimg')
         sellimg_main = request.files.get('sellimg-main')
         sellimgs_sub = request.files.getlist('sellimg-sub')
         selltit = request.form['selltit']
@@ -151,16 +150,13 @@ def Sell():
             img_path = os.path.join(upload_path, sellimg.filename)
             sellimg.save(img_path)
             imgs.append(img_path)
-        
-        conn = conn_db()
-        cursor = conn.cursor()
-        
+            
         # SellのINSERT
         sell_sql = '''
-                INSERT INTO Sell 
-                (Name, Price, PostageID, StatusID, Overview, SCategoryID, AccountID) 
-                VALUES ('{0}',{1},{2},{3},'{4}',{5},{6});
-               '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
+        INSERT INTO Sell 
+        (Name, Price, PostageID, StatusID, Overview, SCategoryID, AccountID) 
+        VALUES ('{0}',{1},{2},{3},'{4}',{5},{6});
+        '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
         cursor.execute(sell_sql)
         sellid = cursor.lastrowid
         
@@ -191,23 +187,21 @@ def Sell():
         conn.close()
         return render_template('sell.html')
 
-
-
 # 仮の商品(簡易/詳細)ページ ----------------------------------------------------------
 # /index
 @app.route('/index')
 def IndexPage():
-    
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 出品取得のSELECT
     sql = '''
-        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-        FROM Sell
-        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-        LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-        WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01;
-        '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01;
+    '''
     cursor.execute(sql)
     sells = cursor.fetchall()
     
@@ -220,13 +214,13 @@ def IndexPage():
 # /product/<sellid>
 @app.route('/product/<sellid>')
 def ProductPage(sellid):
-    
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 商品情報のSELECT
     sql = '''
-        SELECT Name, Price FROM Sell WHERE SellID = '{0}';
-        '''.format(sellid)
+    SELECT Name, Price FROM Sell WHERE SellID = '{0}';
+    '''.format(sellid)
     cursor.execute(sql)
     product = cursor.fetchone()
     print("アクセス中の商品 ->",product[0])
@@ -300,7 +294,6 @@ def Buy():
             cursor.close()
             conn.close()
             return redirect(url_for('PayPage',buyid=buyid))
-        
         else:    
             error = '所持金が足りません'
             
@@ -309,8 +302,30 @@ def Buy():
             cursor.close()
             conn.close()
             return redirect(url_for('ProductPage',sellid=sellid,error=error))
-            
+
+# /evaluate
+@app.route('/evaluate', methods=['POST']) # 小濱俊史
+def Evaluate():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
         
+        buyid = request.form['buyid']
+        eval = request.form['rate']
+        
+        # 評価値のUPDATE
+        eval_sql = '''
+        UPDATE Buy 
+        SET Review = {0}
+        WHERE BuyID = {1};
+        '''.format(eval, buyid)
+        cursor.execute(eval_sql)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PayPage',buyid=buyid, eval=eval))
 
 # /pay
 @app.route('/pay/<int:buyid>')  # 小濱俊史
@@ -320,13 +335,13 @@ def PayPage(buyid):
     
     # 決済情報SELECT
     pay_sql = '''
-        SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, Account.UserName, Postage.Price
-        FROM Buy
-        INNER JOIN Sell ON Buy.SellID = Sell.SellID
-        INNER JOIN Account ON Sell.AccountID = Account.AccountID
-        INNER JOIN Postage ON Sell.PostageID = Postage.PostageID
-        WHERE Buy.BuyID = {0};
-        '''.format(buyid)
+    SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, Account.UserName, Postage.Price
+    FROM Buy
+    INNER JOIN Sell ON Buy.SellID = Sell.SellID
+    INNER JOIN Account ON Sell.AccountID = Account.AccountID
+    INNER JOIN Postage ON Sell.PostageID = Postage.PostageID
+    WHERE Buy.BuyID = {0};
+    '''.format(buyid)
     cursor.execute(pay_sql)
     buy = cursor.fetchone()
     
@@ -349,12 +364,23 @@ def PayPage(buyid):
         delidate = buydate + timedelta(hours=48)
         # 形式変更
         delidate = delidate.strftime('%Y/%m/%d頃 予定')
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template("pay_comp.html", buy=buy, delidate=delidate)
+    
+    # 評価値のSELECT
+    evalget_sql = '''
+    SELECT Review FROM Buy
+    WHERE BuyID = {0};
+    '''.format(buyid)
+    cursor.execute(evalget_sql)
+    eval = cursor.fetchone()[0]
+    
+    if eval is None:
+        eval = 0
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("pay_comp.html", buy=buy, delidate=delidate, buyid=buyid, eval=eval)
     
 # /mypage
 @app.route('/mypage')   # 小濱俊史
@@ -366,6 +392,19 @@ def MyPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    # 平均評価値のSELECTx2
+    evalscore_sql = '''
+    SELECT AVG(Review) 
+    FROM Buy 
+    WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
+    '''.format(AccountID)
+    cursor.execute(evalscore_sql)
+    avg_evalate = cursor.fetchone()[0]
+    
+    print('''
+          評価値の平均は({0})です。
+          '''.format(avg_evalate))
     
     # 売り上げSELECT
     proc_sql = '''
@@ -391,7 +430,7 @@ def MyPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("mypage.html", proceed=proceed, money=money, UserName=UserName)
+    return render_template("mypage.html", proceed=proceed, money=money, UserName=UserName, avg_evalate=avg_evalate)
 
 # /charge
 @app.route('/charge', methods=['POST'])   # 小濱俊史
