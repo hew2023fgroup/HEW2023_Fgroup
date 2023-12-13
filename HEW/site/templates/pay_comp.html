@@ -117,6 +117,32 @@
         </div>
       </div>
 
+      <!-- 評価用ココ追加 -->
+      <form action="/evaluate" method="post">
+        <div class="rate-form">
+          <input type="hidden" name="buyid" value="{{ buyid }}">
+          
+          <input id="star1" type="radio" name="rate" value="1">
+          <label for="star1">★</label>
+          
+          <input id="star2" type="radio" name="rate" value="2">
+          <label for="star2">★</label>
+                    
+          <input id="star3" type="radio" name="rate" value="3">
+          <label for="star3">★</label>
+                              
+          <input id="star4" type="radio" name="rate" value="4">
+          <label for="star4">★</label>
+                              
+          <input id="star5" type="radio" name="rate" value="5">
+          <label for="star5">★</label>
+
+        </div>
+        <input type="submit" value="送信" onsubmit="return Submit();">
+      </form>
+
+      <p>現在の評価... {{ eval }}/5</p>
+
       <div class="next">
         <ul>
           <li><a href="{{ url_for('IndexPage') }}" class="btn05">次へ</a></li>
