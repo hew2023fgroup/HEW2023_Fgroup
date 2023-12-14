@@ -1,3 +1,4 @@
+#出品,下書き時のデータ格納と一覧ページの表示(/sell,/sell/→sell.pyから引用,sql変更有)
 from flask import Flask, redirect, url_for, render_template, request,session
 import mysql.connector
 import os
