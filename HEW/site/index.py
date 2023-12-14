@@ -325,7 +325,7 @@ def Evaluate():
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('PayPage',buyid=buyid, eval=eval))
+        return redirect(url_for('IndexPage'))
 
 # /pay
 @app.route('/pay/<int:buyid>')  # 小濱俊史
