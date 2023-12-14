@@ -42,39 +42,6 @@ def TrendPage():
     return render_template("trend.html")
 # ------------------------------------------------------------
 
-# /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
-def register():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        
-        # 登録済みメールアドレスSELECT
-        sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
-        cursor.execute(sql)
-        existing_user = cursor.fetchone()
-
-        if existing_user:
-            MailMessage = "！！既に登録されたアドレスです！！"
-            return render_template("registration.html", MailMessage=MailMessage)
-
-        # メールアドレス未登録のINSERT
-        sql = '''
-        INSERT INTO Account 
-        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
-        '''.format(username, password, email)
-        cursor.execute(sql)
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template("login.html")
-   
 # /login/
 @app.route('/login/', methods=['POST']) #小濱俊史
 def login():
@@ -325,7 +292,7 @@ def Evaluate():
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('IndexPage'))
+        return redirect(url_for('PayPage',buyid=buyid, eval=eval))
 
 # /pay
 @app.route('/pay/<int:buyid>')  # 小濱俊史

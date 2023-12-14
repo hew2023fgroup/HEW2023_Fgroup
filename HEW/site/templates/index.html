@@ -37,16 +37,19 @@
 
       <nav>
         <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
+          <!-- url_forへの修正 -->
+          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
+
+          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <li class="line-index"><a href="index.html"><span>おすすめ</span></a></li>
-          <li><a href="trend.html">トレンド</a></li>
+          <!-- url_forへの修正 -->
+          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
+          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
       </div>
 
