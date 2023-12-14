@@ -38,16 +38,18 @@
 
       <nav>
         <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
+          <!-- url_forへの修正 -->
+          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
+          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <li><a href="index.html">おすすめ</a></li>
-          <li><a href="#">トレンド</a></li>
+          <!-- url_forへの修正 -->
+          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
+          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
       </div>
 
@@ -76,9 +78,10 @@
 
       <main id="m-mypage">
         <div id="profile">
+
           <div class="prof_detail">
             <img src="../static/images/profile.png">
-            <p class="name">光源氏</p>
+            <p class="name">{{ UserName }}</p>
             <div class="rate-form">
               <input id="star5" type="radio" name="rate" value="5">
               <label for="star5">★</label>
@@ -101,16 +104,15 @@
               <li><a href="sell_list.html"><img src="../static/images/sell.png"><p>出品した商品</p></a></li>
             </ul>
           </div>
-
+          
           <div id="point-money-box">
             <div class="bar"></div>
-
             <div class="point-money">
               <div class="money-box">
                 <p>売上金</p>
                 <div class="money">
                   <p class="mark">¥</p>
-                  <span class="price">1540</span>
+                  <span class="price">{{ proceed }}</span>
                 </div>
               </div>
 
@@ -118,10 +120,33 @@
                 <p>サービス内マネー</p>
                 <div class="point">
                   <p class="mark">¥</p>
-                  <span class="price">1600</span>
+                  <!-- マネー表示修正 -->
+                  <span class="price">{{ money }}</span>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div id="point-money-box">
+            <!-- チャージ用フォームの追加 -->
+            <!-- onsubmit="" で下のscriptタグの実行 変更可 -->
+            <!-- style="" でcss付与 変更可 -->
+            <form action="/charge" method="post" onsubmit="return Submit();">
+              <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" style="margin: 0px; padding: 4px">
+              <input type="submit" value="入金" style="margin-right: 30px;">
+            </form>
+            <form action="/charge" method="post" onsubmit="return Submit();">
+              <button type="submit" name="charge" value="1000" style="margin: 0px; padding:1px 8px;">+1000円</button>
+              <button type="submit" name="charge" value="2000" style="margin: 0px; padding:1px 8px;">+2000円</button>
+              <button type="submit" name="charge" value="3000" style="margin: 0px; padding:1px 8px;">+3000円</button>
+            </form>
+            
+            <!-- 確認用 -->
+            <script>
+              function Submit() {
+                  return confirm('チャージしますか？');
+              }
+          </script>
 
           </div>
 
