@@ -148,18 +148,13 @@
         </div>
 
         <div class="sell">
-          <!-- 各ボタンでform送信、出品→sellcomp 下書き→draftcomp -->
           <ul>
-            <form method="POST" action="{{ url_for('sellcomp') }}">
             <!-- inputタグへ変更 cssが未設定 -->
-              <li><input class="btn05" type="submit" value="出品する"></li>
+              <li><input class="btn05" type="submit" id="Sell" value="出品する"></li>
             <!-- <li><a class="btn05" href="#">出品する</a></li> -->
-            </form>
-            <form method="POST" action="{{ url_for('draftcomp') }}">
             <!-- inputタグへ変更 cssが未設定 -->
-              <li><input class="btn06" type="button" value="下書きに保存する"></li>
+              <li><input class="btn06" type="button"id="Druft" value="下書きに保存する"></li>
             <!-- <li><a class="btn06" href="#">下書きに保存する</a></li> -->
-            </form>
           </ul>
         </div>
 
