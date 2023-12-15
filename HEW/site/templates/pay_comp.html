@@ -12,85 +12,24 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pay_comp.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shop01.css') }}">
+
 
     <!-- JQuery本体 CDN -->
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
-    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script type="text/javascript" src="js/common.js"></script>
 
-    <style>
-      label.star {
-        font-size: 2rem;
-        color: #ccc;
-        padding: 10px;
-      }
-      input.star[type="radio"] {
-        -webkit-appearance: none; /* Safari/Chrome */
-        -moz-appearance: none; /* Firefox */
-        appearance: none;
-        margin: -10px;
-      }
-    </style>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        function changeColor() {
-          var st1 = document.getElementById('st1');
-          var st2 = document.getElementById('st2');
-          var st3 = document.getElementById('st3');
-          var st4 = document.getElementById('st4');
-          var st5 = document.getElementById('st5');
-  
-          if (st1.checked) {
-            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st2"]').style.color = '#ccc';
-            document.querySelector('label[for="st3"]').style.color = '#ccc';
-            document.querySelector('label[for="st4"]').style.color = '#ccc';
-            document.querySelector('label[for="st5"]').style.color = '#ccc';
-          } else if (st2.checked) {
-            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st3"]').style.color = '#ccc';
-            document.querySelector('label[for="st4"]').style.color = '#ccc';
-            document.querySelector('label[for="st5"]').style.color = '#ccc';
-          } else if (st3.checked) {
-            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st4"]').style.color = '#ccc';
-            document.querySelector('label[for="st5"]').style.color = '#ccc';
-          } else if (st4.checked) {
-            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st4"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st5"]').style.color = '#ccc';
-          } else if (st5.checked) {
-            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st4"]').style.color = '#ffcc00';
-            document.querySelector('label[for="st5"]').style.color = '#ffcc00';
-          }
-        }
-
-        document.getElementById('st1').addEventListener('click', changeColor);
-        document.getElementById('st2').addEventListener('click', changeColor);
-        document.getElementById('st3').addEventListener('click', changeColor);
-        document.getElementById('st4').addEventListener('click', changeColor);
-        document.getElementById('st5').addEventListener('click', changeColor);
-      });
-    </script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
   </head>
 
   <body>
     <div id="wrap">
 
       <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
+        <a href="index.html"><img src="images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -102,109 +41,172 @@
 
       <nav>
         <ul>
-          <!-- url_forへの修正 -->
-          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
-          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
+          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
+          <li><a class="nav02" href="sell.html">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <!-- url_forへの修正 -->
-          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
-          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
+          <li><a href="index.html">おすすめ</a></li>
+          <li><a href="trend.html">トレンド</a></li>
         </ul>
       </div>
 
     </div>
 
 
-    <main id="m-pay_comp">
-
-
-      <h1>決済完了</h1>
-      <div class="num-box">
-        <h2>注文番号:</h2>
-        <p class="order-num">{{ buy[0] }}</p>
-      </div>
-
-      <div class="intro-box">
-        <h3>注文内容</h3>
-
-        <div class="intro">
-          <p class="title">タイトル</p>
-          <span>:</span>
-          <p class="content">{{ buy[2] }}</p>
-        </div>
-        <div class="intro">
-          <p class="title">値段</p>
-          <span>:</span>
-          <p class="content">{{ buy[3] }}円</p>
-        </div>
-        <!-- <div class="intro">
-          <p class="title">メーカー</p>
-          <span>:</span>
-          <p class="content">丸亀製麺</p>
-        </div> -->
-        <div class="intro">
-          <p class="title">出品者</p>
-          <span>:</span>
-          <p class="content">{{ buy[4] }}</p>
-        </div>
-      </div>
-
-      <div class="payment-box">
-        <h4>支払情報</h4>
-        <div class="payment">
-          <p class="title">支払方法</p>
-          <span>:</span>
-          <p class="content">VariablePay</p>
-        </div>
-      </div>
-
-      <div class="delivery-box">
-        <h5>配送方法</h5>
-        <div class="payment">
-          <p class="title">配送料</p>
-          <span>:</span>
-          <p class="content">{{ buy[5] }}円</p>
-        </div>
-      </div>
-
-      <div class="day-box">
-        <h6>予定</h6>
-        <div class="day">
-          <p class="title">お届け日時</p>
-          <span>:</span>
-          <p class="content">{{ delidate }}</p>
-        </div>
-      </div>
-
-      <!-- 評価用ココ追加 -->
-      <form action="/evaluate" method="post">
-        <div class="rate-form">
-          <input type="hidden" name="buyid" value="{{ buyid }}">
-          <label for="st1" class="star"><input type="radio" class="star" name="rate" id="st1" value="1" onclick="changeColor()">★</label>
-          <label for="st2" class="star"><input type="radio" class="star" name="rate" id="st2" value="2" onclick="changeColor()">★</label>
-          <label for="st3" class="star"><input type="radio" class="star" name="rate" id="st3" value="3" onclick="changeColor()">★</label>
-          <label for="st4" class="star"><input type="radio" class="star" name="rate" id="st4" value="4" onclick="changeColor()">★</label>
-          <label for="st5" class="star"><input type="radio" class="star" name="rate" id="st5" value="5" onclick="changeColor()">★</label>
-        </div>
-        <!-- ここにCSSを付けてほしい、前のやつは下にあるliタグの次へボタン -->
-        <button type="submit">次へ</button>
-      </form>
-
-      <!-- ここを非表示 -->
-      <!-- <div class="next">
+    <div class="shopping-box">
+      <div class="shopping-tag">
         <ul>
-          
-          <li><a href="{{ url_for('IndexPage') }}" class="btn05">次へ</a></li>
+          <li class="nowPage">ご購入内容確認</li>
+          <li>ご購入完了</li>
         </ul>
-      </div> -->
+      </div>
+
+      <h1>ご購入内容確認</h1>
 
 
-    </main>
+      <div id="shopping-wrap">
+
+        <div id="shopping-left">
+          <div class="product-ex-box">
+            <figure class="img-box">
+              <img src="images/index06.png">
+            </figure>
+            <div class="aaaaa">
+              <div class="product-ex">
+                <p>ラルフローレン【Ralph Lauren】マフラー ニット アイボリー★734 <br>カラー :アイボリー サイズ横幅 約23cm 縦(全長)約204cm <br>※あまり使用していなかったので綺麗です。ホームクリーニング(毛玉取りなど)はしているので比較的綺麗な方です☆</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="delivery-address">
+            <div class="addTitle">
+              <p>お届け先住所</p>
+            </div>
+
+            <div class="address">
+              <div class="custom-box">
+                <p class="custom-Name">野比のび太<span>様</span></p>
+                <div class="custom-address">
+                  <p class="post-Code"><span>&#12306;</span>176-0044</p>
+                  <p>東京都練馬区月見台すすきヶ原5-8-1</p>
+                </div>
+                <p>0643230751</p>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+
+          <div class="delivery-day">
+            <div class="dayTitle">
+              <p>お届け日時</p>
+            </div>
+
+            <div class="delivery-schedule">
+              <div class="schedule">
+                <p>お届け予定日</p>
+                <span>12/14(木) ~ 12/15(金)</span>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+
+          <div class="pay-method">
+            <div class="payTitle">
+              <p>お支払方法</p>
+            </div>
+            <div class="pay-box">
+              <div class="pay">
+                <p>電子pay<span></span></p>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <div id="shopping-right">
+
+          <div class="buy-wrap">
+            <div class="buy-box">
+
+              <div class="policy">
+                <input type="checkbox" id="chkbox" name="policy_doui" value="1">
+                <label for="chkbox">内容をご確認してください</label>
+              </div>
+              <div class="submit_btnarea">
+                <form>
+                  <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled">
+                </form>
+                <!-- <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled"> -->
+              </div>
+
+            </div>
+            <div class="buy-total">
+              <div class="product-num">
+                <p class="confirm-list">注文番号</p>
+                <p class="price">0001</p>
+              </div>
+
+              <div class="product-price">
+                <p class="confirm-list">商品価格</p>
+                <p class="price">6,100<span>円</span></p>
+              </div>
+
+              <div class="del-charge">
+                <p class="confirm-list">配送料</p>
+                <p class="price">510<span>円</span></p>
+              </div>
+
+              <div class="total">
+                <p class="confirm-list">合計(税込)</p>
+                <p class="price">6,610<span>円</span></p>
+              </div>
+            </div>
+
+            <div class="sum-price">
+              <p class="confirm-list">お支払い金額</p>
+              <p class="confirm-list">6,610<span>円</span></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
 
 
     <footer>
@@ -213,5 +215,8 @@
     </footer>
 
   </body>
+
+<script src="static/js/check.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </html>
