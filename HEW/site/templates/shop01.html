@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Varia Free</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shop01.css') }}">
+
+
+    <!-- JQuery本体 CDN -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+    <!-- jquery実行ファイル -->
+    <script type="text/javascript" src="js/common.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      <figure>
+        <a href="index.html"><img src="images/logo.png"></a>
+      </figure>
+
+      <form action="#" class="search-form-003">
+        <label>
+          <input type="text" placeholder="キーワードを入力">
+        </label>
+        <button type="submit" aria-label="検索"></button>
+      </form>
+
+      <nav>
+        <ul>
+          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
+          <li><a class="nav02" href="sell.html">出品</a></li>
+        </ul>
+      </nav>
+
+      <div id="sub_nav">
+        <ul>
+          <li><a href="index.html">おすすめ</a></li>
+          <li><a href="trend.html">トレンド</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+
+    <div class="shopping-box">
+      <div class="shopping-tag">
+        <ul>
+          <li class="nowPage">ご購入内容確認</li>
+          <li>ご購入完了</li>
+        </ul>
+      </div>
+
+      <h1>ご購入内容確認</h1>
+
+
+      <div id="shopping-wrap">
+
+        <div id="shopping-left">
+          <div class="product-ex-box">
+            <figure class="img-box">
+              <img src="images/index06.png">
+            </figure>
+            <div class="aaaaa">
+              <div class="product-ex">
+                <p>ラルフローレン【Ralph Lauren】マフラー ニット アイボリー★734 <br>カラー :アイボリー サイズ横幅 約23cm 縦(全長)約204cm <br>※あまり使用していなかったので綺麗です。ホームクリーニング(毛玉取りなど)はしているので比較的綺麗な方です☆</p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="delivery-address">
+            <div class="addTitle">
+              <p>お届け先住所</p>
+            </div>
+
+            <div class="address">
+              <div class="custom-box">
+                <p class="custom-Name">野比のび太<span>様</span></p>
+                <div class="custom-address">
+                  <p class="post-Code"><span>&#12306;</span>176-0044</p>
+                  <p>東京都練馬区月見台すすきヶ原5-8-1</p>
+                </div>
+                <p>0643230751</p>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+
+          <div class="delivery-day">
+            <div class="dayTitle">
+              <p>お届け日時</p>
+            </div>
+
+            <div class="delivery-schedule">
+              <div class="schedule">
+                <p>お届け予定日</p>
+                <span>12/14(木) ~ 12/15(金)</span>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+
+          <div class="pay-method">
+            <div class="payTitle">
+              <p>お支払方法</p>
+            </div>
+            <div class="pay-box">
+              <div class="pay">
+                <p>電子pay<span></span></p>
+              </div>
+            </div>
+
+            <form>
+              <div class="change-btn-box">
+                <div class="change-btn">
+                  <input type="submit" value="変更" id="btn">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+        <div id="shopping-right">
+
+          <div class="buy-wrap">
+            <div class="buy-box">
+
+              <div class="policy">
+                <input type="checkbox" id="chkbox" name="policy_doui" value="1">
+                <label for="chkbox">内容をご確認してください</label>
+              </div>
+              <div class="submit_btnarea">
+                <form>
+                  <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled">
+                </form>
+                <!-- <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled"> -->
+              </div>
+
+            </div>
+            <div class="buy-total">
+              <div class="product-num">
+                <p class="confirm-list">注文番号</p>
+                <p class="price">0001</p>
+              </div>
+
+              <div class="product-price">
+                <p class="confirm-list">商品価格</p>
+                <p class="price">6,100<span>円</span></p>
+              </div>
+
+              <div class="del-charge">
+                <p class="confirm-list">配送料</p>
+                <p class="price">510<span>円</span></p>
+              </div>
+
+              <div class="total">
+                <p class="confirm-list">合計(税込)</p>
+                <p class="price">6,610<span>円</span></p>
+              </div>
+            </div>
+
+            <div class="sum-price">
+              <p class="confirm-list">お支払い金額</p>
+              <p class="confirm-list">6,610<span>円</span></p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+
+    <footer>
+      <p class="footer01">#VariaFree</p>
+      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+    </footer>
+
+  </body>
+
+<script src="static/js/check.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</html>
