@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Varia Free</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shop02.css') }}">
+
+    <!-- JQuery本体 CDN -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+    <!-- jquery実行ファイル -->
+    <script type="text/javascript" src="js/common.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+  </head>
+
+  <body>
+    <div id="wrap">
+
+      <figure>
+        <a href="index.html"><img src="images/logo.png"></a>
+      </figure>
+
+      <form action="#" class="search-form-003">
+        <label>
+          <input type="text" placeholder="キーワードを入力">
+        </label>
+        <button type="submit" aria-label="検索"></button>
+      </form>
+
+      <nav>
+        <ul>
+          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
+          <li><a class="nav02" href="sell.html">出品</a></li>
+        </ul>
+      </nav>
+
+      <div id="sub_nav">
+        <ul>
+          <li><a href="index.html">おすすめ</a></li>
+          <li><a href="trend.html">トレンド</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+
+    <div class="shopping-box">
+      <div class="shopping-tag">
+        <ul>
+          <li>ご購入内容確認</li>
+          <li class="nowPage">ご購入完了</li>
+        </ul>
+      </div>
+
+      <h1>ご購入ありがとうございました！</h1>
+
+      <div class="order-number-box">
+        <p>お客様のご注文番号：<span>AAA000001</span></p>
+      </div>
+
+      <div class="guidance">
+        <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
+        <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
+        <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
+        <p class="customer-mail">sample@gmail.com</p>
+      </div>
+
+      <div class="guidance-nav">
+        <ul>
+          <li><a href="{{ url_for('IndexPage') }}">トップページへ</a></li>
+          <li><a href="{{ url_for('buy_list') }}">購入した商品へ</a></li>
+        </ul>
+      </div>
+
+
+
+    </div>
+
+
+
+
+
+    <footer>
+      <p class="footer01">#VariaFree</p>
+      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+    </footer>
+
+  </body>
+
+</html>
