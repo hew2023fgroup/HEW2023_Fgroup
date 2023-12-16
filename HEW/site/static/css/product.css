@@ -117,6 +117,34 @@ ul li{
   font-size: 0.85rem;
 }
 
+
+/*/                いいね-コメント                /*/
+.love-comment-box{
+  display: flex;
+  position: relative;
+  margin: 20px 0 0 0;
+  padding: 0 0 0 20px;
+}
+.lovebox{
+  width: 40px;
+  text-align: center;
+}
+.love-Num{
+  margin: 5px 0 0 0;
+}
+.commentbox{
+  width: 90px;
+  position: absolute;
+  top: 0;
+  left: 90px;
+  text-align: center;
+}
+.comment-Num{
+  margin: 5px 0 0 0;
+}
+
+
+/*/                正直何処のかわからん                /*/
 .disabled {
   opacity: 0.3;
   cursor: inherit;
@@ -132,7 +160,7 @@ ul li{
   writing-mode: horizontal-tb;
 }
 
-
+/*/                購入手続き                /*/
 .shopping{
   width: 500px;
   margin: 30px 0 0 0;
