@@ -73,11 +73,11 @@
         <div id="shopping-left">
           <div class="product-ex-box">
             <figure class="img-box">
-              <img src="../static/images/index06.png">
+              <img src="{{ Sell_Info[0] }}" alt="出品画像">
             </figure>
             <div class="aaaaa">
               <div class="product-ex">
-                <p>ラルフローレン【Ralph Lauren】マフラー ニット アイボリー★734 <br>カラー :アイボリー サイズ横幅 約23cm 縦(全長)約204cm <br>※あまり使用していなかったので綺麗です。ホームクリーニング(毛玉取りなど)はしているので比較的綺麗な方です☆</p>
+                <p>{{ Sell_Info[1] }} <br>{{ Sell_Info[2] }}</p>
               </div>
             </div>
           </div>
@@ -90,10 +90,10 @@
 
             <div class="address">
               <div class="custom-box">
-                <p class="custom-Name">野比のび太<span>様</span></p>
+                <p class="custom-Name">{{ UserName }}<span>様</span></p>
                 <div class="custom-address">
-                  <p class="post-Code"><span>&#12306;</span>176-0044</p>
-                  <p>東京都練馬区月見台すすきヶ原5-8-1</p>
+                  <p class="post-Code"><span>&#12306;</span>{{ Account_Info[1] }}</p>
+                  <p>{{ Account_Info[0] }}</p>
                 </div>
                 <p>0643230751</p>
               </div>
@@ -118,7 +118,8 @@
             <div class="delivery-schedule">
               <div class="schedule">
                 <p>お届け予定日</p>
-                <span>12/14(木) ~ 12/15(金)</span>
+                <!-- <span>12/14(木) ~ 12/15(金)</span> -->
+                <span>{{ After24H }} ~ {{ After48H }}</span>
               </div>
             </div>
 
@@ -164,7 +165,8 @@
                 <label for="chkbox">内容をご確認してください</label>
               </div>
               <div class="submit_btnarea">
-                <form>
+                <form action="/pay" method="post">
+                  <input type="hidden" name="SellID" value="{{ SellID }}">
                   <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled">
                 </form>
                 <!-- <input type="submit" value="購入を確定する" class="form_btn" id="submit" disabled="disabled"> -->
@@ -174,28 +176,28 @@
             <div class="buy-total">
               <div class="product-num">
                 <p class="confirm-list">注文番号</p>
-                <p class="price">0001</p>
+                <p class="price">bangou</p>
               </div>
 
               <div class="product-price">
                 <p class="confirm-list">商品価格</p>
-                <p class="price">6,100<span>円</span></p>
+                <p class="price">{{ Sell_Info[3] }}<span>円</span></p>
               </div>
 
               <div class="del-charge">
                 <p class="confirm-list">配送料</p>
-                <p class="price">510<span>円</span></p>
+                <p class="price">{{ Sell_Info[4] }}<span>円</span></p>
               </div>
 
               <div class="total">
                 <p class="confirm-list">合計(税込)</p>
-                <p class="price">6,610<span>円</span></p>
+                <p class="price">{{ Total_Price }}<span>円</span></p>
               </div>
             </div>
 
             <div class="sum-price">
               <p class="confirm-list">お支払い金額</p>
-              <p class="confirm-list">6,610<span>円</span></p>
+              <p class="confirm-list">{{ Total_Price }}<span>円</span></p>
             </div>
           </div>
 
