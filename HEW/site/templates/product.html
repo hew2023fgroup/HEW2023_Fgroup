@@ -26,9 +26,8 @@
 
   <body>
     <div id="wrap">
-
       <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
+        <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -40,19 +39,19 @@
 
       <nav>
         <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
+          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
+
+          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <li><a href="index.html">おすすめ</a></li>
-          <li><a href="#">トレンド</a></li>
+          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
+          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
       </div>
-
     </div>
 
 
@@ -60,70 +59,72 @@
 
       <div class="slide_box">
         <ul class="slide">
-          <li class="item"><img src="../static/images/product_list.png" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail06.jpg" alt="バッグを持った女性" /></li>
-          <li class="item"><img src="../static/images/pro_detail04.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail02.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail01.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail03.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail05.jpg" alt="バッグを持った女性" /></li>
+          {% for img in imgs %}
+          <li class="item"><img src="../{{ img }}" alt="slide商品画像"></li>
+          {% endfor %}
         </ul>
         <ul class="slide-navigation">
-          <li class="item"><img src="../static/images/product_list.png" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail06.jpg" alt="バッグを持った女性" /></li>
-          <li class="item"><img src="../static/images/pro_detail04.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail02.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail01.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail03.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail.jpg" alt="ビッキー レザーミニトート" /></li>
-          <li class="item"><img src="../static/images/pro_detail05.jpg" alt="バッグを持った女性" /></li>
+          {% for img in imgs %}
+          <li class="item"><img src="../{{ img }}" alt="nav商品画像"></li>
+          {% endfor %}
         </ul>
       </div>
 
-      <!-- 表示内容を変更(仮) -->
       <div class="intro">
-        <!-- <p class="intro_name">VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p> -->
-        <p class="intro_name">{{ product[0] }}</p>
-        <p class="intro_name">{{ sellid }}</p>
-        <!-- <span>¥18,700</span> -->
-        <span>{{ product[1] }}円</span>
+        <p class="intro_name">{{ name }}</p>
+        <span>¥ {{ price }}</span>
         <div class="intro_detail_box">
-          <p class="intro_detail">※こちらの価格には消費税、送料が含まれています。</p>
+          <p class="intro_detail">※こちらの価格には消費税が含まれています。</p>
+        </div>
+
+
+        <div class="love-comment-box">
+          <div class="lovebox">
+            <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="24" height="24"><!--?lit$820345334$--><path class="cls-1" d="M12,21a.68.68,0,0,1-.48-.19C10.68,20,3.3,13,2.34,10.41a5.4,5.4,0,0,1,.17-4.19,5.56,5.56,0,0,1,3.2-2.89A5.65,5.65,0,0,1,12,5.09a5.66,5.66,0,0,1,6.29-1.76,5.56,5.56,0,0,1,3.2,2.89,5.4,5.4,0,0,1,.17,4.19c-1,2.58-8.34,9.61-9.18,10.4A.68.68,0,0,1,12,21ZM7.61,4.4a4.18,4.18,0,0,0-1.43.25,4.13,4.13,0,0,0-2.4,2.16,4,4,0,0,0-.12,3.11c.66,1.81,5.86,7,8.34,9.41,2.48-2.38,7.68-7.6,8.34-9.41a4,4,0,0,0-.12-3.11,4.13,4.13,0,0,0-2.4-2.16h0a4.24,4.24,0,0,0-5.2,2,.73.73,0,0,1-1.24,0A4.24,4.24,0,0,0,7.61,4.4Z"></path></svg>
+            <p class="love-Num">22</p>
+          </div>
+
+          <div class="commentbox">
+            <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon inherit" width="24" height="24"><!--?lit$820345334$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
+            <p class="comment-Num">コメント</p>
+          </div>
         </div>
 
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
-          <form action="/buy/" method="post">
-            <input type="hidden" name="sellid" value="{{ sellid }}">
+          <form action="/buy" method="post">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
             <button type="submit" >購入手続きへ</button>
-          </form>
-          <!-- <a href="pay_comp.html">
-            <p>購入手続きへ</p>
             <div class="plus-box">
-               <span class="dli-plus"></span>
+              <span class="dli-plus"></span>
             </div>
-          </a> -->
+          </form>
+        </div>
+
+
+        <div id="product-explain">
+          <h6>商品説明</h6>
+          <p>{{ overview }}</p>
         </div>
 
         <div id="product-info">
           <h3>商品状態</h3>
           <div class="info-detail">
             <p class="info01">カテゴリー</p>
-            <p class="info02">バッグ</p>
-          </div>
-          <div class="info-detail">
-            <p class="info01">ブランド</p>
-            <p class="info02">SHALL-DONAY</p>
+            <p class="info02">{{ scategory }}</p>
           </div>
           <div class="info-detail">
             <p class="info01">商品状態</p>
-            <p class="info02">非常にいい</p>
+            <p class="info02">{{ status }}</p>
           </div>
+
+          <!-- 配送料負担者の設定 未開発!!! -->
           <div class="info-detail">
             <p class="info01">配送料の負担</p>
             <p class="info02">出品者負担</p>
           </div>
+
+          <!-- 配達方法の設定 未開発!!! -->
           <div class="info-detail">
             <p class="info01">配送方法</p>
             <p class="info02">普通郵便</p>
@@ -133,41 +134,39 @@
         <div id="sell">
           <h4>出品者</h4>
           <div class="sell-info">
-          <img src="../static/images/profile.png" alt="ドラえもん">
+            <!-- アイコン表示 未開発!!! -->
+            <img src="../static/images/profile.png" alt="ドラえもん">
+
             <div class="sell-info-detail">
-              <p>光源氏</p>
+              <p>{{ sell_acc[1] }}</p>
               <div class="rate-form">
-                <input id="star5" type="radio" name="rate" value="5">
-                <label for="star5">★</label>
-                <input id="star4" type="radio" name="rate" value="4">
-                <label for="star4">★</label>
-                <input id="star3" type="radio" name="rate" value="3">
-                <label for="star3">★</label>
-                <input id="star2" type="radio" name="rate" value="2">
-                <label for="star2">★</label>
-                <input id="star1" type="radio" name="rate" value="1">
-                <label for="star1">★</label>
+                {% for i in range(5) %}
+                  {% if i < 5 - avg_evalate %}
+                  <label style="color:#ccc;">★</label>
+                  {% else %}
+                  <label style="color:#ffcc00;">★</label>
+                  {% endif %}
+                {% endfor %}
               </div>
             </div>
+
           </div>
         </div>
 
       </div>
     </div>
 
-
-
-<!--     <div style="width:500px;">
+    <!-- <div style="width:500px;">
       <canvas id="chart"></canvas>
     </div> -->
 
-
     <div id="chat">
 
+      <!-- チャット機能 未開発!!! -->
       <h5>コメント</h5>
       <div class="chat-box">
-
-        <div class="left-chat">
+        <p>未開発</p>
+        <!-- <div class="left-chat">
           <figure>
             <img src="../static/images/profile.png">
           </figure>
@@ -195,15 +194,11 @@
             <p>そうですか、わかりました。</p>
             <span>3時間前</span>
           </div>
-        </div>
+        </div> -->
 
       </div>
 
     </div>
-
-
-
-
 
     <div id="related-box">
 
@@ -211,64 +206,21 @@
         <h2>おすすめ商品</h2>
 
         <div class="wrap_product_02">
-
+          {% for row in sells %}
           <div class="product">
-            <a href="product.html">
+            <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
               <figure>
-                <img src="../static/images/doraemon.png" alt="">
+                <img src="../{{ row[3] }}" alt="sellimg" width="215px">
               </figure>
-              <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-              <span>¥18,700</span>
+                <p>{{ row[1] }}</p>
+                <span>{{ row[2] }}</span>
             </a>
           </div>
-
-          <div class="product">
-            <a href="product.html">
-              <figure>
-                <img src="../static/images/doraemon.png" alt="">
-              </figure>
-              <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-              <span>¥18,700</span>
-            </a>
-          </div>
-
-          <div class="product">
-            <a href="product.html">
-              <figure>
-                <img src="../static/images/doraemon.png" alt="">
-              </figure>
-              <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-              <span>¥18,700</span>
-            </a>
-          </div>
-
-          <div class="product">
-            <a href="product.html">
-              <figure>
-                <img src="../static/images/doraemon.png" alt="">
-              </figure>
-              <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-              <span>¥18,700</span>
-            </a>
-          </div>
-
-          <div class="product">
-            <a href="product.html">
-              <figure>
-                <img src="../static/images/doraemon.png" alt="">
-              </figure>
-              <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-              <span>¥18,700</span>
-            </a>
-          </div>
-
+          {% endfor %}
         </div>
       </main>
 
     </div>
-
-
-
 
     <footer>
       <p class="footer01">#VariaFree</p>
@@ -283,11 +235,9 @@
 <!-- スライドショー -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<script src="js/product.js"></script>
-
+<script src="{{ url_for('static', filename='js/product.js') }}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-<script src="js/polyline.js"></script>
-
+<script src="{{ url_for('static', filename='js/polyline.js') }}"></script>
 
 </html>

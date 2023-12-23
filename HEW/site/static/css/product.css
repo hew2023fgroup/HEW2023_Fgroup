@@ -117,6 +117,34 @@ ul li{
   font-size: 0.85rem;
 }
 
+
+/*/                いいね-コメント                /*/
+.love-comment-box{
+  display: flex;
+  position: relative;
+  margin: 20px 0 0 0;
+  padding: 0 0 0 20px;
+}
+.lovebox{
+  width: 40px;
+  text-align: center;
+}
+.love-Num{
+  margin: 5px 0 0 0;
+}
+.commentbox{
+  width: 90px;
+  position: absolute;
+  top: 0;
+  left: 90px;
+  text-align: center;
+}
+.comment-Num{
+  margin: 5px 0 0 0;
+}
+
+
+/*/                正直何処のかわからん                /*/
 .disabled {
   opacity: 0.3;
   cursor: inherit;
@@ -132,28 +160,41 @@ ul li{
   writing-mode: horizontal-tb;
 }
 
-
+/*/                購入手続き                /*/
 .shopping{
-  width: 500px;
+  /* width: 500px; */
   margin: 30px 0 0 0;
-  text-align: center;
-  border: 1px solid #b6b5b5;
-  border-radius: 0 10px 0 0;
+  /* text-align: center; */
+  /* border: 1px solid #b6b5b5; */
+  /* border-radius: 0 10px 0 0; */
   position: relative;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all  0.3s ease;
-  background-color: red;
+  /* background-color: red; */
 }
-.shopping a{
+.shopping form{}
+.shopping form input{}
+.shopping form button{
+  width: 500px;
+  padding: 14px;
+  cursor: pointer;
+  border-radius: 0 10px 0 0;
+  font-size: 0.9rem;
+  color: #fff;
+  background-color: red;
+  border: none;
+  outline: none;
+}
+/* .shopping a{
   display: block;
   display: flex;
   justify-content: center;
   padding: 17px;
   text-decoration: none;
   color: #fff;
-}
+} */
 .shopping:hover{
 /*  background-color: #F2F2F2;*/
 opacity: 0.5;
@@ -176,7 +217,6 @@ opacity: 0.5;
   border-radius: 0.1em;
   position: relative;
 }
-
 .dli-plus::before{
   content: '';
   position: absolute;
@@ -192,6 +232,37 @@ opacity: 0.5;
   font-size: 0.9rem;
 }
 
+
+/*/                商品説明                /*/
+div#product-explain{
+  margin: 30px 0 0 0;
+}
+div#product-explain h6{
+  margin: 0 0 30px 0;
+  font-size: 1.1rem;
+  font-weight: normal;
+  position: relative;
+}
+div#product-explain h6::after{
+  content: "";
+  display: block;
+  width: 500px;
+  height: 0px;
+  position: absolute;
+  bottom: -15px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+div#product-explain p{
+  line-height: 23px;
+  font-size: 0.9rem;
+}
+.aaa{
+  margin: 10px 0 0 0;
+}
+
+
+/*/                商品状態                /*/
 div#product-info{
   margin: 30px 0 0 0;
 }
@@ -211,6 +282,7 @@ div#product-info h3{
 .info02{}
 
 
+/*/                出品者情報                /*/
 div#sell{
   margin: 30px 0 0 0;
 }
@@ -273,7 +345,7 @@ div#product-info h3::after{
   position: relative;
   padding: 0 1px;
   color: #ccc;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 25px;
 }
 .rate-form label:hover {
