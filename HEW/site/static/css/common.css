@@ -352,6 +352,7 @@ footer p{
 .wrap_product div.product{
   width: 20%;
   padding: 10px 13px 20px 13px;
+  margin: 0 0 10px 0;
 }
 .wrap_product div.product a{
   text-decoration: none;
@@ -361,16 +362,20 @@ footer p{
 }
 .wrap_product .product a figure{
   overflow: hidden;
+  background-color: #a9a9a9;/*  商品余白の色   */
+  text-align: center;
 }
 .wrap_product .product a figure img{
-  max-width: 100%;
+  max-width: 214px;
+  height: 214px;
+  object-fit: scale-down;
 }
 .wrap_product .product a p{
-  margin: 0 0 9px 0;
-  font-size: 0.8rem;
+  margin: 8px 0 4px 0;
+  font-size: 0.85rem;
   line-height: 20px;
 
-  /*                 文字数制限 2行まで                 */
+  /*            文字数制限 2行まで            */
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -379,4 +384,11 @@ footer p{
 .wrap_product .product a span{
   font-size: 0.8rem;
 }
+/*               値段               */
+.price-box{
+  display: flex;
+  font-size: 0.9rem;
+}
+.mark{}
+.price{}
 
