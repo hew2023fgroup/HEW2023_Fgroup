@@ -189,7 +189,6 @@ def Sell():
         conn.close()
         return render_template('sell.html')
 
-# 仮の商品(簡易/詳細)ページ ----------------------------------------------------------
 # /index
 @app.route('/index')
 def IndexPage():
@@ -221,7 +220,7 @@ def ProductPage(sellid):
     
     # 商品情報のSELECT
     info = '''
-    SELECT SellIMG.SellIMG, Sell.Name, Sell.Price, Scategory.Name, Status.Name
+    SELECT SellIMG.SellIMG, Sell.Name, Sell.Price, Scategory.Name, Status.Name, Sell.Overview
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     JOIN Scategory ON Sell.SCategoryID = Scategory.ScategoryID
@@ -237,6 +236,7 @@ def ProductPage(sellid):
     price = products[0][2]
     scategory = products[0][3]
     status = products[0][4]
+    overview = products[0][5]
     
     # 出品者のAccountIDのSELECT
     acc = '''
@@ -280,12 +280,11 @@ def ProductPage(sellid):
     cursor.close()
     conn.close()
     return render_template(
-        "product.html",imgs=imgs, name=name, 
+        "product.html",imgs=imgs, name=name, overview=overview,
         price=price, sellid=sellid, scategory=scategory, 
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
         error=request.args.get('error')
         )
-# --------------------------- 削除予定 ---------------------------------
     
 # /buy
 @app.route('/buy', methods=['POST'])
