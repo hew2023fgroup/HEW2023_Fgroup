@@ -161,6 +161,16 @@ def Sell():
         '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
         cursor.execute(sell_sql)
         sellid = cursor.lastrowid
+        
+        # 下書き
+        if sell_action == 'draft':
+            
+            Draft_Update = '''
+            UPDATE Sell
+            SET Draft = 0
+            WHERE SellID = {0};
+            '''.format(sellid)
+            cursor.execute(Draft_Update)
             
         print('''
               「出品完了」
