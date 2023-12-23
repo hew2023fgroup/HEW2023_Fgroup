@@ -431,11 +431,22 @@ def PayPage():
             conn.commit()
             cursor.close()
             conn.close()
-            return redirect(url_for('IndexPage'))
+            return redirect(url_for('BuyCompPage', BuyID=BuyID))
         
         else:
             print('!!! 残高不足 !!!')
             return redirect(url_for('ProductPage',sellid=SellID))
+
+# /buycomp/<BuyID>
+@app.route('/buycomp/<BuyID>')
+def BuyCompPage(BuyID):
+
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+        
+    return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST']) # 小濱俊史
