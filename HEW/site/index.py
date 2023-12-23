@@ -174,7 +174,7 @@ def Sell():
             
         print('''
               「出品完了」
-              SellID:{0}s
+              SellID:{0}
               Name:{1}
               サムネイル:{2}
               サブ:{3}
