@@ -20,6 +20,70 @@
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
 
+    <style>
+      label.star {
+        font-size: 2rem;
+        color: #ccc;
+        padding: 10px;
+      }
+      input.star[type="radio"] {
+        -webkit-appearance: none; /* Safari/Chrome */
+        -moz-appearance: none; /* Firefox */
+        appearance: none;
+        margin: -10px;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function changeColor() {
+          var st1 = document.getElementById('st1');
+          var st2 = document.getElementById('st2');
+          var st3 = document.getElementById('st3');
+          var st4 = document.getElementById('st4');
+          var st5 = document.getElementById('st5');
+  
+          if (st1.checked) {
+            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st2"]').style.color = '#ccc';
+            document.querySelector('label[for="st3"]').style.color = '#ccc';
+            document.querySelector('label[for="st4"]').style.color = '#ccc';
+            document.querySelector('label[for="st5"]').style.color = '#ccc';
+          } else if (st2.checked) {
+            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st3"]').style.color = '#ccc';
+            document.querySelector('label[for="st4"]').style.color = '#ccc';
+            document.querySelector('label[for="st5"]').style.color = '#ccc';
+          } else if (st3.checked) {
+            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st4"]').style.color = '#ccc';
+            document.querySelector('label[for="st5"]').style.color = '#ccc';
+          } else if (st4.checked) {
+            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st4"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st5"]').style.color = '#ccc';
+          } else if (st5.checked) {
+            document.querySelector('label[for="st1"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st2"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st3"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st4"]').style.color = '#ffcc00';
+            document.querySelector('label[for="st5"]').style.color = '#ffcc00';
+          }
+        }
+
+        document.getElementById('st1').addEventListener('click', changeColor);
+        document.getElementById('st2').addEventListener('click', changeColor);
+        document.getElementById('st3').addEventListener('click', changeColor);
+        document.getElementById('st4').addEventListener('click', changeColor);
+        document.getElementById('st5').addEventListener('click', changeColor);
+      });
+    </script>
+
   </head>
 
   <body>
@@ -117,11 +181,27 @@
         </div>
       </div>
 
-      <div class="next">
+      <!-- 評価用ココ追加 -->
+      <form action="/evaluate" method="post">
+        <div class="rate-form">
+          <input type="hidden" name="buyid" value="{{ buyid }}">
+          <label for="st1" class="star"><input type="radio" class="star" name="rate" id="st1" value="1" onclick="changeColor()">★</label>
+          <label for="st2" class="star"><input type="radio" class="star" name="rate" id="st2" value="2" onclick="changeColor()">★</label>
+          <label for="st3" class="star"><input type="radio" class="star" name="rate" id="st3" value="3" onclick="changeColor()">★</label>
+          <label for="st4" class="star"><input type="radio" class="star" name="rate" id="st4" value="4" onclick="changeColor()">★</label>
+          <label for="st5" class="star"><input type="radio" class="star" name="rate" id="st5" value="5" onclick="changeColor()">★</label>
+        </div>
+        <!-- ここにCSSを付けてほしい、前のやつは下にあるliタグの次へボタン -->
+        <button type="submit">次へ</button>
+      </form>
+
+      <!-- ここを非表示 -->
+      <!-- <div class="next">
         <ul>
+          
           <li><a href="{{ url_for('IndexPage') }}" class="btn05">次へ</a></li>
         </ul>
-      </div>
+      </div> -->
 
 
     </main>

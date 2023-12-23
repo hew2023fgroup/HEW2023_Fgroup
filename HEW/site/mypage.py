@@ -42,39 +42,6 @@ def TrendPage():
     return render_template("trend.html")
 # ------------------------------------------------------------
 
-# /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
-def register():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        
-        # 登録済みメールアドレスSELECT
-        sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
-        cursor.execute(sql)
-        existing_user = cursor.fetchone()
-
-        if existing_user:
-            MailMessage = "！！既に登録されたアドレスです！！"
-            return render_template("registration.html", MailMessage=MailMessage)
-
-        # メールアドレス未登録のINSERT
-        sql = '''
-        INSERT INTO Account 
-        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
-        '''.format(username, password, email)
-        cursor.execute(sql)
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template("login.html")
-   
 # /login/
 @app.route('/login/', methods=['POST']) #小濱俊史
 def login():
@@ -170,16 +137,14 @@ def Sell():
         
         # サムネイルファイルのINSERT
         mainimg_sql = '''
-        INSERT INTO 
-        SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
+        INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
         '''.format(mainimg_path, sellid)
         cursor.execute(mainimg_sql)
         
         # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
         for subimg in imgs:
             subimg_sql = '''
-            INSERT INTO 
-            SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
+            INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
             '''.format(subimg, sellid)
             cursor.execute(subimg_sql)
             
@@ -220,71 +185,18 @@ def ProductPage(sellid):
     cursor = conn.cursor()
     
     # 商品情報のSELECT
-    info = '''
-    SELECT SellIMG.SellIMG, Sell.Name, Sell.Price, Scategory.Name, Status.Name
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    JOIN Scategory ON Sell.SCategoryID = Scategory.ScategoryID
-    JOIN Status ON Sell.StatusID = Status.StatusID
-    WHERE Sell.SellID = {0};
+    sql = '''
+    SELECT Name, Price FROM Sell WHERE SellID = '{0}';
     '''.format(sellid)
-    cursor.execute(info)
-    products = cursor.fetchall()
-    
-    # 関数割り当て
-    imgs = [img[0] for img in products] 
-    name = products[0][1]
-    price = products[0][2]
-    scategory = products[0][3]
-    status = products[0][4]
-    
-    # 出品者のAccountIDのSELECT
-    acc = '''
-    SELECT Sell.AccountID, Account.UserName 
-    FROM Sell 
-    JOIN Account ON Sell.AccountID = Account.AccountID
-    WHERE SellID = {0};
-    '''.format(sellid)
-    cursor.execute(acc)
-    sell_acc = cursor.fetchone()
-    
-    # 平均評価値のSELECTx2
-    evalscore_sql = '''
-    SELECT AVG(Review) 
-    FROM Buy 
-    WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
-    '''.format(sell_acc[0])
-    cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
-    
-    print('''
-          {0}さんの
-          評価値の平均は({1})です。
-          '''.format(sell_acc[1], avg_evalate))
-    
-    # 出品取得のSELECT
-    sells = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01;
-    '''
-    cursor.execute(sells)
-    sells = cursor.fetchall()
+    cursor.execute(sql)
+    product = cursor.fetchone()
+    print("アクセス中の商品 ->",product[0])
     
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template(
-        "product.html",imgs=imgs, name=name, 
-        price=price, sellid=sellid, scategory=scategory, 
-        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=request.args.get('error')
-        )
+    return render_template("product.html", sellid=sellid, product=product, error=request.args.get('error'))
 # --------------------------- 削除予定 ---------------------------------
     
 
@@ -380,7 +292,7 @@ def Evaluate():
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('IndexPage'))
+        return redirect(url_for('PayPage',buyid=buyid, eval=eval))
 
 # /pay
 @app.route('/pay/<int:buyid>')  # 小濱俊史
@@ -390,8 +302,8 @@ def PayPage(buyid):
     
     # 決済情報SELECT
     pay_sql = '''
-    SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, 
-    Account.UserName, Postage.Price FROM Buy
+    SELECT Buy.BuyID, Buy.DateTime, Sell.Name, Sell.Price, Account.UserName, Postage.Price
+    FROM Buy
     INNER JOIN Sell ON Buy.SellID = Sell.SellID
     INNER JOIN Account ON Sell.AccountID = Account.AccountID
     INNER JOIN Postage ON Sell.PostageID = Postage.PostageID
@@ -435,9 +347,7 @@ def PayPage(buyid):
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template(
-        "pay_comp.html", buy=buy, delidate=delidate, buyid=buyid, eval=eval
-        )
+    return render_template("pay_comp.html", buy=buy, delidate=delidate, buyid=buyid, eval=eval)
     
 # /mypage
 @app.route('/mypage')   # 小濱俊史
@@ -458,8 +368,6 @@ def MyPage():
     '''.format(AccountID)
     cursor.execute(evalscore_sql)
     avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
     
     print('''
           評価値の平均は({0})です。
@@ -489,10 +397,7 @@ def MyPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template(
-        "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate
-        )
+    return render_template("mypage.html", proceed=proceed, money=money, UserName=UserName, avg_evalate=avg_evalate)
 
 # /charge
 @app.route('/charge', methods=['POST'])   # 小濱俊史
