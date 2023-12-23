@@ -137,6 +137,8 @@ def Sell():
         status = request.form['status']
         price = request.form['price']
         
+        sell_action = request.form['sell_action']
+
         # 保存先パス
         upload_path = "static/images/sell/"
         
@@ -159,22 +161,20 @@ def Sell():
         '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
         cursor.execute(sell_sql)
         sellid = cursor.lastrowid
-        
+            
         print('''
               「出品完了」
-              SellID:{0}
+              SellID:{0}s
               Name:{1}
               サムネイル:{2}
               サブ:{3}
               '''.format(sellid,selltit,mainimg_path,imgs))
-        
         # サムネイルファイルのINSERT
         mainimg_sql = '''
         INSERT INTO 
         SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
         '''.format(mainimg_path, sellid)
         cursor.execute(mainimg_sql)
-        
         # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
         for subimg in imgs:
             subimg_sql = '''
@@ -182,7 +182,6 @@ def Sell():
             SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
             '''.format(subimg, sellid)
             cursor.execute(subimg_sql)
-            
         # CLOSE
         conn.commit()
         cursor.close()
@@ -201,7 +200,7 @@ def IndexPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01;
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01;
     '''
     cursor.execute(sql)
     sells = cursor.fetchall()
