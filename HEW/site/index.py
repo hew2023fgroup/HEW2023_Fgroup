@@ -583,6 +583,22 @@ def ChargePage():
         cursor.close()
         conn.close()
         return  redirect(url_for('MyPage'))
+    
+# /draft_list
+@app.route('/draft_list')   # 小濱俊史
+def DraftPage():
+    return render_template('draft_list.html')
+
+# /sell_list
+@app.route('/sell_list')   # 小濱俊史
+def SellListPage():
+    return render_template('sell_list.html')
+
+# /buy_list
+@app.route('/buy_list')   # 小濱俊史
+def BuyListPage():
+    return render_template('buy_list.html')
+
 
 # 実行
 if __name__ == ("__main__"):
