@@ -205,6 +205,7 @@ def IndexPage():
     cursor = conn.cursor()
     
     # 出品取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きではない。
     sql = '''
     SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
     FROM Sell
@@ -274,12 +275,13 @@ def ProductPage(sellid):
           '''.format(sell_acc[1], avg_evalate))
     
     # 出品取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きではない。
     sells = '''
     SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01;
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01;
     '''
     cursor.execute(sells)
     sells = cursor.fetchall()
