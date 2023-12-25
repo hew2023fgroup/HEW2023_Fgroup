@@ -66,101 +66,101 @@
       <form action="/sell/" method="POST" enctype="multipart/form-data">
 
         <div class="sell-images">
-          <p class="title">出品画像</p>
-          <!-- id,name="sellimg-main/sub"に変更 -->
-          <p>サムネイル(単数)</p>
-          <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required>
+            <p class="title">出品画像</p>
+            <!-- id,name="sellimg-main/sub"に変更 -->
+            <p>サムネイル(単数)</p>
+            <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required>
 
-          <p>その他(複数)</p>
-          <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple required>
+            <p>その他(複数)</p>
+            <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple required>
         </div>
   
         <div class="detail">
-          <h2>商品の詳細</h2>
-          <p class="title">カテゴリー</p>
-          <label class="selectbox">
-            <select name="scategoryid" id="scategoryid" required>
-              <!-- value=""の追加 -->
-              <!--  value="" disabled selectedの追加 -->
-              <option value="" disabled selected>選択してください</option>
-              <option value="1">レディース</option>
-              <option value="2">メンズ</option>
-              <option value="3">ベビー・キッズ</option>
-              <option value="4">インテリア・住まい・小物</option>
-              <option value="5">本・音楽・ゲーム</option>
-              <option value="6">おもちゃ・ホビー・グッズ</option>
-              <option value="7">コスメ・香水・美容</option>
-              <option value="8">家電・スマホ・カメラ</option>
-              <option value="9">スポーツ・レジャー</option>
-              <option value="10">ハンドメイド</option>
-              <option value="11">チケット</option>
-              <option value="12">その他</option>
-            </select>
-          </label>
-      
-          <p class="title">商品の状態</p>
-          <label class="selectbox">
-            <select name="status" id="status" required>
-              <!-- value=""の追加 -->
-              <!--  value="" disabled selectedの追加 -->
-              <option value="" disabled selected>選択してください</option>
-              <option value="1">新品、未使用</option>
-              <option value="2">未使用に近い</option>
-              <option value="3">目立った傷汚れなし</option>
-              <option value="4">やや傷や汚れあり</option>
-              <option value="5">傷や汚れあり</option>
-              <option value="6">全体的に状態が悪い</option>
-            </select>
-          </label>
+            <h2>商品の詳細</h2>
+            <p class="title">カテゴリー</p>
+            <label class="selectbox">
+              <select name="scategoryid" id="scategoryid" required>
+                <!-- value=""の追加 -->
+                <!--  value="" disabled selectedの追加 -->
+                <option value="" disabled selected>選択してください</option>
+                <option value="1">レディース</option>
+                <option value="2">メンズ</option>
+                <option value="3">ベビー・キッズ</option>
+                <option value="4">インテリア・住まい・小物</option>
+                <option value="5">本・音楽・ゲーム</option>
+                <option value="6">おもちゃ・ホビー・グッズ</option>
+                <option value="7">コスメ・香水・美容</option>
+                <option value="8">家電・スマホ・カメラ</option>
+                <option value="9">スポーツ・レジャー</option>
+                <option value="10">ハンドメイド</option>
+                <option value="11">チケット</option>
+                <option value="12">その他</option>
+              </select>
+            </label>
+        
+            <p class="title">商品の状態</p>
+            <label class="selectbox">
+              <select name="status" id="status" required>
+                <!-- value=""の追加 -->
+                <!--  value="" disabled selectedの追加 -->
+                <option value="" disabled selected>選択してください</option>
+                <option value="1">新品、未使用</option>
+                <option value="2">未使用に近い</option>
+                <option value="3">目立った傷汚れなし</option>
+                <option value="4">やや傷や汚れあり</option>
+                <option value="5">傷や汚れあり</option>
+                <option value="6">全体的に状態が悪い</option>
+              </select>
+            </label>
         </div>
   
         <div class="intro">
-          <h3>商品名と説明</h3>
-          <p class="title">商品名</p>
-          <!-- name="selltitle" id="selltitile" -->
-          <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" required>
-          <p class="title">商品の説明</p>
-          <!-- <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required> -->
-          <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" required></textarea>
+            <h3>商品名と説明</h3>
+            <p class="title">商品名</p>
+            <!-- name="selltitle" id="selltitile" -->
+            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" required>
+            <p class="title">商品の説明</p>
+            <!-- <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required> -->
+            <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" required></textarea>
         </div>
   
         <div class="delivery">
-          <h4>送料について</h4>
-          <p class="title">出品者負担 出品する商品の重さ</p>
-          <label class="selectbox">
-            <select name="postage" id="postage" required>
-              <!--  value="" disabled selectedの追加 -->
-              <option value="" disabled selected>選択してください</option>
-              <!-- 数字を全角から修正 -->
-              <!-- value=""の追加 -->
-              <option value="1">小(~ 3kg未満)</option>
-              <option value="2">中(3kg以上 ~ 10kg未満)</option>
-              <option value="3">大(10kg以上 ~)</option>
-            </select>
-          </label>
+            <h4>送料について</h4>
+            <p class="title">出品者負担 出品する商品の重さ</p>
+            <label class="selectbox">
+              <select name="postage" id="postage" required>
+                <!--  value="" disabled selectedの追加 -->
+                <option value="" disabled selected>選択してください</option>
+                <!-- 数字を全角から修正 -->
+                <!-- value=""の追加 -->
+                <option value="1">小(~ 3kg未満)</option>
+                <option value="2">中(3kg以上 ~ 10kg未満)</option>
+                <option value="3">大(10kg以上 ~)</option>
+              </select>
+            </label>
         </div>
   
         <div class="price">
-          <h5>販売価格</h5>
-          <p class="title">販売価格(¥300〜9,999,999)</p>
-          <!-- inputタグへ変更、cssが崩れた -->
-          <input type="text" name="price" id="price" class="textbox-003" placeholder="0" required>
+            <h5>販売価格</h5>
+            <p class="title">販売価格(¥300〜9,999,999)</p>
+            <!-- inputタグへ変更、cssが崩れた -->
+            <input type="text" name="price" id="price" class="textbox-003" placeholder="0" required>
         </div>
-
         <div class="sell">
-          <ul>
-            <!-- inputタグへ変更 cssが未設定 -->
+
+          <!-- <ul>
             <li><input class="btn05" type="submit" value="出品する"></li>
-            <!-- <li><a class="btn05" href="#">出品する</a></li> -->
+            <li><input class="btn06" type="submit" value="下書きに保存する"></li>
+          </ul> -->
 
-            <!-- inputタグへ変更 cssが未設定 -->
-            <li><input class="btn06" type="button" value="下書きに保存する"></li>
-            <!-- <li><a class="btn06" href="#">下書きに保存する</a></li> -->
-          </ul>
+          <!-- ごめんなさい、ボタンタグへ戻します -->
+          <button type="submit" name="sell_action" class="btn05" value="sell">出品する</button>
+          <button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button>
+
         </div>
-
+            
       </form>
-
+          
     </main>
 
 
