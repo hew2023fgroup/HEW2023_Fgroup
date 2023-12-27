@@ -587,12 +587,60 @@ def ChargePage():
 # /draft_list
 @app.route('/draft_list')   # 小濱俊史
 def DraftPage():
-    return render_template('draft_list.html')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    # 下書き取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きである、商品を出したのが自分。
+    Draft_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Draft_Select)
+    Drafts = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('draft_list.html',Drafts=Drafts)
 
 # /sell_list
 @app.route('/sell_list')   # 小濱俊史
 def SellListPage():
-    return render_template('sell_list.html')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    # 下書き取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きでない、商品を出したのが自分。
+    Sell_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Sell_Select)
+    Sells = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('sell_list.html',Sells=Sells)
 
 # /buy_list
 @app.route('/buy_list')   # 小濱俊史
