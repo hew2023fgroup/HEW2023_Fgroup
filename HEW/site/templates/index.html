@@ -25,7 +25,7 @@
     <div id="wrap">
 
       <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
+        <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
       </figure>
 
       <form action="#" class="search-form-003">
@@ -37,17 +37,14 @@
 
       <nav>
         <ul>
-          <!-- url_forへの修正 -->
           <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
           <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
-
           <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
 
       <div id="sub_nav">
         <ul>
-          <!-- url_forへの修正 -->
           <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
           <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
