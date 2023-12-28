@@ -15,7 +15,7 @@
 <body>
     <div id="wrap">
         <figure>
-          <a href="index.html"><img src="../static/images/logo.png"></a>
+            <a href="{{ url_for('IndexPage') }}"><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
         </figure>
     </div>
 
@@ -84,11 +84,11 @@
 
         <nav>
             <ul>
-                <li><a href="index.html" class="nav">ホーム</a></li>
-                <li><a href="managetop.html" class="nav">トップ</a></li>
-                <li><a href="managepage.html" class="nav">ページ</a></li>
-                <li><a href="manageuser.html" class="nav">ユーザー</a></li>
-                <li><a href="managedb.html" class="nav">データベース</a></li>
+                <li><a href="{{ url_for('IndexPage') }}" class="nav">ホーム</a></li>
+                <li><a href="{{ url_for('ManagetopPage') }}" class="nav">トップ</a></li>
+                <li><a href="{{ url_for('ManagePage') }}" class="nav">ページ</a></li>
+                <li><a href="{{ url_for('ManageuserPage') }}" class="nav">ユーザー</a></li>
+                <li><a href="{{ url_for('ManagedbPage') }}" class="nav">データベース</a></li>
             </ul>
         </nav>
     </div>
