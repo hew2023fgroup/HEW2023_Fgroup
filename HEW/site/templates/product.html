@@ -92,29 +92,19 @@
 
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
-          <form action="/buy/" method="post">
-            <input type="hidden" name="sellid" value="{{ sellid }}">
+          <form action="/buy" method="post">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
             <button type="submit" >購入手続きへ</button>
             <div class="plus-box">
               <span class="dli-plus"></span>
             </div>
           </form>
-          <!-- <a href="pay_comp.html">
-            <p>購入手続きへ</p>
-            <div class="plus-box">
-               <span class="dli-plus"></span>
-            </div>
-          </a> -->
         </div>
 
 
         <div id="product-explain">
           <h6>商品説明</h6>
-          <p>素材にはサフィアーノレザーを採用。</p>
-          <p>シンプルながらハンモックのように大きくとったマチが特徴で、手に持った時に独特のシルエットがモダンでスタイリッシュな印象を与えます。</p>
-          <p>デイリーに使用していただけるデザインとコンパクトながら十分な容量を確保したサイズ感です。</p>
-
-          <p class="aaa">内ポケット：オープンポケット×１／ジップポケット×１</p>
+          <p>{{ overview }}</p>
         </div>
 
         <div id="product-info">
@@ -251,7 +241,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 <script src="{{ url_for('static', filename='js/product.js') }}"></script>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 <script src="{{ url_for('static', filename='js/polyline.js') }}"></script>
