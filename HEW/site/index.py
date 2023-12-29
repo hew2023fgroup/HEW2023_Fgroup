@@ -57,6 +57,15 @@ def register():
         sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
         cursor.execute(sql)
         existing_user = cursor.fetchone()
+        
+        # 登録済みユーザーネームSELECT
+        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        cursor.execute(UserName_Select)
+        existing_username = cursor.fetchone()
+        
+        if existing_username:
+            MailMessage = "！！既に登録されたユーザー名です！！"
+            return render_template("registration.html", MailMessage=MailMessage)
 
         if existing_user:
             MailMessage = "！！既に登録されたアドレスです！！"
