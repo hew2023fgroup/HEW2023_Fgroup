@@ -8,13 +8,12 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Varia Free</title>
+    <title>Sign Up</title>
 
-    <!--  render_templateが使用できないため、以下の二行変更 -->
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/registration.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
-
-    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
@@ -26,53 +25,66 @@
 
   <body>
 
+    <div id="wrap">
+      <div class="title">
+        <h1>Sign Up<span>新規会員登録</span></h1>
+        <section id="Login">
+          <form class="registration" method="post" action="/register/">
 
-    <header>
-      <figure>
-        <img src="../static/images/logo.png">
-      </figure>
-    </header>
+
+            <div class="left">
+              <div class="right-con">
+                <div class="right-detail">
+                  <h3>ご登録済みの方</h3>
+                  <p>お買い物にはログインが必要です</p>
+                  <div class="next-btn">
+                    <a href="{{ url_for('LoginPage') }}">ログインする</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
-    <main id="registration-wrap">
 
-      <!-- method="post" action="/register/" の追加 -->
-      <form class="registration" name="RegistrationForm" method="post" action="/register/">
-        <h1>新規登録</h1>
+            <div class="right">
+              <div class="left-con">
+                <div class="left-detail">
+                  <!-- <h2>会員登録がお済みのお客様</h2> -->
+                  <div class="email-box">
+                    <p>ユーザーネーム</p>
+                    <input type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい">
+                  </div>
 
-        <div class="username-box">
-          <p>ユーザーネーム</p>
-          <input type="text" name="username" id="username" required="required">
-        </div>
+                  <div class="email-box">
+                    <p>メールアドレス</p>
+                    <input type="text" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
+                  </div>
 
-        <div class="email-box">
-          <p>メールアドレス</p>
-          <input type="email" name="email" id="email" required="required">
-        </div>
+                  <div class="password-box">
+                    <p>パスワード</p>
+                    <input type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい">
+                  </div>
 
-        <div class="password-box">
-          <p>パスワード</p>
-          <!-- passeord <- password -->
-          <input type="password" name="password" id="password" required="required">
-        </div>
+                  <!-- エラーメッセージの追加 -->
+                  {% if MailMessage %}
+                  <!-- スタイルタグでCSS付けてるから変更してもOK -->
+                  <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
+                  {% endif %}
 
-        <div class="new">
-          <!-- {{ url_for('LoginPage') }} の追加 -->
-          <a href="{{ url_for('LoginPage') }}">ログインはこちら ></a>
-        </div>
-        
-        <!-- エラーメッセージの追加 -->
-        {% if MailMessage %}
-          <!-- スタイルタグでCSS付けてるから変更してもOK -->
-          <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
-        {% endif %}
+                  <div class="btn-box">
+                    <input type="submit" value="登録する" id="btn">
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="btn-box">
-          <input type="submit" value="完了" id="btn" onclick="confirmRegistration();">
-        </div>
-      </form>
 
-    </main>
+          </form>
+        </section>
+      </div>
+    </div>
+
+
 
   </body>
 
