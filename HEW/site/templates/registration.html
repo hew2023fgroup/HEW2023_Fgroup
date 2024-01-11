@@ -13,6 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
 
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
 
@@ -27,7 +29,7 @@
       <div class="title">
         <h1>Sign Up<span>新規会員登録</span></h1>
         <section id="Login">
-          <form class="registration" method="post" action="/register/">
+          <form class="registration" name="RegistrationForm" method="post" action="/register/">
 
 
             <div class="left">
@@ -55,7 +57,7 @@
 
                   <div class="email-box">
                     <p>メールアドレス</p>
-                    <input type="text" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
+                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
                   </div>
 
                   <div class="password-box">
@@ -70,7 +72,7 @@
                   {% endif %}
 
                   <div class="btn-box">
-                    <input type="submit" value="登録する" id="btn">
+                    <input type="submit" value="登録する" id="btn" onclick="confirmRegistration();">
                   </div>
                 </div>
               </div>
