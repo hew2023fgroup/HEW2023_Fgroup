@@ -21,7 +21,22 @@
 
     <!-- jquery実行ファイル -->
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    
+    <script>
+      function upDisp(){
+        var username = document.querySelector('[name="username"]').value;
+        var email = document.querySelector('[name="email"]').value;
+        var password = document.querySelector('[name="password"]').value;
+
+        document.getElementById('disp_usename').innerText = username;
+        document.getElementById('disp_email').innerText = email;
+        document.getElementById('disp_password').innerText = password;
+    
+        document.getElementById('hide_usename').value = username;
+        document.getElementById('hide_email').value = email;
+        document.getElementById('hide_password').value = password;
+      }
+    </script>
 
   </head>
 
@@ -31,7 +46,7 @@
       <div class="title">
         <h1>Sign Up<span>新規会員登録</span></h1>
         <section id="Login">
-          <form class="registration" name="RegistrationForm" method="post" action="/register/">
+          <form class="registration" name="RegistrationForm" method="post" action="/register/" onsubmit="event.preventDefault();">
 
 
             <div class="left">
@@ -54,17 +69,17 @@
                   <!-- <h2>会員登録がお済みのお客様</h2> -->
                   <div class="email-box">
                     <p>ユーザーネーム</p>
-                    <input type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい">
+                    <input type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい" oninput="upDisp()">
                   </div>
 
                   <div class="email-box">
                     <p>メールアドレス</p>
-                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
+                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい" oninput="upDisp()">
                   </div>
 
                   <div class="password-box">
                     <p>パスワード</p>
-                    <input type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい">
+                    <input type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい" oninput="upDisp()">
                   </div>
 
                   <!-- エラーメッセージの追加 -->
@@ -77,7 +92,7 @@
                     <input type="submit" value="登録する" id="btn" onclick="confirmRegistration();">
                   </div> -->
                   <div class="btn-box">
-                    <button id="openModal">内容を確認する</button>
+                    <button type="button" id="openModal">内容を確認する</button>
                   </div>
                 </div>
               </div>
@@ -95,30 +110,36 @@
     <div class="modalWrapper">
       <div class="modalContents">
         <h2>登録内容確認</h2>
-        <form>
+        <form action="/register/" method="post">
           <table>
 
             <tr>
               <th>ユーザーネーム</th>
-              <td class="content01" id="disp_username"></td>
+              <td class="content01" id="disp_usename"></td>
+              <input type="hidden" id="hide_usename" name="username" required>
+              
             </tr>
             <tr>
               <th>メールアドレス</th>
               <td class="content02" id="disp_email"></td>
+              <input type="hidden" id="hide_email" name="email" required>
+              
             </tr>
             <tr>
               <th>パスワード</th>
               <td class="content03" id="disp_password"></td>
+              <input type="hidden" id="hide_password" name="password" required>
             </tr>
 
           </table>
+          
+          <div class="btn-confirm">
+            <!-- <input type="submit" value="戻る" id="btn"> -->
+            <a href="{{ url_for('RegistrationPage') }}">戻る</a>
+            <input type="submit" value="登録する" id="btn">
+          </div>
+          
         </form>
-
-        <div class="btn-confirm">
-          <!-- <input type="submit" value="戻る" id="btn"> -->
-          <a href="{{ url_for('RegistrationPage') }}">戻る</a>
-          <input type="submit" value="登録する" id="btn">
-        </div>
 
       </div>
       <div id="closeModal" class="closeModal">

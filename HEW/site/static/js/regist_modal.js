@@ -1,18 +1,23 @@
 $(function () {
+  $('#openModal').click(function(){
+      // フォーム内の表示内容をモーダルウィンドウ内にコピー
+      $('#modal_disp_usename').text($('#disp_usename').text());
+      $('#modal_disp_email').text($('#disp_email').text());
+      $('#modal_disp_password').text($('#disp_password').text());
 
-    // フォームの入力値
-    var username = document.getElementById('username').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    
-    document.getElementById('disp_username').innerHTML = username;
-    document.getElementById('disp_email').innerHTML = email;
-    document.getElementById('disp_password').innerHTML = passwword;
-
-    $('#openModal').click(function(){
-        $('#modalArea').fadeIn();
-    });
-    $('#closeModal , #modalBg').click(function(){
-      $('#modalArea').fadeOut();
-    });
+      $('#modalArea').fadeIn();
   });
+
+  $('#btn').click(function(event){
+      event.preventDefault(); // デフォルトのサブミット動作をキャンセル
+
+      // 他のサブミットボタンの処理...
+
+      // モーダルウィンドウを閉じる
+      $('#modalArea').fadeOut();
+  });
+  
+  $('#closeModal , #modalBg').click(function(){
+      $('#modalArea').fadeOut();
+  });
+});
