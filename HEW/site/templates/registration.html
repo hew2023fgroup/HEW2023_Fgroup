@@ -12,14 +12,15 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration_modal.css') }}">
 
     <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 
     <!-- JQuery本体 CDN -->
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
-    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script type="text/javascript" src="js/common.js"></script>
 
   </head>
 
@@ -71,8 +72,11 @@
                   <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
                   {% endif %}
 
-                  <div class="btn-box">
+                  <!-- <div class="btn-box">
                     <input type="submit" value="登録する" id="btn" onclick="confirmRegistration();">
+                  </div> -->
+                  <div class="btn-box">
+                    <button id="openModal">内容を確認する</button>
                   </div>
                 </div>
               </div>
@@ -84,8 +88,46 @@
       </div>
     </div>
 
+  <!-- モーダルエリアここから -->
+  <div id="modalArea" class="modalArea">
+    <div id="modalBg" class="modalBg"></div>
+    <div class="modalWrapper">
+      <div class="modalContents">
+        <h2>登録内容確認</h2>
+        <form>
+          <table>
 
+            <tr>
+              <th>ユーザーネーム</th>
+              <td class="content01">hal nagoya</td>
+            </tr>
+            <tr>
+              <th>メールアドレス</th>
+              <td class="content02">sample@gmail</td>
+            </tr>
+            <tr>
+              <th>パスワード</th>
+              <td class="content03">P@ssw0rd</td>
+            </tr>
+
+          </table>
+        </form>
+
+        <div class="btn-confirm">
+          <!-- <input type="submit" value="戻る" id="btn"> -->
+          <a href="{{ url_for('RegistrationPage') }}">戻る</a>
+          <input type="submit" value="登録する" id="btn">
+        </div>
+
+      </div>
+      <div id="closeModal" class="closeModal">
+        ×
+      </div>
+    </div>
+  </div>
+  <!-- モーダルエリアここまで -->
 
   </body>
+  <script src="{{ url_for('static', filename='js/regist_modal.js') }}"></script>
 
 </html>
