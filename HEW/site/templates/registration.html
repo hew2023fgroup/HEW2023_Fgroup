@@ -14,13 +14,14 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration_modal.css') }}">
 
-    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/register.js') }}"></script> -->
 
     <!-- JQuery本体 CDN -->
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
-    <script type="text/javascript" src="js/common.js"></script>
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <!-- <script type="text/javascript" src="js/common.js"></script> -->
 
   </head>
 
@@ -99,15 +100,15 @@
 
             <tr>
               <th>ユーザーネーム</th>
-              <td class="content01">hal nagoya</td>
+              <td class="content01" id="disp_username"></td>
             </tr>
             <tr>
               <th>メールアドレス</th>
-              <td class="content02">sample@gmail</td>
+              <td class="content02" id="disp_email"></td>
             </tr>
             <tr>
               <th>パスワード</th>
-              <td class="content03">P@ssw0rd</td>
+              <td class="content03" id="disp_password"></td>
             </tr>
 
           </table>
