@@ -14,29 +14,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration_modal.css') }}">
 
-    <!-- <script src="{{ url_for('static', filename='js/register.js') }}"></script> -->
-
     <!-- JQuery本体 CDN -->
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
-    
-    <script>
-      function upDisp(){
-        var username = document.querySelector('[name="username"]').value;
-        var email = document.querySelector('[name="email"]').value;
-        var password = document.querySelector('[name="password"]').value;
 
-        document.getElementById('disp_usename').innerText = username;
-        document.getElementById('disp_email').innerText = email;
-        document.getElementById('disp_password').innerText = password;
-    
-        document.getElementById('hide_usename').value = username;
-        document.getElementById('hide_email').value = email;
-        document.getElementById('hide_password').value = password;
-      }
-    </script>
+    {% if show_modal %}
+    <script src="{{ url_for('static', filename='js/regist_modal.js') }}"></script>
+    {% endif %}
 
   </head>
 
@@ -46,7 +32,7 @@
       <div class="title">
         <h1>Sign Up<span>新規会員登録</span></h1>
         <section id="Login">
-          <form class="registration" name="RegistrationForm" method="post" action="/register/" onsubmit="event.preventDefault();">
+          <form class="registration" name="input_register" method="post" action="/input">
 
 
             <div class="left">
@@ -69,30 +55,21 @@
                   <!-- <h2>会員登録がお済みのお客様</h2> -->
                   <div class="email-box">
                     <p>ユーザーネーム</p>
-                    <input type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい" oninput="upDisp()">
+                    <input type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい">
                   </div>
 
                   <div class="email-box">
                     <p>メールアドレス</p>
-                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい" oninput="upDisp()">
+                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
                   </div>
 
                   <div class="password-box">
                     <p>パスワード</p>
-                    <input type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい" oninput="upDisp()">
+                    <input type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい">
                   </div>
 
-                  <!-- エラーメッセージの追加 -->
-                  {% if MailMessage %}
-                  <!-- スタイルタグでCSS付けてるから変更してもOK -->
-                  <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
-                  {% endif %}
-
-                  <!-- <div class="btn-box">
-                    <input type="submit" value="登録する" id="btn" onclick="confirmRegistration();">
-                  </div> -->
                   <div class="btn-box">
-                    <button type="button" id="openModal">内容を確認する</button>
+                    <button type="submit" id="openModal">内容を確認する</button>
                   </div>
                 </div>
               </div>
@@ -111,32 +88,52 @@
       <div class="modalContents">
         <h2>登録内容確認</h2>
         <form action="/register/" method="post">
-          <table>
 
+          {% if input_data %}
+          <table>
             <tr>
               <th>ユーザーネーム</th>
-              <td class="content01" id="disp_usename"></td>
-              <input type="hidden" id="hide_usename" name="username" required>
+              <td class="content01" id="disp_usename">{{ input_data[0] }}</td>
+              {% if checks[0] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden"name="username" value="{{ input_data[0] }}">
               
             </tr>
             <tr>
               <th>メールアドレス</th>
-              <td class="content02" id="disp_email"></td>
-              <input type="hidden" id="hide_email" name="email" required>
+              <td class="content02" id="disp_email">{{ input_data[1] }}</td>
+              {% if checks[1] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden" name="email" value="{{ input_data[1] }}">
               
             </tr>
             <tr>
               <th>パスワード</th>
-              <td class="content03" id="disp_password"></td>
-              <input type="hidden" id="hide_password" name="password" required>
+              <td class="content03" id="disp_password">{{ input_data[2] }}</td>
+              {% if checks[2] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden" name="password" value="{{ input_data[2] }}">
             </tr>
-
           </table>
+          {% endif %}
+
+          {% if error %}
+          <p style="margin-top: -20px ; font-size: 1.4rem; text-align: center; color:crimson">{{ error }}</p>
+          {% endif %}
           
           <div class="btn-confirm">
             <!-- <input type="submit" value="戻る" id="btn"> -->
             <a href="{{ url_for('RegistrationPage') }}">戻る</a>
-            <input type="submit" value="登録する" id="btn">
+            <input type="submit" value="登録する" id="btn" {% if error %} disabled {% endif %}>
           </div>
           
         </form>
@@ -150,6 +147,4 @@
   <!-- モーダルエリアここまで -->
 
   </body>
-  <script src="{{ url_for('static', filename='js/regist_modal.js') }}"></script>
-
 </html>

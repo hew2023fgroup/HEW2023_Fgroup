@@ -21,9 +21,6 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # RenderTemplate------------------------------------------------------------
-@app.route('/register')
-def RegistrationPage():
-    return render_template("registration.html")
 @app.route('/')
 def LoginPage():
     return render_template("login.html")
@@ -42,6 +39,61 @@ def TrendPage():
     return render_template("trend.html")
 # ------------------------------------------------------------
 
+# /register
+@app.route('/register')
+def RegistrationPage():
+    show_modal = False
+    return render_template("registration.html",show_modal=show_modal)
+
+# /input
+@app.route('/input', methods=['POST'])
+def InputRegister():
+    show_modal = True
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        input_data = [username, email, password]
+        
+        # 登録済みメールアドレスSELECT
+        sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
+        cursor.execute(sql)
+        existing_mail = cursor.fetchone()
+        
+        # 登録済みユーザーネームSELECT
+        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        cursor.execute(UserName_Select)
+        existing_username = cursor.fetchone()
+        
+        if existing_username and existing_mail:
+            check_name = False
+            check_mail = False
+            check_pass = True
+            error = "既に登録されています"
+        elif existing_username:
+            check_name = False
+            check_mail = True
+            check_pass = True
+            error = "既に登録されたユーザー名です"
+        elif existing_mail:
+            check_name = True
+            check_mail = False
+            check_pass = True
+            error = "既に登録されたアドレスです"
+        else:
+            error = None
+            check_name = True
+            check_mail = True
+            check_pass = True
+        
+        checks = [check_name, check_mail, check_pass]
+            
+    
+        return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
+
 # /register/
 @app.route('/register/',methods=['POST'])   #小濱俊史
 def register():
@@ -53,24 +105,6 @@ def register():
         email = request.form['email']
         password = request.form['password']
         
-        # 登録済みメールアドレスSELECT
-        sql = "SELECT * FROM Account WHERE MailAddress='{0}'".format(email)
-        cursor.execute(sql)
-        existing_user = cursor.fetchone()
-        
-        # 登録済みユーザーネームSELECT
-        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
-        cursor.execute(UserName_Select)
-        existing_username = cursor.fetchone()
-        
-        if existing_username:
-            MailMessage = "！！既に登録されたユーザー名です！！"
-            return render_template("registration.html", MailMessage=MailMessage)
-
-        if existing_user:
-            MailMessage = "！！既に登録されたアドレスです！！"
-            return render_template("registration.html", MailMessage=MailMessage)
-
         # メールアドレス未登録のINSERT
         sql = '''
         INSERT INTO Account 
