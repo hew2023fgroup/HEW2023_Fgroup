@@ -268,6 +268,7 @@ def IndexPage():
 # /product/<sellid>
 @app.route('/product/<sellid>')
 def ProductPage(sellid):
+    error = request.args.get('error', None)
     conn = conn_db()
     cursor = conn.cursor()
     
@@ -337,7 +338,7 @@ def ProductPage(sellid):
         "product.html",imgs=imgs, name=name, overview=overview,
         price=price, sellid=sellid, scategory=scategory, 
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=request.args.get('error')
+        error=error
         )
     
 # /buy
@@ -387,7 +388,7 @@ def Buy():
         return render_template(
             'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info[0], 
             UserName=UserName, Total_Price=Total_Price, SellID=SellID, After48H=After48H,
-            After24H=After24H
+            After24H=After24H,
             )
 
 # /pay
@@ -487,9 +488,10 @@ def PayPage():
             conn.close()
             return redirect(url_for('BuyCompPage', BuyID=BuyID))
         
+        # 所持金が足りない
         else:
-            print('!!! 残高不足 !!!')
-            return redirect(url_for('ProductPage',sellid=SellID))
+            error = True
+            return redirect(url_for('ProductPage',sellid=SellID, error=error))
 
 # /buycomp/<BuyID>
 @app.route('/buycomp/<BuyID>')

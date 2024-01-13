@@ -19,33 +19,33 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
   </head>
-
+  
   <body>
     <div id="wrap">
       <figure>
         <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
       </figure>
-
+      
       <form action="#" class="search-form-003">
         <label>
           <input type="text" placeholder="キーワードを入力">
         </label>
         <button type="submit" aria-label="検索"></button>
       </form>
-
+      
       <nav>
         <ul>
           <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
           <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
-
+          
           <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
         </ul>
       </nav>
-
+      
       <div id="sub_nav">
         <ul>
           <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
@@ -53,10 +53,10 @@
         </ul>
       </div>
     </div>
-
-
+    
+    
     <div class="slide_con">
-
+      
       <div class="slide_box">
         <ul class="slide">
           {% for img in imgs %}
@@ -69,27 +69,27 @@
           {% endfor %}
         </ul>
       </div>
-
+      
       <div class="intro">
         <p class="intro_name">{{ name }}</p>
         <span>¥ {{ price }}</span>
         <div class="intro_detail_box">
           <p class="intro_detail">※こちらの価格には消費税が含まれています。</p>
         </div>
-
-
+        
+        
         <div class="love-comment-box">
           <div class="lovebox">
             <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="24" height="24"><!--?lit$820345334$--><path class="cls-1" d="M12,21a.68.68,0,0,1-.48-.19C10.68,20,3.3,13,2.34,10.41a5.4,5.4,0,0,1,.17-4.19,5.56,5.56,0,0,1,3.2-2.89A5.65,5.65,0,0,1,12,5.09a5.66,5.66,0,0,1,6.29-1.76,5.56,5.56,0,0,1,3.2,2.89,5.4,5.4,0,0,1,.17,4.19c-1,2.58-8.34,9.61-9.18,10.4A.68.68,0,0,1,12,21ZM7.61,4.4a4.18,4.18,0,0,0-1.43.25,4.13,4.13,0,0,0-2.4,2.16,4,4,0,0,0-.12,3.11c.66,1.81,5.86,7,8.34,9.41,2.48-2.38,7.68-7.6,8.34-9.41a4,4,0,0,0-.12-3.11,4.13,4.13,0,0,0-2.4-2.16h0a4.24,4.24,0,0,0-5.2,2,.73.73,0,0,1-1.24,0A4.24,4.24,0,0,0,7.61,4.4Z"></path></svg>
             <p class="love-Num">22</p>
           </div>
-
+          
           <div class="commentbox">
             <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon inherit" width="24" height="24"><!--?lit$820345334$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
             <p class="comment-Num">コメント</p>
           </div>
         </div>
-
+        
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
           <form action="/buy" method="post">
@@ -100,13 +100,13 @@
             </div>
           </form>
         </div>
-
-
+        
+        
         <div id="product-explain">
           <h6>商品説明</h6>
           <p>{{ overview }}</p>
         </div>
-
+        
         <div id="product-info">
           <h3>商品状態</h3>
           <div class="info-detail">
@@ -117,51 +117,51 @@
             <p class="info01">商品状態</p>
             <p class="info02">{{ status }}</p>
           </div>
-
+          
           <!-- 配送料負担者の設定 未開発!!! -->
           <div class="info-detail">
             <p class="info01">配送料の負担</p>
             <p class="info02">出品者負担</p>
           </div>
-
+          
           <!-- 配達方法の設定 未開発!!! -->
           <div class="info-detail">
             <p class="info01">配送方法</p>
             <p class="info02">普通郵便</p>
           </div>
         </div>
-
+        
         <div id="sell">
           <h4>出品者</h4>
           <div class="sell-info">
             <!-- アイコン表示 未開発!!! -->
             <img src="../static/images/profile.png" alt="ドラえもん">
-
+            
             <div class="sell-info-detail">
               <p>{{ sell_acc[1] }}</p>
               <div class="rate-form">
                 {% for i in range(5) %}
-                  {% if i < 5 - avg_evalate %}
-                  <label style="color:#ccc;">★</label>
-                  {% else %}
-                  <label style="color:#ffcc00;">★</label>
-                  {% endif %}
+                {% if i < 5 - avg_evalate %}
+                <label style="color:#ccc;">★</label>
+                {% else %}
+                <label style="color:#ffcc00;">★</label>
+                {% endif %}
                 {% endfor %}
               </div>
             </div>
-
+            
           </div>
         </div>
-
+        
       </div>
     </div>
-
+    
     <!-- <div style="width:500px;">
       <canvas id="chart"></canvas>
     </div> -->
-
+    
     <div id="chat">
-
+      
       <!-- チャット機能 未開発!!! -->
       <h5>コメント</h5>
       <div class="chat-box">
@@ -175,7 +175,7 @@
             <span>8時間前</span>
           </div>
         </div>
-
+        
         <div class="right-chat">
           <div class="balloon1-right">
             <p>こんにちは。プロフィールにも記載していますが、値下げは考えておりません。</p>
@@ -185,7 +185,7 @@
             <img src="../static/images/profile.png">
           </figure>
         </div>
-
+        
         <div class="left-chat">
           <figure>
             <img src="../static/images/profile.png">
@@ -195,16 +195,16 @@
             <span>3時間前</span>
           </div>
         </div> -->
-
+        
       </div>
-
+      
     </div>
-
+    
     <div id="related-box">
-
+      
       <main class="product_area">
         <h2>おすすめ商品</h2>
-
+        
         <div class="wrap_product_02">
           {% for row in sells %}
           <div class="product">
@@ -212,37 +212,43 @@
               <figure>
                 <img src="../{{ row[3] }}" alt="sellimg" width="215px">
               </figure>
-                <p>{{ row[1] }}</p>
-                <!--値段表示変更-->
-                <!--<span>{{ row[2] }}</span>-->
-                
-                <div class="price-box">
-                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-                </div>
+              <p>{{ row[1] }}</p>
+              <!--値段表示変更-->
+              <!--<span>{{ row[2] }}</span>-->
+              
+              <div class="price-box">
+                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+              </div>
             </a>
           </div>
           {% endfor %}
         </div>
       </main>
-
+      
     </div>
-
+    
     <footer>
       <p class="footer01">#VariaFree</p>
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
-
+    
   </body>
-
+  
   <!-- gift 数字カウント -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-<!-- スライドショー -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
-<script src="{{ url_for('static', filename='js/product.js') }}"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-<script src="{{ url_for('static', filename='js/polyline.js') }}"></script>
-
-</html>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  
+  <!-- スライドショー -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+  <script src="{{ url_for('static', filename='js/product.js') }}"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+  <script src="{{ url_for('static', filename='js/polyline.js') }}"></script>
+  
+  {% if error %}
+  <script>
+    alert("残高が足りません");
+  </script>
+  {% endif %}
+  
+  </html>
