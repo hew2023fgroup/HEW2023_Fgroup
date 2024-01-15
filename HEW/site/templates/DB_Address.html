@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Account</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/DataBase.css') }}">
+
+    <!-- JQuery本体 CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+
+    <!-- jquery実行ファイル -->
+    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+
+  </head>
+
+  <body>
+
+
+    <h1>DataBase管理テーブル</h1>
+
+    <div id="wrap">
+      <div id="wrap_left">
+        <h2>テーブル一覧</h2>
+
+        <ul>
+          <li><a href="DB_Account.html">Account</a></li>
+          <li><a href="DB_Sex.html">Sex</a></li>
+          <li><a href="DB_Address.html">Addess</a></li>
+          <li><a href="DB_Sell.html">Sell</a></li>
+          <li><a href="#">SellIMG</a></li>
+        </ul>
+      </div>
+
+      <div id="wrap_right">
+        <h3>Address</h3>
+
+        <div class="DataContents">
+          <table>
+            <tr>
+              <th>AddressID</th>
+              <th>Address</th>
+              <th>POST</th>
+              <th>AccountID</th>
+            </tr>
+
+            <tr>
+              <td><input type="text" name="AddressID" id="AddressID" class="size-input-AddressID"></td>
+              <td><input type="text" name="Address" id="Address" class="size-input-Address"></td>
+              <td><input type="text" name="POST" id="POST" class="size-input-POST" maxlength="8"></td>
+              <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+              <td><button class="remove">-</button></td>
+            </tr>
+
+          </table>
+          <button id="addRow">+ 追加</button>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="{{ url_for('static', filename='js/DataBase.js') }}"></script>
+
+</html>
