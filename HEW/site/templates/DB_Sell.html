@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Account</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/DataBase.css') }}">
+
+    <!-- JQuery本体 CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+
+    <!-- jquery実行ファイル -->
+    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+
+  </head>
+
+  <body>
+
+
+    <h1>DataBase管理テーブル</h1>
+
+    <div id="wrap">
+      <div id="wrap_left">
+        <h2>テーブル一覧</h2>
+
+        <ul>
+          <li><a href="DB_Account.html">Account</a></li>
+          <li><a href="DB_Sex.html">Sex</a></li>
+          <li><a href="DB_Address.html">Addess</a></li>
+          <li><a href="DB_Sell.html">Sell</a></li>
+          <li><a href="#">SellIMG</a></li>
+        </ul>
+      </div>
+
+      <div id="wrap_right">
+        <h3>Sell</h3>
+
+        <div class="DataContents">
+          <table>
+            <tr>
+              <th>SellID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>TaxID</th>
+              <th>PostageID</th>
+              <th>StatusID</th>
+              <th>Overview</th>
+              <th>ScategoryID</th>
+              <th>AccountID</th>
+              <th>Datetime</th>
+              <th>draft</th>
+            </tr>
+
+            <tr>
+              <td><input type="text" name="SellID" id="SellID" class="size-input-SellID"></td>
+              <td><input type="text" name="Name" id="Name" class="size-input-Name"></td>
+              <td><input type="text" name="Price" id="Price" class="size-input-Price"></td>
+              <td><input type="text" name="TaxID" id="TaxID" class="size-input-TaxID"></td>
+              <td><input type="text" name="PostageID" id="PostageID" class="size-input-PostageID"></td>
+              <td><input type="text" name="StatusID" id="StatusID" class="size-input-StatusID"></td>
+              <td><input type="text" name="Overview" id="Overview" class="size-input-Overview"></td>
+              <td><input type="text" name="ScategoryID" id="ScategoryID" class="size-input-ScategoryID"></td>
+              <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+              <td><input type="text" name="Datetime" id="Datetime" class="size-input-Datetime"></td>
+              <td><input type="text" name="draft" id="draft" class="size-input-draft"></td>
+              <td><button class="remove">-</button></td>
+            </tr>
+
+          </table>
+          <button id="addRow">+ 追加</button>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="{{ url_for('static', filename='js/DataBase.js') }}"></script>
+
+</html>
