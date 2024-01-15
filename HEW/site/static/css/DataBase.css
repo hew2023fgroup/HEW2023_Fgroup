@@ -156,3 +156,13 @@ input{
   width: 50px;
 }
 
+/*---------------SellIMG---------------*/
+.size-input-SellIMGID{
+  width: 90px;
+}
+.size-input-SellIMG{
+  width: 350px;
+}
+.size-input-Thum{
+  width: 90px;
+}
