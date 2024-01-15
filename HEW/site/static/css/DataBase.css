@@ -1,0 +1,158 @@
+@charset "utf-8";
+
+/* 共通のスタイル */
+
+h1{
+  margin: 15px 0 15px 0;
+  font-size: 1.3rem;
+  font-weight: normal;
+  text-align: center;
+}
+
+div#wrap{
+  display: flex;
+  width: 100%;
+  padding: 0 10px 0 10px;
+}
+
+
+/*---------------左側---------------*/
+div#wrap_left{
+  width: 12%;
+  padding: 0 0 15px 10px;
+
+  background-color: #F2F2F2;
+}
+div#wrap_left h2{
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  font-weight: 1.2rem;
+}
+div#wrap_left ul{
+  padding: 0 0 0 10px;
+}
+div#wrap_left ul li{
+  padding: 3px 0 3px 0;
+  list-style: none;
+}
+div#wrap_left ul li a{
+  text-decoration: none;
+}
+
+
+/*---------------右側---------------*/
+div#wrap_right{
+  width: 88%;
+  padding: 0 0 15px 0;
+/*  padding: 0 0 0 10px;*/
+
+  background-color: #eee;
+}
+div#wrap_right h3{
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+.DataContents{
+  padding: 0 0 0 5px;
+}
+
+table{}
+table tr{}
+table tr th{
+  font-weight: normal;
+}
+table tr td{}
+
+
+input{
+  padding:3px 5px;
+  text-align: center;
+}
+
+
+/*---------------Account---------------*/
+.size-input-AccountID{
+  width: 90px;
+}
+.size-input-UserName{
+  width: 130px;
+}
+.size-input-Pass{
+  width: 130px;
+}
+.size-input-Birth{
+  width: 100px;
+}
+.size-input-SexID{
+  width: 60px;
+}
+.size-input-Mail{}
+.size-input-KanjiName{
+  width: 130px;
+}
+.size-input-Furigana{
+  width: 130px;
+}
+.size-input-Regist{
+  width: 100px;
+}
+.size-input-Money{
+  width: 90px;
+}
+
+
+
+/*---------------Sex---------------*/
+.size-input-SexID{
+  width: 90px;
+}
+.size-input-Sex{
+  width: 100px;
+}
+
+
+/*---------------Address---------------*/
+.size-input-AddressID{
+  width: 90px;
+}
+.size-input-Address{
+  width: 350px;
+}
+.size-input-POST{
+  width: 90px;
+}
+
+
+/*---------------Sell---------------*/
+.size-input-SellID{
+  width: 50px;
+}
+.size-input-Name{
+  width: 150px;
+}
+.size-input-Price{
+  width: 70px;
+}
+.size-input-TaxID{
+  width: 50px;
+}
+.size-input-PostageID{
+  width: 70px;
+}
+.size-input-StatusID{
+  width: 70px;
+}
+.size-input-Overview{
+  width: 300px;
+}
+.size-input-ScategoryID{
+  width: 90px;
+}
+.size-input-Datetime{
+  width: 90px;
+}
+.size-input-draft{
+  width: 50px;
+}
+
