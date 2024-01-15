@@ -71,8 +71,8 @@
             <p>サムネイル(単数)</p>
             <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required>
 
-            <p>その他(複数)</p>
-            <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple required>
+            <p>その他(複数可, 任意)</p>
+            <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple>
         </div>
   
         <div class="detail">
@@ -116,12 +116,12 @@
   
         <div class="intro">
             <h3>商品名と説明</h3>
-            <p class="title">商品名</p>
+            <p class="title">商品名(70文字以内)</p>
             <!-- name="selltitle" id="selltitile" -->
-            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" required>
-            <p class="title">商品の説明</p>
+            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
+            <p class="title">商品の説明(500文字以内)</p>
             <!-- <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required> -->
-            <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" required></textarea>
+            <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
         </div>
   
         <div class="delivery">
@@ -144,7 +144,7 @@
             <h5>販売価格</h5>
             <p class="title">販売価格(¥300〜9,999,999)</p>
             <!-- inputタグへ変更、cssが崩れた -->
-            <input type="text" name="price" id="price" class="textbox-003" placeholder="0" required>
+            <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" step="10" placeholder="300" required>
         </div>
         <div class="sell">
 
