@@ -59,22 +59,17 @@
 
 
       <h1>出品の確認</h1>
-
       <div class="sell-images">
         <p class="title">出品画像</p>
 
         <div class="img-confirm">
           <figure>
-            <img src="../static/images/index03.png" alt="">
-            <img src="../static/images/index04.png" alt="">
-            <img src="../static/images/index02.png" alt="">
-            <img src="../static/images/index09.png" alt="">
-            <img src="../static/images/index06.png" alt="">
-            <img src="../static/images/index01.png" alt="">
-            <img src="../static/images/index02.png" alt="">
-            <img src="../static/images/index05.png" alt="">
-            <img src="../static/images/index07.png" alt="">
-            <img src="../static/images/index08.png" alt="">
+            <img src="{{ mainimg_path }}" alt="サムネイル画像">
+            {% if imgs!= None %}
+              {% for img in imgs  %}
+              <img src="{{ img }}" alt="サブ画像">
+              {% endfor %}
+            {% endif %}
           </figure>
         </div>
 
@@ -87,41 +82,58 @@
         <h2>商品の詳細</h2>
         <p class="title">カテゴリー</p>
         <ul>
-          <li><a href="#">レディース</a></li>
-          <li><a href="#">メンズ</a></li>
+          <li><a href="#">{{ sell_data[2] }}</a></li>
         </ul>
 
         <p class="title">商品の状態</p>
         <ul>
-          <li>未使用に近い</li>
+          <li>{{ sell_data[4] }}</li>
         </ul>
       </div>
 
       <div class="intro">
         <h3>商品名と説明</h3>
         <p class="title">商品名</p>
-        <p class="product-title">ドラえもん</p>
+        <p class="product-title">{{ sell_data[0] }}</p>
         <p class="title">商品の説明</p>
-        <p class="exp">2112年9月3日生まれの猫型ロボット。のび太の子孫・セワシとともに、22世紀からやってきた。おなかについた“四次元ポケット”から出る“ひみつ道具”でのび太を助けるのが使命だが、おっちょこちょいなところもあって、失敗をすることも…。のび太を守る保護者役でもあり、いっしょに遊んだりする親友のような存在でもある。ネズミが苦手で、ドラ焼きが大好物！</p>
+        {% if sell_data[1] != None %}
+        <p class="exp">{{ sell_data[1] }}</p>
+        {% else %}
+        <p class="exp">この商品の説明は未入力です...</p>
+        {% endif %}
       </div>
 
       <div class="delivery">
         <h4>送料について</h4>
         <p class="title">出品者負担 出品する商品の重さ</p>
-        <p class="omosa">小（~ ３kg未満）</p>
+        <p class="omosa">{{ sell_data[3] }}</p>
       </div>
 
       <div class="price">
         <h5>販売価格</h5>
         <p class="title">販売価格(¥300〜9,999,999)</p>
-        <p class="kibou-price">3333<span>円</span></p>
+        <p class="kibou-price">{{ sell_data[5] }}<span>円</span></p>
       </div>
 
       <div class="sell">
         <ul>
-          <li><input class="btn05" type="submit" value="出品する"></li>
-          <li><input class="btn06" type="button" value="入力画面に戻る"></li>
-          <li><input class="btn06" type="button" value="下書きに保存する"></li>
+          <form method="post" action="/sell/">
+            <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}">
+            {% if form_data[1] != None %}
+              {% for path in form_data[1] %}
+                <input type="hidden" name="image_paths[]" value="{{ path }}">
+              {% endfor %}
+            {% endif %}
+            <input type="hidden" name="selltit" value="{{ form_data[2] }}">
+            <input type="hidden" name="overview" value="{{ form_data[3] }}">
+            <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
+            <input type="hidden" name="postage" value="{{ form_data[5] }}">
+            <input type="hidden" name="status" value="{{ form_data[6] }}">
+            <input type="hidden" name="price" value="{{ form_data[7] }}">
+            <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
+            <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
+            <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
+          </form>
         </ul>
       </div>
 

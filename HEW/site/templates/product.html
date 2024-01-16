@@ -104,7 +104,12 @@
         
         <div id="product-explain">
           <h6>商品説明</h6>
+          {% if overview != 'None' %}
           <p>{{ overview }}</p>
+          {% else %}
+          <p>この商品の説明は未入力です...</p>
+          {% endif %}
+
         </div>
         
         <div id="product-info">
