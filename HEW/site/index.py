@@ -172,9 +172,21 @@ def Sell():
             AccountID, UserName, MailAddress = you_list[0]
         
         sellimg_main = request.files.get('sellimg-main')
+        
+        # 任意
         sellimgs_sub = request.files.getlist('sellimg-sub')
+        if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
+            print('フォーム:サブ画像は空です')
+            
         selltit = request.form['selltit']
-        overview = request.form['overview']
+        
+        # 任意
+        if request.form['overview']:
+            overview = request.form['overview']
+        else:
+            overview = None
+            print('フォーム:商品悦明が未入力')
+            
         scategoryid = request.form['scategoryid']
         postage = request.form['postage']
         status = request.form['status']
@@ -190,11 +202,14 @@ def Sell():
         sellimg_main.save(mainimg_path)
         
         # サブファイル保存(送信した画像数分imgsへ挿入)
-        imgs = []
-        for sellimg in sellimgs_sub:
-            img_path = os.path.join(upload_path, sellimg.filename)
-            sellimg.save(img_path)
-            imgs.append(img_path)
+        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+            imgs = []
+            for sellimg in sellimgs_sub:
+                img_path = os.path.join(upload_path, sellimg.filename)
+                sellimg.save(img_path)
+                imgs.append(img_path)
+        else:
+            print('機能:サブ画像が未入力の為ファイルを保存しません')
             
         # SellのINSERT
         sell_sql = '''
@@ -220,21 +235,26 @@ def Sell():
               SellID:{0}
               Name:{1}
               サムネイル:{2}
-              サブ:{3}
-              '''.format(sellid,selltit,mainimg_path,imgs))
+              '''.format(sellid,selltit,mainimg_path))
+        
         # サムネイルファイルのINSERT
         mainimg_sql = '''
         INSERT INTO 
         SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
         '''.format(mainimg_path, sellid)
         cursor.execute(mainimg_sql)
+        
         # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
-        for subimg in imgs:
-            subimg_sql = '''
-            INSERT INTO 
-            SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
-            '''.format(subimg, sellid)
-            cursor.execute(subimg_sql)
+        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+            for subimg in imgs:
+                subimg_sql = '''
+                INSERT INTO 
+                SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
+                '''.format(subimg, sellid)
+                cursor.execute(subimg_sql)
+        else:
+            print('機能:サブ画像が未入力の為INSERTしません')
+            
         # CLOSE
         conn.commit()
         cursor.close()
