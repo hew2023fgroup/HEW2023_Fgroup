@@ -162,7 +162,7 @@ def SellPage():
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])  #小濱俊史
-def Sell():
+def SellConfirm():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -173,22 +173,25 @@ def Sell():
             AccountID, UserName, MailAddress = you_list[0]
         
         # ========== フォーム ==========
+        # メイン画像
         sellimg_main = request.files.get('sellimg-main')
         
-        # 任意
+        # サブ画像(任意
         sellimgs_sub = request.files.getlist('sellimg-sub')
         if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
             print('フォーム:サブ画像は空です')
             
+        # 商品名
         selltit = request.form['selltit']
         
-        # 任意
+        # 説明(任意
         if request.form['overview']:
             overview = request.form['overview']
         else:
             overview = None
             print('フォーム:商品悦明が未入力')
             
+        # カテゴリー
         scategoryid = request.form['scategoryid']
         SCategory_Select = '''
         SELECT Name
@@ -196,8 +199,9 @@ def Sell():
         WHERE SCategoryID = {0}
         '''.format(scategoryid)
         cursor.execute(SCategory_Select)
-        SCategoryName = cursor.fetchone()
+        SCategoryName = cursor.fetchone()[0]
             
+        # サイズ
         postage = request.form['postage']
         Postage_Select = '''
         SELECT Size
@@ -205,8 +209,9 @@ def Sell():
         WHERE PostageID = {0}
         '''.format(postage)
         cursor.execute(Postage_Select)
-        PostageSize = cursor.fetchone()
+        PostageSize = cursor.fetchone()[0]
         
+        # 状態
         status = request.form['status']
         Status_Select = '''
         SELECT Name
@@ -214,11 +219,14 @@ def Sell():
         WHERE StatusID = {0}
         '''.format(status)
         cursor.execute(Status_Select)
-        StatusName = cursor.fetchone()
+        StatusName = cursor.fetchone()[0]
         
+        # 値段
         price = request.form['price']
         
-        sell_action = request.form['sell_action']
+        # アクション
+        # sell_action = request.form['sell_action']
+        
         # ========== フォーム ==========
 
         # 保存先パス
@@ -239,17 +247,20 @@ def Sell():
             print('機能:サブ画像が未入力の為ファイルを保存しません')
         
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
+        form_data = [mainimg_path,imgs,selltit,overview,
+                     scategoryid,postage,status,price]
             
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('sell_confirm.html', mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data)
+        return render_template('sell_confirm.html',
+                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data)
     # ↑フォームをサブミットしたときに遷移する確認画面
 
-# /sellconfirm
-@app.route('/sellconfirm')
-def SellConfirmPage():
+# /sell/
+@app.route('/sell/', methods=['POST'])
+def Sell():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -260,48 +271,46 @@ def SellConfirmPage():
             AccountID, UserName, MailAddress = you_list[0]
         
         # ========== フォーム ==========
-        sellimg_main = request.files.get('sellimg-main')
-
-        # 任意
-        sellimgs_sub = request.files.getlist('sellimg-sub')
-        if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
-            print('フォーム:サブ画像は空です')
-
+        # メイン画像
+        sellimg_main = request.form['sellimg-main']
+        print("メイン：",sellimg_main)
+        
+        # サブ画像(任意
+        if request.form['sellimg-sub']:
+            sellimgs_sub = request.form['sellimg-sub']
+            print("サブ：",sellimgs_sub)
+        else:
+            sellimgs_sub = None
+            print('フォーム:サブ画像が未入力')
+            
+            
+        # 商品名
         selltit = request.form['selltit']
-
-        # 任意
+        
+        # 説明(任意
         if request.form['overview']:
             overview = request.form['overview']
         else:
             overview = None
             print('フォーム:商品悦明が未入力')
-
+            
+        # カテゴリー
         scategoryid = request.form['scategoryid']
+            
+        # サイズ
         postage = request.form['postage']
+        
+        # 状態
         status = request.form['status']
+        
+        # 値段
         price = request.form['price']
-
+        
+        # アクション
         sell_action = request.form['sell_action']
+        
         # ========== フォーム ==========
-
-
-        # 保存先パス
-        upload_path = "static/images/sell/"
-
-        # サムネイルファイル保存
-        mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        sellimg_main.save(mainimg_path)
-
-        # サブファイル保存(送信した画像数分imgsへ挿入)
-        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
-            imgs = []
-            for sellimg in sellimgs_sub:
-                img_path = os.path.join(upload_path, sellimg.filename)
-                sellimg.save(img_path)
-                imgs.append(img_path)
-        else:
-            print('機能:サブ画像が未入力の為ファイルを保存しません')
-
+            
         # SellのINSERT
         sell_sql = '''
         INSERT INTO Sell 
@@ -321,23 +330,33 @@ def SellConfirmPage():
             '''.format(sellid)
             cursor.execute(Draft_Update)
 
-        print('''
-              「出品完了」
-              SellID:{0}
-              Name:{1}
-              サムネイル:{2}
-              '''.format(sellid,selltit,mainimg_path))
+        # # 保存先パス
+        # upload_path = "static/images/sell/"
+
+        # # サムネイルファイル保存
+        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
+        # sellimg_main.save(mainimg_path)
+
+        # # サブファイル保存(送信した画像数分imgsへ挿入)
+        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+        #     imgs = []
+        #     for sellimg in sellimgs_sub:
+        #         img_path = os.path.join(upload_path, sellimg.filename)
+        #         sellimg.save(img_path)
+        #         imgs.append(img_path)
+        # else:
+        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
 
         # サムネイルファイルのINSERT
         mainimg_sql = '''
         INSERT INTO 
         SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
-        '''.format(mainimg_path, sellid)
+        '''.format(sellimg_main, sellid)
         cursor.execute(mainimg_sql)
 
-        # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
-        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
-            for subimg in imgs:
+        # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)      kokokara
+        if sellimgs_sub:
+            for subimg in sellimgs_sub:
                 subimg_sql = '''
                 INSERT INTO 
                 SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
@@ -350,7 +369,7 @@ def SellConfirmPage():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('sell_confirm.html')
+        return render_template('index.html')
 # ↑確認画面から確定したときの出品処理
 
 # /index
