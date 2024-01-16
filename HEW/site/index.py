@@ -223,10 +223,6 @@ def SellConfirm():
         
         # 値段
         price = request.form['price']
-        
-        # アクション
-        # sell_action = request.form['sell_action']
-        
         # ========== フォーム ==========
 
         # 保存先パス
@@ -244,6 +240,7 @@ def SellConfirm():
                 sellimg.save(img_path)
                 imgs.append(img_path)
         else:
+            imgs = None
             print('機能:サブ画像が未入力の為ファイルを保存しません')
         
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
@@ -256,7 +253,6 @@ def SellConfirm():
         conn.close()
         return render_template('sell_confirm.html',
                 mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data)
-    # ↑フォームをサブミットしたときに遷移する確認画面
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -276,8 +272,8 @@ def Sell():
         print("メイン：",sellimg_main)
         
         # サブ画像(任意
-        if request.form['sellimg-sub']:
-            sellimgs_sub = request.form['sellimg-sub']
+        if request.form.getlist('image_paths[]'):
+            sellimgs_sub = request.form.getlist('image_paths[]')
             print("サブ：",sellimgs_sub)
         else:
             sellimgs_sub = None
@@ -330,23 +326,6 @@ def Sell():
             '''.format(sellid)
             cursor.execute(Draft_Update)
 
-        # # 保存先パス
-        # upload_path = "static/images/sell/"
-
-        # # サムネイルファイル保存
-        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        # sellimg_main.save(mainimg_path)
-
-        # # サブファイル保存(送信した画像数分imgsへ挿入)
-        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
-        #     imgs = []
-        #     for sellimg in sellimgs_sub:
-        #         img_path = os.path.join(upload_path, sellimg.filename)
-        #         sellimg.save(img_path)
-        #         imgs.append(img_path)
-        # else:
-        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
-
         # サムネイルファイルのINSERT
         mainimg_sql = '''
         INSERT INTO 
@@ -354,23 +333,19 @@ def Sell():
         '''.format(sellimg_main, sellid)
         cursor.execute(mainimg_sql)
 
-        # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)      kokokara
+        # サブファイルのINSERT(sellimgs_subの数分同じSellIDでINSERT)
         if sellimgs_sub:
             for subimg in sellimgs_sub:
-                subimg_sql = '''
-                INSERT INTO 
-                SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'0');
-                '''.format(subimg, sellid)
-                cursor.execute(subimg_sql)
-        else:
-            print('機能:サブ画像が未入力の為INSERTしません')
+               subimg_sql = '''
+               INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
+               '''.format(subimg, sellid)
+               cursor.execute(subimg_sql)
             
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('index.html')
-# ↑確認画面から確定したときの出品処理
+        return redirect(url_for('IndexPage'))
 
 # /index
 @app.route('/index')

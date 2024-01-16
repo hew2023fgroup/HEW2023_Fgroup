@@ -65,7 +65,7 @@
         <div class="img-confirm">
           <figure>
             <img src="{{ mainimg_path }}" alt="サムネイル画像">
-            {% if imgs %}
+            {% if imgs!= None %}
               {% for img in imgs  %}
               <img src="{{ img }}" alt="サブ画像">
               {% endfor %}
@@ -118,20 +118,20 @@
       <div class="sell">
         <ul>
           <form method="post" action="/sell/">
-            <p>{{ form_data }}</p>
             <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}">
-            <input type="hidden" name="sellimg-sub" value="{{ form_data[1] }}">
+            {% if form_data[1] != None %}
+              {% for path in form_data[1] %}
+                <input type="hidden" name="image_paths[]" value="{{ path }}">
+              {% endfor %}
+            {% endif %}
             <input type="hidden" name="selltit" value="{{ form_data[2] }}">
             <input type="hidden" name="overview" value="{{ form_data[3] }}">
             <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
             <input type="hidden" name="postage" value="{{ form_data[5] }}">
             <input type="hidden" name="status" value="{{ form_data[6] }}">
             <input type="hidden" name="price" value="{{ form_data[7] }}">
-            <!-- <li><input class="btn05" type="submit" value="出品する"></li>
-            <li><input class="btn06" type="button" value="入力画面に戻る"></li>
-            <li><input class="btn06" type="button" value="下書きに保存する"></li> -->
             <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
-            <li><input class="btn06" type="button" value="入力画面に戻る"></li>
+            <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
             <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
           </form>
         </ul>

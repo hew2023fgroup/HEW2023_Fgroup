@@ -26,7 +26,6 @@
     <div id="wrap">
 
       <figure>
-        <!-- url_forへの修正 -->
         <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
       </figure>
 
@@ -39,7 +38,6 @@
 
       <nav>
         <ul>
-          <!-- url_forへの修正 -->
           <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
           <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
 
@@ -49,7 +47,6 @@
 
       <div id="sub_nav">
         <ul>
-          <!-- url_forへの修正 -->
           <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
           <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
         </ul>
@@ -62,12 +59,10 @@
 
       <h1>商品の出品</h1>
 
-      <!-- formタグの追加 -->
       <form action="/sell_confirm" method="POST" enctype="multipart/form-data">
 
         <div class="sell-images">
             <p class="title">出品画像</p>
-            <!-- id,name="sellimg-main/sub"に変更 -->
             <p>サムネイル(単数)</p>
             <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required>
 
@@ -80,8 +75,6 @@
             <p class="title">カテゴリー</p>
             <label class="selectbox">
               <select name="scategoryid" id="scategoryid" required>
-                <!-- value=""の追加 -->
-                <!--  value="" disabled selectedの追加 -->
                 <option value="" disabled selected>選択してください</option>
                 <option value="1">レディース</option>
                 <option value="2">メンズ</option>
@@ -101,8 +94,6 @@
             <p class="title">商品の状態</p>
             <label class="selectbox">
               <select name="status" id="status" required>
-                <!-- value=""の追加 -->
-                <!--  value="" disabled selectedの追加 -->
                 <option value="" disabled selected>選択してください</option>
                 <option value="1">新品、未使用</option>
                 <option value="2">未使用に近い</option>
@@ -117,10 +108,8 @@
         <div class="intro">
             <h3>商品名と説明</h3>
             <p class="title">商品名(70文字以内)</p>
-            <!-- name="selltitle" id="selltitile" -->
             <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
             <p class="title">商品の説明(500文字以内)</p>
-            <!-- <input type="text" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" class="textbox-002" required> -->
             <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
         </div>
   
@@ -129,10 +118,7 @@
             <p class="title">出品者負担 出品する商品の重さ</p>
             <label class="selectbox">
               <select name="postage" id="postage" required>
-                <!--  value="" disabled selectedの追加 -->
                 <option value="" disabled selected>選択してください</option>
-                <!-- 数字を全角から修正 -->
-                <!-- value=""の追加 -->
                 <option value="1">小(~ 3kg未満)</option>
                 <option value="2">中(3kg以上 ~ 10kg未満)</option>
                 <option value="3">大(10kg以上 ~)</option>
@@ -143,20 +129,13 @@
         <div class="price">
             <h5>販売価格</h5>
             <p class="title">販売価格(¥300〜9,999,999)</p>
-            <!-- inputタグへ変更、cssが崩れた -->
             <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" required>
         </div>
         <div class="sell">
 
           <ul>
-            <li><input class="btn05" type="submit" value="出品する"></li>
-            <!-- <li><input class="btn06" type="submit" value="下書きに保存する"></li> -->
+            <li><input class="btn05" type="submit" value="確認する"></li>
           </ul>
-
-          <!-- ごめんなさい、ボタンタグへ戻します -->
-          <!-- <button type="submit" name="sell_action" class="btn05" value="sell">出品する</button>
-          <button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button> -->
-
         </div>
             
       </form>
