@@ -24,13 +24,6 @@ app.secret_key="abcdefghijklmn"
 @app.route('/')
 def LoginPage():
     return render_template("login.html")
-@app.route('/sell')
-def SellPage():
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-        print(UserName, "でログイン中...")
-    return render_template("sell.html")
 @app.route('/favorite')
 def FavoritePage():
     return render_template("favorite.html")
@@ -159,9 +152,17 @@ def login():
             PassMessage = "！！メールアドレスとパスワードが一致しません！！"
             return render_template("login.html", PassMessage=PassMessage)
 
-# /sell/
-@app.route('/sell/', methods=['POST'])  #小濱俊史
-def Sell():    
+# /sell
+@app.route('/sell')
+def SellPage():
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    return render_template("sell.html")
+
+# /sell_confirm
+@app.route('/sell_confirm', methods=['POST'])  #小濱俊史
+def Sell():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -171,6 +172,7 @@ def Sell():
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
         
+        # ========== フォーム ==========
         sellimg_main = request.files.get('sellimg-main')
         
         # 任意
@@ -188,19 +190,44 @@ def Sell():
             print('フォーム:商品悦明が未入力')
             
         scategoryid = request.form['scategoryid']
+        SCategory_Select = '''
+        SELECT Name
+        FROM Scategory
+        WHERE SCategoryID = {0}
+        '''.format(scategoryid)
+        cursor.execute(SCategory_Select)
+        SCategoryName = cursor.fetchone()
+            
         postage = request.form['postage']
+        Postage_Select = '''
+        SELECT Size
+        FROM Postage
+        WHERE PostageID = {0}
+        '''.format(postage)
+        cursor.execute(Postage_Select)
+        PostageSize = cursor.fetchone()
+        
         status = request.form['status']
+        Status_Select = '''
+        SELECT Name
+        FROM Status
+        WHERE StatusID = {0}
+        '''.format(status)
+        cursor.execute(Status_Select)
+        StatusName = cursor.fetchone()
+        
         price = request.form['price']
         
         sell_action = request.form['sell_action']
+        # ========== フォーム ==========
 
         # 保存先パス
         upload_path = "static/images/sell/"
-        
+
         # サムネイルファイル保存
         mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
         sellimg_main.save(mainimg_path)
-        
+
         # サブファイル保存(送信した画像数分imgsへ挿入)
         if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
             imgs = []
@@ -210,7 +237,71 @@ def Sell():
                 imgs.append(img_path)
         else:
             print('機能:サブ画像が未入力の為ファイルを保存しません')
+        
+        sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
             
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('sell_confirm.html', mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data)
+    # ↑フォームをサブミットしたときに遷移する確認画面
+
+# /sellconfirm
+@app.route('/sellconfirm')
+def SellConfirmPage():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        
+        # ========== フォーム ==========
+        sellimg_main = request.files.get('sellimg-main')
+
+        # 任意
+        sellimgs_sub = request.files.getlist('sellimg-sub')
+        if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
+            print('フォーム:サブ画像は空です')
+
+        selltit = request.form['selltit']
+
+        # 任意
+        if request.form['overview']:
+            overview = request.form['overview']
+        else:
+            overview = None
+            print('フォーム:商品悦明が未入力')
+
+        scategoryid = request.form['scategoryid']
+        postage = request.form['postage']
+        status = request.form['status']
+        price = request.form['price']
+
+        sell_action = request.form['sell_action']
+        # ========== フォーム ==========
+
+
+        # 保存先パス
+        upload_path = "static/images/sell/"
+
+        # サムネイルファイル保存
+        mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
+        sellimg_main.save(mainimg_path)
+
+        # サブファイル保存(送信した画像数分imgsへ挿入)
+        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+            imgs = []
+            for sellimg in sellimgs_sub:
+                img_path = os.path.join(upload_path, sellimg.filename)
+                sellimg.save(img_path)
+                imgs.append(img_path)
+        else:
+            print('機能:サブ画像が未入力の為ファイルを保存しません')
+
         # SellのINSERT
         sell_sql = '''
         INSERT INTO Sell 
@@ -219,31 +310,31 @@ def Sell():
         '''.format(selltit,price,postage,status,overview,scategoryid,AccountID)
         cursor.execute(sell_sql)
         sellid = cursor.lastrowid
-        
+
         # 下書き
         if sell_action == 'draft':
-            
+
             Draft_Update = '''
             UPDATE Sell
             SET Draft = 0
             WHERE SellID = {0};
             '''.format(sellid)
             cursor.execute(Draft_Update)
-            
+
         print('''
               「出品完了」
               SellID:{0}
               Name:{1}
               サムネイル:{2}
               '''.format(sellid,selltit,mainimg_path))
-        
+
         # サムネイルファイルのINSERT
         mainimg_sql = '''
         INSERT INTO 
         SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
         '''.format(mainimg_path, sellid)
         cursor.execute(mainimg_sql)
-        
+
         # サブファイルのINSERT(imgsの数分同じSellIDでINSERT)
         if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
             for subimg in imgs:
@@ -259,7 +350,8 @@ def Sell():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('sell.html')
+        return render_template('sell_confirm.html')
+# ↑確認画面から確定したときの出品処理
 
 # /index
 @app.route('/index')
