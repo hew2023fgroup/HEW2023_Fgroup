@@ -1,0 +1,289 @@
+@charset "utf-8";
+
+/* 共通のスタイル */
+
+h1{
+  margin: 15px 0 15px 0;
+  font-size: 1.3rem;
+  font-weight: normal;
+  text-align: center;
+}
+
+div#wrap{
+  display: flex;
+  width: 100%;
+/*  padding: 0 10px 0 10px;*/
+}
+
+
+/*---------------左側---------------*/
+div#wrap_left{
+  width: 10%;
+  padding: 0 0 15px 10px;
+
+  background-color: #ddd;
+}
+div#wrap_left h2{
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  font-weight: 1.2rem;
+}
+div#wrap_left ul{
+  padding: 0 0 0 10px;
+}
+div#wrap_left ul li{
+  padding: 3px 0 3px 0;
+  list-style: none;
+}
+div#wrap_left ul li a{
+  text-decoration: none;
+}
+
+
+/*---------------右側---------------*/
+div#wrap_right{
+  width: 90%;
+  padding: 0 0 15px 0;
+  padding: 0 0 0 10px;
+
+  background-color: #f4f4f4;
+}
+div#wrap_right h3{
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+.DataContents{
+  padding: 0 0 0 10px;
+}
+
+table{}
+table tr{}
+table tr th{
+  font-weight: normal;
+}
+table tr td{}
+input{
+  padding:3px 5px;
+  text-align: center;
+}
+
+
+/*---------------Account---------------*/
+.size-input-AccountID{
+  width: 90px;
+}
+.size-input-UserName{
+  width: 130px;
+}
+.size-input-Pass{
+  width: 100px;
+}
+.size-input-ProfIMG{
+  width: 130px;
+}
+.size-input-Birth{
+  width: 100px;
+}
+.size-input-SexID{
+  width: 60px;
+}
+.size-input-Mail{}
+.size-input-KanjiName{
+  width: 130px;
+}
+.size-input-Furigana{
+  width: 130px;
+}
+.size-input-Regist{
+  width: 100px;
+}
+.size-input-Money{
+  width: 90px;
+}
+
+
+/*---------------Sex---------------*/
+.size-input-SexID{
+  width: 90px;
+}
+.size-input-Sex{
+  width: 100px;
+}
+
+
+/*---------------Address---------------*/
+.size-input-AddressID{
+  width: 90px;
+}
+.size-input-Address{
+  width: 350px;
+}
+.size-input-POST{
+  width: 90px;
+}
+
+
+/*---------------Sell---------------*/
+.size-input-SellID{
+  width: 50px;
+}
+.size-input-Name{
+  width: 150px;
+}
+.size-input-Price{
+  width: 70px;
+}
+.size-input-TaxID{
+  width: 50px;
+}
+.size-input-PostageID{
+  width: 70px;
+}
+.size-input-StatusID{
+  width: 70px;
+}
+.size-input-Overview{
+  width: 300px;
+}
+.size-input-ScategoryID{
+  width: 90px;
+}
+.size-input-Datetime{
+  width: 90px;
+}
+.size-input-draft{
+  width: 50px;
+}
+
+
+/*---------------SellIMG---------------*/
+.size-input-SellIMGID{
+  width: 90px;
+}
+.size-input-SellIMG{
+  width: 350px;
+}
+.size-input-Thum{
+  width: 120px;
+}
+
+
+/*---------------Mcategory---------------*/
+.size-input-StatusID{
+  width: 90px;
+}
+.size-input-StaName{
+  width: 350px;
+}
+
+
+/*---------------Mcategory---------------*/
+.size-input-McategoryID{
+  width: 90px;
+}
+.size-input-Name{
+  width: 350px;
+}
+
+
+/*---------------Scategory---------------*/
+.size-input-ScategoryID{
+  width: 90px;
+}
+
+
+/*---------------Tag---------------*/
+.size-input-TagID{
+  width: 90px;
+}
+
+
+/*---------------Buy---------------*/
+.size-input-BuyID{
+  width: 90px;
+}
+
+
+/*---------------Nice---------------*/
+.size-input-NiceID{
+  width: 90px;
+}
+
+
+/*---------------View---------------*/
+.size-input-ViewID{
+  width: 90px;
+}
+
+
+/*---------------Chat---------------*/
+.size-input-ChatID{
+  width: 90px;
+}
+.size-input-content{
+  width: 350px;
+}
+
+
+/*---------------Tax---------------*/
+.size-input-TaxID{
+  width: 90px;
+}
+.size-input-Section{
+  width: 350px;
+}
+.size-input-Tax{
+  width: 90px;
+}
+
+
+/*---------------Postage---------------*/
+.size-input-PostageID{
+  width: 90px;
+}
+.size-input-Size{
+  width: 70px;
+}
+.size-input-price{
+  width: 90px;
+}
+
+
+/*---------------Reply---------------*/
+.size-input-ReplyID{
+  width: 90px;
+}
+.size-input-Content{
+  width: 500px;
+}
+.size-input-Datetime{
+  width: 90px;
+}
+
+
+/*---------------Layout---------------*/
+.size-input-LayoutID{
+  width: 90px;
+}
+.size-input-Name{
+  width: 250px;
+}
+
+
+/*---------------Nunerucal---------------*/
+.size-input-NumericalID{
+  width: 90px;
+}
+.size-input-Numerical{
+  width: 250px;
+}
+
+
+/*---------------Search---------------*/
+.size-input-SearchID{
+  width: 90px;
+}
+.size-input-Word{
+  width: 350px;
+}
