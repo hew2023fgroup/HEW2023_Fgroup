@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Account</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/DataBase.css') }}">
+
+    <!-- JQuery本体 CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+
+    <!-- jquery実行ファイル -->
+    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+
+  </head>
+
+  <body>
+
+
+    <h1>DataBase管理テーブル</h1>
+
+    <div id="wrap">
+      <div id="wrap_left">
+        <h2>テーブル一覧</h2>
+
+        <ul>
+          <li><a href="{{ url_for('DB_Account.html') }}">Account</a></li>
+          <li><a href="{{ url_for('DB_Sex.html') }}">Sex</a></li>
+          <li><a href="{{ url_for('DB_Address.html') }}">Addess</a></li>
+          <li><a href="{{ url_for('DB_Sell.html') }}">Sell</a></li>
+          <li><a href="{{ url_for('DB_SellIMG.html') }}">SellIMG</a></li>
+          <li><a href="{{ url_for('DB_Status.html') }}">Status</a></li>
+          <li><a href="{{ url_for('DB_Mcategory.html') }}">Mcategory</a></li>
+          <li><a href="{{ url_for('DB_Scategory.html') }}">Scategory</a></li>
+          <li><a href="{{ url_for('DB_Tag.html') }}">Tag</a></li>
+          <li><a href="{{ url_for('DB_Buy.html') }}">Buy</a></li>
+          <li><a href="{{ url_for('DB_Nice.html') }}">Nice</a></li>
+          <li><a href="{{ url_for('DB_View.html') }}">View</a></li>
+          <li><a href="{{ url_for('DB_Chat.html') }}">Chat</a></li>
+          <li><a href="{{ url_for('DB_Tax.html') }}">Tax</a></li>
+          <li><a href="{{ url_for('DB_Postage.html') }}">Postage</a></li>
+          <li><a href="{{ url_for('DB_Reply.html') }}">Reply</a></li>
+          <li><a href="{{ url_for('DB_Layout.html') }}">Layout</a></li>
+          <li><a href="{{ url_for('DB_Numerical.html') }}">Numerical</a></li>
+          <li><a href="{{ url_for('DB_Search.html') }}">Search</a></li>
+        </ul>
+      </div>
+
+      <div id="wrap_right">
+        <h3>Address</h3>
+
+        <div class="DataContents">
+          <table>
+            <tr>
+              <th>AddressID</th>
+              <th>Address</th>
+              <th>POST</th>
+              <th>AccountID</th>
+            </tr>
+
+            <tr>
+              <td><input type="text" name="AddressID" id="AddressID" class="size-input-AddressID"></td>
+              <td><input type="text" name="Address" id="Address" class="size-input-Address"></td>
+              <td><input type="text" name="POST" id="POST" class="size-input-POST" maxlength="8"></td>
+              <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+              <td><button class="remove">-</button></td>
+            </tr>
+
+          </table>
+          <button id="addRow">+ 追加</button>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="{{ url_for('static', filename='js/Address.js') }}"></script>
+
+</html>
