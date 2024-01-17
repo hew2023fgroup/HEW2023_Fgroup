@@ -246,13 +246,25 @@ def SellConfirm():
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
         form_data = [mainimg_path,imgs,selltit,overview,
                      scategoryid,postage,status,price]
+        
+        # 住所
+        Address_Select = '''
+        SELECT Address, Post
+        FROM Address
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Address_Select)
+        Address = cursor.fetchall()
+        print(Address)
+        if Address == []:
+            Address = None
             
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
         return render_template('sell_confirm.html',
-                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data)
+                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -688,6 +700,29 @@ def MyPage():
         "mypage.html", proceed=proceed, money=money, 
         UserName=UserName, avg_evalate=avg_evalate
         )
+
+# /add_address
+@app.route('/add_address', methods=['POST'])
+def AddAddress():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+    
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        post = request.form['post']
+        address = request.form['address']
+        
+        Address_Insert = '''
+        INSERT INTO Address(Address, POST, AccountID)
+        VALUE("{0}", "{1}", {2})
+        '''.format(address,post,AccountID)
+        cursor.execute(Address_Insert)
+        
+        return redirect(url_for('SellPage'))
 
 # /charge
 @app.route('/charge', methods=['POST'])   # 小濱俊史
