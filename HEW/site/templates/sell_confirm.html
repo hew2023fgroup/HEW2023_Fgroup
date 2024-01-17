@@ -114,6 +114,26 @@
         <p class="title">販売価格(¥300〜9,999,999)</p>
         <p class="kibou-price">{{ sell_data[5] }}<span>円</span></p>
       </div>
+      
+      <div class="address">
+        <h6>出品者の住所</h6>
+        <p class="title">現在住所</p>
+        {% if Address != None %}
+        <p class="now_address">{{ Address[0] }}</p>
+        <p class="now_address">{{ Address[1] }}</p>
+        <input type="checkbox" id="Checkbox" disabled checked>
+        {% else %}
+        <p class="now_address" style="color:#f00;">住所が登録されていません</p>
+        <form action="/add_address" method="post">
+          <label for="post">郵便番号</label>
+          <input type="text" name="post" pattern="\d{3}-\d{4}" title="正しい郵便番号を入力してください(例: 123-4567)" required>
+          <label for="address">住所</label>
+          <input type="text" name="address" required>
+          <button type="submit">登録</button>
+          <input type="checkbox" id="Checkbox" disabled>
+        </form>
+        {% endif %}
+      </div>
 
       <div class="sell">
         <ul>
@@ -130,12 +150,29 @@
             <input type="hidden" name="postage" value="{{ form_data[5] }}">
             <input type="hidden" name="status" value="{{ form_data[6] }}">
             <input type="hidden" name="price" value="{{ form_data[7] }}">
-            <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
+            
+            <li><button type="submit" name="sell_action" id="Checkbutton" class="btn05" value="sell" disabled>出品する</button></li>
             <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
             <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
           </form>
         </ul>
       </div>
+
+      <script>
+          // チェックボックスの要素とボタンの要素を取得
+          var checkbox = document.getElementById('Checkbox');
+          var button = document.getElementById('Checkbutton');
+  
+          // チェックボックスの状態が変更されたときに呼び出される関数
+          function handleCheckboxChange() {
+              // チェックボックスが選択されている場合はボタンを有効にし、そうでない場合は無効にする
+              button.disabled = !checkbox.checked;
+          }
+  
+          // チェックボックスの変更イベントに上記の関数をバインド
+          checkbox.addEventListener('change', handleCheckboxChange);
+      </script>
+
 
 
     </main>
