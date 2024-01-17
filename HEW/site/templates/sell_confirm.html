@@ -159,17 +159,12 @@
       </div>
 
       <script>
-          // チェックボックスの要素とボタンの要素を取得
           var checkbox = document.getElementById('Checkbox');
           var button = document.getElementById('Checkbutton');
   
-          // チェックボックスの状態が変更されたときに呼び出される関数
           function handleCheckboxChange() {
-              // チェックボックスが選択されている場合はボタンを有効にし、そうでない場合は無効にする
               button.disabled = !checkbox.checked;
           }
-  
-          // チェックボックスの変更イベントに上記の関数をバインド
           checkbox.addEventListener('change', handleCheckboxChange);
       </script>
 
