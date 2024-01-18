@@ -718,10 +718,14 @@ def AddAddress():
         
         Address_Insert = '''
         INSERT INTO Address(Address, POST, AccountID)
-        VALUE("{0}", "{1}", {2})
+        VALUE("{0}","{1}",{2})
         '''.format(address,post,AccountID)
         cursor.execute(Address_Insert)
         
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
         return redirect(url_for('SellPage'))
 
 # /charge

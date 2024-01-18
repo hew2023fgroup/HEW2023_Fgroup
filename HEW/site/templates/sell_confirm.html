@@ -3,23 +3,23 @@
 <html lang="ja">
 
   <head>
-
+    
     <meta charset="utf-8">
-
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <title>Varia Free</title>
-
+    
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sell_confirm.css') }}">
-
+    
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
-
+    
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-
+    
   </head>
 
   <body>
@@ -119,18 +119,20 @@
         <h6>出品者の住所</h6>
         <p class="title">現在住所</p>
         {% if Address != None %}
-        <p class="now_address">{{ Address[0] }}</p>
-        <p class="now_address">{{ Address[1] }}</p>
-        <input type="checkbox" id="Checkbox" disabled checked>
+        <p>郵便番号</p>
+        <p class="now_address">{{ Address[0][1] }}</p>
+        <p>住所</p>
+        <p class="now_address">{{ Address[0][0] }}</p>
+        <input type="checkbox" disabled checked>
         {% else %}
         <p class="now_address" style="color:#f00;">住所が登録されていません</p>
         <form action="/add_address" method="post">
-          <label for="post">郵便番号</label>
-          <input type="text" name="post" pattern="\d{3}-\d{4}" title="正しい郵便番号を入力してください(例: 123-4567)" required>
-          <label for="address">住所</label>
-          <input type="text" name="address" required>
+          <label for="post">郵便番号</label><br>
+          <input type="text" name="post" pattern="\d{3}-\d{4}" title="正しい郵便番号を入力してください(例: 123-4567)" required><br>
+          <label for="address">住所</label><br>
+          <input type="text" name="address" required><br>
           <button type="submit">登録</button>
-          <input type="checkbox" id="Checkbox" disabled>
+          <input type="checkbox" disabled>
         </form>
         {% endif %}
       </div>
@@ -151,33 +153,28 @@
             <input type="hidden" name="status" value="{{ form_data[6] }}">
             <input type="hidden" name="price" value="{{ form_data[7] }}">
             
-            <li><button type="submit" name="sell_action" id="Checkbutton" class="btn05" value="sell" disabled>出品する</button></li>
+            {% if Address != None %}
+            <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
+            {% else %}
+            <li><button type="submit" name="sell_action" class="btn05" value="sell" style="text-decoration: line-through;" disabled>出品する</button></li>
+            {% endif %}
             <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
             <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
           </form>
         </ul>
       </div>
 
-      <script>
-          var checkbox = document.getElementById('Checkbox');
-          var button = document.getElementById('Checkbutton');
-  
-          function handleCheckboxChange() {
-              button.disabled = !checkbox.checked;
-          }
-          checkbox.addEventListener('change', handleCheckboxChange);
-      </script>
-
-
-
+      
+      
+      
     </main>
-
-
+    
+    
     <footer>
       <p class="footer01">#VariaFree</p>
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
-
+    
   </body>
 
 </html>
