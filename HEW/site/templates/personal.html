@@ -19,7 +19,18 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      // 画像をクリックしたときにファイル選択ダイアログを開く
+      function changeProfileImage() {
+          document.getElementById('file-input').click();
+      }
 
+      // ファイルが選択されたときに実行される関数
+      function handleFileSelect() {
+          var fileInput = document.getElementById('file-input');
+          var profileImage = document.getElementById('profile-image');
+      }
+  </script>
   </head>
 
   <body>
@@ -62,13 +73,13 @@
           <li class="nav_title01">商品管理</li>
           <li><a href="favorite.html">いいね一覧</a></li>
           <li><a href="viewlog.html">閲覧履歴</a></li>
-          <li><a href="sell_list.html">出品した商品</a></li>
-          <li><a href="buy_list.html">購入した商品</a></li>
+          <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
+          <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
           <li><a href="saved_search.html">保存した検索条件</a></li>
-          <li><a href="#">下書き一覧</a></li>
+          <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
 
           <li class="nav_title02">設定</li>
-          <li><a href="personal.html">個人情報編集</a></li>
+          <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
           <li><a href="layout.html">レイアウト編集</a></li>
           <li><a href="login.html">ログアウト</a></li>
         </ul>
@@ -81,21 +92,42 @@
 
         <div class="prof-edit">
           <p class="edit-title">プロフィール編集</p>
-          <p class="photo">画像</p>
-          <figure>
-            <img src="../static/images/icon.png">
-          </figure>
-          <p class="txt">ニックネーム</p>
-          <input type="text" class="textbox-001" placeholder="ニックネーム" value="田中正造" />
+          <div class="edit-image">
+            <form action="/change_icon" method="post" enctype="multipart/form-data">
+              <p class="photo">画像</p>
+              <figure>
+                {% if AccountInfo[1] != '未登録' %}
+                <img src="{{ AccountInfo[1] }}" id="profile-image" onclick="changeProfileImage()" alt="プロフィール画像">
+                {% elif AccountInfo[1] == '未登録' %}
+                <img src="static/images/icon/default_icon.png"  id="profile-image" onclick="changeProfileImage()" alt="初期画像">
+                {% endif %}
+                <input type="file" name="icon" id="file-input" style="display:none" accept="image/*" onchange="handleFileSelect()" required>
+              </figure>
+              <button type="submit">変更する</button>
+            </form>
+          </div>
+
+          <div class="edit-nickname">
+            <p class="txt">ニックネーム</p>
+              <form action="/change_username" method="post">
+              <input type="text" class="textbox-001" name="username" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
+              <button type="submit">変更する</button>
+              {% if error %}
+              <p style="color:#f00;">{{ error }}</p>
+              {% endif %}
+            </form>
+          </div>
         </div>
 
 
         <div class="address-edit">
           <p class="edit-title">住所一覧</p>
           <div class="address-box">
-            <p class="address-name">国会議事堂</p>
-            <p class="post-code"><span>&#12306;</span>100-0014</p>
-            <p class="address">東京都 千代田区 永田町1-7-1</p>
+            <p class="address-name">家</p>
+            {% if AddressInfo[0] and AddressInfo[1] %}
+            <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
+            <p class="address">{{ AddressInfo[0] }}</p>
+            {% endif %}
           </div>
           <a href="#">&plus; 新しい住所を登録</a>
         </div>
@@ -105,7 +137,7 @@
           <p class="edit-title">メール・パスワード</p>
 
           <p class="txt">メールアドレス</p>
-          <input type="text" class="textbox-001" placeholder="メールアドレス" value="HalNagoya@gmail.com"/>
+          <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ MailAddress }}"/>
 
           <p class="txt">現在のパスワード</p>
           <input type="text" class="textbox-001" placeholder="現在のパスワード"/>
@@ -120,21 +152,23 @@
 
         <div class="personal-edit">
           <h2>個人情報</h2>
+          {% if AccountInfo[2] and AccountInfo[4] and AccountInfo[5] and AddressInfo[0] %}
           <p class="edit-title">氏名・生年月日・住所</p>
           <p>氏名・生年月日</p>
           <div class="personal-name">
-            <p class="name">姓名</p>
-            <p>（<span class="katakana">セイメイ</span>）</p>
+            <p class="name">{{ AccountInfo[4] }}</p>
+            <p>（<span class="katakana">{{ AccountInfo[5] }}</span>）</p>
           </div>
           <div>
             <p class="year"></p>
             <p class="month"></p>
             <p class="day"></p>
           </div>
-          <p>YYYY/MM/DD</p>
+          <p>{{ AccountInfo[2] }}</p>
 
           <p>現住所</p>
-          <p>東京都</p>
+          <p>{{ AddressInfo[0] }}</p>
+          {% endif %}
         </div>
 
         <div class="gender-edit">
@@ -144,7 +178,7 @@
             <option hidden>選択してください</option>
             <option>男性</option>
             <option>女性</option>
-            <option>カスタム</option>
+            <option>その他</option>
           </select>
         </label>
         </div>
