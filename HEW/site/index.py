@@ -30,10 +30,6 @@ def FavoritePage():
 @app.route('/trend')
 def TrendPage():
     return render_template("trend.html")
-
-@app.route('/personal')
-def PersonalPage():
-    return render_template('personal.html')
 # ------------------------------------------------------------
 
 # /register
@@ -750,7 +746,121 @@ def ChargePage():
         cursor.close()
         conn.close()
         return  redirect(url_for('MyPage'))
+        
+# /personal
+@app.route('/personal')
+def PersonalPage():
+    conn = conn_db()
+    cursor = conn.cursor()
     
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    error = request.args.get('error', None)
+        
+    # アカウントSELECT
+    Account_Select = '''
+    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana
+    FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Account_Select)
+    AccountInfo = list(cursor.fetchone())
+    for i in range(6):
+        if AccountInfo[i] is None:
+            AccountInfo[i] = '未登録'
+    
+    # アドレスSELECT
+    Address_Select = '''
+    SELECT Address, Post
+    FROM Address
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Address_Select)
+    AddressInfo = cursor.fetchone()
+    if AddressInfo is None:
+        AddressInfo = [0,1]
+        AddressInfo[0] = '未登録'
+        AddressInfo[1] = '未登録'
+    
+    # print('アカウント情報',AccountInfo)
+    # print('アドレス情報',AddressInfo)
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, MailAddress=MailAddress, error=error)
+
+# /change_icon
+@app.route('/change_icon', methods=['POST'])
+def ChangeIcon():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        icon = request.files.get('icon')
+
+        upload_path = "static/images/icon/"
+        
+        icon_path =  os.path.join(upload_path, icon.filename)
+        icon.save(icon_path)
+        
+        ProfIMG_Update = '''
+        UPDATE Account
+        SET ProfIMG = '{0}'
+        WHERE AccountID = {1};
+        '''.format(icon_path,AccountID)
+        cursor.execute(ProfIMG_Update)
+    
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
+    
+# /change_username
+@app.route('/change_username', methods=['POST'])
+def ChangeUsername():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+
+        username = request.form['username']
+        
+        # 登録済みユーザーネームSELECT
+        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        cursor.execute(UserName_Select)
+        existing_username = cursor.fetchone()
+        
+        if existing_username:
+            error = '既に登録されたユーザー名です'
+            return redirect(url_for('PersonalPage', error=error))
+        else:
+            Username_Update = '''
+            UPDATE Account
+            SET Username = '{0}'
+            WHERE AccountID = {1};
+            '''.format(username,AccountID)
+    
+# /change_address 
+@app.route('/change_address', methods=['POST'])
+def ChangeAddress():
+    if request.method == 'POST':
+        # DELETE FROM Address WHERE AddressID=23;
+        return redirect(url_for('PersonalPage'))
 # /draft_list
 @app.route('/draft_list')   # 小濱俊史
 def DraftPage():
