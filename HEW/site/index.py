@@ -30,6 +30,10 @@ def FavoritePage():
 @app.route('/trend')
 def TrendPage():
     return render_template("trend.html")
+
+@app.route('/personal')
+def PersonalPage():
+    return render_template('personal.html')
 # ------------------------------------------------------------
 
 # /register
@@ -224,7 +228,9 @@ def SellConfirm():
         # 値段
         price = request.form['price']
         # ========== フォーム ==========
+        
 
+        # ========== 画像処理 ==========
         # 保存先パス
         upload_path = "static/images/sell/"
 
@@ -242,7 +248,8 @@ def SellConfirm():
         else:
             imgs = None
             print('機能:サブ画像が未入力の為ファイルを保存しません')
-        
+        # ========== 画像処理 ==========
+            
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
         form_data = [mainimg_path,imgs,selltit,overview,
                      scategoryid,postage,status,price]
@@ -291,7 +298,6 @@ def Sell():
             sellimgs_sub = None
             print('フォーム:サブ画像が未入力')
             
-            
         # 商品名
         selltit = request.form['selltit']
         
@@ -316,7 +322,6 @@ def Sell():
         
         # アクション
         sell_action = request.form['sell_action']
-        
         # ========== フォーム ==========
             
         # SellのINSERT
@@ -330,7 +335,6 @@ def Sell():
 
         # 下書き
         if sell_action == 'draft':
-
             Draft_Update = '''
             UPDATE Sell
             SET Draft = 0
@@ -700,33 +704,6 @@ def MyPage():
         "mypage.html", proceed=proceed, money=money, 
         UserName=UserName, avg_evalate=avg_evalate
         )
-
-# /add_address
-@app.route('/add_address', methods=['POST'])
-def AddAddress():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-    
-        # セッション取得
-        you_list = session.get('you')
-        if you_list:
-            AccountID, UserName, MailAddress = you_list[0]
-            
-        post = request.form['post']
-        address = request.form['address']
-        
-        Address_Insert = '''
-        INSERT INTO Address(Address, POST, AccountID)
-        VALUE("{0}","{1}",{2})
-        '''.format(address,post,AccountID)
-        cursor.execute(Address_Insert)
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return redirect(url_for('SellPage'))
 
 # /charge
 @app.route('/charge', methods=['POST'])   # 小濱俊史

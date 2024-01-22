@@ -118,23 +118,29 @@
       <div class="address">
         <h6>出品者の住所</h6>
         <p class="title">現在住所</p>
+
         {% if Address != None %}
         <p>郵便番号</p>
         <p class="now_address">{{ Address[0][1] }}</p>
         <p>住所</p>
         <p class="now_address">{{ Address[0][0] }}</p>
         <input type="checkbox" disabled checked>
+
         {% else %}
+
         <p class="now_address" style="color:#f00;">住所が登録されていません</p>
-        <form action="/add_address" method="post">
+        <a href="{{ url_for('PersonalPage') }}" target="_blank">＋住所登録</a>
+
+        <!-- <form action="/add_address" method="post">
           <label for="post">郵便番号</label><br>
           <input type="text" name="post" pattern="\d{3}-\d{4}" title="正しい郵便番号を入力してください(例: 123-4567)" required><br>
           <label for="address">住所</label><br>
           <input type="text" name="address" required><br>
           <button type="submit">登録</button>
-          <input type="checkbox" disabled>
+          <input type="checkbox" disabled> -->
         </form>
         {% endif %}
+
       </div>
 
       <div class="sell">
