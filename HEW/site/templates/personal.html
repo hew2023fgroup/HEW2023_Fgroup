@@ -123,18 +123,26 @@
         <div class="address-edit">
           <p class="edit-title">住所一覧</p>
           <div class="address-box">
+
+            {% if AddressInfo == None %}
+            <p class="address-name">未登録</p>
+            <form action="/add_address" method="post">
+              <input type="text" placeholder="郵便番号" name="post">
+              <input type="text" placeholder="住所" name="address">
+              <button type="submit">追加</button>
+            </form>
+            {% else %}
             <p class="address-name">家</p>
-            {% if AddressInfo[0] and AddressInfo[1] %}
             <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
             <p class="address">{{ AddressInfo[0] }}</p>
             {% endif %}
+
           </div>
-          <a href="#">&plus; 新しい住所を登録</a>
         </div>
 
 
         <div class="mail-edit">
-          <p class="edit-title">メール・パスワード</p>
+          <p class="edit-title" style="text-decoration: line-through;">メール・パスワード</p>
 
           <p class="txt">メールアドレス</p>
           <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ MailAddress }}"/>
@@ -153,7 +161,7 @@
         <div class="personal-edit">
           <h2>個人情報</h2>
           {% if AccountInfo[2] and AccountInfo[4] and AccountInfo[5] and AddressInfo[0] %}
-          <p class="edit-title">氏名・生年月日・住所</p>
+          <p class="edit-title" style="text-decoration: line-through;">氏名・生年月日・住所</p>
           <p>氏名・生年月日</p>
           <div class="personal-name">
             <p class="name">{{ AccountInfo[4] }}</p>
@@ -172,7 +180,7 @@
         </div>
 
         <div class="gender-edit">
-          <p class="edit-title">性別</p>
+          <p class="edit-title" style="text-decoration: line-through;">性別</p>
           <label class="selectbox">
           <select>
             <option hidden>選択してください</option>

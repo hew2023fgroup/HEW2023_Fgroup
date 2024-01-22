@@ -780,10 +780,10 @@ def PersonalPage():
     '''.format(AccountID)
     cursor.execute(Address_Select)
     AddressInfo = cursor.fetchone()
-    if AddressInfo is None:
-        AddressInfo = [0,1]
-        AddressInfo[0] = '未登録'
-        AddressInfo[1] = '未登録'
+    # if AddressInfo is None:
+    #     AddressInfo = [0,1]
+    #     AddressInfo[0] = None
+    #     AddressInfo[1] = None
     
     # print('アカウント情報',AccountInfo)
     # print('アドレス情報',AddressInfo)
@@ -855,12 +855,33 @@ def ChangeUsername():
             WHERE AccountID = {1};
             '''.format(username,AccountID)
     
-# /change_address 
-@app.route('/change_address', methods=['POST'])
-def ChangeAddress():
+# /add_address 
+@app.route('/add_address', methods=['POST'])
+def AddAddress():
     if request.method == 'POST':
-        # DELETE FROM Address WHERE AddressID=23;
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        address = request.form['address']
+        post = request.form['post']
+        
+        Address_Insert = '''
+        INSERT INTO Address(Address, POST, AccountID)
+        VALUE("{0}","{1}",{2})
+        '''.format(address,post,AccountID)
+        cursor.execute(Address_Insert)
+            
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
         return redirect(url_for('PersonalPage'))
+        # DELETE FROM Address WHERE AddressID=23;
     
 # /draft_list
 @app.route('/draft_list')
