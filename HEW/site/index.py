@@ -88,7 +88,7 @@ def InputRegister():
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
 
 # /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
+@app.route('/register/',methods=['POST'])
 def register():
     if request.method == 'POST':
         conn = conn_db()
@@ -112,7 +112,7 @@ def register():
         return render_template("login.html")
    
 # /login/
-@app.route('/login/', methods=['POST']) #小濱俊史
+@app.route('/login/', methods=['POST'])
 def login():
     if request.method == 'POST':
         conn = conn_db()
@@ -161,7 +161,7 @@ def SellPage():
     return render_template("sell.html")
 
 # /sell_confirm
-@app.route('/sell_confirm', methods=['POST'])  #小濱俊史
+@app.route('/sell_confirm', methods=['POST'])
 def SellConfirm():
     if request.method == 'POST':
         conn = conn_db()
@@ -623,7 +623,7 @@ def BuyCompPage(BuyID):
     return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID)
     
 # /evaluate
-@app.route('/evaluate', methods=['POST']) # 小濱俊史
+@app.route('/evaluate', methods=['POST'])
 def Evaluate():
     if request.method == 'POST':
         conn = conn_db()
@@ -647,7 +647,7 @@ def Evaluate():
         return redirect(url_for('IndexPage'))
     
 # /mypage
-@app.route('/mypage')   # 小濱俊史
+@app.route('/mypage')
 def MyPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -702,7 +702,7 @@ def MyPage():
         )
 
 # /charge
-@app.route('/charge', methods=['POST'])   # 小濱俊史
+@app.route('/charge', methods=['POST'])
 def ChargePage():
     if request.method == 'POST':
         conn = conn_db()
@@ -861,8 +861,9 @@ def ChangeAddress():
     if request.method == 'POST':
         # DELETE FROM Address WHERE AddressID=23;
         return redirect(url_for('PersonalPage'))
+    
 # /draft_list
-@app.route('/draft_list')   # 小濱俊史
+@app.route('/draft_list')
 def DraftPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -891,7 +892,7 @@ def DraftPage():
     return render_template('draft_list.html',Drafts=Drafts)
 
 # /sell_list
-@app.route('/sell_list')   # 小濱俊史
+@app.route('/sell_list')
 def SellListPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -920,10 +921,9 @@ def SellListPage():
     return render_template('sell_list.html',Sells=Sells)
 
 # /buy_list
-@app.route('/buy_list')   # 小濱俊史
+@app.route('/buy_list')
 def BuyListPage():
     return render_template('buy_list.html')
-
 
 # 実行
 if __name__ == ("__main__"):
