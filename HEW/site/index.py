@@ -88,7 +88,7 @@ def InputRegister():
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
 
 # /register/
-@app.route('/register/',methods=['POST'])   #小濱俊史
+@app.route('/register/',methods=['POST'])
 def register():
     if request.method == 'POST':
         conn = conn_db()
@@ -112,7 +112,7 @@ def register():
         return render_template("login.html")
    
 # /login/
-@app.route('/login/', methods=['POST']) #小濱俊史
+@app.route('/login/', methods=['POST'])
 def login():
     if request.method == 'POST':
         conn = conn_db()
@@ -161,7 +161,7 @@ def SellPage():
     return render_template("sell.html")
 
 # /sell_confirm
-@app.route('/sell_confirm', methods=['POST'])  #小濱俊史
+@app.route('/sell_confirm', methods=['POST'])
 def SellConfirm():
     if request.method == 'POST':
         conn = conn_db()
@@ -224,7 +224,9 @@ def SellConfirm():
         # 値段
         price = request.form['price']
         # ========== フォーム ==========
+        
 
+        # ========== 画像処理 ==========
         # 保存先パス
         upload_path = "static/images/sell/"
 
@@ -242,7 +244,8 @@ def SellConfirm():
         else:
             imgs = None
             print('機能:サブ画像が未入力の為ファイルを保存しません')
-        
+        # ========== 画像処理 ==========
+            
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
         form_data = [mainimg_path,imgs,selltit,overview,
                      scategoryid,postage,status,price]
@@ -291,7 +294,6 @@ def Sell():
             sellimgs_sub = None
             print('フォーム:サブ画像が未入力')
             
-            
         # 商品名
         selltit = request.form['selltit']
         
@@ -316,7 +318,6 @@ def Sell():
         
         # アクション
         sell_action = request.form['sell_action']
-        
         # ========== フォーム ==========
             
         # SellのINSERT
@@ -330,7 +331,6 @@ def Sell():
 
         # 下書き
         if sell_action == 'draft':
-
             Draft_Update = '''
             UPDATE Sell
             SET Draft = 0
@@ -623,7 +623,7 @@ def BuyCompPage(BuyID):
     return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID)
     
 # /evaluate
-@app.route('/evaluate', methods=['POST']) # 小濱俊史
+@app.route('/evaluate', methods=['POST'])
 def Evaluate():
     if request.method == 'POST':
         conn = conn_db()
@@ -647,7 +647,7 @@ def Evaluate():
         return redirect(url_for('IndexPage'))
     
 # /mypage
-@app.route('/mypage')   # 小濱俊史
+@app.route('/mypage')
 def MyPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -701,31 +701,8 @@ def MyPage():
         UserName=UserName, avg_evalate=avg_evalate
         )
 
-# /add_address
-@app.route('/add_address', methods=['POST'])
-def AddAddress():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-    
-        # セッション取得
-        you_list = session.get('you')
-        if you_list:
-            AccountID, UserName, MailAddress = you_list[0]
-            
-        post = request.form['post']
-        address = request.form['address']
-        
-        Address_Insert = '''
-        INSERT INTO Address(Address, POST, AccountID)
-        VALUE("{0}", "{1}", {2})
-        '''.format(address,post,AccountID)
-        cursor.execute(Address_Insert)
-        
-        return redirect(url_for('SellPage'))
-
 # /charge
-@app.route('/charge', methods=['POST'])   # 小濱俊史
+@app.route('/charge', methods=['POST'])
 def ChargePage():
     if request.method == 'POST':
         conn = conn_db()
@@ -769,9 +746,145 @@ def ChargePage():
         cursor.close()
         conn.close()
         return  redirect(url_for('MyPage'))
+        
+# /personal
+@app.route('/personal')
+def PersonalPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    error = request.args.get('error', None)
+        
+    # アカウントSELECT
+    Account_Select = '''
+    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana
+    FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Account_Select)
+    AccountInfo = list(cursor.fetchone())
+    for i in range(6):
+        if AccountInfo[i] is None:
+            AccountInfo[i] = '未登録'
+    
+    # アドレスSELECT
+    Address_Select = '''
+    SELECT Address, Post
+    FROM Address
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Address_Select)
+    AddressInfo = cursor.fetchone()
+    # if AddressInfo is None:
+    #     AddressInfo = [0,1]
+    #     AddressInfo[0] = None
+    #     AddressInfo[1] = None
+    
+    # print('アカウント情報',AccountInfo)
+    # print('アドレス情報',AddressInfo)
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, MailAddress=MailAddress, error=error)
+
+# /change_icon
+@app.route('/change_icon', methods=['POST'])
+def ChangeIcon():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        icon = request.files.get('icon')
+
+        upload_path = "static/images/icon/"
+        
+        icon_path =  os.path.join(upload_path, icon.filename)
+        icon.save(icon_path)
+        
+        ProfIMG_Update = '''
+        UPDATE Account
+        SET ProfIMG = '{0}'
+        WHERE AccountID = {1};
+        '''.format(icon_path,AccountID)
+        cursor.execute(ProfIMG_Update)
+    
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
+    
+# /change_username
+@app.route('/change_username', methods=['POST'])
+def ChangeUsername():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+
+        username = request.form['username']
+        
+        # 登録済みユーザーネームSELECT
+        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        cursor.execute(UserName_Select)
+        existing_username = cursor.fetchone()
+        
+        if existing_username:
+            error = '既に登録されたユーザー名です'
+            return redirect(url_for('PersonalPage', error=error))
+        else:
+            Username_Update = '''
+            UPDATE Account
+            SET Username = '{0}'
+            WHERE AccountID = {1};
+            '''.format(username,AccountID)
+    
+# /add_address 
+@app.route('/add_address', methods=['POST'])
+def AddAddress():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        address = request.form['address']
+        post = request.form['post']
+        
+        Address_Insert = '''
+        INSERT INTO Address(Address, POST, AccountID)
+        VALUE("{0}","{1}",{2})
+        '''.format(address,post,AccountID)
+        cursor.execute(Address_Insert)
+            
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
+        # DELETE FROM Address WHERE AddressID=23;
     
 # /draft_list
-@app.route('/draft_list')   # 小濱俊史
+@app.route('/draft_list')
 def DraftPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -800,7 +913,7 @@ def DraftPage():
     return render_template('draft_list.html',Drafts=Drafts)
 
 # /sell_list
-@app.route('/sell_list')   # 小濱俊史
+@app.route('/sell_list')
 def SellListPage():
     conn = conn_db()
     cursor = conn.cursor()
@@ -829,10 +942,9 @@ def SellListPage():
     return render_template('sell_list.html',Sells=Sells)
 
 # /buy_list
-@app.route('/buy_list')   # 小濱俊史
+@app.route('/buy_list')
 def BuyListPage():
     return render_template('buy_list.html')
-
 
 # 実行
 if __name__ == ("__main__"):

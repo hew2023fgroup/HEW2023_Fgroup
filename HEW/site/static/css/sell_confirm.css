@@ -159,7 +159,7 @@ h1{
 
 /*                    販売価格                    */
 .price{
-  margin: 20px 0 30px 0;
+  margin: 20px 0 40px 0;
 }
 .price h5{
   position: relative;
@@ -189,6 +189,21 @@ h1{
   text-align: right;
 }
 
+
+
+/*                    出品者の住所                    */
+.address{
+  margin: 20px 0 30px 0;
+}
+.address h6{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.now_address{
+  font-size: 1rem;
+}
 
 
 /*                    h1の下線                    */
@@ -232,6 +247,16 @@ h1{
   left: 0px;
   border-bottom: 1px solid #a9a9a9;
 }
+.address h6::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
 
 
 
@@ -250,7 +275,7 @@ h1{
 .sell ul li{
   margin: 30px 0 30px 0;
 }
-.sell ul li input{
+.sell ul li button{
   display: block;
   width: 400px;
   padding: 10px 0 10px 0;
@@ -258,7 +283,10 @@ h1{
   font-size: 1rem;
   border: 1px solid #a9a9a9;
 }
-.sell ul li input:hover{
+.sell ul li button a{
+  text-decoration: none;
+}
+.sell ul li button:hover{
   opacity: 0.7;
 }
 .btn05{
