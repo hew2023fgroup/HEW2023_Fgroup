@@ -841,20 +841,67 @@ def ChangeUsername():
         username = request.form['username']
         
         # 登録済みユーザーネームSELECT
-        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        UserName_Select = '''
+        SELECT * FROM Account WHERE UserName='{0}';
+        '''.format(username)
         cursor.execute(UserName_Select)
         existing_username = cursor.fetchone()
         
         if existing_username:
-            error = '既に登録されたユーザー名です'
-            return redirect(url_for('PersonalPage', error=error))
+            name_error = '既に登録されたユーザー名です'
+            return redirect(url_for('PersonalPage', name_error=name_error))
         else:
             Username_Update = '''
             UPDATE Account
             SET Username = '{0}'
             WHERE AccountID = {1};
             '''.format(username,AccountID)
-    
+            cursor.execute(Username_Update)
+            
+            session['you']
+        
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PersonalPage'))
+
+# /change_mail
+@app.route('/change_mail', methods=['POST'])
+def ChangeMail():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        mailaddress = request.form['mailaddress']
+        
+        MailAddress_Select = '''
+        SELECT * FROM Account WHERE MailAddress='{0}';
+        '''.format(mailaddress)
+        cursor.execute(MailAddress_Select)
+        existing_mailaddress = cursor.fetchone()
+        
+        if existing_mailaddress:
+            mail_error = '既に登録されたメールアドレスです'
+            return redirect(url_for('PersonalPage', mail_error=mail_error))
+        else:
+            MailAddress_Update = '''
+            UPDATE Account SET MailAddress = '{0}' 
+            WHERE AccountID = {1};
+            '''.format(mailaddress,AccountID)
+            cursor.execute(MailAddress_Update)
+            
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PersonalPage'))
+
 # /add_address 
 @app.route('/add_address', methods=['POST'])
 def AddAddress():

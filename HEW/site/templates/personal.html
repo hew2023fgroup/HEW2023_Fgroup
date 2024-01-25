@@ -103,7 +103,7 @@
                 {% endif %}
                 <input type="file" name="icon" id="file-input" style="display:none" accept="image/*" onchange="handleFileSelect()" required>
               </figure>
-              <button type="submit">変更する</button>
+              <button type="submit">変更</button>
             </form>
           </div>
 
@@ -111,9 +111,9 @@
             <p class="txt">ニックネーム</p>
               <form action="/change_username" method="post">
               <input type="text" class="textbox-001" name="username" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
-              <button type="submit">変更する</button>
-              {% if error %}
-              <p style="color:#f00;">{{ error }}</p>
+              <button type="submit">変更</button>
+              {% if name_error %}
+              <p style="color:#f00;">{{ name_error }}</p>
               {% endif %}
             </form>
           </div>
@@ -144,17 +144,24 @@
         <div class="mail-edit">
           <p class="edit-title" style="text-decoration: line-through;">メール・パスワード</p>
 
-          <p class="txt">メールアドレス</p>
-          <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ MailAddress }}"/>
+          <form action="/change_mail" method="post">
+            <p class="txt">メールアドレス</p>
+            <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ MailAddress }}" name="mailaddress">
+            <button type="submit">変更</button>
+            {% if mail_error %}
+            <p style="color:#f00;">{{ mail_error }}</p>
+            {% endif %}
+          </form>
 
-          <p class="txt">現在のパスワード</p>
-          <input type="text" class="textbox-001" placeholder="現在のパスワード"/>
-
-          <p class="txt">新しいのパスワード</p>
-          <input type="text" class="textbox-001" placeholder="新しいパスワード"/>
-
-          <p class="txt">新しいのパスワード確認</p>
-          <input type="text" class="textbox-001" placeholder="新しいパスワード確認"/>
+          <form action="/change_pass" method="post">
+            <p class="txt">現在のパスワード</p>
+            <input type="text" class="textbox-001" placeholder="現在のパスワード" name="nowpass">
+            <p class="txt">新しいのパスワード</p>
+            <input type="text" class="textbox-001" placeholder="新しいパスワード" name="newpass">
+            <p class="txt">新しいのパスワード確認</p>
+            <input type="text" class="textbox-001" placeholder="新しいパスワード確認" name="renewpass">
+            <button type="submit">変更</button>
+          </form>
         </div>
 
 
@@ -180,15 +187,17 @@
         </div>
 
         <div class="gender-edit">
-          <p class="edit-title" style="text-decoration: line-through;">性別</p>
-          <label class="selectbox">
-          <select>
-            <option hidden>選択してください</option>
-            <option>男性</option>
-            <option>女性</option>
-            <option>その他</option>
-          </select>
-        </label>
+          <form action="/change_sex" method="post">
+            <p class="edit-title" style="text-decoration: line-through;">性別</p>
+            <label class="selectbox">
+              <select id="gender" name="gender">
+              <option hidden>選択してください</option>
+                <option {% if sex == "1" %}selected{% endif %} value="1">男性</option>
+                <option {% if sex == "2" %}selected{% endif %} value="2">女性</option>
+                <option {% if sex == "3" %}selected{% endif %} value="3">秘密</option>
+              </select>
+            </label>
+          </form>
         </div>
 
       </main>
