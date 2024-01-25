@@ -132,7 +132,9 @@
           
           <div class="btn-confirm">
             <a href="{{ url_for('RegistrationPage') }}">戻る</a>
-            <input type="submit" value="登録する" id="btn" {% if error %} disabled {% endif %}>
+            {% if error == None %}
+            <input type="submit" value="登録する" id="btn">
+            {% endif %}
           </div>
           
         </form>
