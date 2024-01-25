@@ -125,18 +125,27 @@
           <div class="address-box">
 
             {% if AddressInfo == None %}
-            <p class="address-name" style="color: #f00;">未登録</p>
+            <p class="address-name" style="color: #f00;">※未登録</p>
             <form action="/add_address" method="post">
               <label for="post">郵便番号</label><br>
               <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
               <label for="address">住所</label><br>
               <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
-              <button type="submit">追加</button>
+              <button type="submit">登録</button>
             </form>
             {% else %}
-            <p class="address-name">家</p>
+            <div  style="background-color: #ccc;">
             <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
             <p class="address">{{ AddressInfo[0] }}</p>
+            </div>
+
+            <form action="/add_address" method="post">
+              <label for="post">郵便番号</label><br>
+              <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+              <label for="address">住所</label><br>
+              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+              <button type="submit">登録</button>
+            </form>
             {% endif %}
 
           </div>
@@ -172,61 +181,47 @@
 
         <div class="personal-edit">
           <h2>個人情報</h2>
-          <p class="edit-title" style="text-decoration: line-through;">氏名・生年月日</p>
+          <p class="edit-title">氏名・生年月日</p>
 
           {% if AccountInfo[4] and AccountInfo[5] != '未登録' %}
           <form action="/change_fullname" method="post">
-            <label for="fullnale">氏名</label><br>
-            <input type="text" class="textbox-001" name="fullname" id="fullname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
-            <label for="address">カタカナ</label><br>
-            <input type="text" class="textbox-001" placeholder="シメイ" name="katakana" name="katakana" value="{{ AccountInfo[5] }}" required><br>
+            <label for="kanjiname">氏名</label><br>
+            <input type="text" class="textbox-001" name="kanjiname" id="kanjiname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
+            <label for="furigana">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="furigana" id="furigana" value="{{ AccountInfo[5] }}" required><br>
             <label for="birthday">生年月日</label><br>
-            <input type="text" class="textbox-001" placeholder="生年月日" name="birthday" name="birthday" value="{{ AccountInfo[2] }}" required>
-            <button type="submit">追加</button>
+            <input type="date" class="textbox-001" placeholder="生年月日" name="birthday" id="birthday" value="{{ AccountInfo[2] }}" required>
+            <button type="submit">変更</button>
           </form>
 
           {% else %}
-          <form action="/add_fullname" method="post">
-            <label for="fullname">氏名</label><br>
-            <input type="text" class="textbox-001" name="fullname" id="fullname" placeholder="氏名" required><br>
-            <label for="address">カタカナ</label><br>
-            <input type="text" class="textbox-001" placeholder="シメイ" name="katakana" name="katakana" required><br>
+          <form action="/change_fullname" method="post">
+            <label for="kanjiname">氏名</label><br>
+            <input type="text" class="textbox-001" name="kanjiname" id="kanjiname" placeholder="氏名" required><br>
+            <label for="furigana">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="furigana" id="furigana" required><br>
             <label for="birthday">生年月日</label><br>
-            <input type="text" class="textbox-001" placeholder="生年月日" name="birthday" name="birthday" required>
-            <button type="submit">追加</button>
+            <input type="date" class="textbox-001" placeholder="生年月日" name="birthday" id="birthday" required>
+            <button type="submit">登録</button>
           </form>
-          {% endif %}
-
-          <p class="edit-title" style="text-decoration: line-through;">住所</p>
-
-          <p>現住所</p>
-          {% if AddressInfo == None %}
-          <p class="address-name" style="color: #f00;">未登録</p>
-          <form action="/add_address" method="post">
-            <label for="post">郵便番号</label><br>
-            <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
-            <label for="address">住所</label><br>
-            <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
-            <button type="submit">追加</button>
-          </form>
-          {% else %}
-          <p class="address-name">家</p>
-          <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
-          <p class="address">{{ AddressInfo[0] }}</p>
           {% endif %}
         </div>
 
         <div class="gender-edit">
+          <p class="edit-title">性別</p>
           <form action="/change_sex" method="post">
-            <p class="edit-title" style="text-decoration: line-through;">性別</p>
             <label class="selectbox">
               <select id="gender" name="gender">
-              <option hidden>選択してください</option>
-                <option {% if sex == "1" %}selected{% endif %} value="1">男性</option>
-                <option {% if sex == "2" %}selected{% endif %} value="2">女性</option>
-                <option {% if sex == "3" %}selected{% endif %} value="3">秘密</option>
+                <option {% if AccountInfo[3] == 1 %}selected{% endif %} value="1">男性</option>
+                <option {% if AccountInfo[3] == 2 %}selected{% endif %} value="2">女性</option>
+                <option {% if AccountInfo[3] == 3 %}selected{% endif %} value="3">秘密</option>
               </select>
             </label>
+            {% if AccountInfo[3] != '未登録' %}
+            <button type="submit">変更</button>
+            {% else %}
+            <button type="submit">登録</button>
+            {% endif %}
           </form>
         </div>
 

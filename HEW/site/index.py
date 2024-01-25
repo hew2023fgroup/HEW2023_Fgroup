@@ -897,6 +897,7 @@ def ChangeMail():
             conn.close()
             return redirect(url_for('PersonalPage'))
 
+# /change_pass
 @app.route('/change_pass', methods=['POST'])
 def ChangePass():
     if request.method == 'POST':
@@ -918,7 +919,6 @@ def ChangePass():
         '''.format(AccountID)
         cursor.execute(Password_Select)
         Password = cursor.fetchone()[0]
-        print('現在の',Password)
         
         
         if nowpass != Password:
@@ -942,6 +942,61 @@ def ChangePass():
             cursor.close()
             conn.close()
             return redirect(url_for('PersonalPage',pass_comp=pass_comp))
+        
+# /change_fullname
+@app.route('/change_fullname', methods=['POST'])
+def ChangeFullname():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        kanjiname = request.form['kanjiname']
+        furigana = request.form['furigana']
+        birthday = request.form['birthday']
+        
+        FullName_Update = '''
+        UPDATE Account
+        SET KanjiName = '{0}', Furigana = '{1}', birthday = '{2}'
+        WHERE AccountID = {3}
+        '''.format(kanjiname,furigana,birthday,AccountID)
+        cursor.execute(FullName_Update)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))     
+       
+# /change_sex
+@app.route('/change_sex', methods=['POST'])
+def ChangeSex():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        sex = int(request.form['gender'])
+        
+        Sex_Update = '''
+        UPDATE Account
+        SET SexID = {0} WHERE AccountID = {1}
+        '''.format(sex,AccountID)
+        cursor.execute(Sex_Update)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
 
 # /add_address 
 @app.route('/add_address', methods=['POST'])
