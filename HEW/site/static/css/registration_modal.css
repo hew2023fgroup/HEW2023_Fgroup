@@ -60,8 +60,6 @@ table tr td{
 .btn-confirm{
   display: flex;
   justify-content: space-between;
-
-  background-color: #ddd;
 }
 .btn-confirm input{
   width: 48%;
