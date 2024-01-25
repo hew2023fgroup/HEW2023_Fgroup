@@ -125,10 +125,12 @@
           <div class="address-box">
 
             {% if AddressInfo == None %}
-            <p class="address-name">未登録</p>
+            <p class="address-name" style="color: #f00;">未登録</p>
             <form action="/add_address" method="post">
-              <input type="text" placeholder="郵便番号" name="post">
-              <input type="text" placeholder="住所" name="address">
+              <label for="post">郵便番号</label><br>
+              <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+              <label for="address">住所</label><br>
+              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
               <button type="submit">追加</button>
             </form>
             {% else %}
@@ -142,11 +144,11 @@
 
 
         <div class="mail-edit">
-          <p class="edit-title" style="text-decoration: line-through;">メール・パスワード</p>
+          <p class="edit-title">メール・パスワード</p>
 
           <form action="/change_mail" method="post">
             <p class="txt">メールアドレス</p>
-            <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ MailAddress }}" name="mailaddress">
+            <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ AccountInfo[6] }}" name="mailaddress">
             <button type="submit">変更</button>
             {% if mail_error %}
             <p style="color:#f00;">{{ mail_error }}</p>
@@ -155,34 +157,62 @@
 
           <form action="/change_pass" method="post">
             <p class="txt">現在のパスワード</p>
-            <input type="text" class="textbox-001" placeholder="現在のパスワード" name="nowpass">
-            <p class="txt">新しいのパスワード</p>
-            <input type="text" class="textbox-001" placeholder="新しいパスワード" name="newpass">
-            <p class="txt">新しいのパスワード確認</p>
-            <input type="text" class="textbox-001" placeholder="新しいパスワード確認" name="renewpass">
+            <input type="password" class="textbox-001" placeholder="現在のパスワード" name="nowpass">
+            <p class="txt">新しいパスワード</p>
+            <input type="password" class="textbox-001" placeholder="新しいパスワード" name="newpass">
+            <p class="txt">新しいパスワード確認</p>
+            <input type="password" class="textbox-001" placeholder="新しいパスワード確認" name="renewpass">
             <button type="submit">変更</button>
+            {% if pass_error %}
+            <p style="color:#f00;">{{ pass_error }}</p>
+            {% endif %}
           </form>
         </div>
 
 
         <div class="personal-edit">
           <h2>個人情報</h2>
-          {% if AccountInfo[2] and AccountInfo[4] and AccountInfo[5] and AddressInfo[0] %}
-          <p class="edit-title" style="text-decoration: line-through;">氏名・生年月日・住所</p>
-          <p>氏名・生年月日</p>
-          <div class="personal-name">
-            <p class="name">{{ AccountInfo[4] }}</p>
-            <p>（<span class="katakana">{{ AccountInfo[5] }}</span>）</p>
-          </div>
-          <div>
-            <p class="year"></p>
-            <p class="month"></p>
-            <p class="day"></p>
-          </div>
-          <p>{{ AccountInfo[2] }}</p>
+          <p class="edit-title" style="text-decoration: line-through;">氏名・生年月日</p>
+
+          {% if AccountInfo[4] and AccountInfo[5] != '未登録' %}
+          <form action="/change_fullname" method="post">
+            <label for="fullnale">氏名</label><br>
+            <input type="text" class="textbox-001" name="fullname" id="fullname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
+            <label for="address">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="katakana" name="katakana" value="{{ AccountInfo[5] }}" required><br>
+            <label for="birthday">生年月日</label><br>
+            <input type="text" class="textbox-001" placeholder="生年月日" name="birthday" name="birthday" value="{{ AccountInfo[2] }}" required>
+            <button type="submit">追加</button>
+          </form>
+
+          {% else %}
+          <form action="/add_fullname" method="post">
+            <label for="fullname">氏名</label><br>
+            <input type="text" class="textbox-001" name="fullname" id="fullname" placeholder="氏名" required><br>
+            <label for="address">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="katakana" name="katakana" required><br>
+            <label for="birthday">生年月日</label><br>
+            <input type="text" class="textbox-001" placeholder="生年月日" name="birthday" name="birthday" required>
+            <button type="submit">追加</button>
+          </form>
+          {% endif %}
+
+          <p class="edit-title" style="text-decoration: line-through;">住所</p>
 
           <p>現住所</p>
-          <p>{{ AddressInfo[0] }}</p>
+          {% if AddressInfo == None %}
+          <p class="address-name" style="color: #f00;">未登録</p>
+          <form action="/add_address" method="post">
+            <label for="post">郵便番号</label><br>
+            <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+            <label for="address">住所</label><br>
+            <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+            <button type="submit">追加</button>
+          </form>
+          {% else %}
+          <p class="address-name">家</p>
+          <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
+          <p class="address">{{ AddressInfo[0] }}</p>
           {% endif %}
         </div>
 
