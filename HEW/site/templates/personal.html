@@ -19,6 +19,7 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+
     <script>
       // 画像をクリックしたときにファイル選択ダイアログを開く
       function changeProfileImage() {
@@ -91,18 +92,26 @@
         <h1>アカウント</h1>
 
         <div class="prof-edit">
+
+          <!-- アイコンをクリックして画像を選択し、変更ボタンを押すとアイコンが変えられる -->
           <p class="edit-title">プロフィール編集</p>
           <div class="edit-image">
             <form action="/change_icon" method="post" enctype="multipart/form-data">
               <p class="photo">画像</p>
-              <figure>
+              <figure id="prof_icon">
                 {% if AccountInfo[1] != '未登録' %}
-                <img src="{{ AccountInfo[1] }}" id="profile-image" onclick="changeProfileImage()" alt="プロフィール画像">
+                <!-- css -->
+                <img src="{{ AccountInfo[1] }}" id="profile-image" onclick="changeProfileImage()" alt="プロフィール画像" 
+                style="opacity: 1; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+
                 {% elif AccountInfo[1] == '未登録' %}
-                <img src="static/images/icon/default_icon.png"  id="profile-image" onclick="changeProfileImage()" alt="初期画像">
+                <!-- css -->
+                <img src="static/images/icon/default_icon.png"  id="profile-image" onclick="changeProfileImage()" alt="初期画像" 
+                style="opacity: 1; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+
                 {% endif %}
                 <input type="file" name="icon" id="file-input" style="display:none" accept="image/*" onchange="handleFileSelect()" required>
-              </figure>
+              </figure>            
               <button type="submit">変更</button>
             </form>
           </div>
@@ -113,6 +122,7 @@
               <input type="text" class="textbox-001" name="username" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
               <button type="submit">変更</button>
               {% if name_error %}
+              <!-- css -->
               <p style="color:#f00;">{{ name_error }}</p>
               {% endif %}
             </form>
@@ -125,6 +135,7 @@
           <div class="address-box">
 
             {% if AddressInfo == None %}
+            <!-- css -->
             <p class="address-name" style="color: #f00;">※未登録</p>
             <form action="/add_address" method="post">
               <label for="post">郵便番号</label><br>
@@ -134,17 +145,25 @@
               <button type="submit">登録</button>
             </form>
             {% else %}
-            <div  style="background-color: #ccc;">
-            <p class="post-code"><span>&#12306;</span>{{ AddressInfo[1] }}</p>
-            <p class="address">{{ AddressInfo[0] }}</p>
+            {% for address, post in AddressInfo %}
+            <!-- css -->
+            <div  style="background-color:#eee; width:450px; padding:5px; margin-bottom:5px;">
+              <form action="/del_address" method="post">
+                <p><span>&#12306;</span>{{ post }}</p>
+                <input type="hidden" value="{{ post }}" name="post">
+                <p>{{ address }}</p>
+                <input type="hidden" value="{{ address }}" name="address">
+                <button type="submit">削除</button>
+              </form>
             </div>
+            {% endfor %}
 
             <form action="/add_address" method="post">
               <label for="post">郵便番号</label><br>
               <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
               <label for="address">住所</label><br>
               <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
-              <button type="submit">登録</button>
+              <button type="submit">追加</button>
             </form>
             {% endif %}
 
@@ -160,6 +179,7 @@
             <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ AccountInfo[6] }}" name="mailaddress">
             <button type="submit">変更</button>
             {% if mail_error %}
+            <!-- css -->
             <p style="color:#f00;">{{ mail_error }}</p>
             {% endif %}
           </form>
@@ -173,6 +193,7 @@
             <input type="password" class="textbox-001" placeholder="新しいパスワード確認" name="renewpass">
             <button type="submit">変更</button>
             {% if pass_error %}
+            <!-- css -->
             <p style="color:#f00;">{{ pass_error }}</p>
             {% endif %}
           </form>

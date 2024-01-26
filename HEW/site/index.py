@@ -781,7 +781,8 @@ def PersonalPage():
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Address_Select)
-    AddressInfo = cursor.fetchone()
+    AddressInfo = cursor.fetchall()
+    print(AddressInfo)
     
     # CLOSE
     conn.commit()
@@ -1018,6 +1019,33 @@ def AddAddress():
         VALUE("{0}","{1}",{2})
         '''.format(address,post,AccountID)
         cursor.execute(Address_Insert)
+            
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
+    
+# /del_address 
+@app.route('/del_address', methods=['POST'])
+def DelAddress():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        address = request.form['address']
+        post = request.form['post']
+        
+        Address_Delete = '''
+        DELETE FROM Address
+        WHERE Address = '{0}' AND POST = '{1}' AND AccountID = {2};
+        '''.format(address,post,AccountID)
+        cursor.execute(Address_Delete)
             
         # CLOSE
         conn.commit()
