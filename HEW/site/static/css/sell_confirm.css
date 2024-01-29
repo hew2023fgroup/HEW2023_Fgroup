@@ -87,7 +87,7 @@ h1{
 .detail ul li{
   list-style: none;
 }
-.detail ul li a{
+.detail ul li p{
   font-size: 0.9rem;
 }
 .selectbox{
