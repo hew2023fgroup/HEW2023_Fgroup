@@ -782,7 +782,6 @@ def PersonalPage():
     '''.format(AccountID)
     cursor.execute(Address_Select)
     AddressInfo = cursor.fetchall()
-    print(AddressInfo)
     
     # CLOSE
     conn.commit()
