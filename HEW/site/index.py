@@ -758,11 +758,13 @@ def PersonalPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
-    error = request.args.get('error', None)
+    name_error = request.args.get('error', None)
+    pass_error = request.args.get('pass_error',None)
+    mail_error = request.args.get('mail_error',None)
         
     # アカウントSELECT
     Account_Select = '''
-    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana
+    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana ,MailAddress
     FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
@@ -779,20 +781,14 @@ def PersonalPage():
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Address_Select)
-    AddressInfo = cursor.fetchone()
-    # if AddressInfo is None:
-    #     AddressInfo = [0,1]
-    #     AddressInfo[0] = None
-    #     AddressInfo[1] = None
-    
-    # print('アカウント情報',AccountInfo)
-    # print('アドレス情報',AddressInfo)
+    AddressInfo = cursor.fetchall()
     
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, MailAddress=MailAddress, error=error)
+    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
+                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, mail_error=mail_error)
 
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
@@ -841,20 +837,167 @@ def ChangeUsername():
         username = request.form['username']
         
         # 登録済みユーザーネームSELECT
-        UserName_Select = "SELECT * FROM Account WHERE UserName='{0}'".format(username)
+        UserName_Select = '''
+        SELECT * FROM Account WHERE UserName='{0}';
+        '''.format(username)
         cursor.execute(UserName_Select)
         existing_username = cursor.fetchone()
         
         if existing_username:
-            error = '既に登録されたユーザー名です'
-            return redirect(url_for('PersonalPage', error=error))
+            name_error = '既に登録されたユーザー名です'
+            return redirect(url_for('PersonalPage', name_error=name_error))
         else:
             Username_Update = '''
             UPDATE Account
             SET Username = '{0}'
             WHERE AccountID = {1};
             '''.format(username,AccountID)
-    
+            cursor.execute(Username_Update)
+            
+        
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PersonalPage'))
+
+# /change_mail
+@app.route('/change_mail', methods=['POST'])
+def ChangeMail():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        mailaddress = request.form['mailaddress']
+        
+        MailAddress_Select = '''
+        SELECT * FROM Account WHERE MailAddress='{0}';
+        '''.format(mailaddress)
+        cursor.execute(MailAddress_Select)
+        existing_mailaddress = cursor.fetchone()
+        
+        if existing_mailaddress:
+            mail_error = '既に登録されたメールアドレスです'
+            return redirect(url_for('PersonalPage', mail_error=mail_error))
+        else:
+            MailAddress_Update = '''
+            UPDATE Account SET MailAddress = '{0}' 
+            WHERE AccountID = {1};
+            '''.format(mailaddress,AccountID)
+            cursor.execute(MailAddress_Update)
+                
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PersonalPage'))
+
+# /change_pass
+@app.route('/change_pass', methods=['POST'])
+def ChangePass():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        nowpass = request.form['nowpass']
+        newpass = request.form['newpass']
+        renewpass = request.form['renewpass']
+        
+        Password_Select ='''
+        SELECT Password FROM Account
+        WHERE AccountID = {0}
+        '''.format(AccountID)
+        cursor.execute(Password_Select)
+        Password = cursor.fetchone()[0]
+        
+        
+        if nowpass != Password:
+            pass_error = '現在のパスワードが一致しません'
+            return redirect(url_for('PersonalPage', pass_error=pass_error))
+        
+        elif newpass != renewpass:
+            pass_error = '新しいパスワードが一致しません'
+            return redirect(url_for('PersonalPage', pass_error=pass_error))
+        
+        else:
+            Password_Update = '''
+            UPDATE Account SET Password = '{0}'
+            WHERE AccountID = {1};
+            '''.format(newpass,AccountID)
+            cursor.execute(Password_Update)
+            pass_comp = 'パスワードが更新されました'
+            
+            # CLOSE
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('PersonalPage',pass_comp=pass_comp))
+        
+# /change_fullname
+@app.route('/change_fullname', methods=['POST'])
+def ChangeFullname():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        kanjiname = request.form['kanjiname']
+        furigana = request.form['furigana']
+        birthday = request.form['birthday']
+        
+        FullName_Update = '''
+        UPDATE Account
+        SET KanjiName = '{0}', Furigana = '{1}', birthday = '{2}'
+        WHERE AccountID = {3}
+        '''.format(kanjiname,furigana,birthday,AccountID)
+        cursor.execute(FullName_Update)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))     
+       
+# /change_sex
+@app.route('/change_sex', methods=['POST'])
+def ChangeSex():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        sex = int(request.form['gender'])
+        
+        Sex_Update = '''
+        UPDATE Account
+        SET SexID = {0} WHERE AccountID = {1}
+        '''.format(sex,AccountID)
+        cursor.execute(Sex_Update)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
+
 # /add_address 
 @app.route('/add_address', methods=['POST'])
 def AddAddress():
@@ -881,7 +1024,33 @@ def AddAddress():
         cursor.close()
         conn.close()
         return redirect(url_for('PersonalPage'))
-        # DELETE FROM Address WHERE AddressID=23;
+    
+# /del_address 
+@app.route('/del_address', methods=['POST'])
+def DelAddress():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        address = request.form['address']
+        post = request.form['post']
+        
+        Address_Delete = '''
+        DELETE FROM Address
+        WHERE Address = '{0}' AND POST = '{1}' AND AccountID = {2};
+        '''.format(address,post,AccountID)
+        cursor.execute(Address_Delete)
+            
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('PersonalPage'))
     
 # /draft_list
 @app.route('/draft_list')
