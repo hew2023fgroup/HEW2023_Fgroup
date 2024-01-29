@@ -20,18 +20,6 @@ def conn_db():
 # セッション鍵
 app.secret_key="abcdefghijklmn"
 
-# RenderTemplate------------------------------------------------------------
-@app.route('/')
-def LoginPage():
-    return render_template("login.html")
-@app.route('/favorite')
-def FavoritePage():
-    return render_template("favorite.html")
-@app.route('/trend')
-def TrendPage():
-    return render_template("trend.html")
-# ------------------------------------------------------------
-
 # /register
 @app.route('/register')
 def RegistrationPage():
@@ -110,6 +98,11 @@ def register():
         cursor.close()
         conn.close()
         return render_template("login.html")
+    
+# /login
+@app.route('/login')
+def LoginPage():
+    return render_template("login.html")
    
 # /login/
 @app.route('/login/', methods=['POST'])
@@ -151,6 +144,12 @@ def login():
             # 失敗
             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
             return render_template("login.html", PassMessage=PassMessage)
+
+# /logout
+@app.route('/logout')
+def Logout():
+    session['you'] = None
+    return redirect(url_for('LoginPage'))
 
 # /sell
 @app.route('/sell')
@@ -252,13 +251,12 @@ def SellConfirm():
         
         # 住所
         Address_Select = '''
-        SELECT Address, Post
+        SELECT AddressID, Address, Post
         FROM Address
         WHERE AccountID = {0};
         '''.format(AccountID)
         cursor.execute(Address_Select)
         Address = cursor.fetchall()
-        print(Address)
         if Address == []:
             Address = None
             
@@ -359,11 +357,25 @@ def Sell():
         conn.close()
         return redirect(url_for('IndexPage'))
 
+# trend
+@app.route('/trend')
+def TrendPage():
+    return render_template("trend.html")
+
 # /index
-@app.route('/index')
+@app.route('/')
 def IndexPage():
+    
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    if you_list == None:
+        return redirect(url_for('LoginPage'))
+    
     conn = conn_db()
     cursor = conn.cursor()
+    
+    
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -700,6 +712,11 @@ def MyPage():
         "mypage.html", proceed=proceed, money=money, 
         UserName=UserName, avg_evalate=avg_evalate
         )
+
+# /favorite
+@app.route('/favorite')
+def FavoritePage():
+    return render_template("favorite.html")
 
 # /charge
 @app.route('/charge', methods=['POST'])
