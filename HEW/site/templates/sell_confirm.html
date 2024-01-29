@@ -19,7 +19,19 @@
     
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-    
+
+    <!-- .css 変えても駄目だった -->
+    <style>
+    .btn05 {
+      background-color: #fff;
+      color: #000;
+    }
+    .true-button {
+      background-color: red;
+      color: #fff;
+    }
+    </style>
+
   </head>
 
   <body>
@@ -115,64 +127,74 @@
         <p class="kibou-price">{{ sell_data[5] }}<span>円</span></p>
       </div>
       
-      <div class="address">
-        <h6>出品者の住所</h6>
-        <p class="title">現在住所</p>
+      <!-- フォーム -->
+      <form method="post" action="/sell/">
+        <div class="address">
+          <h6>出品者の住所</h6>
+          <p class="title">現在住所</p>
 
-        {% if Address != None %}
-        <p>郵便番号</p>
-        <p class="now_address">{{ Address[0][1] }}</p>
-        <p>住所</p>
-        <p class="now_address">{{ Address[0][0] }}</p>
-        <input type="checkbox" disabled checked>
+          {% if Address != None %}
+          <!-- <p>郵便番号</p>
+          <p class="now_address">{{ Address[0][1] }}</p>
+          <p>住所</p>
+          <p class="now_address">{{ Address[0][0] }}</p>
+          <input type="checkbox" disabled checked> -->
 
-        {% else %}
+          <!-- 一覧のラジオボタン表示 -->
+          <fieldset>
+            {% for id, address, post in Address %}
+            <!-- css -->
+            <div  style="background-color:#eee; width:450px; padding:5px; margin-bottom:5px;">
+              <input type="radio" name="sel_addr" id="sel_addr" value="{{ id }}" title="住所を選択してください" required>
+              <label for="sel_addr"><br>
+                <span>&#12306;</span>{{ post }}<br>
+                {{ address }}
+              </label>
+            </div>
+            {% endfor %}
+          </fieldset>
+          {% else %}
 
-        <p class="now_address" style="color:#f00;">住所が登録されていません</p>
-        <a href="{{ url_for('PersonalPage') }}" target="_blank">＋住所登録</a>
+          <!-- css -->
+          <p class="now_address" style="color:#f00;">住所が登録されていません</p>
+          <a href="{{ url_for('PersonalPage') }}" target="_blank">＋住所登録</a>
+          {% endif %}
 
-        <!-- <form action="/add_address" method="post">
-          <label for="post">郵便番号</label><br>
-          <input type="text" name="post" pattern="\d{3}-\d{4}" title="正しい郵便番号を入力してください(例: 123-4567)" required><br>
-          <label for="address">住所</label><br>
-          <input type="text" name="address" required><br>
-          <button type="submit">登録</button>
-          <input type="checkbox" disabled> -->
-        </form>
-        {% endif %}
+        </div>
 
-      </div>
+        <div class="sell">
+          <ul>
+              <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}">
+              {% if form_data[1] != None %}
+                {% for path in form_data[1] %}
+                  <input type="hidden" name="image_paths[]" value="{{ path }}">
+                {% endfor %}
+              {% endif %}
+              <input type="hidden" name="selltit" value="{{ form_data[2] }}">
+              <input type="hidden" name="overview" value="{{ form_data[3] }}">
+              <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
+              <input type="hidden" name="postage" value="{{ form_data[5] }}">
+              <input type="hidden" name="status" value="{{ form_data[6] }}">
+              <input type="hidden" name="price" value="{{ form_data[7] }}">
 
-      <div class="sell">
-        <ul>
-          <form method="post" action="/sell/">
-            <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}">
-            {% if form_data[1] != None %}
-              {% for path in form_data[1] %}
-                <input type="hidden" name="image_paths[]" value="{{ path }}">
-              {% endfor %}
-            {% endif %}
-            <input type="hidden" name="selltit" value="{{ form_data[2] }}">
-            <input type="hidden" name="overview" value="{{ form_data[3] }}">
-            <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
-            <input type="hidden" name="postage" value="{{ form_data[5] }}">
-            <input type="hidden" name="status" value="{{ form_data[6] }}">
-            <input type="hidden" name="price" value="{{ form_data[7] }}">
-            
-            {% if Address != None %}
-            <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
-            {% else %}
-            <li><button type="submit" name="sell_action" class="btn05" value="sell" style="text-decoration: line-through;" disabled>出品する</button></li>
-            {% endif %}
-            <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
-            <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
-          </form>
-        </ul>
-      </div>
+              <!-- {% if Address != None %}
+              <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
+              {% else %}
+              <li><button type="submit" name="sell_action" class="btn05" value="sell" style="background-color: #eee;" disabled>出品する</button></li>
+              {% endif %} -->
+              
+              <!-- 確認用のチェックボックス -->
+              <input type="checkbox" id="confirmation" required>
+              <label for="confirmation">上記の情報を確認しました</label><br>
 
-      
-      
-      
+              <li><button type="submit" id="Button" name="sell_action" class="btn05" value="sell">出品する</button></li>
+
+              <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
+              <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
+            </ul>
+        </div>
+      </form>
+        
     </main>
     
     
@@ -180,7 +202,24 @@
       <p class="footer01">#VariaFree</p>
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var confirmationCheckbox = document.getElementById('confirmation');
+      var sellButton = document.getElementById('Button');
     
+      // チェックボックスの状態が変化したとき
+      function toggleButtonColor() {
+        if (confirmationCheckbox.checked) {
+          sellButton.classList.add('true-button'); // True色へ
+        } else {
+          sellButton.classList.remove('true-button'); // 初期色へ
+        }
+      }
+    
+      confirmationCheckbox.addEventListener('change', toggleButtonColor);
+    });
+    </script>
   </body>
 
 </html>
