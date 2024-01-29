@@ -59,11 +59,12 @@ table tr td{
 
 .btn-confirm{
   display: flex;
-  justify-content: space-between;
-  position: relative;
+  justify-content: center;
+  padding: 0 5px 0 5px;
 }
 .btn-confirm input{
-  width: 48%;
+  margin: 0 0 0 30px;
+  width: 45%;
   line-height: 2.3rem;
   cursor: pointer;
   font-size: 1rem;
@@ -75,7 +76,8 @@ table tr td{
 }
 
 .btn-confirm a{
-  width: 48%;
+  margin: 0 30px 0 0;
+  width: 45%;
   line-height: 3rem;
   cursor: pointer;
   font-size: 1rem;
