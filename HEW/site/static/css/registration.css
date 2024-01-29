@@ -127,9 +127,6 @@ input#password:focus {
   outline: #333333 0.5px solid;
 }
 
-.btn-box{
-/*  text-align: center;*/
-}
 
 .btn-box #openModal{
   width: 100%;

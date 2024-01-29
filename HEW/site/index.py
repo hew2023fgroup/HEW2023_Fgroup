@@ -142,7 +142,7 @@ def login():
             return redirect(url_for('IndexPage'))
         else:
             # 失敗
-            PassMessage = "！！メールアドレスとパスワードが一致しません！！"
+            PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
             return render_template("login.html", PassMessage=PassMessage)
 
 # /logout
