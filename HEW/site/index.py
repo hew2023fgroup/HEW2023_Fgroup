@@ -21,10 +21,14 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # /register
-@app.route('/register', methods=['POST'])
+@app.route('/register')
 def RegistrationPage():
     show_modal = False
-    
+    return render_template("registration.html",show_modal=show_modal)
+
+# /register/
+@app.route('/register/', methods=['POST'])
+def Registration():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -45,8 +49,6 @@ def RegistrationPage():
         cursor.close()
         conn.close()
         return render_template("login.html")
-    
-    return render_template("registration.html",show_modal=show_modal)
 
 # /input
 @app.route('/input', methods=['POST'])
@@ -98,9 +100,13 @@ def InputRegister():
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
     
 # /login
-@app.route('/login', methods=['POST'])
+@app.route('/login')
 def LoginPage():
-    
+    return render_template("login.html")
+
+# /login/
+@app.route('/login/', methods=['POST'])
+def Login():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -137,9 +143,7 @@ def LoginPage():
         else:
             # 失敗
             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
-            return render_template("login.html", PassMessage=PassMessage)
-        
-    return render_template("login.html")
+            return render_template("login.html", PassMessage=PassMessage)  
 
 # /logout
 @app.route('/logout')
