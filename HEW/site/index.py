@@ -747,6 +747,8 @@ def ChargePage():
         cursor.execute(out_sql)
         money = cursor.fetchone()
         money = money[0]
+        if money == None:
+            money = int(0)
         
         charged = int(money) + int(charge)
         
