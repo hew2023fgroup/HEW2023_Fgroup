@@ -550,13 +550,27 @@ def PayPage():
         if Money == None:
             Money = int(0)
         
+        # Price_Select = '''
+        # SELECT Price
+        # FROM Sell
+        # WHERE SellID = {0};
+        # '''.format(SellID)
+        # cursor.execute(Price_Select)
+        # Price = cursor.fetchall()[0][0]
+        
         Price_Select = '''
-        SELECT Price
+        SELECT Sell.Price, Postage.Price
         FROM Sell
-        WHERE SellID = {0};
+        JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Sell.SellID = {0}
         '''.format(SellID)
         cursor.execute(Price_Select)
-        Price = cursor.fetchall()[0][0]
+        # sell_price = cursor.fetchall()[0][0]
+        prices = cursor.fetchall()[0]
+        sell_pri = prices[0]
+        postage_pri = prices[1]
+        Price = int(sell_pri) + int(postage_pri)
+        print(Price)
         
         # 所持金が足りているか
         Balance = int(Money) - int(Price)
