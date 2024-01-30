@@ -26,6 +26,30 @@ def RegistrationPage():
     show_modal = False
     return render_template("registration.html",show_modal=show_modal)
 
+# /register/
+@app.route('/register/', methods=['POST'])
+def Registration():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # メールアドレス未登録のINSERT
+        sql = '''
+        INSERT INTO Account 
+        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
+        '''.format(username, password, email)
+        cursor.execute(sql)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template("login.html")
+
 # /input
 @app.route('/input', methods=['POST'])
 def InputRegister():
@@ -74,39 +98,15 @@ def InputRegister():
             
     
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
-
-# /register/
-@app.route('/register/',methods=['POST'])
-def register():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        
-        # メールアドレス未登録のINSERT
-        sql = '''
-        INSERT INTO Account 
-        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
-        '''.format(username, password, email)
-        cursor.execute(sql)
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template("login.html")
     
 # /login
 @app.route('/login')
 def LoginPage():
     return render_template("login.html")
-   
+
 # /login/
 @app.route('/login/', methods=['POST'])
-def login():
+def Login():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -143,7 +143,7 @@ def login():
         else:
             # 失敗
             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
-            return render_template("login.html", PassMessage=PassMessage)
+            return render_template("login.html", PassMessage=PassMessage)  
 
 # /logout
 @app.route('/logout')
@@ -507,6 +507,10 @@ def Buy():
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
         
+        if Account_Info == []:
+            print('住所が未登録デス')
+            return redirect(url_for('PersonalPage'))
+        
         # 配達時間計算
         CurrentTime = datetime.now()
         FutureTime24 = CurrentTime + timedelta(hours=24)
@@ -543,14 +547,30 @@ def PayPage():
         '''.format(AccountID)
         cursor.execute(Money_Select)
         Money = cursor.fetchall()[0][0]
+        if Money == None:
+            Money = int(0)
+        
+        # Price_Select = '''
+        # SELECT Price
+        # FROM Sell
+        # WHERE SellID = {0};
+        # '''.format(SellID)
+        # cursor.execute(Price_Select)
+        # Price = cursor.fetchall()[0][0]
         
         Price_Select = '''
-        SELECT Price
+        SELECT Sell.Price, Postage.Price
         FROM Sell
-        WHERE SellID = {0};
+        JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Sell.SellID = {0}
         '''.format(SellID)
         cursor.execute(Price_Select)
-        Price = cursor.fetchall()[0][0]
+        # sell_price = cursor.fetchall()[0][0]
+        prices = cursor.fetchall()[0]
+        sell_pri = prices[0]
+        postage_pri = prices[1]
+        Price = int(sell_pri) + int(postage_pri)
+        print(Price)
         
         # 所持金が足りているか
         Balance = int(Money) - int(Price)
@@ -693,6 +713,8 @@ def MyPage():
     '''.format(AccountID)
     cursor.execute(proc_sql)
     proceed = cursor.fetchone()[0]
+    if proceed == None:
+        proceed = int(0)
     
     # 所持金SELECT
     mone_sql = '''
@@ -703,6 +725,8 @@ def MyPage():
     cursor.execute(mone_sql)
     money = cursor.fetchone()
     money = money[0]
+    if money == None:
+        money = int(0)
     
     # CLOSE
     conn.commit()
@@ -741,6 +765,8 @@ def ChargePage():
         cursor.execute(out_sql)
         money = cursor.fetchone()
         money = money[0]
+        if money == None:
+            money = int(0)
         
         charged = int(money) + int(charge)
         
