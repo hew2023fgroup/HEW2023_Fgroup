@@ -140,47 +140,6 @@ def LoginPage():
             return render_template("login.html", PassMessage=PassMessage)
         
     return render_template("login.html")
-   
-# /login/
-# @app.route('/login/', methods=['POST'])
-# def login():
-#     if request.method == 'POST':
-#         conn = conn_db()
-#         cursor = conn.cursor()
-        
-#         email = request.form['email']
-#         password = request.form['password']
-        
-#         # パスワード認証のSELECT
-#         sql = '''
-#         SELECT MailAddress, Password 
-#         FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
-#         '''.format(email, password)
-#         cursor.execute(sql)
-#         user = cursor.fetchone()
-        
-#         # 認証
-#         if user:
-#             # 成功
-#             get = '''
-#             SELECT AccountID, UserName, MailAddress 
-#             FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
-#             '''.format(email, password)
-#             cursor.execute(get)
-#             you = cursor.fetchall()
-            
-#             # セッションへログイン情報を保存
-#             session['you'] = you
-            
-#             # CLOSE
-#             conn.commit()
-#             cursor.close()
-#             conn.close()
-#             return redirect(url_for('IndexPage'))
-#         else:
-#             # 失敗
-#             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
-#             return render_template("login.html", PassMessage=PassMessage)
 
 # /logout
 @app.route('/logout')
