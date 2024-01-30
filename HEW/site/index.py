@@ -21,9 +21,31 @@ def conn_db():
 app.secret_key="abcdefghijklmn"
 
 # /register
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def RegistrationPage():
     show_modal = False
+    
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # メールアドレス未登録のINSERT
+        sql = '''
+        INSERT INTO Account 
+        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
+        '''.format(username, password, email)
+        cursor.execute(sql)
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template("login.html")
+    
     return render_template("registration.html",show_modal=show_modal)
 
 # /input
@@ -74,30 +96,6 @@ def InputRegister():
             
     
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
-
-# /register/
-@app.route('/register/',methods=['POST'])
-def register():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        
-        # メールアドレス未登録のINSERT
-        sql = '''
-        INSERT INTO Account 
-        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
-        '''.format(username, password, email)
-        cursor.execute(sql)
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template("login.html")
     
 # /login
 @app.route('/login')
