@@ -550,14 +550,6 @@ def PayPage():
         if Money == None:
             Money = int(0)
         
-        # Price_Select = '''
-        # SELECT Price
-        # FROM Sell
-        # WHERE SellID = {0};
-        # '''.format(SellID)
-        # cursor.execute(Price_Select)
-        # Price = cursor.fetchall()[0][0]
-        
         Price_Select = '''
         SELECT Sell.Price, Postage.Price
         FROM Sell
@@ -1157,6 +1149,102 @@ def SellListPage():
 @app.route('/buy_list')
 def BuyListPage():
     return render_template('buy_list.html')
+
+
+# /DB_
+@app.route('/DB_Account')
+def DB_Account():
+    return render_template('DB_Account.html')
+
+# /DB_Sex
+@app.route('/DB_Sex')
+def DB_Sex():
+    return render_template('DB_Sex.html')
+
+# /DB_
+@app.route('/DB_Address')
+def DB_Address():
+    return render_template('DB_Address.html')
+
+# /DB_
+@app.route('/DB_Sell')
+def DB_Sell():
+    return render_template('DB_Sell.html')
+
+# /DB_
+@app.route('/DB_SellIMG')
+def DB_SellIMG():
+    return render_template('DB_SellIMG.html')
+
+# /DB_
+@app.route('/DB_Status')
+def DB_Status():
+    return render_template('DB_Status.html')
+
+# /DB_
+@app.route('/DB_Mcategory')
+def DB_Mcategory():
+    return render_template('DB_Mcategory.html')
+
+# /DB_
+@app.route('/DB_Scategory')
+def DB_Scategory():
+    return render_template('DB_Scategory.html')
+
+# /DB_
+@app.route('/DB_Tag')
+def DB_Tag():
+    return render_template('DB_Tag.html')
+
+# /DB_
+@app.route('/DB_Buy')
+def DB_Buy():
+    return render_template('DB_Buy.html')
+
+# /DB_
+@app.route('/DB_Nice')
+def DB_Nice():
+    return render_template('DB_Nice.html')
+
+# /DB_
+@app.route('/DB_View')
+def DB_View():
+    return render_template('DB_View.html')
+
+# /DB_
+@app.route('/DB_Chat')
+def DB_Chat():
+    return render_template('DB_Chat.html')
+
+# /DB_
+@app.route('/DB_Tax')
+def DB_Tax():
+    return render_template('DB_Tax.html')
+
+# /DB_
+@app.route('/DB_Postage')
+def DB_Postage():
+    return render_template('DB_Postage.html')
+
+# /DB_
+@app.route('/DB_Reply')
+def DB_Reply():
+    return render_template('DB_Reply.html')
+
+# /DB_
+@app.route('/DB_Layout')
+def DB_Layout():
+    return render_template('DB_Layout.html')
+
+# /DB_
+@app.route('/DB_Numerical')
+def DB_Numerical():
+    return render_template('DB_Numerical.html')
+
+# /DB_
+@app.route('/DB_Search')
+def DB_Search():
+    return render_template('DB_Search.html')
 
 # 実行
 if __name__ == ("__main__"):
