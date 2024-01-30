@@ -507,6 +507,10 @@ def Buy():
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
         
+        if Account_Info == []:
+            print('住所が未登録デス')
+            return redirect(url_for('PersonalPage'))
+        
         # 配達時間計算
         CurrentTime = datetime.now()
         FutureTime24 = CurrentTime + timedelta(hours=24)
