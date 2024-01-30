@@ -543,6 +543,8 @@ def PayPage():
         '''.format(AccountID)
         cursor.execute(Money_Select)
         Money = cursor.fetchall()[0][0]
+        if Money == None:
+            Money = int(0)
         
         Price_Select = '''
         SELECT Price
@@ -693,6 +695,8 @@ def MyPage():
     '''.format(AccountID)
     cursor.execute(proc_sql)
     proceed = cursor.fetchone()[0]
+    if proceed == None:
+        proceed = int(0)
     
     # 所持金SELECT
     mone_sql = '''
@@ -703,6 +707,8 @@ def MyPage():
     cursor.execute(mone_sql)
     money = cursor.fetchone()
     money = money[0]
+    if money == None:
+        money = int(0)
     
     # CLOSE
     conn.commit()
