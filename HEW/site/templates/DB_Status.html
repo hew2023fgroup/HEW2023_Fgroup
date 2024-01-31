@@ -54,7 +54,7 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Status</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
             <table>
@@ -62,6 +62,16 @@
                   <th>StatusID</th>
                   <th>Name</th>
                 </tr>
+
+                {% for row in Account %}
+                <form action="/delete" method="post">
+                  <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+                </form>
+                {% endfor %}
+                  
+                <form action="/add_row" method="post">
+                  <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+                </form>
     
                 <tr>
                   <td><input type="text" name="StatusID" id="" class="size-input-StatusID"></td>

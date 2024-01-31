@@ -54,7 +54,7 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Address</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
           <table>
@@ -65,16 +65,28 @@
               <th>AccountID</th>
             </tr>
 
-            <tr>
-              <td><input type="text" name="AddressID" id="AddressID" class="size-input-AddressID"></td>
-              <td><input type="text" name="Address" id="Address" class="size-input-Address"></td>
-              <td><input type="text" name="POST" id="POST" class="size-input-POST" maxlength="8"></td>
-              <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
-              <td><button class="remove">-</button></td>
-            </tr>
-
-          </table>
-          <button id="addRow">+ 追加</button>
+            {% for row in Account %}
+            <form action="/delete" method="post">
+              <tr>
+                <td><input type="text" name="AddressID" id="AddressID" class="size-input-AddressID"></td>
+                <td><input type="text" name="Address" id="Address" class="size-input-Address"></td>
+                <td><input type="text" name="POST" id="POST" class="size-input-POST" maxlength="8"></td>
+                <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+                <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+              </tr>
+            </form>
+            {% endfor %}
+              
+            <form action="/add_row" method="post">
+                <tr>
+                  <td><input type="text" name="AddressID" id="AddressID" class="size-input-AddressID"></td>
+                  <td><input type="text" name="Address" id="Address" class="size-input-Address"></td>
+                  <td><input type="text" name="POST" id="POST" class="size-input-POST" maxlength="8"></td>
+                  <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+                </tr>
+              </table>
+              <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+            </form>
 
         </div>
 

@@ -54,30 +54,44 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Buy</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
           <table>
             <tr>
-                <th>ChatID</th>
-                <th>AccountID</th>
-                <th>SellID</th>
-                <th>Content</th>
-                <th>Datetime</th>
+              <th>ChatID</th>
+              <th>AccountID</th>
+              <th>SellID</th>
+              <th>Content</th>
+              <th>Datetime</th>
             </tr>
-  
-            <tr>
+
+            {% for row in Account %}
+            <form action="/delete" method="post">
+              <tr>
                 <td><input type="text" name="ChatID" id="" class="size-input-ChatID"></td>
                 <td><input type="text" name="AccountID" id="" class="size-input-AccountID"></td>
                 <td><input type="text" name="SellID" id="" class="size-input-SellID"></td>
                 <td><input type="text" name="Content" id="" class="size-input-Content"></td>
                 <td><input type="text" name="Datetime" id="" class="size-input-Datetime"></td>
-                <td><button class="remove">-</button></td>
-            </tr>
-
-          </table>
-          <button id="addRow">+ 追加</button>
-
+                <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+              </tr>
+              <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+            </form>
+            {% endfor %}
+              
+            <form action="/add_row" method="post">
+                <tr>
+                  <td><input type="text" name="ChatID" id="" class="size-input-ChatID"></td>
+                  <td><input type="text" name="AccountID" id="" class="size-input-AccountID"></td>
+                  <td><input type="text" name="SellID" id="" class="size-input-SellID"></td>
+                  <td><input type="text" name="Content" id="" class="size-input-Content"></td>
+                  <td><input type="text" name="Datetime" id="" class="size-input-Datetime"></td>
+                  <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+                </tr>
+                <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+              </table>
+            </form>
         </div>
 
       </div>
