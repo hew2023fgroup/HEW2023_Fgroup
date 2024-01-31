@@ -31,6 +31,7 @@
         <h2>テーブル一覧</h2>
 
         <ul>
+          <!-- url修正 -->
           <li><a href="{{ url_for('DB_Account') }}">Account</a></li>
           <li><a href="{{ url_for('DB_Sex') }}">Sex</a></li>
           <li><a href="{{ url_for('DB_Address') }}">Addess</a></li>
@@ -54,6 +55,7 @@
       </div>
 
       <div id="wrap_right">
+        <!-- テーブル名 -->
         <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
@@ -72,42 +74,51 @@
               <th>Money</th>
             </tr>
 
+            <!-- for文 -->
             {% for row in Account %}
+            <!-- アクション -->
             <form action="/delete" method="post">
               <tr>
+                <!-- 非表示のテーブル名input -->
                 <input type="hidden" name="TableName" value="{{ TableName }}">
-                <td><input type="text" name="TableID"   id="AccountID"   class="size-input-AccountID" value="{{ row[0] }}"></td>
-                <td><input type="text" name="UserName"    id="UserName"    class="size-input-UserName"  value="{{ row[1] }}"></td>
-                <td><input type="text" name="Password"    id="Password"    class="size-input-Pass"      value="{{ row[2] }}"></td>
-                <td><input type="text" name="ProfIMG"     id="ProfIMG"     class="size-input-ProfIMG"   value="{{ row[3] }}"></td>
-                <td><input type="text" name="Birthday"    id="Birthday"    class="size-input-Birth"     value="{{ row[4] }}" maxlength="8"></td>
-                <td><input type="text" name="SexID"       id="SexID"       class="size-input-SexID"     value="{{ row[5] }}"></td>
-                <td><input type="text" name="MailAddress" id="MailAddress" class="size-input-Mail"      value="{{ row[6] }}"></td>
-                <td><input type="text" name="KanjiName"   id="KanjiName"   class="size-input-KanjiName" value="{{ row[7] }}"></td>
-                <td><input type="text" name="Furigana"    id="Furigana"    class="size-input-Furigana"  value="{{ row[8] }}"></td>
-                <td><input type="text" name="RegistDate"  id="RegistDate"  class="size-input-Regist"    value="{{ row[9] }}"></td>
-                <td><input type="text" name="Money"       id="Money"       class="size-input-Money"     value="{{ row[10] }}"></td>
+                <!-- 非編集 -->
+                <td><input type="text" name="TableID"     id="AccountID"   class="size-input-AccountID" value="{{ row[0] }}"  readonly></td>
+                <td><input type="text" name="UsNa"        id="UserName"    class="size-input-UserName"  value="{{ row[1] }}"  readonly></td>
+                <td><input type="text" name="Password"    id="Password"    class="size-input-Pass"      value="{{ row[2] }}"  readonly></td>
+                <td><input type="text" name="ProfIMG"     id="ProfIMG"     class="size-input-ProfIMG"   value="{{ row[3] }}"  readonly></td>
+                <td><input type="text" name="Birthday"    id="Birthday"    class="size-input-Birth"     value="{{ row[4] }}"  readonly></td>
+                <td><input type="text" name="SexID"       id="SexID"       class="size-input-SexID"     value="{{ row[5] }}"  readonly></td>
+                <td><input type="text" name="MaAd"        id="MailAddress" class="size-input-Mail"      value="{{ row[6] }}"  readonly></td>
+                <td><input type="text" name="KanjiName"   id="KanjiName"   class="size-input-KanjiName" value="{{ row[7] }}"  readonly></td>
+                <td><input type="text" name="Furigana"    id="Furigana"    class="size-input-Furigana"  value="{{ row[8] }}"  readonly></td>
+                <td><input type="text" name="RegistDate"  id="RegistDate"  class="size-input-Regist"    value="{{ row[9] }}"  readonly></td>
+                <td><input type="text" name="Money"       id="Money"       class="size-input-Money"     value="{{ row[10] }}" readonly></td>
+                <!-- 削除ボタン -->
                 <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
               </tr>
             </form>
             {% endfor %}
             
-          <form action="/add_row" method="post">
+          <!-- アクション -->
+          <form action="/insert" method="post">
               <tr>
-                <td><input type="text" name="TableID"     id="AccountID"   class="size-input-AccountID"></td>
-                <td><input type="text" name="UserName"    id="UserName"    class="size-input-UserName"></td>
-                <td><input type="text" name="Password"    id="Password"    class="size-input-Pass"></td>
-                <td><input type="text" name="ProfIMG"     id="ProfIMG"     class="size-input-ProfIMG"></td>
-                <td><input type="text" name="Birthday"    id="Birthday"    class="size-input-Birth" maxlength="8"></td>
-                <td><input type="text" name="SexID"       id="SexID"       class="size-input-SexID"></td>
-                <td><input type="text" name="MailAddress" id="MailAddress" class="size-input-Mail"></td>
-                <td><input type="text" name="KanjiName"   id="KanjiName"   class="size-input-KanjiName"></td>
-                <td><input type="text" name="Furigana"    id="Furigana"    class="size-input-Furigana"></td>
-                <td><input type="text" name="RegistDate"  id="RegistDate"  class="size-input-Regist"></td>
-                <td><input type="text" name="Money"       id="Money"       class="size-input-Money"></td>
-                <td><button type="submit" class="remove" name="action" value="relete">-</button></td>
+                <!-- 非表示のテーブル名input -->
+                <input type="hidden" name="TableName" value="{{ TableName }}">
+                <!-- 入力項目 -->
+                <td><input type="text"   name="TableID"     id="AccountID"   class="size-input-AccountID" placeholder="自動入力" readonly></td>
+                <td><input type="text"   name="UsNa"        id="UserName"    class="size-input-UserName"  placeholder="ユーザー名" required></td>
+                <td><input type="text"   name="Password"    id="Password"    class="size-input-Pass"      placeholder="パスワード" required></td>
+                <td><input type="text"   name="ProfIMG"     id="ProfIMG"     class="size-input-ProfIMG"   placeholder="static/images/icon/" value="static/images/icon/" pattern="static/images/icon/.+" required></td>
+                <td><input type="text"   name="Birthday"    id="Birthday"    class="size-input-Birth"     placeholder="yyyy-mm-dd" pattern="\d{4}-\d{2}-\d{2}" required></td>
+                <td><input type="text"   name="SexID"       id="SexID"       class="size-input-SexID"     placeholder="1~3" pattern="[1-3]" required></td>
+                <td><input type="email"  name="MaAd"        id="MailAddress" class="size-input-Mail"      placeholder="メアド"></td>
+                <td><input type="text"   name="KanjiName"   id="KanjiName"   class="size-input-KanjiName" placeholder="漢字名" required></td>
+                <td><input type="text"   name="Furigana"    id="Furigana"    class="size-input-Furigana"  placeholder="カタカナナマエ" required></td>
+                <td><input type="text"   name="RegistDate"  id="RegistDate"  class="size-input-Regist"    placeholder="自動入力" readonly></td>
+                <td><input type="number" name="Money"       id="Money"       class="size-input-Money"     placeholder="所持金" required></td>
               </tr>
             </table>
+            <!-- 追加ボタン -->
             <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
           </form>
           
@@ -120,6 +131,7 @@
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!-- コメントアウト -->
 <!-- <script src="{{ url_for('static', filename='js/Account.js') }}"></script> -->
 
 </html>

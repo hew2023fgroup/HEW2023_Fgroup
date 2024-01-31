@@ -1156,17 +1156,42 @@ def DB_Inset():
     conn = conn_db()
     cursor = conn.cursor()
     
-    if request.method == 'GET':
-        TableName = request.args.get('TableName')
     if request.method == 'POST':
+        TableName = request.form['TableName']
         btn_value = request.form['action']
         
+        if TableName == 'Account':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "UserName": request.form['UsNa'],
+                "Password": request.form['Password'],
+                "ProfIMG": request.form['ProfIMG'],
+                "Birthday": request.form['Birthday'],
+                "SexID": request.form['SexID'],
+                "MailAddress": request.form['MaAd'],
+                "KanjiName": request.form['KanjiName'],
+                "Furigana": request.form['Furigana'],
+                # "RegistDate": request.form['RegistDate'],
+                "Money": request.form['Money']
+            }
+            # 辞書型のキー
+            RowNames = ', '.join(inputs.keys())
+            # 辞書型のデータ × length
+            RowDatas = ', '.join(['%s'] * len(inputs))
+            
         if btn_value == 'insert':
+            Row_Insert = '''
+            INSERT INTO {0} ({1}) VALUES ({2});
+            '''.format(TableName,RowNames,RowDatas)
+            #                          ↓ RowDatas 
+            cursor.execute(Row_Insert, list(inputs.values()))
+            print('実行:',Row_Insert)
+            conn.commit()
             cursor.close()
             conn.close()
-            return 'Button 2 was clicked'
+            return redirect(url_for('DB_' + TableName))
             
-# /remove
+# /delete
 @app.route('/delete', methods=['GET', 'POST'])
 def DB_Delete():
     conn = conn_db()
@@ -1181,8 +1206,7 @@ def DB_Delete():
             
             # 外部キー
             if TableName == 'Account':
-                # Accountと関連するすべてのテーブルから行を削除する
-                delete_query = '''
+                del_query = '''
                 DELETE Account, Address, Numerical, Search, Nice, View, Chat, Sell, Buy
                 FROM Account
                 LEFT JOIN Address ON Account.AccountID = Address.AccountID
@@ -1195,7 +1219,8 @@ def DB_Delete():
                 LEFT JOIN Buy ON Account.AccountID = Buy.AccountID
                 WHERE Account.AccountID = {0}
                 '''.format(TableID)
-                cursor.execute(delete_query)
+                cursor.execute(del_query)
+                print('実行:',del_query)
                 conn.commit()
 
             # 主キー
@@ -1203,7 +1228,7 @@ def DB_Delete():
             DELETE FROM {0} WHERE {0}ID = {1};
             '''.format(TableName,TableID)
             cursor.execute(Row_Delete)
-            print(Row_Delete)
+            print('実行:',Row_Delete)
             conn.commit()
             cursor.close()
             conn.close()
