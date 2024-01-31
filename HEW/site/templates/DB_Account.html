@@ -54,7 +54,7 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Account</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
           <table>
@@ -73,25 +73,28 @@
             </tr>
 
             {% for row in Account %}
-            <tr>
-              <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID" value="{{ row[0] }}"></td>
-              <td><input type="text" name="UserName" id="UserName" class="size-input-UserName" value="{{ row[1] }}"></td>
-              <td><input type="text" name="Password" id="Password" class="size-input-Pass" value="{{ row[2] }}"></td>
-              <td><input type="text" name="ProfIMG" id="ProfIMG" class="size-input-ProfIMG" value="{{ row[3] }}"></td>
-              <td><input type="text" name="Birthday" id="Birthday" class="size-input-Birth" maxlength="8" value="{{ row[4] }}"></td>
-              <td><input type="text" name="SexID" id="SexID" class="size-input-SexID" value="{{ row[5] }}"></td>
-              <td><input type="text" name="MailAddress" id="MailAddress" class="size-input-Mail" value="{{ row[6] }}"></td>
-              <td><input type="text" name="KanjiName" id="KanjiName" class="size-input-KanjiName" value="{{ row[7] }}"></td>
-              <td><input type="text" name="Furigana" id="Furigana" class="size-input-Furigana" value="{{ row[8] }}"></td>
-              <td><input type="text" name="RegistDate" id="RegistDate" class="size-input-Regist" value="{{ row[9] }}"></td>
-              <td><input type="text" name="Money" id="Money"  class="size-input-Money" value="{{ row[10] }}"></td>
-              <td><button class="remove">-</button></td>
-            </tr>
+            <form action="/delete" method="post">
+              <tr>
+                <input type="hidden" name="TableName" value="{{ TableName }}">
+                <td><input type="text" name="TableID"   id="AccountID"   class="size-input-AccountID" value="{{ row[0] }}"></td>
+                <td><input type="text" name="UserName"    id="UserName"    class="size-input-UserName"  value="{{ row[1] }}"></td>
+                <td><input type="text" name="Password"    id="Password"    class="size-input-Pass"      value="{{ row[2] }}"></td>
+                <td><input type="text" name="ProfIMG"     id="ProfIMG"     class="size-input-ProfIMG"   value="{{ row[3] }}"></td>
+                <td><input type="text" name="Birthday"    id="Birthday"    class="size-input-Birth"     value="{{ row[4] }}" maxlength="8"></td>
+                <td><input type="text" name="SexID"       id="SexID"       class="size-input-SexID"     value="{{ row[5] }}"></td>
+                <td><input type="text" name="MailAddress" id="MailAddress" class="size-input-Mail"      value="{{ row[6] }}"></td>
+                <td><input type="text" name="KanjiName"   id="KanjiName"   class="size-input-KanjiName" value="{{ row[7] }}"></td>
+                <td><input type="text" name="Furigana"    id="Furigana"    class="size-input-Furigana"  value="{{ row[8] }}"></td>
+                <td><input type="text" name="RegistDate"  id="RegistDate"  class="size-input-Regist"    value="{{ row[9] }}"></td>
+                <td><input type="text" name="Money"       id="Money"       class="size-input-Money"     value="{{ row[10] }}"></td>
+                <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+              </tr>
+            </form>
             {% endfor %}
             
-            <form action="/add_row" method="post">
+          <form action="/add_row" method="post">
               <tr>
-                <td><input type="text" name="AccountID" id="AccountID" class="size-input-AccountID"></td>
+                <td><input type="text" name="TableID" id="AccountID" class="size-input-AccountID"></td>
                 <td><input type="text" name="UserName" id="UserName" class="size-input-UserName"></td>
                 <td><input type="text" name="Password" id="Password" class="size-input-Pass"></td>
                 <td><input type="text" name="ProfIMG" id="ProfIMG" class="size-input-ProfIMG"></td>
@@ -102,12 +105,12 @@
                 <td><input type="text" name="Furigana" id="Furigana" class="size-input-Furigana"></td>
                 <td><input type="text" name="RegistDate" id="RegistDate" class="size-input-Regist"></td>
                 <td><input type="text" name="Money" id="Money"  class="size-input-Money"></td>
-                <td><button class="remove">-</button></td>
+                <td><button type="submit" class="remove" name="action" value="relete">-</button></td>
               </tr>
-            </form>
-            
-          </table>
-          <button id="addRow">+ 追加</button>
+              
+            </table>
+            <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+          </form>
           
         </div>
         
@@ -118,6 +121,6 @@
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ url_for('static', filename='js/Account.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/Account.js') }}"></script> -->
 
 </html>
