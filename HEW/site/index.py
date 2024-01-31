@@ -506,6 +506,10 @@ def Buy():
         '''.format(AccountID)
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
+        print(Account_Info)
+        value = len(Account_Info)
+        
+        
         
         if Account_Info == []:
             print('住所が未登録デス')
@@ -520,9 +524,9 @@ def Buy():
         After48H = FutureTime48.strftime('%Y年%m月%d日')
 
         return render_template(
-            'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info[0], 
+            'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info, 
             UserName=UserName, Total_Price=Total_Price, SellID=SellID, After48H=After48H,
-            After24H=After24H,
+            After24H=After24H
             )
 
 # /pay
