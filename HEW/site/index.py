@@ -1151,10 +1151,20 @@ def BuyListPage():
     return render_template('buy_list.html')
 
 
-# /DB_
+# /DB_Account
 @app.route('/DB_Account')
 def DB_Account():
-    return render_template('DB_Account.html')
+    try:
+        conn = conn_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Account")
+        Account = cursor.fetchall()
+    except Exception as e:
+        return str(e)
+    finally:
+        cursor.close()
+        conn.close()
+        return render_template('DB_Account.html', Account=Account)
 
 # /DB_Sex
 @app.route('/DB_Sex')
