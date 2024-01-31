@@ -77,7 +77,8 @@
             </figure>
             <div class="aaaaa">
               <div class="product-ex">
-                <p>{{ Sell_Info[1] }} <br>{{ Sell_Info[2] }}</p>
+                {{ Sell_Info[1] }}</p>
+                <!-- <p>{{ Sell_Info[2] }} -->
               </div>
             </div>
           </div>
@@ -92,20 +93,14 @@
               <div class="custom-box">
                 <p class="custom-Name">{{ UserName }}<span>様</span></p>
                 <div class="custom-address">
-                  <p class="post-Code"><span>&#12306;</span>{{ Account_Info[1] }}</p>
-                  <p>{{ Account_Info[0] }}</p>
+                  <select name="Address" id="Address">
+                    {% for address, postal_code in Account_Info %}
+                    <option value="{{ loop.index }}">{{ address }}   {{ postal_code }}</option>
+                    {% endfor %}
+                  </select>
                 </div>
-                <p>0643230751</p>
               </div>
             </div>
-
-            <form>
-              <div class="change-btn-box">
-                <div class="change-btn">
-                  <input type="submit" value="変更" id="btn">
-                </div>
-              </div>
-            </form>
           </div>
 
 
