@@ -1243,6 +1243,13 @@ def DB_Inset():
                 # "Datetime": request.form['Datetime']
             }
             
+        elif TableName == 'Scategory':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Name": request.form['Name'],
+                "McategoryID": request.form['McategoryID']
+            }
+            
         # テンプレ
         elif TableName == '':
             inputs = {
