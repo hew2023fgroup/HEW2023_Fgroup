@@ -1228,10 +1228,25 @@ def DB_Inset():
                 "AccountID": request.form['AcID']
             }
             
+        elif TableName == 'Postage':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Size": request.form['Size'],
+                "Price": request.form['Price'],
+            }
+            
+        elif TableName == 'Reply':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "ChatID": request.form['ChatID'],
+                "Content": request.form['Content']
+                # "Datetime": request.form['Datetime']
+            }
+            
         # テンプレ
         elif TableName == '':
             inputs = {
-                # "": request.form[''],
+                "TableID": request.form['TableID'],
             }
         
         else:
