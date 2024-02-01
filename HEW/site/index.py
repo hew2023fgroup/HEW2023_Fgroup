@@ -1194,13 +1194,46 @@ def DB_Inset():
             
         elif TableName == 'Chat':
             inputs = {
-                # "TableID":request.form['TableID'],
-                "AccountID":request.form['AcID'],
-                "SellID":request.form['SellID'],
-                "Content":request.form['Content']
-                # "Datetime":request.form['Datetime']
+                # "TableID": request.form['TableID'],
+                "AccountID": request.form['AcID'],
+                "SellID": request.form['SellID'],
+                "Content": request.form['Content']
+                # "Datetime": request.form['Datetime']
+            }
+        
+        elif TableName == 'Layout':
+            inputs = {
+                # "TableID": request.form['TableName'],
+                "Name": request.form['Name']
+            }
+        
+        elif TableName == 'Mcategory':
+            inputs = {
+                # "McategoryID": request.form['TableID'],
+                "Name": request.form['Name']
             }
             
+        elif TableName == 'Nice':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "AccountID": request.form['AcID'],
+                "SellID": request.form['SellID']
+            }
+            
+        elif TableName == 'Numerical':
+            inputs = {
+                # "tableIDID": request.form['TableID'],
+                "Numerical": request.form['Numerical'],
+                "LayoutID": request.form['LayoutID'],
+                "AccountID": request.form['AcID']
+            }
+            
+        # テンプレ
+        elif TableName == '':
+            inputs = {
+                # "": request.form[''],
+            }
+        
         else:
             return '予期しない TableName'
             
@@ -1292,7 +1325,7 @@ def DB_Sex():
         conn.close()
         return render_template('DB_Sex.html', Sex=Sex,TableName=TableName)
 
-# /DB_
+# /DB_Address
 @app.route('/DB_Address', methods=['GET', 'POST'])
 def DB_Address():
         conn = conn_db()
@@ -1305,7 +1338,7 @@ def DB_Address():
         conn.close()
         return render_template('DB_Address.html', Address=Address,TableName=TableName)
 
-# /DB_
+# /DB_Sell
 @app.route('/DB_Sell', methods=['GET', 'POST'])
 def DB_Sell():
         conn = conn_db()
@@ -1344,7 +1377,7 @@ def DB_Status():
         conn.close()
         return render_template('DB_Status.html', Status=Status,TableName=TableName)
 
-# /DB_
+# /DB_Mcategory
 @app.route('/DB_Mcategory', methods=['GET', 'POST'])
 def DB_Mcategory():
         conn = conn_db()
