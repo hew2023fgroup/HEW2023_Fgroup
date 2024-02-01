@@ -1174,10 +1174,40 @@ def DB_Inset():
                 # "RegistDate": request.form['RegistDate'],
                 "Money": request.form['Money']
             }
-            # 辞書型のキー
-            RowNames = ', '.join(inputs.keys())
-            # 辞書型のデータ × length
-            RowDatas = ', '.join(['%s'] * len(inputs))
+            
+        elif TableName == 'Address':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Address": request.form['Address'],
+                "POST": request.form['POST'],
+                "AccountID": request.form['AcID']
+            }
+            
+        elif TableName == 'Buy':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "SellID": request.form['SellID'],
+                "AccountID": request.form['AcID'],
+                "Review": request.form['Review']
+                # "Datetime": request.form['']
+            }
+            
+        elif TableName == 'Chat':
+            inputs = {
+                # "TableID":request.form['TableID'],
+                "AccountID":request.form['AcID'],
+                "SellID":request.form['SellID'],
+                "Content":request.form['Content']
+                # "Datetime":request.form['Datetime']
+            }
+            
+        else:
+            return '予期しない TableName'
+            
+        # 辞書型のキー
+        RowNames = ', '.join(inputs.keys())
+        # 辞書型のデータ × length
+        RowDatas = ', '.join(['%s'] * len(inputs))
             
         if btn_value == 'insert':
             Row_Insert = '''
@@ -1190,6 +1220,8 @@ def DB_Inset():
             cursor.close()
             conn.close()
             return redirect(url_for('DB_' + TableName))
+    else:
+        return '予期しない request.method'
             
 # /delete
 @app.route('/delete', methods=['GET', 'POST'])
