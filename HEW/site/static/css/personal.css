@@ -129,11 +129,13 @@ main#m-personal h1::after{
 }
 .prof-edit figure{
   margin: 0 0 20px 0;
+  overflow: hidden;
 }
 .prof-edit figure img{
   width: 130px;
   height: 130px;
   border-radius: 50%;
+  object-fit: scale-down;
 }
 
 
