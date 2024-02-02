@@ -87,7 +87,7 @@
                   <td><input type="text"   name="TableID"   id="AddressID" class="size-input-AddressID" placeholder="自動入力" readonly></td>
                   <td><input type="text"   name="Address"   id="Address"   class="size-input-Address"   placeholder="住所" required></td>
                   <td><input type="text"   name="POST"      id="POST"      class="size-input-POST"      placeholder="郵便番号" pattern="\d{3}-\d{4}" required></td>
-                  <td><input type="number" name="AcID"      id="AccountID" class="size-input-AccountID" placeholder="アカウントID" required></td>
+                  <td><input type="number" name="AcID"      id="AccountID" class="size-input-AccountID" placeholder="アカウントID" min="1" required></td>
                 </tr>
               </table>
               <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
