@@ -366,16 +366,21 @@ def TrendPage():
 @app.route('/')
 def IndexPage():
     
+    conn = conn_db()
+    cursor = conn.cursor()
+    
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     if you_list == None:
         return redirect(url_for('LoginPage'))
     
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    
+    if Admin(AccountID) == True:
+        print('Admin:True')
+        TablePage = True
+    elif Admin(AccountID) == False:
+        print('Admin:False')
+        TablePage = False
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -393,7 +398,7 @@ def IndexPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("index.html", sells=sells)
+    return render_template("index.html", sells=sells, TablePage=TablePage)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
