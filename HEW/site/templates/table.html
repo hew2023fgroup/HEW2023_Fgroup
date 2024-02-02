@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centered Link List</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+    font-size: 16px;
+}
+</style>
+</head>
+<body>
+<ul>
+    <li><a href="{{ url_for('DB_Account') }}">Account</a></li>
+    <li><a href="{{ url_for('DB_Sex') }}">Sex</a></li>
+    <li><a href="{{ url_for('DB_Address') }}">Addess</a></li>
+    <li><a href="{{ url_for('DB_Sell') }}">Sell</a></li>
+    <li><a href="{{ url_for('DB_SellIMG') }}">SellIMG</a></li>
+    <li><a href="{{ url_for('DB_Status') }}">Status</a></li>
+    <li><a href="{{ url_for('DB_Mcategory') }}">Mcategory</a></li>
+    <li><a href="{{ url_for('DB_Scategory') }}">Scategory</a></li>
+    <li><a href="{{ url_for('DB_Tag') }}">Tag</a></li>
+    <li><a href="{{ url_for('DB_Buy') }}">Buy</a></li>
+    <li><a href="{{ url_for('DB_Nice') }}">Nice</a></li>
+    <li><a href="{{ url_for('DB_View') }}">View</a></li>
+    <li><a href="{{ url_for('DB_Chat') }}">Chat</a></li>
+    <li><a href="{{ url_for('DB_Tax') }}">Tax</a></li>
+    <li><a href="{{ url_for('DB_Postage') }}">Postage</a></li>
+    <li><a href="{{ url_for('DB_Reply') }}">Reply</a></li>
+    <li><a href="{{ url_for('DB_Layout') }}">Layout</a></li>
+    <li><a href="{{ url_for('DB_Numerical') }}">Numerical</a></li>
+    <li><a href="{{ url_for('DB_Search') }}">Search</a></li>
+</ul>
+</body>
+</html>
