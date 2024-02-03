@@ -78,7 +78,18 @@
         <div id="profile">
 
           <div class="prof_detail">
-            <img src="../static/images/profile.png">
+            
+            <figure id="prof_icon">
+              {% if icon != None %}
+              <!-- css -->
+              <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+
+              {% elif icon == None %}
+              <!-- css -->
+              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              {% endif %}
+            </figure>
+
             <p class="name">{{ UserName }}</p>
             <div class="rate-form">
               <!-- <input id="star5" type="radio" name="rate" value="5">
