@@ -19,6 +19,36 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+  <script>
+      var counter = 0; // カウンターを初期化
+
+      function addInput() {
+          if (counter >= 20) return; // 20個を超える場合は追加しない
+          
+          var container = document.getElementById("container");
+          
+          // 新しいinput要素を作成
+          var input = document.createElement("input");
+          input.type = "text";
+          input.value = "#";
+          input.style = "margin:3px";
+          input.name = "tag" + counter; // 新しいname属性を設定
+
+          // 削除ボタンを作成
+          var deleteButton = document.createElement("button");
+          deleteButton.textContent = "-";
+          deleteButton.type = "button";
+          deleteButton.onclick = function() {
+              container.removeChild(input);
+              container.removeChild(deleteButton);
+          };
+
+          container.appendChild(input);
+          container.appendChild(deleteButton);
+          
+          counter++; // カウンターを増加
+      }
+  </script>
 
   </head>
 
@@ -74,21 +104,6 @@
             <h2>商品の詳細</h2>
             <p class="title">カテゴリー</p>
             <label class="selectbox">
-              <!-- <select name="scategoryid" id="scategoryid" required>
-                <option value="" disabled selected>選択してください</option>
-                <option value="1">レディース</option>
-                <option value="2">メンズ</option>
-                <option value="3">ベビー・キッズ</option>
-                <option value="4">インテリア・住まい・小物</option>
-                <option value="5">本・音楽・ゲーム</option>
-                <option value="6">おもちゃ・ホビー・グッズ</option>
-                <option value="7">コスメ・香水・美容</option>
-                <option value="8">家電・スマホ・カメラ</option>
-                <option value="9">スポーツ・レジャー</option>
-                <option value="10">ハンドメイド</option>
-                <option value="11">チケット</option>
-                <option value="12">その他</option>
-              </select> -->
               <select name="scategoryid" id="scategoryid" required>
                 <option value="1">トップス レディース</option>
                 <option value="2">トップス メンズ</option>
@@ -174,6 +189,15 @@
             <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
             <p class="title">商品の説明(500文字以内)</p>
             <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
+        </div>
+
+        <div class="delivery">
+          <h4>タグ</h4>
+            <div id="container">
+                <!-- ボタンを押したらinput追加 -->
+            </div>
+            <br>
+            <button type="button" onclick="addInput()">+</button>
         </div>
   
         <div class="delivery">
