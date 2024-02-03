@@ -54,29 +54,47 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Buy</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
           <table>
             <tr>
-                <th>ChatID</th>
-                <th>AccountID</th>
+                <th>BuyID</th>
                 <th>SellID</th>
-                <th>Content</th>
+                <th>AccountID</th>
+                <th>Review</th>
                 <th>Datetime</th>
             </tr>
-  
-            <tr>
-                <td><input type="text" name="ChatID" id="" class="size-input-ChatID"></td>
-                <td><input type="text" name="AccountID" id="" class="size-input-AccountID"></td>
-                <td><input type="text" name="SellID" id="" class="size-input-SellID"></td>
-                <td><input type="text" name="Content" id="" class="size-input-Content"></td>
-                <td><input type="text" name="Datetime" id="" class="size-input-Datetime"></td>
-                <td><button class="remove">-</button></td>
-            </tr>
 
-          </table>
-          <button id="addRow">+ 追加</button>
+            {% for row in Buy %}
+            <form action="/delete" method="post">
+              <tr>
+                <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                <td><input type="text" name="TableID"  id="" class="size-input-BuyID"     value="{{ row[0] }}" readonly></td>
+                <td><input type="text" name="SellID"   id="" class="size-input-SellID"    value="{{ row[1] }}" readonly></td>
+                <td><input type="text" name="AcID"     id="" class="size-input-AccountID" value="{{ row[2] }}" readonly></td>
+                <td><input type="text" name="Review"   id="" class="size-input-Review"    value="{{ row[3] }}" readonly></td>
+                <td><input type="text" name="Datetime" id="" class="size-input-Datetime"  value="{{ row[4] }}" readonly></td>
+
+                <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+              </tr>
+            </form>
+            {% endfor %}
+              
+            <form action="/insert" method="post">
+                <tr>
+                  <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                  <td><input type="number" name="TableID"  id="" class="size-input-BuyID"     placeholder="自動入力" readonly></td>
+                  <td><input type="number" name="SellID"   id="" class="size-input-SellID"    placeholder="出品ID" min="1" required></td>
+                  <td><input type="number" name="AcID"     id="" class="size-input-AccountID" placeholder="アカウントID" min="1" required></td>
+                  <td><input type="number" name="Review"   id="" class="size-input-Review"    placeholder="0~5" max="5" required></td>
+                  <td><input type="text"   name="Datetime" id="" class="size-input-Datetime"  placeholder="自動入力" readonly></td>
+                </tr>
+              </table>
+              <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+            </form>
 
         </div>
 
@@ -87,6 +105,6 @@
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ url_for('static', filename='js/Buy.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/Chat.js') }}"></script> -->
 
 </html>
