@@ -54,7 +54,7 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Postage</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
           <table>
@@ -63,16 +63,32 @@
                 <th>Size</th>
                 <th>Price</th>
             </tr>
-  
-            <tr>
-                <td><input type="text" name="PostageID" id="" class="size-input-PostageID"></td>
-                <td><input type="text" name="Size" id="" class="size-input-Size" maxlength="2"></td>
-                <td><input type="text" name="Price" id="" class="size-input-Price"></td>
-                <td><button class="remove">-</button></td>
-            </tr>
 
-          </table>
-          <button id="addRow">+ 追加</button>
+            {% for row in Postage %}
+            <form action="/delete" method="post">
+              <tr>
+                <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                <td><input type="text" name="TableID" id="" class="size-input-PostageID" value="{{ row[0] }}" readonly></td>
+                <td><input type="text" name="Size"    id="" class="size-input-Size" value="{{ row[1] }}" readonly></td>
+                <td><input type="text" name="Price"   id="" class="size-input-Price" value="{{ row[2] }}" readonly></td>
+
+                <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+              </tr>
+            </form>
+            {% endfor %}
+              
+          <form action="/insert" method="post">
+              <tr>
+                <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                <td><input type="text"   name="TableID" id="" class="size-input-PostageID" placeholder="自動入力" readonly></td>
+                <td><input type="text"   name="Size"    id="" class="size-input-Size"      placeholder="大きさ" required></td>
+                <td><input type="number" name="Price"   id="" class="size-input-Price"     placeholder="値段" min="0" required></td>
+              </tr>
+            </table>
+            <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+          </form>
 
         </div>
 
@@ -83,6 +99,6 @@
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ url_for('static', filename='js/Postage.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/Postage.js') }}"></script> -->
 
 </html>

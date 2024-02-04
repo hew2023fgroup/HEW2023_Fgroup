@@ -107,9 +107,24 @@
           {% if overview != 'None' %}
           <p>{{ overview }}</p>
           {% else %}
-          <p>この商品の説明は未入力です...</p>
+          <p>未記述</p>
           {% endif %}
+        </div>
 
+        <div id="product-explain">
+          <h6>タグ</h6>
+          {% if tags %}
+            {% for tag in tags %}
+            <ul>
+              <!-- css -->
+              <li style="background-color:#ddd; display: inline-block; padding:3px; border-radius:4px; color:#0af; margin-bottom:1px">
+                {{ tag }}
+              </li>
+            </ul>
+            {% endfor %}
+          {% else %}
+          <p>なし</p>
+          {% endif%}
         </div>
         
         <div id="product-info">
@@ -139,8 +154,19 @@
         <div id="sell">
           <h4>出品者</h4>
           <div class="sell-info">
-            <!-- アイコン表示 未開発!!! -->
-            <img src="../static/images/profile.png" alt="ドラえもん">
+            
+            <figure id="prof_icon">
+              {% if icon != None %}
+              <!-- css -->
+              <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像">
+
+
+
+              {% elif icon == None %}
+              <!-- css -->
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              {% endif %}
+            </figure>
             
             <div class="sell-info-detail">
               <p>{{ sell_acc[1] }}</p>

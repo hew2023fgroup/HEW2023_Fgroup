@@ -111,7 +111,18 @@
         {% if sell_data[1] != None %}
         <p class="exp">{{ sell_data[1] }}</p>
         {% else %}
-        <p class="exp">この商品の説明は未入力です...</p>
+        <p class="exp">未入力</p>
+        {% endif %}
+        <p class="title">タグ</p>
+        {% if tags %}
+        <ul>
+            {% for tag in tags %}
+            <!-- css -->
+            <li style="background-color:#ddd; display: inline-block; padding:3px; border-radius:4px; color:#0af">
+              {{ tag }}
+            </li>
+            {% endfor %}
+          </ul>
         {% endif %}
       </div>
 
@@ -172,6 +183,7 @@
               {% endif %}
               <input type="hidden" name="selltit" value="{{ form_data[2] }}">
               <input type="hidden" name="overview" value="{{ form_data[3] }}">
+              <input type="hidden" name="tags" value="{{ tags }}">
               <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
               <input type="hidden" name="postage" value="{{ form_data[5] }}">
               <input type="hidden" name="status" value="{{ form_data[6] }}">

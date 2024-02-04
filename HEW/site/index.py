@@ -190,6 +190,14 @@ def SellConfirm():
             overview = None
             print('フォーム:商品悦明が未入力')
             
+        # タグ
+        if request.form['tag0']:
+            tags = []
+            for i in range(20):
+                key = 'tag' + str(i)
+                if key in request.form:
+                    tags.append(request.form[key])
+            
         # カテゴリー
         scategoryid = request.form['scategoryid']
         SCategory_Select = '''
@@ -265,7 +273,7 @@ def SellConfirm():
         cursor.close()
         conn.close()
         return render_template('sell_confirm.html',
-                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address)
+                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -301,6 +309,11 @@ def Sell():
         else:
             overview = None
             print('フォーム:商品悦明が未入力')
+            
+        # タグ
+        if request.form['tags']:
+            tags = request.form['tags']
+            tags = eval(tags)
             
         # カテゴリー
         scategoryid = request.form['scategoryid']
@@ -351,6 +364,14 @@ def Sell():
                '''.format(subimg, sellid)
                cursor.execute(subimg_sql)
             
+        # タグのINSERT
+        if tags:
+            for tag in tags:
+                Tag_Insert = '''
+                INSERT INTO Tag (Name, SellID) VALUE('{0}', {1});
+                '''.format(tag,sellid)
+                cursor.execute(Tag_Insert)
+            
         # CLOSE
         conn.commit()
         cursor.close()
@@ -366,16 +387,21 @@ def TrendPage():
 @app.route('/')
 def IndexPage():
     
+    conn = conn_db()
+    cursor = conn.cursor()
+    
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     if you_list == None:
         return redirect(url_for('LoginPage'))
     
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    
+    if Admin(AccountID) == True:
+        print('Admin:True')
+        TablePage = True
+    elif Admin(AccountID) == False:
+        print('Admin:False')
+        TablePage = False
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -393,7 +419,7 @@ def IndexPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("index.html", sells=sells)
+    return render_template("index.html", sells=sells, TablePage=TablePage)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
@@ -432,6 +458,14 @@ def ProductPage(sellid):
     cursor.execute(acc)
     sell_acc = cursor.fetchone()
     
+    # アイコンのSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(sell_acc[0])
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 平均評価値のSELECTx2
     evalscore_sql = '''
     SELECT AVG(Review) 
@@ -443,10 +477,13 @@ def ProductPage(sellid):
     if avg_evalate is None:
         avg_evalate = 0
     
-    print('''
-          {0}さんの
-          評価値の平均は({1})です。
-          '''.format(sell_acc[1], avg_evalate))
+    Tag_Select = '''
+    SELECT Name FROM Tag
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(Tag_Select)
+    tags = cursor.fetchall()
+    tags = [item[0] for item in tags]
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -468,7 +505,7 @@ def ProductPage(sellid):
         "product.html",imgs=imgs, name=name, overview=overview,
         price=price, sellid=sellid, scategory=scategory, 
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=error
+        error=error, tags=tags, icon=icon
         )
     
 # /buy
@@ -506,7 +543,6 @@ def Buy():
         '''.format(AccountID)
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
-        print(Account_Info)
         value = len(Account_Info)
         
         
@@ -566,7 +602,6 @@ def PayPage():
         sell_pri = prices[0]
         postage_pri = prices[1]
         Price = int(sell_pri) + int(postage_pri)
-        print(Price)
         
         # 所持金が足りているか
         Balance = int(Money) - int(Price)
@@ -685,6 +720,14 @@ def MyPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 平均評価値のSELECTx2
     evalscore_sql = '''
     SELECT AVG(Review) 
@@ -695,10 +738,6 @@ def MyPage():
     avg_evalate = cursor.fetchone()[0]
     if avg_evalate is None:
         avg_evalate = 0
-    
-    print('''
-          評価値の平均は({0})です。
-          '''.format(avg_evalate))
     
     # 売り上げSELECT
     proc_sql = '''
@@ -730,7 +769,7 @@ def MyPage():
     conn.close()
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate
+        UserName=UserName, avg_evalate=avg_evalate, icon=icon
         )
 
 # /favorite
@@ -1154,101 +1193,692 @@ def SellListPage():
 def BuyListPage():
     return render_template('buy_list.html')
 
+# 管理者チェック
+def Admin(AccountID):
+    if AccountID == 1:
+        return True
+    else:
+        return False
 
-# /DB_
-@app.route('/DB_Account')
+# /table
+@app.route('/table', methods=['GET', 'POST'])
+def TablePage():
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    if Admin(AccountID) == True:
+        print('Admin:True')
+    elif Admin(AccountID) == False:
+        print('Admin:False')
+        return redirect(url_for('IndexPage'))
+    
+    return render_template('table.html')
+
+# /insert
+@app.route('/insert', methods=['GET', 'POST'])
+def DB_Inset():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    if request.method == 'POST':
+        TableName = request.form['TableName']
+        btn_value = request.form['action']
+        
+        if TableName == 'Account':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "UserName": request.form['UsNa'],
+                "Password": request.form['Password'],
+                "ProfIMG": request.form['ProfIMG'],
+                "Birthday": request.form['Birthday'],
+                "SexID": request.form['SexID'],
+                "MailAddress": request.form['MaAd'],
+                "KanjiName": request.form['KanjiName'],
+                "Furigana": request.form['Furigana'],
+                # "RegistDate": request.form['RegistDate'],
+                "Money": request.form['Money']
+            }
+            
+        elif TableName == 'Address':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Address": request.form['Address'],
+                "POST": request.form['POST'],
+                "AccountID": request.form['AcID']
+            }
+            
+        elif TableName == 'Buy':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "SellID": request.form['SellID'],
+                "AccountID": request.form['AcID'],
+                "Review": request.form['Review']
+                # "Datetime": request.form['']
+            }
+            
+        elif TableName == 'Chat':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "AccountID": request.form['AcID'],
+                "SellID": request.form['SellID'],
+                "Content": request.form['Content']
+                # "Datetime": request.form['Datetime']
+            }
+        
+        elif TableName == 'Layout':
+            inputs = {
+                # "TableID": request.form['TableName'],
+                "Name": request.form['Name']
+            }
+        
+        elif TableName == 'Mcategory':
+            inputs = {
+                # "McategoryID": request.form['TableID'],
+                "Name": request.form['Name']
+            }
+            
+        elif TableName == 'Nice':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "AccountID": request.form['AcID'],
+                "SellID": request.form['SellID']
+            }
+            
+        elif TableName == 'Numerical':
+            inputs = {
+                # "tableIDID": request.form['TableID'],
+                "Numerical": request.form['Numerical'],
+                "LayoutID": request.form['LayoutID'],
+                "AccountID": request.form['AcID']
+            }
+            
+        elif TableName == 'Postage':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Size": request.form['Size'],
+                "Price": request.form['Price'],
+            }
+            
+        elif TableName == 'Reply':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "ChatID": request.form['ChatID'],
+                "Content": request.form['Content']
+                # "Datetime": request.form['Datetime']
+            }
+            
+        elif TableName == 'Scategory':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Name": request.form['Name'],
+                "McategoryID": request.form['McategoryID']
+            }
+            
+        elif TableName == 'Search':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Word": request.form['Word'],
+                "AccountID": request.form['AcID']
+            }
+            
+        elif TableName == 'Sell':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Name": request.form['Name'],
+                "Price": request.form['Price'],
+                "TaxID": request.form['TaxID'],
+                "PostageID": request.form['PostageID'],
+                "StatusID": request.form['StatusID'],
+                "Overview": request.form['Overview'],
+                "ScategoryID": request.form['ScategoryID'],
+                "AccountID": request.form['AcID'],
+                # "Datetime": request.form['Datetime'],
+                "draft": int(request.form['draft'])
+            }
+            
+        elif TableName == 'SellIMG':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "SellIMG": request.form['SellIMG'],
+                "ThumbnailFlg": int(request.form['ThumbnailFlg']),
+                "SellID": request.form['SellID']
+            }
+            
+        elif TableName == 'Sex':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Sex": request.form['Sex']
+            }
+            
+        elif TableName == 'Status':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Name": request.form['Name']
+            }
+            
+        elif TableName == 'Tag':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Name": request.form['Name'],
+                "SellID": request.form['SellID']
+            }
+            
+        elif TableName == 'Tax':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "Section": request.form['Section'],
+                "Tax": request.form['Tax']
+            }
+            
+        elif TableName == 'View':
+            inputs = {
+                # "TableID": request.form['TableID'],
+                "AccountID": request.form['AcID'],
+                "SellID": request.form['SellID']
+            }
+        
+        else:
+            return '予期しない TableName'
+            
+        # 辞書型のキー
+        RowNames = ', '.join(inputs.keys())
+        # 辞書型のデータ × length
+        RowDatas = ', '.join(['%s'] * len(inputs))
+        print(list(inputs.values()))
+            
+        if btn_value == 'insert':
+            Row_Insert = '''
+            INSERT INTO {0} ({1}) VALUES ({2});
+            '''.format(TableName,RowNames,RowDatas)
+            #                          ↓ RowDatas 
+            print('実行:',Row_Insert)
+            cursor.execute(Row_Insert, list(inputs.values()))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('DB_' + TableName))
+    else:
+        return '予期しない request.method'
+            
+# /delete
+@app.route('/delete', methods=['GET', 'POST'])
+def DB_Delete():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    if request.method == 'POST':
+        TableName = request.form['TableName']
+        btn_value = request.form['action']
+        
+        if btn_value == 'delete':
+            TableID = request.form['TableID']
+            
+            # 外部キー
+            if TableName == 'Account':
+                del_query = '''
+                DELETE Account, Address, Numerical, Search, Nice, View, Chat, Sell, Buy
+                FROM Account
+                LEFT JOIN Address ON Account.AccountID = Address.AccountID
+                LEFT JOIN Numerical ON Account.AccountID = Numerical.AccountID
+                LEFT JOIN Search ON Account.AccountID = Search.AccountID
+                LEFT JOIN Nice ON Account.AccountID = Nice.AccountID
+                LEFT JOIN View ON Account.AccountID = View.AccountID
+                LEFT JOIN Chat ON Account.AccountID = Chat.AccountID
+                LEFT JOIN Sell ON Account.AccountID = Sell.AccountID
+                LEFT JOIN Buy ON Account.AccountID = Buy.AccountID
+                WHERE Account.AccountID = {0}
+                '''.format(TableID)
+                cursor.execute(del_query)
+                print('実行:',del_query)
+                conn.commit()
+
+            # 主キー
+            Row_Delete = '''
+            DELETE FROM {0} WHERE {0}ID = {1};
+            '''.format(TableName,TableID)
+            cursor.execute(Row_Delete)
+            print('実行:',Row_Delete)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return redirect(url_for('DB_' + TableName))
+
+# /DB_Account
+@app.route('/DB_Account', methods=['GET', 'POST'])
 def DB_Account():
-    return render_template('DB_Account.html')
-
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Account'
+        cursor.execute("SELECT * FROM Account")
+        Account = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Account.html', Account=Account,TableName=TableName)
+        
 # /DB_Sex
-@app.route('/DB_Sex')
+@app.route('/DB_Sex', methods=['GET', 'POST'])
 def DB_Sex():
-    return render_template('DB_Sex.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Sex'
+        cursor.execute("SELECT * FROM Sex")
+        Sex = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Sex.html', Sex=Sex,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Address')
+# /DB_Address
+@app.route('/DB_Address', methods=['GET', 'POST'])
 def DB_Address():
-    return render_template('DB_Address.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Address'
+        cursor.execute("SELECT * FROM Address")
+        Address = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Address.html', Address=Address,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Sell')
+# /DB_Sell
+@app.route('/DB_Sell', methods=['GET', 'POST'])
 def DB_Sell():
-    return render_template('DB_Sell.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Sell'
+        cursor.execute("SELECT * FROM Sell")
+        Sell = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Sell.html', Sell=Sell,TableName=TableName)
 
-# /DB_
-@app.route('/DB_SellIMG')
+# /DB_SellIMG
+@app.route('/DB_SellIMG', methods=['GET', 'POST'])
 def DB_SellIMG():
-    return render_template('DB_SellIMG.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'SellIMG'
+        cursor.execute("SELECT * FROM SellIMG")
+        SellIMG = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_SellIMG.html', SellIMG=SellIMG,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Status')
+# /DB_Status
+@app.route('/DB_Status', methods=['GET', 'POST'])
 def DB_Status():
-    return render_template('DB_Status.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Status'
+        cursor.execute("SELECT * FROM Status")
+        Status = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Status.html', Status=Status,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Mcategory')
+# /DB_Mcategory
+@app.route('/DB_Mcategory', methods=['GET', 'POST'])
 def DB_Mcategory():
-    return render_template('DB_Mcategory.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Mcategory'
+        cursor.execute("SELECT * FROM Mcategory")
+        Mcategory = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Mcategory.html', Mcategory=Mcategory,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Scategory')
+# /DB_Scatgeory
+@app.route('/DB_Scategory', methods=['GET', 'POST'])
 def DB_Scategory():
-    return render_template('DB_Scategory.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Scategory'
+        cursor.execute("SELECT * FROM Scategory")
+        Scategory = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Scategory.html', Scategory=Scategory,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Tag')
+# /DB_Tag
+@app.route('/DB_Tag', methods=['GET', 'POST'])
 def DB_Tag():
-    return render_template('DB_Tag.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Tag'
+        cursor.execute("SELECT * FROM Tag")
+        Tag = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Tag.html', Tag=Tag,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Buy')
+# /DB_Buy
+@app.route('/DB_Buy', methods=['GET', 'POST'])
 def DB_Buy():
-    return render_template('DB_Buy.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Buy'
+        cursor.execute("SELECT * FROM Buy")
+        Buy = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Buy.html', Buy=Buy,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Nice')
+# /DB_Nice
+@app.route('/DB_Nice', methods=['GET', 'POST'])
 def DB_Nice():
-    return render_template('DB_Nice.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Nice'
+        cursor.execute("SELECT * FROM Nice")
+        Nice = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Nice.html', Nice=Nice,TableName=TableName)
 
-# /DB_
-@app.route('/DB_View')
+# /DB_View
+@app.route('/DB_View', methods=['GET', 'POST'])
 def DB_View():
-    return render_template('DB_View.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'View'
+        cursor.execute("SELECT * FROM View")
+        View = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_View.html', View=View,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Chat')
+# /DB_chat
+@app.route('/DB_Chat', methods=['GET', 'POST'])
 def DB_Chat():
-    return render_template('DB_Chat.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Chat'
+        cursor.execute("SELECT * FROM Chat")
+        Chat = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Chat.html', Chat=Chat,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Tax')
+# /DB_Tax
+@app.route('/DB_Tax', methods=['GET', 'POST'])
 def DB_Tax():
-    return render_template('DB_Tax.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Tax'
+        cursor.execute("SELECT * FROM Tax")
+        Tax = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Tax.html', Tax=Tax,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Postage')
+# /DB_Postage
+@app.route('/DB_Postage', methods=['GET', 'POST'])
 def DB_Postage():
-    return render_template('DB_Postage.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Postage'
+        cursor.execute("SELECT * FROM Postage")
+        Postage = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Postage.html', Postage=Postage,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Reply')
+# /DB_Reply
+@app.route('/DB_Reply', methods=['GET', 'POST'])
 def DB_Reply():
-    return render_template('DB_Reply.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Reply'
+        cursor.execute("SELECT * FROM Reply")
+        Reply = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Reply.html', Reply=Reply,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Layout')
+# /DB_Layout
+@app.route('/DB_Layout', methods=['GET', 'POST'])
 def DB_Layout():
-    return render_template('DB_Layout.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Layout'
+        cursor.execute("SELECT * FROM Layout")
+        Layout = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Layout.html', Layout=Layout,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Numerical')
+# /DB_Numerical
+@app.route('/DB_Numerical', methods=['GET', 'POST'])
 def DB_Numerical():
-    return render_template('DB_Numerical.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Numerical'
+        cursor.execute("SELECT * FROM Numerical")
+        Numerical = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Numerical.html', Numerical=Numerical,TableName=TableName)
 
-# /DB_
-@app.route('/DB_Search')
+# /DB_Search
+@app.route('/DB_Search', methods=['GET', 'POST'])
 def DB_Search():
-    return render_template('DB_Search.html')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        if Admin(AccountID) == True:
+            print('Admin:True')
+        elif Admin(AccountID) == False:
+            print('Admin:False')
+            return redirect(url_for('IndexPage'))
+        
+        TableName = 'Search'
+        cursor.execute("SELECT * FROM Search")
+        Search = cursor.fetchall()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('DB_Search.html', Search=Search,TableName=TableName)
 
 # 実行
 if __name__ == ("__main__"):
