@@ -190,6 +190,14 @@ def SellConfirm():
             overview = None
             print('フォーム:商品悦明が未入力')
             
+        # タグ
+        if request.form['tag0']:
+            tags = []
+            for i in range(20):
+                key = 'tag' + str(i)
+                if key in request.form:
+                    tags.append(request.form[key])
+            
         # カテゴリー
         scategoryid = request.form['scategoryid']
         SCategory_Select = '''
@@ -265,7 +273,7 @@ def SellConfirm():
         cursor.close()
         conn.close()
         return render_template('sell_confirm.html',
-                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address)
+                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -301,6 +309,11 @@ def Sell():
         else:
             overview = None
             print('フォーム:商品悦明が未入力')
+            
+        # タグ
+        if request.form['tags']:
+            tags = request.form['tags']
+            tags = eval(tags)
             
         # カテゴリー
         scategoryid = request.form['scategoryid']
@@ -350,6 +363,14 @@ def Sell():
                INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
                '''.format(subimg, sellid)
                cursor.execute(subimg_sql)
+            
+        # タグのINSERT
+        if tags:
+            for tag in tags:
+                Tag_Insert = '''
+                INSERT INTO Tag (Name, SellID) VALUE('{0}', {1});
+                '''.format(tag,sellid)
+                cursor.execute(Tag_Insert)
             
         # CLOSE
         conn.commit()
@@ -437,6 +458,14 @@ def ProductPage(sellid):
     cursor.execute(acc)
     sell_acc = cursor.fetchone()
     
+    # アイコンのSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(sell_acc[0])
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 平均評価値のSELECTx2
     evalscore_sql = '''
     SELECT AVG(Review) 
@@ -448,10 +477,13 @@ def ProductPage(sellid):
     if avg_evalate is None:
         avg_evalate = 0
     
-    print('''
-          {0}さんの
-          評価値の平均は({1})です。
-          '''.format(sell_acc[1], avg_evalate))
+    Tag_Select = '''
+    SELECT Name FROM Tag
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(Tag_Select)
+    tags = cursor.fetchall()
+    tags = [item[0] for item in tags]
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -473,7 +505,7 @@ def ProductPage(sellid):
         "product.html",imgs=imgs, name=name, overview=overview,
         price=price, sellid=sellid, scategory=scategory, 
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=error
+        error=error, tags=tags, icon=icon
         )
     
 # /buy
@@ -511,7 +543,6 @@ def Buy():
         '''.format(AccountID)
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
-        print(Account_Info)
         value = len(Account_Info)
         
         
@@ -571,7 +602,6 @@ def PayPage():
         sell_pri = prices[0]
         postage_pri = prices[1]
         Price = int(sell_pri) + int(postage_pri)
-        print(Price)
         
         # 所持金が足りているか
         Balance = int(Money) - int(Price)
@@ -690,6 +720,14 @@ def MyPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 平均評価値のSELECTx2
     evalscore_sql = '''
     SELECT AVG(Review) 
@@ -700,10 +738,6 @@ def MyPage():
     avg_evalate = cursor.fetchone()[0]
     if avg_evalate is None:
         avg_evalate = 0
-    
-    print('''
-          評価値の平均は({0})です。
-          '''.format(avg_evalate))
     
     # 売り上げSELECT
     proc_sql = '''
@@ -735,7 +769,7 @@ def MyPage():
     conn.close()
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate
+        UserName=UserName, avg_evalate=avg_evalate, icon=icon
         )
 
 # /favorite
