@@ -54,7 +54,7 @@
       </div>
 
       <div id="wrap_right">
-        <h3>Nice</h3>
+        <h3>{{ TableName }}</h3>
 
         <div class="DataContents">
             <table>
@@ -63,18 +63,34 @@
                   <th>AccountID</th>
                   <th>SellID</th>
                 </tr>
-    
-                <tr>
-                  <td><input type="text" name="NiceID" id="" class="size-input-NiceID"></td>
-                  <td><input type="text" name="AccountID" id="" class="size-input-AccountID"></td>
-                  <td><input type="text" name="SellID" id="" class="size-input-SellID"></td>
-                  <td><button class="remove">-</button></td>
-                </tr>
-    
-            </table>
-            <button id="addRow">+ 追加</button>
 
-        </div>
+                {% for row in Nice %}
+                <form action="/delete" method="post">
+                  <tr>
+                    <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                    <td><input type="text" name="TableID" id="" class="size-input-NiceID"    value="{{ row[0] }}" readonly></td>
+                    <td><input type="text" name="AcID"    id="" class="size-input-AccountID" value="{{ row[1] }}" readonly></td>
+                    <td><input type="text" name="SellID"  id="" class="size-input-SellID"    value="{{ row[2] }}" readonly></td>
+
+                    <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+                  </tr>
+                </form>
+                {% endfor %}
+                  
+              <form action="/insert" method="post">
+                  <tr>
+                    <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                    <td><input type="text"   name="TableID" id="" class="size-input-NiceID"    placeholder="自動入力" readonly></td>
+                    <td><input type="number" name="AcID"    id="" class="size-input-AccountID" placeholder="アカウントID" min="1" required></td>
+                    <td><input type="number" name="SellID"  id="" class="size-input-SellID"    placeholder="出品ID" min="1" required></td>
+                  </tr>
+                </table>
+                <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+              </form>
+    
+            </div>
 
       </div>
     </div>
@@ -83,6 +99,6 @@
   </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="{{ url_for('static', filename='js/Nice.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/Nice.js') }}"></script> -->
 
 </html>
