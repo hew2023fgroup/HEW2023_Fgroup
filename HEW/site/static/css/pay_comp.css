@@ -6,7 +6,7 @@ ul li{
 main#m-pay_comp{
   width: 650px;
   height: auto;
-  margin: 0 auto 0 auto;
+  margin: 70px auto 0 auto;
   position: relative;
 }
 main#m-pay_comp::after{
