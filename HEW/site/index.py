@@ -191,12 +191,15 @@ def SellConfirm():
             print('フォーム:商品悦明が未入力')
             
         # タグ
-        if request.form['tag0']:
+        # if request.form['tag0']:
+        if 'tag0' in request.form and request.form['tag0']:
             tags = []
             for i in range(20):
                 key = 'tag' + str(i)
                 if key in request.form:
                     tags.append(request.form[key])
+        else:
+            tags = None
             
         # カテゴリー
         scategoryid = request.form['scategoryid']
