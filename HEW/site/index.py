@@ -647,6 +647,8 @@ def PayPage():
             '''.format(SellerID)
             cursor.execute(Money_Select)
             SellerMoney = cursor.fetchall()[0][0]
+            if SellerMoney is None:
+                SellerMoney = int(0)
             
             Proceed = int(SellerMoney) + int(Price)
             
