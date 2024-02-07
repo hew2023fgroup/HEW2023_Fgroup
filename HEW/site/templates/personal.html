@@ -14,8 +14,13 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/personal.css') }}">
 
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap" rel="stylesheet">
+
     <!-- JQuery本体 CDN -->
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
@@ -35,34 +40,221 @@
   </head>
 
   <body>
-    <div id="wrap">
+    
+    <nav id="main-nav">
+      <div class="main-nav-box">
+        <div class="left-nav">
+          <figure>
+            <img src="../static/images/cat.jpg">
+          </figure>
+          <p>イッパイアッテナ様</p>
+        </div>
 
-      <figure>
-        <a href="{{ url_for('IndexPage') }}"><img src="../static/images/logo.png"></a>
-      </figure>
-
-      <form action="#" class="search-form-003">
-        <label>
-          <input type="text" placeholder="キーワードを入力">
-        </label>
-        <button type="submit" aria-label="検索"></button>
-      </form>
-
-      <nav>
-        <ul>
-          <li class="nav03"><a class="nav01" href="{{ url_for('MyPage') }}" >マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="{{ url_for('FavoritePage') }}">いいね一覧</a></li>
-          <li><a class="nav02" href="{{ url_for('SellPage') }}">出品</a></li>
-        </ul>
-      </nav>
-
-      <div id="sub_nav">
-        <ul>
-          <li><a href="{{ url_for('IndexPage') }}">おすすめ</a></li>
-          <li><a href="{{ url_for('TrendPage') }}">トレンド</a></li>
-        </ul>
+        <figure>
+          <a href="{{ url_for('IndexPage') }}"><img src="../static/images/title111.svg"></a>
+        </figure>
+        <div class="right-nav">
+          <ul>
+            <!-- <li class="underline"><a href="" id="hoverButton">テーブル</a></li> -->
+            <li class="underline"><p id="hoverButton">カテゴリ</p></li>
+            <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
+            <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
+            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+          </ul>
+        </div>
       </div>
+    </nav>
 
+
+    <div class="search-box">
+      <img id="closebtn" src="../static/images/x01.svg">
+      <!-- <img id="closebtn" src="images/x.svg"> -->
+      <div class="search-wrap">
+        <div class="search-title">
+          <h1>SEARCH</h1>
+          <p class="sub-sea">商品を探す</p>
+        </div>
+        <form action="#" class="search-form-4">
+          <label>
+            <input type="text" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+          </label>
+        </form>
+      </div>
+    </div>
+
+    <!-- 絶対に消すな -->
+    <div id="kesuna"></div>
+    <!-- 絶対に消すな -->
+
+    <div id="hiddenArea">
+      <!-- <h1>カテゴリ</h1> -->
+      <div class="tab">
+        <ul class="tab-list">
+          <li class="tab-list-item is-btn-active">レディース</li>
+          <li class="tab-list-item">メンズ</li>
+          <li class="tab-list-item">ホビー</li>
+          <li class="tab-list-item">日用品</li>
+          <li class="tab-list-item">その他</li>
+        </ul>
+
+        <!-- コンテンツを構成するブロック -->
+        <div class="tab-contents-wrap">
+          <div class="tab-contents is-contents-active">
+            <div class="women-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">レディース</p>
+                  <div class="s-category">
+                    <span>トップス</span>
+                    <span>パンツ</span>
+                    <span>シューズ</span>
+                    <span>バッグ</span>
+                    <span>アクセサリー</span>
+                    <span>ファッション小物</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">ベビー・キッズ</p>
+                  <div class="s-category">
+                    <span>ベビー服</span>
+                    <span>キッズ服</span>
+                    <span>キッズシューズ</span>
+                  </div>
+                </li>
+                <li class="m-cate03">
+                  <p class="cateTitle">コスメ/香水/美容</p>
+                  <div class="s-category">
+                    <span>スキンケア</span>
+                    <span>ボディケア</span>
+                    <span>ヘアケア</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="men-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">メンズ</p>
+                  <div class="s-category">
+                    <span>トップス</span>
+                    <span>パンツ</span>
+                    <span>シューズ</span>
+                    <span>バッグ</span>
+                    <span>アクセサリー</span>
+                    <span>ファッション小物</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="hobby-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
+                  <div class="s-category">
+                    <span>おもちゃ</span>
+                    <span>コミック/アニメグッズ</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">本/音楽/ゲーム</p>
+                  <div class="s-category">
+                    <span>本</span>
+                    <span>CD</span>
+                    <span>DVD</span>
+                    <span>テレビゲーム</span>
+                    <span>楽器/機材</span>
+                  </div>
+                </li>
+                <li class="m-cate03">
+                  <p class="cateTitle">スポーツ/レジャー</p>
+                  <div class="s-category">
+                    <span>ゴルフ</span>
+                    <span>釣り</span>
+                    <span>野球</span>
+                    <span>サッカー</span>
+                    <span>テニス</span>
+                    <span>スノーボード</span>
+                    <span>アウトドア</span>
+                  </div>
+                </li>
+                <li class="m-cate04">
+                  <p class="cateTitle">ハンドメイド</p>
+                  <div class="s-category">
+                    <span>アクセサリー</span>
+                    <span>ファッション/小物</span>
+                    <span>時計</span>
+                    <span>インテリア</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="day-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">インテリア/住まい/小物</p>
+                  <div class="s-category">
+                    <span>キッチン/食器</span>
+                    <span>家具/収納</span>
+                    <span>カーペット</span>
+                    <span>カーテン</span>
+                    <span>ライト</span>
+                    <span>インテリア小物</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">家電/スマホ/カメラ</p>
+                  <div class="s-category">
+                    <span>スマートフォン</span>
+                    <span>PC</span>
+                    <span>カメラ</span>
+                    <span>テレビ</span>
+                    <span>オーディオ</span>
+                    <span>生活家電</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="other-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">チケット</p>
+                  <div class="s-category">
+                    <span>音楽</span>
+                    <span>スポーツ</span>
+                    <span>演劇</span>
+                    <span>映画</span>
+                    <span>優待券</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">その他</p>
+                  <div class="s-category">
+                    <span>ペット用品</span>
+                    <span>食品</span>
+                    <span>日用品</span>
+                    <span>事務用品</span>
+                    <span>その他</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
 
@@ -257,5 +449,14 @@
     </footer>
 
   </body>
+  <!-- 検索用 -->
+  <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+
+  <!-- カテゴリ-hoverしたら開く用 -->
+  <script src="{{ url_for('static', filename='js/category_hover_open.js') }}"></script>
+  
+  <!-- カテゴリ用 -->
+  <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
 
 </html>

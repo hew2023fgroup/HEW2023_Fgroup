@@ -7,6 +7,9 @@ body{
 input{
   font-family: 'Zen Kaku Gothic New', sans-serif !important;
 }
+button{
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}
 
 /*-------------------------------------------------*/
 /*-----------------------NAV-----------------------*/
