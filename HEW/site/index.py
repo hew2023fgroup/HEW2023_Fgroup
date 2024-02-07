@@ -413,8 +413,8 @@ def IndexPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01;
-    '''
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0};
+    '''.format(AccountID)
     cursor.execute(sql)
     sells = cursor.fetchall()
     
