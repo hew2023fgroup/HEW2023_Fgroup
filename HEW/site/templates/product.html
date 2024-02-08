@@ -436,22 +436,26 @@
         <h2>おすすめ商品</h2>
         
         <div class="wrap_product_02">
-          {% for row in sells %}
-          <div class="product">
-            <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-              <figure>
-                <img src="../{{ row[3] }}" alt="sellimg" width="215px">
-              </figure>
-              <p>{{ row[1] }}</p>
-              <!--値段表示変更-->
-              <!--<span>{{ row[2] }}</span>-->
-              
-              <div class="price-box">
-                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-              </div>
-            </a>
-          </div>
-          {% endfor %}
+          {% if sells != None %}
+            {% for row in sells %}
+            <div class="product">
+              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+                <figure>
+                  <img src="../{{ row[3] }}" alt="sellimg" width="215px">
+                </figure>
+                <p>{{ row[1] }}</p>
+                <!--値段表示変更-->
+                <!--<span>{{ row[2] }}</span>-->
+
+                <div class="price-box">
+                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          {% else %}
+          <p>同じカテゴリーの商品はありません</p>
+          {% endif %}
         </div>
       </main>
       
