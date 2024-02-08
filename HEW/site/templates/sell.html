@@ -295,6 +295,21 @@
 
             <p>その他(複数可, 任意)</p>
             <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple>
+
+            <!--ここが今回新しい画像アップロードする機構-->
+            <div class="container">
+              <div id="previewContainer"></div>
+              <!-- <h2>複数の画像をアップロードする</h2> -->
+              <div id="imagePreview" ondrop="drop(event)" ondragover="allowDrop(event)">
+                  ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
+                  サムネイルを選択してください
+                  <input type="file" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
+              </div>        
+              <!-- ここにサムネイルを表示している -->
+              <!--<div id="thumbnailContainer"></div>-->
+          </div>
+
+
         </div>
   
         <div class="detail">
@@ -441,5 +456,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+  
+  <!-- Upload用 -->
+  <script src="{{ url_for('static', filename='js/imageUpload.js') }}"></script>
 
 </html>
