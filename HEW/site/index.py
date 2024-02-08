@@ -154,10 +154,24 @@ def Logout():
 # /sell
 @app.route('/sell')
 def SellPage():
+    conn = conn_db()
+    cursor = conn.cursor()
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
-    return render_template("sell.html")
+        
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("sell.html",icon=icon, UserName=UserName)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
@@ -170,6 +184,14 @@ def SellConfirm():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+        
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
         
         # ========== フォーム ==========
         # メイン画像
@@ -275,7 +297,7 @@ def SellConfirm():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('sell_confirm.html',
+        return render_template('sell_confirm.html', icon=icon, UserName=UserName,
                 mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
 
 # /sell/
@@ -406,6 +428,14 @@ def IndexPage():
         print('Admin:False')
         TablePage = False
     
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
     sql = '''
@@ -422,7 +452,7 @@ def IndexPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("index.html", sells=sells, TablePage=TablePage)
+    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, UserName=UserName)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
@@ -430,6 +460,18 @@ def ProductPage(sellid):
     error = request.args.get('error', None)
     conn = conn_db()
     cursor = conn.cursor()
+    
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    myicon = cursor.fetchone()[0]
     
     # 商品情報のSELECT
     info = '''
@@ -495,8 +537,8 @@ def ProductPage(sellid):
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01;
-    '''
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0};
+    '''.format(AccountID)
     cursor.execute(sells)
     sells = cursor.fetchall()
     
@@ -508,7 +550,7 @@ def ProductPage(sellid):
         "product.html",imgs=imgs, name=name, overview=overview,
         price=price, sellid=sellid, scategory=scategory, 
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=error, tags=tags, icon=icon
+        error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName
         )
     
 # /buy
@@ -523,6 +565,14 @@ def Buy():
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
             
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
+        
         SellID = request.form['SellID']
         
         # 出品情報のSELECT
@@ -563,10 +613,9 @@ def Buy():
         After48H = FutureTime48.strftime('%Y年%m月%d日')
 
         return render_template(
-            'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info, 
+            'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info, icon=icon,
             UserName=UserName, Total_Price=Total_Price, SellID=SellID, After48H=After48H,
-            After24H=After24H
-            )
+            After24H=After24H)
 
 # /pay
 @app.route('/pay', methods=['POST'])
@@ -580,6 +629,14 @@ def PayPage():
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
             
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
+        
         SellID = request.form['SellID']
         
         # 所持金SELECT
@@ -672,23 +729,36 @@ def PayPage():
             conn.commit()
             cursor.close()
             conn.close()
-            return redirect(url_for('BuyCompPage', BuyID=BuyID))
+            return redirect(url_for('BuyCompPage', BuyID=BuyID, icon=icon, UserName=UserName))
         
         # 所持金が足りない
         else:
             error = True
-            return redirect(url_for('ProductPage',sellid=SellID, error=error))
+            return redirect(url_for('ProductPage',sellid=SellID, error=error, icon=icon, UserName=UserName))
 
 # /buycomp/<BuyID>
 @app.route('/buycomp/<BuyID>')
 def BuyCompPage(BuyID):
+    conn = conn_db()
+    cursor = conn.cursor()
 
     # セッション取得
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
         
-    return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID)
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID, icon=icon, UserName=UserName)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])
@@ -841,6 +911,14 @@ def PersonalPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     name_error = request.args.get('error', None)
     pass_error = request.args.get('pass_error',None)
     mail_error = request.args.get('mail_error',None)
@@ -871,7 +949,8 @@ def PersonalPage():
     cursor.close()
     conn.close()
     return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
-                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, mail_error=mail_error)
+                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, 
+                           icon=icon, UserName=UserName, mail_error=mail_error)
 
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
@@ -1146,6 +1225,14 @@ def DraftPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
     # 下書き取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きである、商品を出したのが自分。
     Draft_Select = '''
@@ -1162,7 +1249,7 @@ def DraftPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('draft_list.html',Drafts=Drafts)
+    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName)
 
 # /sell_list
 @app.route('/sell_list')
@@ -1174,6 +1261,14 @@ def SellListPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
     
     # 下書き取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きでない、商品を出したのが自分。
@@ -1191,12 +1286,32 @@ def SellListPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('sell_list.html',Sells=Sells)
+    return render_template('sell_list.html',Sells=Sells, icon=icon, UserName=UserName)
 
 # /buy_list
 @app.route('/buy_list')
 def BuyListPage():
-    return render_template('buy_list.html')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('buy_list.html',icon=icon, UserName=UserName)
 
 # 管理者チェック
 def Admin(AccountID):
