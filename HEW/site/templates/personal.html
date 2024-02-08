@@ -44,10 +44,16 @@
     <nav id="main-nav">
       <div class="main-nav-box">
         <div class="left-nav">
-          <figure>
-            <img src="../static/images/cat.jpg">
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <!-- css -->
+            <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+            {% elif icon == None %}
+            <!-- css -->
+            <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+            {% endif %}
           </figure>
-          <p>イッパイアッテナ様</p>
+          <p>{{ UserName }}様</p>
         </div>
 
         <figure>
