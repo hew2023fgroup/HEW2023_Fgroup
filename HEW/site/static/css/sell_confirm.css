@@ -1,0 +1,302 @@
+@charset "utf-8";
+
+p{
+  font-size: 0.9rem;
+}
+ul li{
+  list-style: none;
+}
+main#m-sell{
+  width: 650px;
+  height: auto;
+  margin: 0 auto 0 auto;
+}
+
+
+.title{
+  margin: 25px 0 8px 0;
+}
+h1{
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.5rem;
+}
+
+
+/*                    出品画像                    */
+.sell-images{
+  margin: 20px 0 40px 0;
+}
+.sell-images p{}
+/*input#file{
+  width: 650px;
+  padding: 30px 0 30px 0;
+  border: 1px dashed; #000;
+  cursor: pointer;
+  border-radius: 5px;
+}*/
+
+.deco-file label{
+  display: inline-block;
+  border: 2px dashed; #000;
+  color: #000;
+  text-align: center;
+  width: 650px;
+  padding: 30px 0 30px 0;
+}
+.deco-file label:hover{
+    cursor: pointer;
+}
+.deco-file input[type="file"]{
+    display: none;
+}
+
+.img-confirm{}
+.img-confirm figure{
+  overflow: hidden;
+/*  text-align: center;*/
+}
+.img-confirm figure img{
+  width: 103.812px;
+  height: 103.812px;
+  background-color: #a9a9a9;
+  border: 1px solid #a9a9a9;
+  object-fit: scale-down;
+  margin: 0 0 5px 0;
+}
+
+
+
+
+
+
+/*                    商品の詳細                    */
+.detail{
+  margin: 20px 0 40px 0;
+}
+.detail h2{
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+  position: relative;
+}
+.detail p{}
+.detail ul{
+  margin: 70px 0 8px 0;
+}
+.detail ul li{
+  list-style: none;
+}
+.detail ul li p{
+  font-size: 0.9rem;
+}
+.selectbox{
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+.selectbox::after {
+  position: absolute;
+  right: 15px;
+  width: 10px;
+  height: 7px;
+  background-color: #535353;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  content: '';
+  pointer-events: none;
+}
+.selectbox select{
+  appearance: none;
+  min-width: 650px;
+  height: 3em;
+  padding: .4em calc(.8em + 30px) .4em .8em;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background-color: #fff;
+  color: #333333;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+
+
+/*                    商品名と説明                    */
+.intro{
+  margin: 20px 0 40px 0;
+}
+.intro h3{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.intro p{}
+.product-title{
+  font-size: 1rem;
+}
+.exp{
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+
+/*                    配達について                    */
+.delivery{
+  margin: 20px 0 40px 0;
+}
+.delivery h4{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.delivery p{}
+.omosa{
+  font-size: 1rem;
+}
+
+
+
+/*                    販売価格                    */
+.price{
+  margin: 20px 0 40px 0;
+}
+.price h5{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.kibou-price{
+  font-size: 1rem;
+}
+.kibou-price span{
+  margin: 0 0 0 5px;
+}
+.textbox-003{
+  margin: 0 0 8px 0;
+  min-width: 628px;
+  padding: 8px 10px;
+  border: 1px solid #969da3;
+  border-radius: 3px;
+  color: #333;
+  font-size: 1em;
+  line-height: 1.5rem;
+  text-align: right;
+}
+.textbox-003::placeholder {
+  color: #999;
+  text-align: right;
+}
+
+
+
+/*                    出品者の住所                    */
+.address{
+  margin: 20px 0 30px 0;
+}
+.address h6{
+  position: relative;
+  margin: 0 0 20px 0;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+.now_address{
+  font-size: 1rem;
+}
+
+
+/*                    h1の下線                    */
+.detail h2::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.intro h3::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.delivery h4::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.price h5::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+.address h6::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+
+
+/*                    出品、下書き                    */
+.sell{
+  margin: 130px 0 300px 0;
+  text-align: center;
+  position: relative;
+}
+.sell ul{
+  position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+}
+.sell ul li{
+  margin: 30px 0 30px 0;
+}
+.sell ul li button{
+  display: block;
+  width: 400px;
+  padding: 10px 0 10px 0;
+  cursor: pointer;
+  font-size: 1rem;
+  border: 1px solid #a9a9a9;
+}
+.sell ul li button a{
+  text-decoration: none;
+}
+.sell ul li button:hover{
+  opacity: 0.7;
+}
+/* .btn05{
+  background-color: red;
+  color: #fff;
+} */
+.btn05 {
+      background-color: #fff;
+      color: #000;
+}
+.btn06{
+  color: #000;
+}

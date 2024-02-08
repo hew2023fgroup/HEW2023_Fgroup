@@ -15,7 +15,7 @@
 <body>
     <div id="wrap">
         <figure>
-          <a href="index.html"><img src="../static/images/logo.png"></a>
+            <a href="{{ url_for('IndexPage') }}"><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
         </figure>
     </div>
 
@@ -25,18 +25,18 @@
             <hr>
             <div id="pages">
                 <ul>
-                    <li><a href="index.html">Index</a></li>
-                    <li><a href="managetop.html">ManageTop</a></li>
-                    <li><a href="managepage.html">ManagePage</a></li>
-                    <li><a href="manageuser.html">ManageUser</a></li>
-                    <li><a href="managedb.html">ManageDB</a></li>
-                    <li><a href="favorite.html">Favorite</a></li>
-                    <li><a href="mylist.html">MyList</a></li>
-                    <li><a href="mypage.html">MyPage</a></li>
-                    <li><a href="personal.html">Personal</a></li>
-                    <li><a href="product.html">Product</a></li>
-                    <li><a href="sell.html">Sell</a></li>
-                    <li><a href="viewlog.html">ViewLog</a></li>
+                    <li><a href="{{ url_for('IndexPage') }}">Index</a></li>
+                    <li><a href="{{ url_for('ManagetopPage') }}" >ManageTop</a></li>
+                    <li><a href="{{ url_for('ManagePage') }}" >ManagePage</a></li>
+                    <li><a href="{{ url_for('ManageuserPage') }}">manageuser</a></li>
+                    <li><a href="{{ url_for('ManagedbPage') }}">ManageDB</a></li>
+                    <li><a href="{{ url_for('FavoritePage') }}">Favorite</a></li>
+                    <li><a href="{{ url_for('MylistPage') }}">MyList</a></li>
+                    <li><a href="{{ url_for('MyPage') }}">MyPage</a></li>
+                    <li><a href="{{ url_for('PersonalPage') }}">Personal</a></li>
+                    <li><a href="{{ url_for('ProductPage') }}">Product</a></li>
+                    <li><a href="{{ url_for('SellPage') }}">Sell</a></li>
+                    <li><a href="{{ url_for('ViewlogPage') }}">ViewLog</a></li>
                 </ul>
             </div>
 
@@ -44,11 +44,12 @@
 
         <nav>
             <ul>
-                <li><a href="index.html" class="nav">ホーム</a></li>
-                <li><a href="managetop.html" class="nav">トップ</a></li>
-                <li><a href="managepage.html" class="nav">ページ</a></li>
-                <li><a href="manageuser.html" class="nav">ユーザー</a></li>
-                <li><a href="managedb.html" class="nav">データベース</a></li>
+                <li><a href="{{ url_for('IndexPage') }}" class="nav">ホーム</a></li>
+                <li><a href="{{ url_for('ManagetopPage') }}" class="nav">トップ</a></li>
+                <li><a href="{{ url_for('ManagePage') }}" class="nav">ページ</a></li>
+                <li><a href="{{ url_for('ManageuserPage') }}" class="nav">ユーザー</a></li>
+                <li><a href="{{ url_for('ManagedbPage') }}" class="nav">データベース</a></li>
+
             </ul>
         </nav>
     </div>

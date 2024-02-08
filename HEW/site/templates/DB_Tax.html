@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Account</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/DataBase.css') }}">
+
+    <!-- JQuery本体 CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+
+    <!-- jquery実行ファイル -->
+    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+
+  </head>
+
+  <body>
+
+
+    <h1>DataBase管理テーブル</h1>
+
+    <div id="wrap">
+      <div id="wrap_left">
+        <h2>テーブル一覧</h2>
+
+        <ul>
+          <li><a href="{{ url_for('DB_Account') }}">Account</a></li>
+          <li><a href="{{ url_for('DB_Sex') }}">Sex</a></li>
+          <li><a href="{{ url_for('DB_Address') }}">Addess</a></li>
+          <li><a href="{{ url_for('DB_Sell') }}">Sell</a></li>
+          <li><a href="{{ url_for('DB_SellIMG') }}">SellIMG</a></li>
+          <li><a href="{{ url_for('DB_Status') }}">Status</a></li>
+          <li><a href="{{ url_for('DB_Mcategory') }}">Mcategory</a></li>
+          <li><a href="{{ url_for('DB_Scategory') }}">Scategory</a></li>
+          <li><a href="{{ url_for('DB_Tag') }}">Tag</a></li>
+          <li><a href="{{ url_for('DB_Buy') }}">Buy</a></li>
+          <li><a href="{{ url_for('DB_Nice') }}">Nice</a></li>
+          <li><a href="{{ url_for('DB_View') }}">View</a></li>
+          <li><a href="{{ url_for('DB_Chat') }}">Chat</a></li>
+          <li><a href="{{ url_for('DB_Tax') }}">Tax</a></li>
+          <li><a href="{{ url_for('DB_Postage') }}">Postage</a></li>
+          <li><a href="{{ url_for('DB_Reply') }}">Reply</a></li>
+          <li><a href="{{ url_for('DB_Layout') }}">Layout</a></li>
+          <li><a href="{{ url_for('DB_Numerical') }}">Numerical</a></li>
+          <li><a href="{{ url_for('DB_Search') }}">Search</a></li>
+        </ul>
+      </div>
+
+      <div id="wrap_right">
+        <h3>{{ TableName }}</h3>
+
+        <div class="DataContents">
+            <table>
+                <tr>
+                  <th>TaxID</th>
+                  <th>Section</th>
+                  <th>Tax</th>
+                </tr>
+
+                {% for row in Tax %}
+                <form action="/delete" method="post">
+                  <tr>
+                    <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                    <td><input type="text" name="TableID" id="" class="size-input-TaxID"   value="{{ row[0] }}" readonly></td>
+                    <td><input type="text" name="Section" id="" class="size-input-Section" value="{{ row[1] }}" readonly></td>
+                    <td><input type="text" name="Tax"     id="" class="size-input-Tax"     value="{{ row[2] }}" readonly></td>
+                    
+                    <td><button type="submit" class="remove" name="action" value="delete">-</button></td>
+                  </tr>
+                </form>
+                {% endfor %}
+                  
+              <form action="/insert" method="post">
+                  <tr>
+                    <input type="hidden" name="TableName" value="{{ TableName }}">
+
+                    <td><input type="text"   name="TableID" id="" class="size-input-TaxID"   placeholder="自動入力" readonly></td>
+                    <td><input type="text"   name="Section" id="" class="size-input-Section" placeholder="区分名" required></td>
+                    <td><input type="number" name="Tax"     id="" class="size-input-Tax"     placeholder="値" required></td>
+                  </tr>
+                </table>
+                <button type="submit" id="addRow" name="action" value="insert">+ 追加</button>
+              </form>
+
+        </div>
+
+      </div>
+    </div>
+
+
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!-- <script src="{{ url_for('static', filename='js/Tax.js') }}"></script> -->
+
+</html>

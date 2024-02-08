@@ -8,9 +8,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Varia Free</title>
+    <title>Login</title>
 
-    <!--  render_templateが使用できないため、以下の二行変更 -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 
@@ -24,46 +23,60 @@
 
   <body>
 
-    <header>
-      <figure>
-        <img src="../static/images/logo.png">
-      </figure>
-    </header>
+    <div id="wrap">
+      <div class="title">
+        <h1>Login<span>ログイン</span></h1>
+        <section id="Login">
+          <form class="login" method="post" action="/login/">
+            <div class="left">
+              <div class="left-con">
 
-    <main id="login-wrap">
+                <div class="left-detail">
+                  <!-- <h2>会員登録がお済みのお客様</h2> -->
+                  <div class="email-box">
+                    <p>メールアドレス</p>
+                    <input type="text" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
+                  </div>
 
-      <!-- method="post" action="/login/" の追加 -->
-      <form class="login" method="post" action="/login/">
-        <h1>ログイン</h1>
-        
-        <div class="email-box">
-          <p>メールアドレス</p>
-          <input type="text" name="email" id="email" required="required">
-        </div>
+                  <div class="password-box">
+                    <p>パスワード</p>
+                    <input maxlength="20" minlength="5" type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい">
+                  </div>
 
-        <div class="password-box">
-          <p>パスワード</p>
-          <!-- passeord <- password -->
-          <input type="password" name="password" id="password" required="required">
-        </div>
+                  <!-- エラーメッセージの追加 -->
+                  {% if PassMessage %}
+                    <!-- スタイルタグでCSS付けてるから変更してもOK -->
+                    <p style="color: red; text-align: center; font-weight: bold;">{{ PassMessage }}</p>
+                  {% endif %}
 
-        <div class="new">
-          <!-- {{ url_for('RegistrationPage') }} の追加 -->
-          <a href="{{ url_for('RegistrationPage') }}">新規登録はこちら ></a>
-        </div>
+                  <div class="btn-box">
+                    <input type="submit" value="ログインする" id="btn">
+                  </div>
+                </div>
 
-        <!-- エラーメッセージの追加 -->
-        {% if PassMessage %}
-          <!-- スタイルタグでCSS付けてるから変更してもOK -->
-          <p style="color: red; text-align: center; font-weight: bold;">{{ PassMessage }}</p>
-        {% endif %}
+              </div>
+            </div>
 
-        <div class="btn-box">
-          <input type="submit" value="完了" id="btn">
-        </div>
-      </form>
+            <div class="right">
+              <div class="right-con">
+                <div class="right-detail">
+                  <h3>はじめてご利用の方</h3>
+                  <p>お買い物には会員登録が必要です</p>
 
-    </main>
+                  <div class="next-btn">
+                    <a href="{{ url_for('RegistrationPage') }}">新規会員登録</a>
+                    <!-- <input type="submit" value="新規会員登録" id="btn"> -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+
 
   </body>
 

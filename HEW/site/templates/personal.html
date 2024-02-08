@@ -14,43 +14,247 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/personal.css') }}">
 
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap" rel="stylesheet">
+
     <!-- JQuery本体 CDN -->
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
 
+    <script>
+      // 画像をクリックしたときにファイル選択ダイアログを開く
+      function changeProfileImage() {
+          document.getElementById('file-input').click();
+      }
+
+      // ファイルが選択されたときに実行される関数
+      function handleFileSelect() {
+          var fileInput = document.getElementById('file-input');
+          var profileImage = document.getElementById('profile-image');
+      }
+  </script>
   </head>
 
   <body>
-    <div id="wrap">
+    
+    <nav id="main-nav">
+      <div class="main-nav-box">
+        <div class="left-nav">
+          <figure>
+            <img src="../static/images/cat.jpg">
+          </figure>
+          <p>イッパイアッテナ様</p>
+        </div>
 
-      <figure>
-        <a href="index.html"><img src="../static/images/logo.png"></a>
-      </figure>
-
-      <form action="#" class="search-form-003">
-        <label>
-          <input type="text" placeholder="キーワードを入力">
-        </label>
-        <button type="submit" aria-label="検索"></button>
-      </form>
-
-      <nav>
-        <ul>
-          <li class="nav03"><a class="nav01" href="mypage.html">マイページ</a></li>
-          <li class="nav03"><a class="nav01" href="favorite.html">いいね一覧</a></li>
-          <li><a class="nav02" href="sell.html">出品</a></li>
-        </ul>
-      </nav>
-
-      <div id="sub_nav">
-        <ul>
-          <li><a href="index.html">おすすめ</a></li>
-          <li><a href="#">トレンド</a></li>
-        </ul>
+        <figure>
+          <a href="{{ url_for('IndexPage') }}"><img src="../static/images/title111.svg"></a>
+        </figure>
+        <div class="right-nav">
+          <ul>
+            <!-- <li class="underline"><a href="" id="hoverButton">テーブル</a></li> -->
+            <li class="underline"><p id="hoverButton">カテゴリ</p></li>
+            <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
+            <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
+            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+          </ul>
+        </div>
       </div>
+    </nav>
 
+
+    <div class="search-box">
+      <img id="closebtn" src="../static/images/x01.svg">
+      <!-- <img id="closebtn" src="images/x.svg"> -->
+      <div class="search-wrap">
+        <div class="search-title">
+          <h1>SEARCH</h1>
+          <p class="sub-sea">商品を探す</p>
+        </div>
+        <form action="#" class="search-form-4">
+          <label>
+            <input type="text" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+          </label>
+        </form>
+      </div>
+    </div>
+
+    <!-- 絶対に消すな -->
+    <div id="kesuna"></div>
+    <!-- 絶対に消すな -->
+
+    <div id="hiddenArea">
+      <!-- <h1>カテゴリ</h1> -->
+      <div class="tab">
+        <ul class="tab-list">
+          <li class="tab-list-item is-btn-active">レディース</li>
+          <li class="tab-list-item">メンズ</li>
+          <li class="tab-list-item">インテリア/家具</li>
+          <li class="tab-list-item">ホビー</li>
+          <li class="tab-list-item">その他</li>
+        </ul>
+
+        <!-- コンテンツを構成するブロック -->
+        <div class="tab-contents-wrap">
+          <div class="tab-contents is-contents-active">
+            <div class="women-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">レディース</p>
+                  <div class="s-category">
+                    <span>トップス</span>
+                    <span>パンツ</span>
+                    <span>シューズ</span>
+                    <span>バッグ</span>
+                    <span>アクセサリー</span>
+                    <span>ファッション小物</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">ベビー・キッズ</p>
+                  <div class="s-category">
+                    <span>ベビー服</span>
+                    <span>キッズ服</span>
+                    <span>キッズシューズ</span>
+                  </div>
+                </li>
+                <li class="m-cate03">
+                  <p class="cateTitle">コスメ/香水/美容</p>
+                  <div class="s-category">
+                    <span>スキンケア</span>
+                    <span>ボディケア</span>
+                    <span>ヘアケア</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="men-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">メンズ</p>
+                  <div class="s-category">
+                    <span>トップス</span>
+                    <span>パンツ</span>
+                    <span>シューズ</span>
+                    <span>バッグ</span>
+                    <span>アクセサリー</span>
+                    <span>ファッション小物</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="day-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">インテリア/住まい/小物</p>
+                  <div class="s-category">
+                    <span>キッチン/食器</span>
+                    <span>家具/収納</span>
+                    <span>カーペット</span>
+                    <span>カーテン</span>
+                    <span>ライト</span>
+                    <span>インテリア小物</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">家電/スマホ/カメラ</p>
+                  <div class="s-category">
+                    <span>スマートフォン</span>
+                    <span>PC</span>
+                    <span>カメラ</span>
+                    <span>テレビ</span>
+                    <span>オーディオ</span>
+                    <span>生活家電</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="hobby-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
+                  <div class="s-category">
+                    <span>おもちゃ</span>
+                    <span>コミック/アニメグッズ</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">本/音楽/ゲーム</p>
+                  <div class="s-category">
+                    <span>本</span>
+                    <span>CD</span>
+                    <span>DVD</span>
+                    <span>テレビゲーム</span>
+                    <span>楽器/機材</span>
+                  </div>
+                </li>
+                <li class="m-cate03">
+                  <p class="cateTitle">スポーツ/レジャー</p>
+                  <div class="s-category">
+                    <span>ゴルフ</span>
+                    <span>釣り</span>
+                    <span>野球</span>
+                    <span>サッカー</span>
+                    <span>テニス</span>
+                    <span>スノーボード</span>
+                    <span>アウトドア</span>
+                  </div>
+                </li>
+                <li class="m-cate04">
+                  <p class="cateTitle">ハンドメイド</p>
+                  <div class="s-category">
+                    <span>アクセサリー</span>
+                    <span>ファッション/小物</span>
+                    <span>時計</span>
+                    <span>インテリア</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tab-contents">
+            <div class="other-box">
+              <ul>
+                <li class="m-cate01">
+                  <p class="cateTitle">チケット</p>
+                  <div class="s-category">
+                    <span>音楽</span>
+                    <span>スポーツ</span>
+                    <span>演劇</span>
+                    <span>映画</span>
+                    <span>優待券</span>
+                  </div>
+                </li>
+                <li class="m-cate02">
+                  <p class="cateTitle">その他</p>
+                  <div class="s-category">
+                    <span>ペット用品</span>
+                    <span>食品</span>
+                    <span>日用品</span>
+                    <span>事務用品</span>
+                    <span>その他</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
 
@@ -62,13 +266,13 @@
           <li class="nav_title01">商品管理</li>
           <li><a href="favorite.html">いいね一覧</a></li>
           <li><a href="viewlog.html">閲覧履歴</a></li>
-          <li><a href="sell_list.html">出品した商品</a></li>
-          <li><a href="buy_list.html">購入した商品</a></li>
+          <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
+          <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
           <li><a href="saved_search.html">保存した検索条件</a></li>
-          <li><a href="#">下書き一覧</a></li>
+          <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
 
           <li class="nav_title02">設定</li>
-          <li><a href="personal.html">個人情報編集</a></li>
+          <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
           <li><a href="layout.html">レイアウト編集</a></li>
           <li><a href="login.html">ログアウト</a></li>
         </ul>
@@ -80,73 +284,158 @@
         <h1>アカウント</h1>
 
         <div class="prof-edit">
+
+          <!-- アイコンをクリックして画像を選択し、変更ボタンを押すとアイコンが変えられる -->
           <p class="edit-title">プロフィール編集</p>
-          <p class="photo">画像</p>
-          <figure>
-            <img src="../static/images/icon.png">
-          </figure>
-          <p class="txt">ニックネーム</p>
-          <input type="text" class="textbox-001" placeholder="ニックネーム" value="田中正造" />
+          <div class="edit-image">
+            <form action="/change_icon" method="post" enctype="multipart/form-data">
+              <p class="photo">画像</p>
+              <figure id="prof_icon">
+                {% if AccountInfo[1] != '未登録' %}
+                <!-- css -->
+                <img src="{{ AccountInfo[1] }}" id="profile-image" onclick="changeProfileImage()" alt="プロフィール画像" 
+                style="opacity: 1; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+
+                {% elif AccountInfo[1] == '未登録' %}
+                <!-- css -->
+                <img src="static/images/icon/default_icon.png"  id="profile-image" onclick="changeProfileImage()" alt="初期画像" 
+                style="opacity: 1; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+
+                {% endif %}
+                <input type="file" name="icon" id="file-input" style="display:none" accept="image/*" onchange="handleFileSelect()" required>
+              </figure>            
+              <button type="submit">変更</button>
+            </form>
+          </div>
+
+          <div class="edit-nickname">
+            <p class="txt">ニックネーム</p>
+              <form action="/change_username" method="post">
+              <input type="text" class="textbox-001" name="username" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
+              <button type="submit">変更</button>
+              {% if name_error %}
+              <!-- css -->
+              <p style="color:#f00;">{{ name_error }}</p>
+              {% endif %}
+            </form>
+          </div>
         </div>
 
 
         <div class="address-edit">
           <p class="edit-title">住所一覧</p>
           <div class="address-box">
-            <p class="address-name">国会議事堂</p>
-            <p class="post-code"><span>&#12306;</span>100-0014</p>
-            <p class="address">東京都 千代田区 永田町1-7-1</p>
+
+            {% if AddressInfo == None %}
+            <!-- css -->
+            <p class="address-name" style="color: #f00;">※未登録</p>
+            <form action="/add_address" method="post">
+              <label for="post">郵便番号</label><br>
+              <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+              <label for="address">住所</label><br>
+              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+              <button type="submit">登録</button>
+            </form>
+            {% else %}
+            {% for address, post in AddressInfo %}
+            <!-- css -->
+            <div  style="background-color:#eee; width:450px; padding:5px; margin-bottom:5px;">
+              <form action="/del_address" method="post">
+                <p><span>&#12306;</span>{{ post }}</p>
+                <input type="hidden" value="{{ post }}" name="post">
+                <p>{{ address }}</p>
+                <input type="hidden" value="{{ address }}" name="address">
+                <button type="submit">削除</button>
+              </form>
+            </div>
+            {% endfor %}
+
+            <form action="/add_address" method="post">
+              <label for="post">郵便番号</label><br>
+              <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+              <label for="address">住所</label><br>
+              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+              <button type="submit">追加</button>
+            </form>
+            {% endif %}
+
           </div>
-          <a href="#">&plus; 新しい住所を登録</a>
         </div>
 
 
         <div class="mail-edit">
           <p class="edit-title">メール・パスワード</p>
 
-          <p class="txt">メールアドレス</p>
-          <input type="text" class="textbox-001" placeholder="メールアドレス" value="HalNagoya@gmail.com"/>
+          <form action="/change_mail" method="post">
+            <p class="txt">メールアドレス</p>
+            <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ AccountInfo[6] }}" name="mailaddress">
+            <button type="submit">変更</button>
+            {% if mail_error %}
+            <!-- css -->
+            <p style="color:#f00;">{{ mail_error }}</p>
+            {% endif %}
+          </form>
 
-          <p class="txt">現在のパスワード</p>
-          <input type="text" class="textbox-001" placeholder="現在のパスワード"/>
-
-          <p class="txt">新しいのパスワード</p>
-          <input type="text" class="textbox-001" placeholder="新しいパスワード"/>
-
-          <p class="txt">新しいのパスワード確認</p>
-          <input type="text" class="textbox-001" placeholder="新しいパスワード確認"/>
+          <form action="/change_pass" method="post">
+            <p class="txt">現在のパスワード</p>
+            <input type="password" class="textbox-001" placeholder="現在のパスワード" name="nowpass">
+            <p class="txt">新しいパスワード</p>
+            <input type="password" class="textbox-001" placeholder="新しいパスワード" name="newpass">
+            <p class="txt">新しいパスワード確認</p>
+            <input type="password" class="textbox-001" placeholder="新しいパスワード確認" name="renewpass">
+            <button type="submit">変更</button>
+            {% if pass_error %}
+            <!-- css -->
+            <p style="color:#f00;">{{ pass_error }}</p>
+            {% endif %}
+          </form>
         </div>
 
 
         <div class="personal-edit">
           <h2>個人情報</h2>
-          <p class="edit-title">氏名・生年月日・住所</p>
-          <p>氏名・生年月日</p>
-          <div class="personal-name">
-            <p class="name">姓名</p>
-            <p>（<span class="katakana">セイメイ</span>）</p>
-          </div>
-          <div>
-            <p class="year"></p>
-            <p class="month"></p>
-            <p class="day"></p>
-          </div>
-          <p>YYYY/MM/DD</p>
+          <p class="edit-title">氏名・生年月日</p>
 
-          <p>現住所</p>
-          <p>東京都</p>
+          {% if AccountInfo[4] and AccountInfo[5] != '未登録' %}
+          <form action="/change_fullname" method="post">
+            <label for="kanjiname">氏名</label><br>
+            <input type="text" class="textbox-001" name="kanjiname" id="kanjiname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
+            <label for="furigana">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="furigana" id="furigana" value="{{ AccountInfo[5] }}" required><br>
+            <label for="birthday">生年月日</label><br>
+            <input type="date" class="textbox-001" placeholder="生年月日" name="birthday" id="birthday" value="{{ AccountInfo[2] }}" required>
+            <button type="submit">変更</button>
+          </form>
+
+          {% else %}
+          <form action="/change_fullname" method="post">
+            <label for="kanjiname">氏名</label><br>
+            <input type="text" class="textbox-001" name="kanjiname" id="kanjiname" placeholder="氏名" required><br>
+            <label for="furigana">カタカナ</label><br>
+            <input type="text" class="textbox-001" placeholder="シメイ" name="furigana" id="furigana" required><br>
+            <label for="birthday">生年月日</label><br>
+            <input type="date" class="textbox-001" placeholder="生年月日" name="birthday" id="birthday" required>
+            <button type="submit">登録</button>
+          </form>
+          {% endif %}
         </div>
 
         <div class="gender-edit">
           <p class="edit-title">性別</p>
-          <label class="selectbox">
-          <select>
-            <option hidden>選択してください</option>
-            <option>男性</option>
-            <option>女性</option>
-            <option>カスタム</option>
-          </select>
-        </label>
+          <form action="/change_sex" method="post">
+            <label class="selectbox">
+              <select id="gender" name="gender">
+                <option {% if AccountInfo[3] == 1 %}selected{% endif %} value="1">男性</option>
+                <option {% if AccountInfo[3] == 2 %}selected{% endif %} value="2">女性</option>
+                <option {% if AccountInfo[3] == 3 %}selected{% endif %} value="3">秘密</option>
+              </select>
+            </label>
+            {% if AccountInfo[3] != '未登録' %}
+            <button type="submit">変更</button>
+            {% else %}
+            <button type="submit">登録</button>
+            {% endif %}
+          </form>
         </div>
 
       </main>
@@ -160,5 +449,14 @@
     </footer>
 
   </body>
+  <!-- 検索用 -->
+  <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+
+  <!-- カテゴリ-hoverしたら開く用 -->
+  <script src="{{ url_for('static', filename='js/category_hover_open.js') }}"></script>
+  
+  <!-- カテゴリ用 -->
+  <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
 
 </html>

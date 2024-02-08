@@ -8,70 +8,141 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Varia Free</title>
+    <title>Sign Up</title>
 
-    <!--  render_templateが使用できないため、以下の二行変更 -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration_modal.css') }}">
 
     <!-- JQuery本体 CDN -->
-    <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
     <!-- jquery実行ファイル -->
-    <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+
+    {% if show_modal %}
+    <script src="{{ url_for('static', filename='js/regist_modal.js') }}"></script>
+    {% endif %}
 
   </head>
 
   <body>
 
+    <div id="wrap">
+      <div class="title">
+        <h1>Sign Up<span>新規会員登録</span></h1>
+        <section id="Login">
+          <form class="registration" name="input_register" method="post" action="/input">
 
-    <header>
-      <figure>
-        <img src="../static/images/logo.png">
-      </figure>
-    </header>
+
+            <div class="left">
+              <div class="right-con">
+                <div class="right-detail">
+                  <h3>ご登録済みの方</h3>
+                  <p>お買い物にはログインが必要です</p>
+                  <div class="next-btn">
+                    <a href="{{ url_for('LoginPage') }}">ログインする</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
-    <main id="registration-wrap">
 
-      <!-- method="post" action="/register/" の追加 -->
-      <form class="registration" method="post" action="/register/">
-        <h1>新規登録</h1>
+            <div class="right">
+              <div class="left-con">
+                <div class="left-detail">
+                  <!-- <h2>会員登録がお済みのお客様</h2> -->
+                  <div class="email-box">
+                    <p>ユーザーネーム</p>
+                    <input maxlength="20" type="text" name="username" id="username" required="required" placeholder="ユーザーネームを入力して下さい">
+                  </div>
 
-        <div class="username-box">
-          <p>ユーザーネーム</p>
-          <input type="text" name="username" id="username" required="required">
-        </div>
+                  <div class="email-box">
+                    <p>メールアドレス</p>
+                    <input type="email" name="email" id="email" required="required" placeholder="メールアドレスを入力して下さい">
+                  </div>
 
-        <div class="email-box">
-          <p>メールアドレス</p>
-          <input type="text" name="email" id="email" required="required">
-        </div>
+                  <div class="password-box">
+                    <p>パスワード</p>
+                    <input maxlength="20" minlength="5" type="password" name="password" id="password" required="required" placeholder="パスワードを入力して下さい">
+                  </div>
 
-        <div class="password-box">
-          <p>パスワード</p>
-          <!-- passeord <- password -->
-          <input type="password" name="password" id="password" required="required">
-        </div>
+                  <div class="btn-box">
+                    <button type="submit" id="openModal">内容を確認する</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="new">
-          <!-- {{ url_for('LoginPage') }} の追加 -->
-          <a href="{{ url_for('LoginPage') }}">ログインはこちら ></a>
-        </div>
-        
-        <!-- エラーメッセージの追加 -->
-        {% if MailMessage %}
-          <!-- スタイルタグでCSS付けてるから変更してもOK -->
-          <p style="color: red; text-align: center; font-weight: bold;">{{ MailMessage }}</p>
-        {% endif %}
 
-        <div class="btn-box">
-          <input type="submit" value="完了" id="btn">
-        </div>
-      </form>
+          </form>
+        </section>
+      </div>
+    </div>
 
-    </main>
+  <!-- モーダルエリアここから -->
+  <div id="modalArea" class="modalArea">
+    <div id="modalBg" class="modalBg"></div>
+    <div class="modalWrapper">
+      <div class="modalContents">
+        <h2>登録内容確認</h2>
+        <form action="/register/" method="post">
+
+          {% if input_data %}
+          <table>
+            <tr>
+              <th>ユーザーネーム</th>
+              <td class="content01" id="disp_usename">{{ input_data[0] }}</td>
+              {% if checks[0] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden"name="username" value="{{ input_data[0] }}">
+              
+            </tr>
+            <tr>
+              <th>メールアドレス</th>
+              <td class="content02" id="disp_email">{{ input_data[1] }}</td>
+              {% if checks[1] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden" name="email" value="{{ input_data[1] }}">
+              
+            </tr>
+            <tr>
+              <th>パスワード</th>
+              <td class="content03" id="disp_password">{{ input_data[2] }}</td>
+              {% if checks[2] %}
+              <td class="check-mark" style="color:#0f0;">&check;</td>
+              {% else %}
+              <td class="cross-mark" style="color:#f00;">&cross;</td>
+              {% endif %}
+              <input type="hidden" name="password" value="{{ input_data[2] }}">
+            </tr>
+          </table>
+          {% endif %}
+
+          {% if error %}
+          <p style="margin-top:-20px; font-size:1.4rem; text-align:center; color:crimson;">{{ error }}</p>
+          {% endif %}
+          
+          <div class="btn-confirm">
+            <a href="{{ url_for('RegistrationPage') }}">戻る</a>
+            {% if error == None %}
+            <input type="submit" value="登録する" id="btn">
+            {% endif %}
+          </div>
+          
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <!-- モーダルエリアここまで -->
 
   </body>
-
 </html>
