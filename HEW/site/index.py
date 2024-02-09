@@ -195,18 +195,17 @@ def SellConfirm():
         
         # ========== フォーム ==========
         # メイン画像
-        sellimg_main = request.files.get('sellimg-main')
+        # sellimg_main = request.files.get('sellimg-main')
         
         # サブ画像(任意
-        sellimgs_sub = request.files.getlist('sellimg-sub')
-        if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
-            print('フォーム:サブ画像は空です')
+        # sellimgs_sub = request.files.getlist('sellimg-sub')
+        # if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
+        #     print('フォーム:サブ画像は空です')
             
             
         # 新画像
-        new_imgs=[]
-        new_imgs = request.files.getlist('uploadInput')
-        print('new:',new_imgs)
+        input_imgs = request.files.getlist('uploadInput')
+        print('new:',input_imgs)
             
             
         # 商品名
@@ -220,7 +219,6 @@ def SellConfirm():
             print('フォーム:商品悦明が未入力')
             
         # タグ
-        # if request.form['tag0']:
         if 'tag0' in request.form and request.form['tag0']:
             tags = []
             for i in range(20):
@@ -270,24 +268,34 @@ def SellConfirm():
         upload_path = "static/images/sell/"
 
         # サムネイルファイル保存
-        mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        sellimg_main.save(mainimg_path)
+        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
+        # sellimg_main.save(mainimg_path)
 
         # サブファイル保存(送信した画像数分imgsへ挿入)
-        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+        #     imgs = []
+        #     for sellimg in sellimgs_sub:
+        #         img_path = os.path.join(upload_path, sellimg.filename)
+        #         sellimg.save(img_path)
+        #         imgs.append(img_path)
+        # else:
+        #     imgs = None
+        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
+        
+        #new
+        if not (len(input_imgs) == 1 and input_imgs[0].filename == ''):
             imgs = []
-            for sellimg in sellimgs_sub:
+            for sellimg in input_imgs:
                 img_path = os.path.join(upload_path, sellimg.filename)
                 sellimg.save(img_path)
                 imgs.append(img_path)
         else:
-            imgs = None
-            print('機能:サブ画像が未入力の為ファイルを保存しません')
+            imgs = None 
         # ========== 画像処理 ==========
             
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
-        form_data = [mainimg_path,imgs,selltit,overview,
-                     scategoryid,postage,status,price]
+        # form_data = [mainimg_path,imgs,selltit,overview,scategoryid,postage,status,price]
+        form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
         # 住所
         Address_Select = '''
@@ -304,8 +312,10 @@ def SellConfirm():
         conn.commit()
         cursor.close()
         conn.close()
+        # return render_template('sell_confirm.html', icon=icon, UserName=UserName,
+        #         mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,
-                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
+                imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
