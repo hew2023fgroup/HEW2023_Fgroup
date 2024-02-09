@@ -202,6 +202,13 @@ def SellConfirm():
         if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
             print('フォーム:サブ画像は空です')
             
+            
+        # 新画像
+        new_imgs=[]
+        new_imgs = request.files.getlist('uploadInput')
+        print('new:',new_imgs)
+            
+            
         # 商品名
         selltit = request.form['selltit']
         
