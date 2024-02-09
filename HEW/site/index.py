@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, session
-import mysql.connector,os
+import mysql.connector,os,random
 from datetime import datetime, timedelta
 
 # カレントディレクトリをスクリプトディレクトリに固定
@@ -438,15 +438,38 @@ def IndexPage():
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
-    sql = '''
+    SellID_Select = '''
+    SELECT Sell.SellID
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID != {0};
+    '''.format(AccountID)
+    cursor.execute(SellID_Select)
+    ids = cursor.fetchall()
+    
+    # シャッフル
+    random.shuffle(ids)
+    # top#10
+    ids_top10 = ids[:10]
+    # タプル
+    ids_top10 = tuple(x[0] for x in ids_top10)
+    ids_top10 = tuple(ids_top10)
+    
+    SellInfo_Select = '''
     SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0};
-    '''.format(AccountID)
-    cursor.execute(sql)
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0} AND Sell.SellID IN {1};
+    '''.format(AccountID,ids_top10)
+    print('実行:',SellInfo_Select)
+    cursor.execute(SellInfo_Select)
     sells = cursor.fetchall()
+    
     
     # CLOSE
     conn.commit()
@@ -530,6 +553,17 @@ def ProductPage(sellid):
     tags = cursor.fetchall()
     tags = [item[0] for item in tags]
     
+    Category_Select = '''
+    SELECT SCategoryID FROM Scategory
+    WHERE Name = '{0}';
+    '''.format(products[0][3])
+    print('実行:',Category_Select)
+    cursor.execute(Category_Select)
+    category_id = cursor.fetchone()[0]
+    
+    conn = conn_db()
+    cursor = conn.cursor()
+    
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
     sells = '''
@@ -537,8 +571,13 @@ def ProductPage(sellid):
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0};
-    '''.format(AccountID)
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID != {0} 
+    AND Sell.ScategoryID = {1};
+    '''.format(AccountID,category_id)
+    print('実行:',sells)
     cursor.execute(sells)
     sells = cursor.fetchall()
     
