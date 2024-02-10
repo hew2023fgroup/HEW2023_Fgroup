@@ -55,7 +55,8 @@
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
+            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
+            <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
             <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
           </ul>
         </div>
