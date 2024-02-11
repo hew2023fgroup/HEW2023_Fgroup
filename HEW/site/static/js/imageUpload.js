@@ -1,44 +1,54 @@
-document.getElementById("imagePreview").addEventListener("click", function(event) {
-    if (event.target.tagName !== "INPUT") {
-        event.preventDefault();
-        var images = document.getElementsByClassName("preview-image");
-        for (var i = 0; i < images.length; i++) {
-            images[i].removeAttribute("id");
-            images[i].style.backgroundColor = ""; // 背景色をクリア
-        }
-        if (event.target.classList.contains("preview-image")) {
-            event.target.id = "thumbnail";
-            event.target.style.backgroundColor = "blue"; // 背景色を青色に変更
-
-            // クリックされた画像を別の場所に表示
-            var thumbnailContainer = document.getElementById("thumbnailContainer");
-            thumbnailContainer.innerHTML = ''; // 切り替える前に中身をクリア
-            var imageCopy = event.target.cloneNode(true); // クリックされた画像のコピーを作成
-            thumbnailContainer.appendChild(imageCopy);
-        }
-    }
-});
-
-
 function updateThumbnail(src) {
-        var thumbnailContainer = document.getElementById("thumbnailContainer");
+    var thumbnailContainer = document.getElementById("thumbnailContainer");
+    if (thumbnailContainer) {
         thumbnailContainer.innerHTML = ""; // サムネイルコンテナをクリア
         var thumbnailImage = new Image();
         thumbnailImage.src = src;
         thumbnailContainer.appendChild(thumbnailImage);
+    } else {
+        console.error("エラー: #thumbnailContainer 要素が見つかりません。");
     }
+}
 
+document.getElementById("imagePreview").addEventListener("click", function(event) {
+    // クリックされた要素が <input> でない場合の処理
+    if (event.target.tagName !== "INPUT") {
+        event.preventDefault(); // イベントのデフォルト動作をキャンセル
 
+        // すべてのプレビュー画像から ID を削除し、背景色をクリア
+        var images = document.getElementsByClassName("preview-image");
+        for (var i = 0; i < images.length; i++) {
+            images[i].removeAttribute("id");
+            images[i].style.backgroundColor = "";
+        }
+
+        // クリックされた要素がプレビュー画像である場合の処理
+        if (event.target.classList.contains("preview-image")) {
+            // クリックされた画像に ID を設定し、背景色を青に変更
+            event.target.id = "thumbnail";
+            event.target.style.backgroundColor = "blue";
+
+            // クリックされた画像を別の場所に表示
+            var thumbnailContainer = document.getElementById("thumbnailContainer");
+            if (thumbnailContainer) {
+                thumbnailContainer.innerHTML = ''; // 切り替える前に中身をクリア
+                var imageCopy = event.target.cloneNode(true); // クリックされた画像のコピーを作成
+                thumbnailContainer.appendChild(imageCopy);
+            } else {
+                console.error("エラー: #thumbnailContainer 要素が見つかりません。");
+            }
+        }
+    }
+});
 
 function previewImages(event) {
     event.preventDefault();
 
-    var files = event.target.files || event.dataTransfer.files; // どちらの方法でもファイルを取得できるようにする
+    var files = event.target.files || event.dataTransfer.files;
     var preview = document.getElementById("previewContainer");
 
-    // 配列をループするための再帰関数を定義
     function readFile(index) {
-        if (index >= files.length) return; // ベースケース: 全てのファイルを処理したら終了
+        if (index >= files.length) return;
 
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -51,15 +61,17 @@ function previewImages(event) {
 
             var deleteButton = document.createElement("button");
             deleteButton.className = "delete-button";
-            deleteButton.innerHTML = "<img src='static/images/x-white.svg' alt='削除'>";
+            deleteButton.innerHTML = "<img src='images/x-bold.svg' alt='削除'>";
 
             deleteButton.onclick = function() {
-                // 画像を削除する際にIDも削除
                 if (image.id === "thumbnail") {
                     image.removeAttribute("id");
-                    // サムネイルを削除
                     var thumbnailContainer = document.getElementById("thumbnailContainer");
-                    thumbnailContainer.innerHTML = '';
+                    if (thumbnailContainer) {
+                        thumbnailContainer.innerHTML = '';
+                    } else {
+                        console.error("エラー: #thumbnailContainer 要素が見つかりません。");
+                    }
                 }
                 container.remove();
             };
@@ -69,36 +81,28 @@ function previewImages(event) {
 
             preview.appendChild(container);
 
-            // 画像読み込み後にクリックイベントを設定
             image.onload = function() {
                 image.addEventListener("click", function(event) {
                     event.preventDefault();
                     var images = document.getElementsByClassName("preview-image");
                     for (var i = 0; i < images.length; i++) {
                         images[i].removeAttribute("id");
-                        images[i].style.backgroundColor = ""; // 背景色をクリア
-                        images[i].style.border = ""; // 線をクリア
+                        images[i].style.backgroundColor = "";
                     }
                     if (image.classList.contains("preview-image")) {
                         image.id = "thumbnail";
-                        image.style.border = "2px solid red"; 
-
-                        // image.style.backgroundColor = "blue"; // 背景色を青色に変更
-                        updateThumbnail(image.src); // サムネイル更新
+                        image.style.backgroundColor = "blue";
+                        updateThumbnail(image.src);
+                        document.getElementById("select").value = files[index].name; // ここでファイル名を #select の value にセット
+                        console.log("ファイル名が #select の value に格納されました: " + files[index].name); // コンソールログを出力
                     }
                 });
             };
 
-            // 次のファイルを処理するために再帰呼び出し
             readFile(index + 1);
         };
         reader.readAsDataURL(files[index]);
     }
 
-    // 再帰呼び出しを開始
     readFile(0);
 }
-
-
-
-
