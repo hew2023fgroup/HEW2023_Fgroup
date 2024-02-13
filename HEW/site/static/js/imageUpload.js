@@ -26,7 +26,7 @@ document.getElementById("imagePreview").addEventListener("click", function(event
         if (event.target.classList.contains("preview-image")) {
             // クリックされた画像に ID を設定し、背景色を青に変更
             event.target.id = "thumbnail";
-            event.target.style.backgroundColor = "blue";
+            // event.target.style.backgroundColor = "blue";
 
             // クリックされた画像を別の場所に表示
             var thumbnailContainer = document.getElementById("thumbnailContainer");
@@ -61,7 +61,7 @@ function previewImages(event) {
 
             var deleteButton = document.createElement("button");
             deleteButton.className = "delete-button";
-            deleteButton.innerHTML = "<img src='images/x-bold.svg' alt='削除'>";
+            deleteButton.innerHTML = "<img src='static/images/x-white.svg' alt='削除'>";
 
             deleteButton.onclick = function() {
                 if (image.id === "thumbnail") {
@@ -88,10 +88,14 @@ function previewImages(event) {
                     for (var i = 0; i < images.length; i++) {
                         images[i].removeAttribute("id");
                         images[i].style.backgroundColor = "";
+                        images[i].style.border = "";
                     }
                     if (image.classList.contains("preview-image")) {
                         image.id = "thumbnail";
-                        image.style.backgroundColor = "blue";
+                        // image.style.backgroundColor = "blue";
+                        image.style.border = "3px solid #fc94af";
+
+
                         updateThumbnail(image.src);
                         document.getElementById("select").value = files[index].name; // ここでファイル名を #select の value にセット
                         console.log("ファイル名が #select の value に格納されました: " + files[index].name); // コンソールログを出力

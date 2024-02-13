@@ -54,7 +54,8 @@
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
+            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
+            <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
             <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
           </ul>
         </div>
@@ -275,7 +276,7 @@
       <nav id="third_nav">
         <ul>
           <li class="nav_title01">商品管理</li>
-          <li><a href="favorite.html">いいね一覧</a></li>
+          <li><a href="favorite.html">お気に入り一覧</a></li>
           <li><a href="viewlog.html">閲覧履歴</a></li>
           <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
           <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
