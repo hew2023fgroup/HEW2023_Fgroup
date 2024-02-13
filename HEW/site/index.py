@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, session
-import mysql.connector,os,random
+import mysql.connector,os,random,ast
 from datetime import datetime, timedelta
 
 # カレントディレクトリをスクリプトディレクトリに固定
@@ -195,12 +195,20 @@ def SellConfirm():
         
         # ========== フォーム ==========
         # メイン画像
-        sellimg_main = request.files.get('sellimg-main')
+        # sellimg_main = request.files.get('sellimg-main')
         
         # サブ画像(任意
-        sellimgs_sub = request.files.getlist('sellimg-sub')
-        if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
-            print('フォーム:サブ画像は空です')
+        # sellimgs_sub = request.files.getlist('sellimg-sub')
+        # if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
+        #     print('フォーム:サブ画像は空です')
+            
+            
+        # 新画像
+        input_imgs = request.files.getlist('uploadInput')
+        select = request.form['select']
+        print('new:',input_imgs)
+        print('select',select)
+            
             
         # 商品名
         selltit = request.form['selltit']
@@ -213,7 +221,6 @@ def SellConfirm():
             print('フォーム:商品悦明が未入力')
             
         # タグ
-        # if request.form['tag0']:
         if 'tag0' in request.form and request.form['tag0']:
             tags = []
             for i in range(20):
@@ -263,24 +270,34 @@ def SellConfirm():
         upload_path = "static/images/sell/"
 
         # サムネイルファイル保存
-        mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        sellimg_main.save(mainimg_path)
+        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
+        # sellimg_main.save(mainimg_path)
 
         # サブファイル保存(送信した画像数分imgsへ挿入)
-        if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
+        #     imgs = []
+        #     for sellimg in sellimgs_sub:
+        #         img_path = os.path.join(upload_path, sellimg.filename)
+        #         sellimg.save(img_path)
+        #         imgs.append(img_path)
+        # else:
+        #     imgs = None
+        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
+        
+        #new
+        if not (len(input_imgs) == 1 and input_imgs[0].filename == ''):
             imgs = []
-            for sellimg in sellimgs_sub:
+            for sellimg in input_imgs:
                 img_path = os.path.join(upload_path, sellimg.filename)
                 sellimg.save(img_path)
                 imgs.append(img_path)
         else:
-            imgs = None
-            print('機能:サブ画像が未入力の為ファイルを保存しません')
+            imgs = None 
         # ========== 画像処理 ==========
             
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
-        form_data = [mainimg_path,imgs,selltit,overview,
-                     scategoryid,postage,status,price]
+        # form_data = [mainimg_path,imgs,selltit,overview,scategoryid,postage,status,price]
+        form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
         # 住所
         Address_Select = '''
@@ -297,8 +314,10 @@ def SellConfirm():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('sell_confirm.html', icon=icon, UserName=UserName,
-                mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
+        # return render_template('sell_confirm.html', icon=icon, UserName=UserName,
+        #         mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
+        return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
+                imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -314,17 +333,24 @@ def Sell():
         
         # ========== フォーム ==========
         # メイン画像
-        sellimg_main = request.form['sellimg-main']
-        print("メイン：",sellimg_main)
+        # sellimg_main = request.form['sellimg-main']
+        # print("メイン：",sellimg_main)
         
         # サブ画像(任意
-        if request.form.getlist('image_paths[]'):
-            sellimgs_sub = request.form.getlist('image_paths[]')
-            print("サブ：",sellimgs_sub)
-        else:
-            sellimgs_sub = None
-            print('フォーム:サブ画像が未入力')
+        # if request.form.getlist('image_paths[]'):
+        #     sellimgs_sub = request.form.getlist('image_paths[]')
+        #     print("サブ：",sellimgs_sub)
+        # else:
+        #     sellimgs_sub = None
+        #     print('フォーム:サブ画像が未入力')
             
+        images = request.form['images']
+        images = ast.literal_eval(images)
+        print('images:',images)
+        select = request.form['select']
+        select = 'static/images/sell/' + select
+        print('select:',select)
+        
         # 商品名
         selltit = request.form['selltit']
         
@@ -374,20 +400,34 @@ def Sell():
             '''.format(sellid)
             cursor.execute(Draft_Update)
 
-        # サムネイルファイルのINSERT
-        mainimg_sql = '''
-        INSERT INTO 
-        SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
-        '''.format(sellimg_main, sellid)
-        cursor.execute(mainimg_sql)
-
         # サブファイルのINSERT(sellimgs_subの数分同じSellIDでINSERT)
-        if sellimgs_sub:
-            for subimg in sellimgs_sub:
-               subimg_sql = '''
-               INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
-               '''.format(subimg, sellid)
-               cursor.execute(subimg_sql)
+        # if sellimgs_sub:
+        #     for subimg in sellimgs_sub:
+        #        subimg_sql = '''
+        #        INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
+        #        '''.format(subimg, sellid)
+        #        cursor.execute(subimg_sql)
+    
+        if images:
+            for img in images:
+               sellimg_insert = '''
+               INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, 0);
+               '''.format(img, sellid)
+               cursor.execute(sellimg_insert)
+        
+        # サムネイルファイルのINSERT
+        # mainimg_sql = '''
+        # INSERT INTO 
+        # SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
+        # '''.format(sellimg_main, sellid)
+        # cursor.execute(mainimg_sql)
+        thumbnail_update = '''
+        UPDATE SellIMG 
+        SET ThumbnailFlg = 1 
+        WHERE SellIMG = '{0}' AND SellID = {1};
+        '''.format(select,sellid)
+        cursor.execute(thumbnail_update)
+        print('実行:',thumbnail_update)
             
         # タグのINSERT
         if tags:
