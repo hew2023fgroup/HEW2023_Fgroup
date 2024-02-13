@@ -274,8 +274,8 @@
 
         <div class="img-confirm">
           <figure>
-            <img src="{{ mainimg_path }}" alt="サムネイル画像">
-            {% if imgs!= None %}
+            <!-- <img src="{{ mainimg_path }}" alt="サムネイル画像"> -->
+            {% if imgs != None %}
               {% for img in imgs  %}
               <img src="{{ img }}" alt="サブ画像">
               {% endfor %}
@@ -375,19 +375,21 @@
 
         <div class="sell">
           <ul>
-              <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}">
-              {% if form_data[1] != None %}
+              <!-- <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}"> -->
+              <!-- {% if form_data[1] != None %}
                 {% for path in form_data[1] %}
                   <input type="hidden" name="image_paths[]" value="{{ path }}">
                 {% endfor %}
-              {% endif %}
-              <input type="hidden" name="selltit" value="{{ form_data[2] }}">
-              <input type="hidden" name="overview" value="{{ form_data[3] }}">
+              {% endif %} -->
+              <input type="hidden" name="images" value="{{ imgs }}">
+              <input type="hidden" name="select" value="{{ select }}">
+              <input type="hidden" name="selltit" value="{{ form_data[1] }}">
+              <input type="hidden" name="overview" value="{{ form_data[2] }}">
               <input type="hidden" name="tags" value="{{ tags }}">
-              <input type="hidden" name="scategoryid" value="{{ form_data[4] }}">
-              <input type="hidden" name="postage" value="{{ form_data[5] }}">
-              <input type="hidden" name="status" value="{{ form_data[6] }}">
-              <input type="hidden" name="price" value="{{ form_data[7] }}">
+              <input type="hidden" name="scategoryid" value="{{ form_data[3] }}">
+              <input type="hidden" name="postage" value="{{ form_data[4] }}">
+              <input type="hidden" name="status" value="{{ form_data[5] }}">
+              <input type="hidden" name="price" value="{{ form_data[6] }}">
 
               <!-- {% if Address != None %}
               <li><button type="submit" name="sell_action" class="btn05" value="sell">出品する</button></li>
