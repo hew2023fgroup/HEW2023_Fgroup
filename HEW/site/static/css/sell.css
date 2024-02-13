@@ -68,6 +68,9 @@ input#uploadInput[type="file"] {
 /*            background-color: #ddd;*/
   border: 1px solid #DEDEFF;
 }
+.preview-image:hover{
+  cursor: pointer;
+}
 .delete-button {
   position: absolute;
   top: 3px;
