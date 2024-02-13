@@ -93,7 +93,7 @@ function previewImages(event) {
                     if (image.classList.contains("preview-image")) {
                         image.id = "thumbnail";
                         // image.style.backgroundColor = "blue";
-                    image.style.border = "3px solid #fc94af";
+                        image.style.border = "3px solid #fc94af";
 
 
                         updateThumbnail(image.src);
