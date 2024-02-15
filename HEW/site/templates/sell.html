@@ -53,6 +53,21 @@
           
           counter++; // カウンターを増加
       }
+
+      // 下書き用に追加！！
+      // 既にある name^='tag' のinputタグ文Counterを++
+      window.onload = function() {
+        var existingInputs = document.querySelectorAll('input[name^="tag"]');
+        counter = existingInputs.length;
+      };
+  
+      function removeTag(button) {
+        // ボタンの親要素である入力タグを削除
+        button.previousElementSibling.remove();
+        // ボタン自体も削除
+        button.remove();
+      }
+      
   </script>
 
   </head>
@@ -320,7 +335,12 @@
             <p class="title">カテゴリー</p>
             <label class="selectbox">
               <select name="scategoryid" id="scategoryid" required>
+                {% if sell_data %}
+                <option value="{{ sell_data[6] }}" selected>{{ scategory }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
+                <!-- <option value="" disabled selected>選択してください</option> -->
                 <option value="1">トップス レディース</option>
                 <option value="2">トップス メンズ</option>
                 <option value="3">パンツ レディース</option>
@@ -388,7 +408,12 @@
             <p class="title">商品の状態</p>
             <label class="selectbox">
               <select name="status" id="status" required>
+                {% if sell_data %}
+                <option value="{{ sell_data[4] }}" selected>{{ status }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
+                <!-- <option value="" disabled selected>選択してください</option> -->
                 <option value="1">新品、未使用</option>
                 <option value="2">未使用に近い</option>
                 <option value="3">目立った傷汚れなし</option>
@@ -402,15 +427,37 @@
         <div class="intro">
             <h3>商品名と説明</h3>
             <p class="title">商品名(70文字以内)</p>
+            {% if sell_data %}
+            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70"  value="{{ sell_data[0] }}" required>
+            {% else %}
             <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
+            {% endif %}
+            <!-- <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required> -->
             <p class="title">商品の説明(500文字以内)</p>
+            {% if sell_data %}
+
+              {% if sell_data[5] != None %}
+              <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500">{{ sell_data[5] }}</textarea>
+              {% elif sell_data[5] == None %}
+              <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
+              {% endif %}
+
+            {% else %}
             <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
+            {% endif %}
+            <!-- <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea> -->
         </div>
 
         <div class="delivery">
           <h4>タグ</h4>
             <div id="container">
                 <!-- ボタンを押したらinput追加 -->
+                {% if tags %}
+                  {% for tag in tags %}
+                <input type="text" value="{{ tag }}" name="tag{{ loop.index0 }}">
+                <button type="button" onclick="removeTag(this)">-</button>
+                {% endfor %}
+                {% endif %}
             </div>
             <br>
             <button type="button" onclick="addInput()">+</button>
@@ -421,7 +468,12 @@
             <p class="title">出品者負担 出品する商品の重さ</p>
             <label class="selectbox">
               <select name="postage" id="postage" required>
+                {% if sell_data %}
+                <option value="{{ sell_data[3] }}" selected>{{ postage }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
+                <!-- <option value="" disabled selected>選択してください</option> -->
                 <option value="3">小(~ 3kg未満)</option>
                 <option value="2">中(3kg以上 ~ 10kg未満)</option>
                 <option value="1">大(10kg以上 ~)</option>
@@ -432,7 +484,12 @@
         <div class="price">
             <h5>販売価格</h5>
             <p class="title">販売価格(¥300〜9,999,999)</p>
+            {% if sell_data %}
+            <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" value="{{ sell_data[1] }}" required>
+            {% else %}
             <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" required>
+            {% endif %}
+            <!-- <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" required> -->
         </div>
         <div class="sell">
 
