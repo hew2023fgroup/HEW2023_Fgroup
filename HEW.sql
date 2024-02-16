@@ -12,7 +12,10 @@ CREATE TABLE `Account` (
   `KanjiName` varchar(255),
   `Furigana` varchar(255),
   `RegistDate` datetime DEFAULT (now()),
-  `Money` int
+  `Money` int,
+  `SimpleThumbFlg` bit(1) DEFAULT 1,
+  `SimplePriceFlg` bit(1) DEFAULT 1,
+  `SlideShowFlg` bit(1) DEFAULT 1
 );
 
 CREATE TABLE `Sex` (
@@ -317,3 +320,8 @@ INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo09.png
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo01.png",16);
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo04.png",17);
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo05.png",18);
+
+INSERT INTO Layout(Name) VALUES("メインカラー");
+INSERT INTO Layout(Name) VALUES("背景色");
+INSERT INTO Layout(Name) VALUES("文字色");
+INSERT INTO Layout(Name) VALUES("スライドショー画像");
