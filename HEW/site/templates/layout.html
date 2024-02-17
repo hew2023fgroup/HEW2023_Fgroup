@@ -285,17 +285,60 @@
         <h2>カスタム</h2>
         <form action="/layout" method="post">
           <div id="contents">
+            <!-- 削除したい padding: 8px 10px; -->
             <div class="contents-detail">
               <p>メインカラー</p>
               <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[0][1] }}" name="main_color">
             </div>
             <div class="contents-detail">
               <p>背景色</p>
-              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[1][1] }}" name="wall_color" id="backgroundColorPicker">
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[1][1] }}" name="wall_color">
             </div>
             <div class="contents-detail">
               <p>文字色</p>
-              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[2][1] }}" name="text_color" id="textColorPicker">
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[2][1] }}" name="text_color">
+            </div>
+            <div class="contents-detail">
+              <p>スライドショーの表示</p>
+              {% if simple_value[0] == 1 %}
+              <input type="radio" class="" value="1" name="slideshow" id="slideshowON" checked>
+              <label for="slideshowON">オン</label><br>
+              <input type="radio" class="" value="0" name="slideshow" id="slideshowOFF">
+              <label for="slideshowOFF">オフ</label><br>
+              {% elif simple_value[0] == 0 %}
+              <input type="radio" class="" value="1" name="slideshow" id="slideshowON">
+              <label for="slideshowON">オン</label><br>
+              <input type="radio" class="" value="0" name="slideshow" id="slideshowOFF" checked>
+              <label for="slideshowOFF">オフ</label><br>
+              {% endif %}
+            </div>
+            <div class="contents-detail">
+              <p>商品画像の表示</p>
+              {% if simple_value[1] == 1 %}
+              <input type="radio" class="" value="1" name="sellimg" id="sellimgON" checked>
+              <label for="sellimgON">オン</label><br>
+              <input type="radio" class="" value="0" name="sellimg" id="sellimgOFF">
+              <label for="sellimgOFF">オフ</label><br>
+              {% elif simple_value[1] == 0 %}
+              <input type="radio" class="" value="1" name="sellimg" id="sellimgON">
+              <label for="sellimgON">オン</label><br>
+              <input type="radio" class="" value="0" name="sellimg" id="sellimgOFF" checked>
+              <label for="sellimgOFF">オフ</label><br>
+              {% endif %}
+            </div>
+            <div class="contents-detail">
+              <p>商品値段の表示</p>
+              {% if simple_value[2] == 1 %}
+              <input type="radio" class="" value="1" name="sellprice" id="sellpriceON" checked>
+              <label for="sellpriceON">オン</label><br>
+              <input type="radio" class="" value='0' name="sellprice" id="sellpriceOFF">
+              <label for="sellpriceOFF">オフ</label><br>
+              {% elif simple_value[2] == 0 %}
+              <input type="radio" class="" value="1" name="sellprice" id="sellpriceON">
+              <label for="sellpriceON">オン</label><br>
+              <input type="radio" class="" value='0' name="sellprice" id="sellpriceOFF" checked>
+              <label for="sellpriceOFF">オフ</label><br>
+              {% endif %}
             </div>
   
             <!-- <div class="contents-detail">

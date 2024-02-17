@@ -40,20 +40,24 @@ def LayoutPage():
         icon = cursor.fetchone()[0]
         
         if request.method == 'POST':
+            # リセットの時
             if request.form['layout_action'] == 'reset':
                 main_color = '#ff0000'
                 wall_color = '#ffffff'
                 text_color = '#000000'
+                slideshow = '1'
+                sellimg = '1'
+                sellprice = '1'
+            # 入力内容保存の時
             elif request.form['layout_action'] == 'submit':
                 main_color = request.form['main_color']
                 wall_color = request.form['wall_color']
                 text_color = request.form['text_color']
-                print('メインカラー:',main_color)
-                print('メインカラー:',wall_color)
-                print('メインカラー:',text_color)
-            else:
-                print('予期しないアクション')
+                slideshow = request.form['slideshow']
+                sellimg = request.form['sellimg']
+                sellprice = request.form['sellprice']
             
+            # SQL アップデート
             MainColor_Update = '''
             UPDATE Numerical
             SET Numerical = '{0}'
@@ -77,7 +81,32 @@ def LayoutPage():
             '''.format(text_color, AccountID)
             cursor.execute(TextColor_Update)
             print('実行:',TextColor_Update)
+            
+            Slideshow_Update = '''
+            UPDATE Account
+            SET SlideShowFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(slideshow, AccountID)
+            cursor.execute(Slideshow_Update)
+            print('実行:',Slideshow_Update)
+            
+            SimpleThumb_Update = '''
+            UPDATE Account
+            SET SimpleThumbFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(sellimg, AccountID)
+            cursor.execute(SimpleThumb_Update)
+            print('実行:',SimpleThumb_Update)
+            
+            SimplePrice_Update = '''
+            UPDATE Account
+            SET SimplePriceFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(sellprice, AccountID)
+            cursor.execute(SimplePrice_Update)
+            print('実行:',SimplePrice_Update)
         
+        # セッションへ入力
         Layout_Select = '''
         SELECT LayoutID, Numerical
         FROM Numerical
@@ -86,7 +115,17 @@ def LayoutPage():
         cursor.execute(Layout_Select)
         print('実行:',Layout_Select)
         layout_value = cursor.fetchall()
-        print('value:',layout_value)
+        session['layout'] = layout_value
+        
+        Simple_Select = '''
+        SELECT SlideShowFlg, SimpleThumbFlg, SimplePriceFlg
+        FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Simple_Select)
+        print('実行:',Simple_Select)
+        simple_value = list(cursor.fetchone())
+        session['simple'] = simple_value
         
         style = '''
             <style>
@@ -120,7 +159,8 @@ def LayoutPage():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('layout.html', UserName=UserName, icon=icon, style=style, layout_value=layout_value)
+        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
+                               layout_value=layout_value, simple_value=simple_value)
 
 # /register
 @app.route('/register')
@@ -553,10 +593,60 @@ def TrendPage():
 # /index
 @app.route('/')
 def IndexPage():
-    
     conn = conn_db()
     cursor = conn.cursor()
     
+    layout_value = session.get('layout')
+    simple_value = list(session.get('simple'))
+    print('layout:',layout_value)
+    print('simple:',simple_value)
+    
+    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
+    if simple_value[0] == 0:
+        simple_value[0] = 'None'
+    if simple_value[1] == 0:
+        simple_value[1] = 'None'
+    if simple_value[2] == 0:
+        simple_value[2] = 'None'
+        
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+            .slideshow{{
+                display: {3} !important;
+            }}
+            .product img{{
+                display: {4} !important;
+            }}
+            .price-box{{
+                display: {5} !important;
+            }}
+        </style>
+    '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
+
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -612,12 +702,12 @@ def IndexPage():
     cursor.execute(SellInfo_Select)
     sells = cursor.fetchall()
     
-    
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, UserName=UserName)
+    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
+                           UserName=UserName, style=style, layout_value=layout_value)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
