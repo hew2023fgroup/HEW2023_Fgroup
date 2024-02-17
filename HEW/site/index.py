@@ -20,6 +20,108 @@ def conn_db():
 # セッション鍵
 app.secret_key="abcdefghijklmn"
 
+# /layout
+@app.route('/layout',methods=['GET','POST'])
+def LayoutPage():
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
+        
+        if request.method == 'POST':
+            if request.form['layout_action'] == 'reset':
+                main_color = '#ff0000'
+                wall_color = '#ffffff'
+                text_color = '#000000'
+            elif request.form['layout_action'] == 'submit':
+                main_color = request.form['main_color']
+                wall_color = request.form['wall_color']
+                text_color = request.form['text_color']
+                print('メインカラー:',main_color)
+                print('メインカラー:',wall_color)
+                print('メインカラー:',text_color)
+            else:
+                print('予期しないアクション')
+            
+            MainColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 1
+            '''.format(main_color, AccountID)
+            cursor.execute(MainColor_Update)
+            print('実行:',MainColor_Update)
+            
+            WallColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 2
+            '''.format(wall_color, AccountID)
+            cursor.execute(WallColor_Update)
+            print('実行:',WallColor_Update)
+            
+            TextColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 3
+            '''.format(text_color, AccountID)
+            cursor.execute(TextColor_Update)
+            print('実行:',TextColor_Update)
+        
+        Layout_Select = '''
+        SELECT LayoutID, Numerical
+        FROM Numerical
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Layout_Select)
+        print('実行:',Layout_Select)
+        layout_value = cursor.fetchall()
+        print('value:',layout_value)
+        
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+            </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1])
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('layout.html', UserName=UserName, icon=icon, style=style, layout_value=layout_value)
+
 # /register
 @app.route('/register')
 def RegistrationPage():

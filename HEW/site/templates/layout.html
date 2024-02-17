@@ -31,10 +31,16 @@
     <nav id="main-nav">
       <div class="main-nav-box">
         <div class="left-nav">
-          <figure>
-            <img src="../static/images/cat.jpg">
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <!-- css -->
+            <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+            {% elif icon == None %}
+            <!-- css -->
+            <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+            {% endif %}
           </figure>
-          <p>イッパイアッテナ様</p>
+          <p>{{ UserName }}様</p>
         </div>
 
         <figure>
@@ -268,45 +274,61 @@
 
       <main id="m-layout">
         <h1>テーマ</h1>
-        <div class="color-box">
+        <!-- <div class="color-box">
           <ul>
             <li class="dark">ダーク</li>
             <li class="white0">ホワイト</li>
             <li class="custom">カスタム</li>
           </ul>
-        </div>
+        </div> -->
 
         <h2>カスタム</h2>
-        <div id="contents">
-
-          <div class="contents-detail">
-            <p>フォントサイズ</p>
-            <input type="text" class="textbox-001" placeholder="1rem"/>
+        <form action="/layout" method="post">
+          <div id="contents">
+            <div class="contents-detail">
+              <p>メインカラー</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[0][1] }}" name="main_color">
+            </div>
+            <div class="contents-detail">
+              <p>背景色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[1][1] }}" name="wall_color" id="backgroundColorPicker">
+            </div>
+            <div class="contents-detail">
+              <p>文字色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[2][1] }}" name="text_color" id="textColorPicker">
+            </div>
+  
+            <!-- <div class="contents-detail">
+              <p>フォントサイズ</p>
+              <input type="text" class="textbox-001" placeholder="1rem"/>
+            </div>
+  
+            <div class="contents-detail">
+              <p>フォントカラー</p>
+              <input type="text" class="textbox-001" placeholder="#000"/>
+            </div>
+  
+            <div class="contents-detail">
+              <p>背景色</p>
+              <input type="text" class="textbox-001" placeholder="#FFF"/>
+            </div>
+  
+            <div class="contents-detail">
+              <p>ズーム</p>
+              <input type="text" class="textbox-001" placeholder="100%"/>
+            </div> -->
+            
           </div>
-
-          <div class="contents-detail">
-            <p>フォントカラー</p>
-            <input type="text" class="textbox-001" placeholder="#000"/>
+          
+          <div class="which">
+            <ul>
+              <!-- <li class="which_btn01"><a href="layout.html">リセット</a></li>
+                <li class="which_btn02"><a href="#">保存</a></li> -->
+                <li class="which_btn01"><button type="submit" value="reset" name="layout_action">リセット</button></li>
+                <li><button class="which_btn02" type="submit" value="submit" name="layout_action">保存</button></li>
+            </ul>
           </div>
-
-          <div class="contents-detail">
-            <p>背景色</p>
-            <input type="text" class="textbox-001" placeholder="#FFF"/>
-          </div>
-
-          <div class="contents-detail">
-            <p>ズーム</p>
-            <input type="text" class="textbox-001" placeholder="100%"/>
-          </div>
-
-        </div>
-
-        <div class="which">
-          <ul>
-            <li class="which_btn01"><a href="layout.html">リセット</a></li>
-            <li class="which_btn02"><a href="#">保存</a></li>
-          </ul>
-        </div>
+        </form>
       </main>
 
     </div>
@@ -316,6 +338,9 @@
       <p class="footer01">#VariaFree</p>
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
+
+    <!-- レイアウト編集 -->
+    {{ style | safe }}
 
   </body>
 
