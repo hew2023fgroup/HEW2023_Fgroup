@@ -1357,17 +1357,71 @@ def MyPage():
 # /favorite
 @app.route('/favorite')
 def FavoritePage():
-    return render_template("favorite.html")
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+        
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("favorite.html", UserName=UserName, icon=icon)
 
 # /viewlog
 @app.route('/viewlog')
 def ViewlogPage():
-    render_template('viewlog.html')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+        
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("viewlog.html", UserName=UserName, icon=icon)
 
 # /savesearch
 @app.route('/savesearch')
 def SavesearchPage():
-    render_template('saved_search.html')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+        
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("saved_search.html", UserName=UserName, icon=icon)
     
 # /charge
 @app.route('/charge', methods=['POST'])
