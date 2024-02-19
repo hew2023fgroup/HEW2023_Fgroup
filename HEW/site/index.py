@@ -968,6 +968,39 @@ def Buy():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+    
+        layout_value = session.get('layout')
+        print('layout:',layout_value)
+
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+            </style>
+            '''.format(layout_value[0][1], layout_value[1][1], 
+                   layout_value[2][1])
             
         # アイコンSELECT
         ProfIMG_Select = '''
@@ -1001,9 +1034,7 @@ def Buy():
         cursor.execute(Account_Select)
         Account_Info = cursor.fetchall()
         value = len(Account_Info)
-        
-        
-        
+    
         if Account_Info == []:
             print('住所が未登録デス')
             return redirect(url_for('PersonalPage'))
@@ -1019,7 +1050,7 @@ def Buy():
         return render_template(
             'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info, icon=icon,
             UserName=UserName, Total_Price=Total_Price, SellID=SellID, After48H=After48H,
-            After24H=After24H)
+            After24H=After24H, style=style, layout_value=layout_value)
 
 # /pay
 @app.route('/pay', methods=['POST'])
@@ -1150,6 +1181,39 @@ def BuyCompPage(BuyID):
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+        layout_value = session.get('layout')
+        print('layout:',layout_value)
+
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+            </style>
+            '''.format(layout_value[0][1], layout_value[1][1], 
+                   layout_value[2][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1162,7 +1226,9 @@ def BuyCompPage(BuyID):
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("buy_comp.html", MailAddress=MailAddress, BuyID=BuyID, icon=icon, UserName=UserName)
+    return render_template("buy_comp.html", MailAddress=MailAddress, 
+                           style=style, layout_value=layout_value,
+                           BuyID=BuyID, icon=icon, UserName=UserName)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])
