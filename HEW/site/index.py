@@ -1359,6 +1359,16 @@ def MyPage():
 def FavoritePage():
     return render_template("favorite.html")
 
+# /viewlog
+@app.route('/viewlog')
+def ViewlogPage():
+    render_template('viewlog.html')
+
+# /savesearch
+@app.route('/savesearch')
+def SavesearchPage():
+    render_template('saved_search.html')
+    
 # /charge
 @app.route('/charge', methods=['POST'])
 def ChargePage():

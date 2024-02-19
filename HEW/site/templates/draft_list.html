@@ -259,16 +259,16 @@
       <nav id="third_nav">
         <ul>
           <li class="nav_title01">商品管理</li>
-          <li><a href="favorite.html">お気に入り一覧</a></li>
-          <li><a href="viewlog.html">閲覧履歴</a></li>
+          <li><a href="{{ url_for('FavoritePage') }}">お気に入り一覧</a></li>
+          <li><a href="{{ url_for('ViewlogPage') }}">閲覧履歴</a></li>
           <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
           <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
-          <li><a href="saved_search.html">保存した検索条件</a></li>
+          <li><a href="{{ url_for('SavesearchPage') }}">保存した検索条件</a></li>
           <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
 
           <li class="nav_title02">設定</li>
           <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
-          <li><a href="layout.html">レイアウト編集</a></li>
+          <li><a href="{{ url_for('LayoutPage') }}">レイアウト編集</a></li>
           <li><a href="{{ url_for('Logout') }}">ログアウト</a></li>
         </ul>
       </nav>
