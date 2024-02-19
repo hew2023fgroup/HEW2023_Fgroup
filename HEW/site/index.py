@@ -19,149 +19,10 @@ def conn_db():
 
 # セッション鍵
 app.secret_key="abcdefghijklmn"
-
-# /layout
-@app.route('/layout',methods=['GET','POST'])
-def LayoutPage():
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        # セッション取得
-        you_list = session.get('you')
-        if you_list:
-            AccountID, UserName, MailAddress = you_list[0]
-            
-        # アイコンSELECT
-        ProfIMG_Select = '''
-        SELECT ProfIMG FROM Account
-        WHERE AccountID = {0};
-        '''.format(AccountID)
-        cursor.execute(ProfIMG_Select)
-        icon = cursor.fetchone()[0]
-        
-        if request.method == 'POST':
-            # リセットの時
-            if request.form['layout_action'] == 'reset':
-                main_color = '#ff0000'
-                wall_color = '#ffffff'
-                text_color = '#000000'
-                slideshow = '1'
-                sellimg = '1'
-                sellprice = '1'
-            # 入力内容保存の時
-            elif request.form['layout_action'] == 'submit':
-                main_color = request.form['main_color']
-                wall_color = request.form['wall_color']
-                text_color = request.form['text_color']
-                slideshow = request.form['slideshow']
-                sellimg = request.form['sellimg']
-                sellprice = request.form['sellprice']
-            
-            # SQL アップデート
-            MainColor_Update = '''
-            UPDATE Numerical
-            SET Numerical = '{0}'
-            WHERE AccountID = {1} AND LayoutID = 1
-            '''.format(main_color, AccountID)
-            cursor.execute(MainColor_Update)
-            print('実行:',MainColor_Update)
-            
-            WallColor_Update = '''
-            UPDATE Numerical
-            SET Numerical = '{0}'
-            WHERE AccountID = {1} AND LayoutID = 2
-            '''.format(wall_color, AccountID)
-            cursor.execute(WallColor_Update)
-            print('実行:',WallColor_Update)
-            
-            TextColor_Update = '''
-            UPDATE Numerical
-            SET Numerical = '{0}'
-            WHERE AccountID = {1} AND LayoutID = 3
-            '''.format(text_color, AccountID)
-            cursor.execute(TextColor_Update)
-            print('実行:',TextColor_Update)
-            
-            Slideshow_Update = '''
-            UPDATE Account
-            SET SlideShowFlg = {0}
-            WHERE AccountID = {1}
-            '''.format(slideshow, AccountID)
-            cursor.execute(Slideshow_Update)
-            print('実行:',Slideshow_Update)
-            
-            SimpleThumb_Update = '''
-            UPDATE Account
-            SET SimpleThumbFlg = {0}
-            WHERE AccountID = {1}
-            '''.format(sellimg, AccountID)
-            cursor.execute(SimpleThumb_Update)
-            print('実行:',SimpleThumb_Update)
-            
-            SimplePrice_Update = '''
-            UPDATE Account
-            SET SimplePriceFlg = {0}
-            WHERE AccountID = {1}
-            '''.format(sellprice, AccountID)
-            cursor.execute(SimplePrice_Update)
-            print('実行:',SimplePrice_Update)
-        
-        # セッションへ入力
-        Layout_Select = '''
-        SELECT LayoutID, Numerical
-        FROM Numerical
-        WHERE AccountID = {0};
-        '''.format(AccountID)
-        cursor.execute(Layout_Select)
-        print('実行:',Layout_Select)
-        layout_value = cursor.fetchall()
-        session['layout'] = layout_value
-        
-        Simple_Select = '''
-        SELECT SlideShowFlg, SimpleThumbFlg, SimplePriceFlg
-        FROM Account
-        WHERE AccountID = {0};
-        '''.format(AccountID)
-        cursor.execute(Simple_Select)
-        print('実行:',Simple_Select)
-        simple_value = list(cursor.fetchone())
-        session['simple'] = simple_value
-        
-        # スタイルタグ
-        style = '''
-            <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
-                }}
-                html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a {{
-                    color: #000 !important;
-                }}
-                a.nav-sell {{
-                    color: #fff !important;
-                }}
-            </style>
-        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1])
-        
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
-                               layout_value=layout_value, simple_value=simple_value)
+    
+# #########################################
+# ログイン
+# #########################################
 
 # /register
 @app.route('/register')
@@ -309,11 +170,9 @@ def Login():
             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
             return render_template("login.html", PassMessage=PassMessage)  
 
-# /logout
-@app.route('/logout')
-def Logout():
-    session['you'] = None
-    return redirect(url_for('LoginPage'))
+# #########################################
+# 出品購入
+# #########################################
 
 # /sell
 @app.route('/sell')
@@ -680,282 +539,6 @@ def Sell():
         cursor.close()
         conn.close()
         return redirect(url_for('IndexPage'))
-
-# /trend
-@app.route('/trend')
-def TrendPage():
-    return render_template("trend.html")
-
-# /index
-@app.route('/')
-def IndexPage():
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    if you_list == None:
-        return redirect(url_for('LoginPage'))
-    
-    if Admin(AccountID) == True:
-        print('Admin:True')
-        TablePage = True
-    elif Admin(AccountID) == False:
-        print('Admin:False')
-        TablePage = False
-    
-    layout_value = session.get('layout')
-    simple_value = list(session.get('simple'))
-    print('layout:',layout_value)
-    print('simple:',simple_value)
-    
-    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
-    if simple_value[0] == 0:
-        simple_value[0] = 'None'
-    if simple_value[1] == 0:
-        simple_value[1] = 'None'
-    if simple_value[2] == 0:
-        simple_value[2] = 'None'
-        
-    style = '''
-        <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
-            }}
-            html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a {{
-                color: #000 !important;
-            }}
-            a.nav-sell {{
-                color: #fff !important;
-            }}
-            .slideshow{{
-                display: {3} !important;
-            }}
-            .product img{{
-                display: {4} !important;
-            }}
-            .price-box{{
-                display: {5} !important;
-            }}
-        </style>
-    '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
-
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    # 出品取得のSELECT
-    # 条件:購入がされていない、サムネイルがある、下書きではない。
-    SellID_Select = '''
-    SELECT Sell.SellID
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL 
-    AND SellIMG.ThumbnailFlg = 0x01 
-    AND Sell.Draft = 0x01 
-    AND Sell.AccountID != {0};
-    '''.format(AccountID)
-    cursor.execute(SellID_Select)
-    ids = cursor.fetchall()
-    
-    # シャッフル
-    random.shuffle(ids)
-    # top#10
-    ids_top10 = ids[:10]
-    # タプル
-    ids_top10 = tuple(x[0] for x in ids_top10)
-    ids_top10 = tuple(ids_top10)
-    
-    SellInfo_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0} AND Sell.SellID IN {1};
-    '''.format(AccountID,ids_top10)
-    print('実行:',SellInfo_Select)
-    cursor.execute(SellInfo_Select)
-    sells = cursor.fetchall()
-    
-    # CLOSE
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
-                           UserName=UserName, style=style, layout_value=layout_value)
-
-# /product/<sellid>
-@app.route('/product/<sellid>')
-def ProductPage(sellid):
-    error = request.args.get('error', None)
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    
-        layout_value = session.get('layout')
-        print('layout:',layout_value)
-
-        style = '''
-            <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
-                }}
-                html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a {{
-                    color: #000 !important;
-                }}
-                a.nav-sell {{
-                    color: #fff !important;
-                }}
-                .shopping form button{{
-                    background-color: {0} !important
-                }}
-            </style>
-            '''.format(layout_value[0][1], layout_value[1][1], 
-                   layout_value[2][1])
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    myicon = cursor.fetchone()[0]
-    
-    # 商品情報のSELECT
-    info = '''
-    SELECT SellIMG.SellIMG, Sell.Name, Sell.Price, Scategory.Name, Status.Name, Sell.Overview
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    JOIN Scategory ON Sell.SCategoryID = Scategory.ScategoryID
-    JOIN Status ON Sell.StatusID = Status.StatusID
-    WHERE Sell.SellID = {0};
-    '''.format(sellid)
-    cursor.execute(info)
-    products = cursor.fetchall()
-    
-    # 関数割り当て
-    imgs = [img[0] for img in products] 
-    name = products[0][1]
-    price = products[0][2]
-    scategory = products[0][3]
-    status = products[0][4]
-    overview = products[0][5]
-    
-    # 出品者のAccountIDのSELECT
-    acc = '''
-    SELECT Sell.AccountID, Account.UserName 
-    FROM Sell 
-    JOIN Account ON Sell.AccountID = Account.AccountID
-    WHERE SellID = {0};
-    '''.format(sellid)
-    cursor.execute(acc)
-    sell_acc = cursor.fetchone()
-    
-    # アイコンのSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(sell_acc[0])
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    # 平均評価値のSELECTx2
-    evalscore_sql = '''
-    SELECT AVG(Review) 
-    FROM Buy 
-    WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
-    '''.format(sell_acc[0])
-    cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
-    
-    Tag_Select = '''
-    SELECT Name FROM Tag
-    WHERE SellID = {0};
-    '''.format(sellid)
-    cursor.execute(Tag_Select)
-    tags = cursor.fetchall()
-    tags = [item[0] for item in tags]
-    
-    Category_Select = '''
-    SELECT SCategoryID FROM Scategory
-    WHERE Name = '{0}';
-    '''.format(products[0][3])
-    print('実行:',Category_Select)
-    cursor.execute(Category_Select)
-    category_id = cursor.fetchone()[0]
-    
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    # 出品取得のSELECT
-    # 条件:購入がされていない、サムネイルがある、下書きではない。
-    sells = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL 
-    AND SellIMG.ThumbnailFlg = 0x01 
-    AND Sell.Draft = 0x01 
-    AND Sell.AccountID != {0} 
-    AND Sell.ScategoryID = {1};
-    '''.format(AccountID,category_id)
-    print('実行:',sells)
-    cursor.execute(sells)
-    sells = cursor.fetchall()
-    
-    # CLOSE
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template(
-        "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
-        price=price, sellid=sellid, scategory=scategory, style=style,
-        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName
-        )
     
 # /buy
 @app.route('/buy', methods=['POST'])
@@ -1253,6 +836,289 @@ def Evaluate():
         cursor.close()
         conn.close()
         return redirect(url_for('IndexPage'))
+
+# #########################################
+# トップ
+# #########################################
+
+# /trend
+@app.route('/trend')
+def TrendPage():
+    return render_template("trend.html")
+
+# /index
+@app.route('/')
+def IndexPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    if you_list == None:
+        return redirect(url_for('LoginPage'))
+    
+    if Admin(AccountID) == True:
+        print('Admin:True')
+        TablePage = True
+    elif Admin(AccountID) == False:
+        print('Admin:False')
+        TablePage = False
+    
+    layout_value = session.get('layout')
+    simple_value = list(session.get('simple'))
+    print('layout:',layout_value)
+    print('simple:',simple_value)
+    
+    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
+    if simple_value[0] == 0:
+        simple_value[0] = 'None'
+    if simple_value[1] == 0:
+        simple_value[1] = 'None'
+    if simple_value[2] == 0:
+        simple_value[2] = 'None'
+        
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+            .slideshow{{
+                display: {3} !important;
+            }}
+            .product img{{
+                display: {4} !important;
+            }}
+            .price-box{{
+                display: {5} !important;
+            }}
+        </style>
+    '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
+
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    # 出品取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きではない。
+    SellID_Select = '''
+    SELECT Sell.SellID
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID != {0};
+    '''.format(AccountID)
+    cursor.execute(SellID_Select)
+    ids = cursor.fetchall()
+    
+    # シャッフル
+    random.shuffle(ids)
+    # top#10
+    ids_top10 = ids[:10]
+    # タプル
+    ids_top10 = tuple(x[0] for x in ids_top10)
+    ids_top10 = tuple(ids_top10)
+    
+    SellInfo_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0} AND Sell.SellID IN {1};
+    '''.format(AccountID,ids_top10)
+    print('実行:',SellInfo_Select)
+    cursor.execute(SellInfo_Select)
+    sells = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
+                           UserName=UserName, style=style, layout_value=layout_value)
+
+# /product/<sellid>
+@app.route('/product/<sellid>')
+def ProductPage(sellid):
+    error = request.args.get('error', None)
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+        layout_value = session.get('layout')
+        print('layout:',layout_value)
+
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+                .shopping form button{{
+                    background-color: {0} !important
+                }}
+            </style>
+            '''.format(layout_value[0][1], layout_value[1][1], 
+                   layout_value[2][1])
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    myicon = cursor.fetchone()[0]
+    
+    # 商品情報のSELECT
+    info = '''
+    SELECT SellIMG.SellIMG, Sell.Name, Sell.Price, Scategory.Name, Status.Name, Sell.Overview
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    JOIN Scategory ON Sell.SCategoryID = Scategory.ScategoryID
+    JOIN Status ON Sell.StatusID = Status.StatusID
+    WHERE Sell.SellID = {0};
+    '''.format(sellid)
+    cursor.execute(info)
+    products = cursor.fetchall()
+    
+    # 関数割り当て
+    imgs = [img[0] for img in products] 
+    name = products[0][1]
+    price = products[0][2]
+    scategory = products[0][3]
+    status = products[0][4]
+    overview = products[0][5]
+    
+    # 出品者のAccountIDのSELECT
+    acc = '''
+    SELECT Sell.AccountID, Account.UserName 
+    FROM Sell 
+    JOIN Account ON Sell.AccountID = Account.AccountID
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(acc)
+    sell_acc = cursor.fetchone()
+    
+    # アイコンのSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(sell_acc[0])
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    # 平均評価値のSELECTx2
+    evalscore_sql = '''
+    SELECT AVG(Review) 
+    FROM Buy 
+    WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
+    '''.format(sell_acc[0])
+    cursor.execute(evalscore_sql)
+    avg_evalate = cursor.fetchone()[0]
+    if avg_evalate is None:
+        avg_evalate = 0
+    
+    Tag_Select = '''
+    SELECT Name FROM Tag
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(Tag_Select)
+    tags = cursor.fetchall()
+    tags = [item[0] for item in tags]
+    
+    Category_Select = '''
+    SELECT SCategoryID FROM Scategory
+    WHERE Name = '{0}';
+    '''.format(products[0][3])
+    print('実行:',Category_Select)
+    cursor.execute(Category_Select)
+    category_id = cursor.fetchone()[0]
+    
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # 出品取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きではない。
+    sells = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID != {0} 
+    AND Sell.ScategoryID = {1};
+    '''.format(AccountID,category_id)
+    print('実行:',sells)
+    cursor.execute(sells)
+    sells = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template(
+        "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
+        price=price, sellid=sellid, scategory=scategory, style=style,
+        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
+        error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName)
+    
+# #########################################
+# マイページ
+# #########################################
     
 # /mypage
 @app.route('/mypage')
@@ -1351,8 +1217,55 @@ def MyPage():
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
         UserName=UserName, avg_evalate=avg_evalate, icon=icon, 
-        style=style, layout_value=layout_value
-        )
+        style=style, layout_value=layout_value)
+    
+# /charge
+@app.route('/charge', methods=['POST'])
+def ChargePage():
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        charge = request.form['charge']
+            
+        # 所持金SELECT
+        out_sql = '''
+        SELECT money 
+        FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(out_sql)
+        money = cursor.fetchone()
+        money = money[0]
+        if money == None:
+            money = int(0)
+        
+        charged = int(money) + int(charge)
+        
+        # 所持金UPDATE
+        in_sql = '''
+        UPDATE Account
+        SET money = {0}
+        WHERE AccountID = {1};
+        '''.format(charged,AccountID)
+        cursor.execute(in_sql)
+        
+        print('''
+              「チャージされました」
+              前：{0}
+              後：{1}
+              '''.format(money,charged))
+        
+        # CLOSE
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return  redirect(url_for('MyPage'))
 
 # /favorite
 @app.route('/favorite')
@@ -1811,54 +1724,6 @@ def PersonalPage():
                            icon=icon, UserName=UserName, mail_error=mail_error,
                            style=style, layout_value=layout_value)
     
-# /charge
-@app.route('/charge', methods=['POST'])
-def ChargePage():
-    if request.method == 'POST':
-        conn = conn_db()
-        cursor = conn.cursor()
-        
-        # セッション取得
-        you_list = session.get('you')
-        if you_list:
-            AccountID, UserName, MailAddress = you_list[0]
-            
-        charge = request.form['charge']
-            
-        # 所持金SELECT
-        out_sql = '''
-        SELECT money 
-        FROM Account
-        WHERE AccountID = {0};
-        '''.format(AccountID)
-        cursor.execute(out_sql)
-        money = cursor.fetchone()
-        money = money[0]
-        if money == None:
-            money = int(0)
-        
-        charged = int(money) + int(charge)
-        
-        # 所持金UPDATE
-        in_sql = '''
-        UPDATE Account
-        SET money = {0}
-        WHERE AccountID = {1};
-        '''.format(charged,AccountID)
-        cursor.execute(in_sql)
-        
-        print('''
-              「チャージされました」
-              前：{0}
-              後：{1}
-              '''.format(money,charged))
-        
-        # CLOSE
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return  redirect(url_for('MyPage'))
-    
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
 def ChangeIcon():
@@ -2120,6 +1985,159 @@ def DelAddress():
         cursor.close()
         conn.close()
         return redirect(url_for('PersonalPage'))
+
+# /layout
+@app.route('/layout',methods=['GET','POST'])
+def LayoutPage():
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
+        
+        if request.method == 'POST':
+            # リセットの時
+            if request.form['layout_action'] == 'reset':
+                main_color = '#ff0000'
+                wall_color = '#ffffff'
+                text_color = '#000000'
+                slideshow = '1'
+                sellimg = '1'
+                sellprice = '1'
+            # 入力内容保存の時
+            elif request.form['layout_action'] == 'submit':
+                main_color = request.form['main_color']
+                wall_color = request.form['wall_color']
+                text_color = request.form['text_color']
+                slideshow = request.form['slideshow']
+                sellimg = request.form['sellimg']
+                sellprice = request.form['sellprice']
+            
+            # SQL アップデート
+            MainColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 1
+            '''.format(main_color, AccountID)
+            cursor.execute(MainColor_Update)
+            print('実行:',MainColor_Update)
+            
+            WallColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 2
+            '''.format(wall_color, AccountID)
+            cursor.execute(WallColor_Update)
+            print('実行:',WallColor_Update)
+            
+            TextColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 3
+            '''.format(text_color, AccountID)
+            cursor.execute(TextColor_Update)
+            print('実行:',TextColor_Update)
+            
+            Slideshow_Update = '''
+            UPDATE Account
+            SET SlideShowFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(slideshow, AccountID)
+            cursor.execute(Slideshow_Update)
+            print('実行:',Slideshow_Update)
+            
+            SimpleThumb_Update = '''
+            UPDATE Account
+            SET SimpleThumbFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(sellimg, AccountID)
+            cursor.execute(SimpleThumb_Update)
+            print('実行:',SimpleThumb_Update)
+            
+            SimplePrice_Update = '''
+            UPDATE Account
+            SET SimplePriceFlg = {0}
+            WHERE AccountID = {1}
+            '''.format(sellprice, AccountID)
+            cursor.execute(SimplePrice_Update)
+            print('実行:',SimplePrice_Update)
+        
+        # セッションへ入力
+        Layout_Select = '''
+        SELECT LayoutID, Numerical
+        FROM Numerical
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Layout_Select)
+        print('実行:',Layout_Select)
+        layout_value = cursor.fetchall()
+        session['layout'] = layout_value
+        
+        Simple_Select = '''
+        SELECT SlideShowFlg, SimpleThumbFlg, SimplePriceFlg
+        FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Simple_Select)
+        print('実行:',Simple_Select)
+        simple_value = list(cursor.fetchone())
+        session['simple'] = simple_value
+        
+        # スタイルタグ
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+            </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1])
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
+                               layout_value=layout_value, simple_value=simple_value)
+
+# /logout
+@app.route('/logout')
+def Logout():
+    session['you'] = None
+    return redirect(url_for('LoginPage'))
+
+# #########################################
+# 管理者
+# #########################################
 
 # 管理者チェック
 def Admin(AccountID):
