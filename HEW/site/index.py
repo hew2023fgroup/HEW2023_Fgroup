@@ -817,6 +817,42 @@ def ProductPage(sellid):
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+        layout_value = session.get('layout')
+        print('layout:',layout_value)
+
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+                .shopping form button{{
+                    background-color: {0} !important
+                }}
+            </style>
+            '''.format(layout_value[0][1], layout_value[1][1], 
+                   layout_value[2][1])
+    
     # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
@@ -915,8 +951,8 @@ def ProductPage(sellid):
     cursor.close()
     conn.close()
     return render_template(
-        "product.html",imgs=imgs, name=name, overview=overview,
-        price=price, sellid=sellid, scategory=scategory, 
+        "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
+        price=price, sellid=sellid, scategory=scategory, style=style,
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName
         )
