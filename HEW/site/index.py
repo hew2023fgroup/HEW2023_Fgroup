@@ -127,6 +127,7 @@ def LayoutPage():
         simple_value = list(cursor.fetchone())
         session['simple'] = simple_value
         
+        # スタイルタグ
         style = '''
             <style>
                 .nav-sell {{
@@ -276,6 +277,27 @@ def Login():
             
             # セッションへログイン情報を保存
             session['you'] = you
+            
+            # セッションへレイアウト情報を保存
+            Layout_Select = '''
+            SELECT LayoutID, Numerical
+            FROM Numerical
+            WHERE AccountID = {0};
+            '''.format(you[0][0])
+            cursor.execute(Layout_Select)
+            print('実行:',Layout_Select)
+            layout_value = cursor.fetchall()
+            session['layout'] = layout_value
+
+            Simple_Select = '''
+            SELECT SlideShowFlg, SimpleThumbFlg, SimplePriceFlg
+            FROM Account
+            WHERE AccountID = {0};
+            '''.format(you[0][0])
+            cursor.execute(Simple_Select)
+            print('実行:',Simple_Select)
+            simple_value = list(cursor.fetchone())
+            session['simple'] = simple_value
             
             # CLOSE
             conn.commit()
@@ -596,6 +618,19 @@ def IndexPage():
     conn = conn_db()
     cursor = conn.cursor()
     
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    if you_list == None:
+        return redirect(url_for('LoginPage'))
+    
+    if Admin(AccountID) == True:
+        print('Admin:True')
+        TablePage = True
+    elif Admin(AccountID) == False:
+        print('Admin:False')
+        TablePage = False
+    
     layout_value = session.get('layout')
     simple_value = list(session.get('simple'))
     print('layout:',layout_value)
@@ -647,18 +682,6 @@ def IndexPage():
         </style>
     '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
 
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    if you_list == None:
-        return redirect(url_for('LoginPage'))
-    
-    if Admin(AccountID) == True:
-        print('Admin:True')
-        TablePage = True
-    elif Admin(AccountID) == False:
-        print('Admin:False')
-        TablePage = False
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1066,6 +1089,62 @@ def MyPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    layout_value = session.get('layout')
+    simple_value = list(session.get('simple'))
+    print('layout:',layout_value)
+    print('simple:',simple_value)
+    
+    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
+    if simple_value[0] == 0:
+        simple_value[0] = 'None'
+    if simple_value[1] == 0:
+        simple_value[1] = 'None'
+    if simple_value[2] == 0:
+        simple_value[2] = 'None'
+        
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+            .slideshow{{
+                display: {3} !important;
+            }}
+            .product img{{
+                display: {4} !important;
+            }}
+            .price-box{{
+                display: {5} !important;
+            }}
+            .bar{{
+                background-color: {0} !important
+            }}
+        </style>
+    '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1], simple_value[0], 
+               simple_value[1], simple_value[2])
+    
     # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
@@ -1115,7 +1194,8 @@ def MyPage():
     conn.close()
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate, icon=icon
+        UserName=UserName, avg_evalate=avg_evalate, icon=icon, 
+        style=style, layout_value=layout_value
         )
 
 # /favorite
