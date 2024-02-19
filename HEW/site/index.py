@@ -681,7 +681,7 @@ def Sell():
         conn.close()
         return redirect(url_for('IndexPage'))
 
-# trend
+# /trend
 @app.route('/trend')
 def TrendPage():
     return render_template("trend.html")
@@ -1364,6 +1364,39 @@ def FavoritePage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1375,7 +1408,7 @@ def FavoritePage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("favorite.html", UserName=UserName, icon=icon)
+    return render_template("favorite.html", UserName=UserName, icon=icon, layout_value=layout_value, style=style)
 
 # /viewlog
 @app.route('/viewlog')
@@ -1387,6 +1420,39 @@ def ViewlogPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1398,7 +1464,138 @@ def ViewlogPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("viewlog.html", UserName=UserName, icon=icon)
+    return render_template("viewlog.html", UserName=UserName, icon=icon,
+                           style=style, layout_value=layout_value)
+
+# /sell_list
+@app.route('/sell_list')
+def SellListPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    # 下書き取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きでない、商品を出したのが自分。
+    Sell_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Sell_Select)
+    Sells = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('sell_list.html',Sells=Sells, icon=icon, UserName=UserName,
+                           style=style, layout_value=layout_value)
+
+# /buy_list
+@app.route('/buy_list')
+def BuyListPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('buy_list.html',icon=icon, UserName=UserName,
+                           style=style, layout_value=layout_value)
 
 # /savesearch
 @app.route('/savesearch')
@@ -1410,6 +1607,39 @@ def SavesearchPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1421,7 +1651,165 @@ def SavesearchPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("saved_search.html", UserName=UserName, icon=icon)
+    return render_template("saved_search.html", UserName=UserName, icon=icon,
+                           style=style, layout_value=layout_value)
+    
+# /draft_list
+@app.route('/draft_list')
+def DraftPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    # 下書き取得のSELECT
+    # 条件:購入がされていない、サムネイルがある、下書きである、商品を出したのが自分。
+    Draft_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Draft_Select)
+    Drafts = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
+                           style=style, layout_value=layout_value)
+        
+# /personal
+@app.route('/personal')
+def PersonalPage():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
+    
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    name_error = request.args.get('error', None)
+    pass_error = request.args.get('pass_error',None)
+    mail_error = request.args.get('mail_error',None)
+        
+    # アカウントSELECT
+    Account_Select = '''
+    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana ,MailAddress
+    FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Account_Select)
+    AccountInfo = list(cursor.fetchone())
+    for i in range(6):
+        if AccountInfo[i] is None:
+            AccountInfo[i] = '未登録'
+    
+    # アドレスSELECT
+    Address_Select = '''
+    SELECT Address, Post
+    FROM Address
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Address_Select)
+    AddressInfo = cursor.fetchall()
+    
+    # CLOSE
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
+                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, 
+                           icon=icon, UserName=UserName, mail_error=mail_error,
+                           style=style, layout_value=layout_value)
     
 # /charge
 @app.route('/charge', methods=['POST'])
@@ -1470,93 +1858,7 @@ def ChargePage():
         cursor.close()
         conn.close()
         return  redirect(url_for('MyPage'))
-        
-# /personal
-@app.route('/personal')
-def PersonalPage():
-    conn = conn_db()
-    cursor = conn.cursor()
     
-    # セッション取得
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    
-    layout_value = session.get('layout')
-    print('layout:',layout_value)
-    style = '''
-        <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
-            }}
-            html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a {{
-                color: #000 !important;
-            }}
-            a.nav-sell {{
-                color: #fff !important;
-            }}
-        </style>
-    '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    name_error = request.args.get('error', None)
-    pass_error = request.args.get('pass_error',None)
-    mail_error = request.args.get('mail_error',None)
-        
-    # アカウントSELECT
-    Account_Select = '''
-    SELECT UserName, ProfIMG, Birthday, SexID, kanjiName, Furigana ,MailAddress
-    FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(Account_Select)
-    AccountInfo = list(cursor.fetchone())
-    for i in range(6):
-        if AccountInfo[i] is None:
-            AccountInfo[i] = '未登録'
-    
-    # アドレスSELECT
-    Address_Select = '''
-    SELECT Address, Post
-    FROM Address
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(Address_Select)
-    AddressInfo = cursor.fetchall()
-    
-    # CLOSE
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template('personal.html', AccountInfo=AccountInfo, icon=icon, 
-                           AddressInfo=AddressInfo,  layout_value=layout_value,
-                           MailAddress=MailAddress, name_error=name_error, 
-                           pass_error=pass_error,style=style,
-                           UserName=UserName, mail_error=mail_error)
-
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
 def ChangeIcon():
@@ -1818,105 +2120,6 @@ def DelAddress():
         cursor.close()
         conn.close()
         return redirect(url_for('PersonalPage'))
-    
-# /draft_list
-@app.route('/draft_list')
-def DraftPage():
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    # セッション取得
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    # 下書き取得のSELECT
-    # 条件:購入がされていない、サムネイルがある、下書きである、商品を出したのが自分。
-    Draft_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(Draft_Select)
-    Drafts = cursor.fetchall()
-    
-    # CLOSE
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName)
-
-# /sell_list
-@app.route('/sell_list')
-def SellListPage():
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    # セッション取得
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    # 下書き取得のSELECT
-    # 条件:購入がされていない、サムネイルがある、下書きでない、商品を出したのが自分。
-    Sell_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(Sell_Select)
-    Sells = cursor.fetchall()
-    
-    # CLOSE
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template('sell_list.html',Sells=Sells, icon=icon, UserName=UserName)
-
-# /buy_list
-@app.route('/buy_list')
-def BuyListPage():
-    conn = conn_db()
-    cursor = conn.cursor()
-    
-    # セッション取得
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    
-    # アイコンSELECT
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
-    
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return render_template('buy_list.html',icon=icon, UserName=UserName)
 
 # 管理者チェック
 def Admin(AccountID):
