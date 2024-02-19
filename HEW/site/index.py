@@ -323,6 +323,42 @@ def SellPage():
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+            .btn05{{
+                background-color: {0} !important
+            }}
+        </style>
+    '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -335,7 +371,8 @@ def SellPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("sell.html",icon=icon, UserName=UserName)
+    return render_template("sell.html",icon=icon, UserName=UserName,
+                           style=style, layout_value=layout_value)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
@@ -1090,18 +1127,8 @@ def MyPage():
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    simple_value = list(session.get('simple'))
     print('layout:',layout_value)
-    print('simple:',simple_value)
     
-    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
-    if simple_value[0] == 0:
-        simple_value[0] = 'None'
-    if simple_value[1] == 0:
-        simple_value[1] = 'None'
-    if simple_value[2] == 0:
-        simple_value[2] = 'None'
-        
     style = '''
         <style>
             .nav-sell {{
@@ -1128,22 +1155,12 @@ def MyPage():
             a.nav-sell {{
                 color: #fff !important;
             }}
-            .slideshow{{
-                display: {3} !important;
-            }}
-            .product img{{
-                display: {4} !important;
-            }}
-            .price-box{{
-                display: {5} !important;
-            }}
             .bar{{
                 background-color: {0} !important
             }}
         </style>
     '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1], simple_value[0], 
-               simple_value[1], simple_value[2])
+               layout_value[2][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1262,6 +1279,38 @@ def PersonalPage():
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    style = '''
+        <style>
+            .nav-sell {{
+                background-color: {0} !important;
+            }}
+            .which_btn02 {{
+                background-color: {0} !important;
+            }}
+            footer {{
+                background-color: {0} !important;
+            }}
+            html {{
+                background-color: {1} !important;
+            }}
+            * {{
+                color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a {{
+                color: #000 !important;
+            }}
+            a.nav-sell {{
+                color: #fff !important;
+            }}
+        </style>
+    '''.format(layout_value[0][1], layout_value[1][1], 
+               layout_value[2][1])
+    
     # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
@@ -1299,9 +1348,11 @@ def PersonalPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
-                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, 
-                           icon=icon, UserName=UserName, mail_error=mail_error)
+    return render_template('personal.html', AccountInfo=AccountInfo, icon=icon, 
+                           AddressInfo=AddressInfo,  layout_value=layout_value,
+                           MailAddress=MailAddress, name_error=name_error, 
+                           pass_error=pass_error,style=style,
+                           UserName=UserName, mail_error=mail_error)
 
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
