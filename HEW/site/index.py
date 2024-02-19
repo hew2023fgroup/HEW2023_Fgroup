@@ -385,7 +385,43 @@ def SellConfirm():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
-        
+    
+        layout_value = session.get('layout')
+        print('layout:',layout_value)
+
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+                .btn05{{
+                    background-color: {0} !important
+                }}
+            </style>
+            '''.format(layout_value[0][1], layout_value[1][1], 
+                   layout_value[2][1])
+
         # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
@@ -518,7 +554,8 @@ def SellConfirm():
         # return render_template('sell_confirm.html', icon=icon, UserName=UserName,
         #         mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
-                imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
+                imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags,
+                style=style, layout_value=layout_value)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
