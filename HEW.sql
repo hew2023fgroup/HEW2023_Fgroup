@@ -283,10 +283,6 @@ INSERT INTO Address(Address,POST,AccountID) VALUES("福島県本宮市本宮雲�
 INSERT INTO Address(Address,POST,AccountID) VALUES("青森県むつ市脇野沢赤坂","790-17",2);
 INSERT INTO Address(Address,POST,AccountID) VALUES("岡山県新見市神郷下神代","901-15",3);
 
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#000', 3, 1), ('static/images/slide/slide01.jpg', 4, 1), ('static/images/slide/slide05.jpg', 4, 1), ('static/images/slide/slide08.jpg', 4, 1), ('static/images/slide/slide10.jpg', 4, 1);
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#000', 3, 2), ('static/images/slide/slide01.jpg', 4, 2), ('static/images/slide/slide05.jpg', 4, 2), ('static/images/slide/slide08.jpg', 4, 2), ('static/images/slide/slide10.jpg', 4, 2);
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#000', 3, 3), ('static/images/slide/slide01.jpg', 4, 3), ('static/images/slide/slide05.jpg', 4, 3), ('static/images/slide/slide08.jpg', 4, 3), ('static/images/slide/slide10.jpg', 4, 3);
-
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("Sample商品データ",2000,1,2,2,"サンプルデータです。最終的には削除するデータです。",6,1,1);
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("PS5",6000,1,1,1,"使ってたPS5なんですけど使わなくなったので売ります",26,1,1);
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("コナン缶バッジ",800,1,3,2,"被ったので一枚どうですか？",28,1,1);
@@ -329,3 +325,8 @@ INSERT INTO Layout(Name) VALUES("メインカラー");
 INSERT INTO Layout(Name) VALUES("背景色");
 INSERT INTO Layout(Name) VALUES("文字色");
 INSERT INTO Layout(Name) VALUES("スライドショー画像");
+
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#000', 3, 1), ('static/images/slide/slide01.jpg', 4, 1), ('static/images/slide/slide05.jpg', 4, 1), ('static/images/slide/slide08.jpg', 4, 1), ('static/images/slide/slide10.jpg', 4, 1);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#000', 3, 2), ('static/images/slide/slide01.jpg', 4, 2), ('static/images/slide/slide05.jpg', 4, 2), ('static/images/slide/slide08.jpg', 4, 2), ('static/images/slide/slide10.jpg', 4, 2);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#000', 3, 3), ('static/images/slide/slide01.jpg', 4, 3), ('static/images/slide/slide05.jpg', 4, 3), ('static/images/slide/slide08.jpg', 4, 3), ('static/images/slide/slide10.jpg', 4, 3);
+
