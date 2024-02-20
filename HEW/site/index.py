@@ -160,6 +160,16 @@ def Login():
             simple_value = list(cursor.fetchone())
             session['simple'] = simple_value
             
+            Slide_Select = '''
+            SELECT Numerical, NumericalID FROM Numerical
+            WHERE AccountID = {0} AND LayoutID = 4;
+            '''.format(you[0][0])
+            cursor.execute(Slide_Select)
+            print('実行:',Slide_Select)
+            slide_value = cursor.fetchall()
+            print(slide_value)
+            session['slideimg'] = slide_value
+            
             # CLOSE
             conn.commit()
             cursor.close()
@@ -867,8 +877,10 @@ def IndexPage():
     
     layout_value = session.get('layout')
     simple_value = list(session.get('simple'))
+    slide_value = session.get('slideimg')
     print('layout:',layout_value)
     print('simple:',simple_value)
+    print('slide:',slide_value)
     
     # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
     if simple_value[0] == 0:
@@ -964,7 +976,8 @@ def IndexPage():
     cursor.close()
     conn.close()
     return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
-                           UserName=UserName, style=style, layout_value=layout_value)
+                           UserName=UserName, style=style, layout_value=layout_value, 
+                           slide_value=slide_value)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
@@ -1996,6 +2009,10 @@ def LayoutPage():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+        slide_value = session.get('slideimg')
+        ids = [slide_value[0][1],slide_value[1][1],slide_value[2][1],slide_value[3][1]]
+        print('ids:',ids)
+        
             
         # アイコンSELECT
         ProfIMG_Select = '''
@@ -2014,6 +2031,11 @@ def LayoutPage():
                 slideshow = '1'
                 sellimg = '1'
                 sellprice = '1'
+                slideimgs = None
+                slide_value = [
+                    ('static/images/slide/slide01.jpg',), ('static/images/slide/slide05.jpg',), 
+                    ('static/images/slide/slide08.jpg',), ('static/images/slide/slide10.jpg',)
+                    ]
             # 入力内容保存の時
             elif request.form['layout_action'] == 'submit':
                 main_color = request.form['main_color']
@@ -2022,7 +2044,33 @@ def LayoutPage():
                 slideshow = request.form['slideshow']
                 sellimg = request.form['sellimg']
                 sellprice = request.form['sellprice']
-            
+                slideimgs = request.files.getlist('slideimgs')
+                print('slide:',slideimgs)
+                
+                # 画像保存
+                upload_path = "static/images/slide/"
+                if not (len(slideimgs) == 1 and slideimgs[0].filename == ''):
+                    imgs = []
+                    for slideimg in slideimgs:
+                        img_path = os.path.join(upload_path, slideimg.filename)
+                        slideimg.save(img_path)
+                        imgs.append(img_path)
+                else:
+                    imgs = None 
+                print('imgs:',imgs)
+                
+                # ids = [4, 5, 6, 7]
+                # imgs = ['static/images/slide/slide-2 (3).jpg', 'static/images/slide/slide-2 (1).jpg', 'static/images/slide/slide-2 (2).jpg', 'static/images/slide/slide-2 (4).jpg']
+                for img,id in zip(imgs,ids):
+                    Slideimg_Update = '''
+                    UPDATE Numerical
+                    SET Numerical = '{0}'
+                    WHERE NumericalID = {1} AND LayoutID = 4 AND AccountID = {2} ;
+                    '''.format(img,id,AccountID)
+                    cursor.execute(Slideimg_Update)
+                    print('実行:',Slideimg_Update)
+                    
+                
             # SQL アップデート
             MainColor_Update = '''
             UPDATE Numerical
@@ -2092,6 +2140,17 @@ def LayoutPage():
         print('実行:',Simple_Select)
         simple_value = list(cursor.fetchone())
         session['simple'] = simple_value
+        
+        Slide_Select = '''
+        SELECT Numerical, NumericalID
+        FROM Numerical
+        WHERE LayoutID = 4 AND AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Slide_Select)
+        print('実行:',Slide_Select)
+        slide_value = cursor.fetchall()
+        session['slideimg'] = slide_value
+        
         
         # スタイルタグ
         style = '''

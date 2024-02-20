@@ -283,7 +283,7 @@
         </div> -->
 
         <h2>カスタム</h2>
-        <form action="/layout" method="post">
+        <form action="/layout" method="post" enctype="multipart/form-data">
           <div id="contents">
             <!-- 削除したい padding: 8px 10px; -->
             <div class="contents-detail">
@@ -340,6 +340,11 @@
               <label for="sellpriceOFF">オフ</label><br>
               {% endif %}
             </div>
+            <div class="contents-detail">
+              <p>スライド画像</p>
+              <input type="file" name="slideimgs" id="uploadInput" accept="image/*" multiple>
+            </div>
+
   
             <!-- <div class="contents-detail">
               <p>フォントサイズ</p>
