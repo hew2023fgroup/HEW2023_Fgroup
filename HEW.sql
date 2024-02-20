@@ -329,4 +329,3 @@ INSERT INTO Layout(Name) VALUES("スライドショー画像");
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#000', 3, 1), ('static/images/slide/slide01.jpg', 4, 1), ('static/images/slide/slide05.jpg', 4, 1), ('static/images/slide/slide08.jpg', 4, 1), ('static/images/slide/slide10.jpg', 4, 1);
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#000', 3, 2), ('static/images/slide/slide01.jpg', 4, 2), ('static/images/slide/slide05.jpg', 4, 2), ('static/images/slide/slide08.jpg', 4, 2), ('static/images/slide/slide10.jpg', 4, 2);
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#000', 3, 3), ('static/images/slide/slide01.jpg', 4, 3), ('static/images/slide/slide05.jpg', 4, 3), ('static/images/slide/slide08.jpg', 4, 3), ('static/images/slide/slide10.jpg', 4, 3);
-
