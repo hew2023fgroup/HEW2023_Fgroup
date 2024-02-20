@@ -2023,7 +2023,6 @@ def LayoutPage():
             AccountID, UserName, MailAddress = you_list[0]
         slide_value = session.get('slideimg')
         ids = [slide_value[0][1],slide_value[1][1],slide_value[2][1],slide_value[3][1]]
-        print('ids:',ids)
         
             
         # アイコンSELECT
