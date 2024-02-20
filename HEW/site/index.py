@@ -47,6 +47,15 @@ def Registration():
         (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
         '''.format(username, password, email)
         cursor.execute(sql)
+        id = cursor.lastrowid
+        
+        Layout_Insert = '''
+        INSERT INTO Numerical(Numerical, LayoutID, AccountID)
+        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#000', 3, {0}), 
+        ('static/images/slide/slide01.jpg', 4, {0}), ('static/images/slide/slide05.jpg', 4, {0}), 
+        ('static/images/slide/slide08.jpg', 4, {0}), ('static/images/slide/slide10.jpg', 4, {0});
+        '''.format(id)
+        cursor.execute(Layout_Insert)
         
         # CLOSE
         conn.commit()
@@ -882,51 +891,54 @@ def IndexPage():
     print('simple:',simple_value)
     print('slide:',slide_value)
     
-    # ONの時は{3, 4, 5}には '1' が代入されていてcssでエラーが出ている
     if simple_value[0] == 0:
         simple_value[0] = 'None'
     if simple_value[1] == 0:
         simple_value[1] = 'None'
     if simple_value[2] == 0:
         simple_value[2] = 'None'
-        
-    style = '''
-        <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
-            }}
-            html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a {{
-                color: #000 !important;
-            }}
-            a.nav-sell {{
-                color: #fff !important;
-            }}
-            .slideshow{{
-                display: {3} !important;
-            }}
-            .product img{{
-                display: {4} !important;
-            }}
-            .price-box{{
-                display: {5} !important;
-            }}
-        </style>
-    '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
+    
+    if layout_value != []:
+        style = '''
+            <style>
+                .nav-sell {{
+                    background-color: {0} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {0} !important;
+                }}
+                footer {{
+                    background-color: {0} !important;
+                }}
+                html {{
+                    background-color: {1} !important;
+                }}
+                * {{
+                    color: {2} !important;
+                }}
+                .left-nav p {{
+                    color: #000 !important;
+                }}
+                .right-nav ul li a {{
+                    color: #000 !important;
+                }}
+                a.nav-sell {{
+                    color: #fff !important;
+                }}
+                .slideshow{{
+                    display: {3} !important;
+                }}
+                .product img{{
+                    display: {4} !important;
+                }}
+                .price-box{{
+                    display: {5} !important;
+                }}
+            </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
+    else: 
+        style = None
+        slide_value = None
 
     
     # アイコンSELECT
