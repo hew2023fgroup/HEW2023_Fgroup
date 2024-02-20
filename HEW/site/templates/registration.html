@@ -14,6 +14,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/registration_modal.css') }}">
 
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap" rel="stylesheet">
+    
     <!-- JQuery本体 CDN -->
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
 
@@ -71,6 +76,7 @@
                   <div class="btn-box">
                     <button type="submit" id="openModal">内容を確認する</button>
                   </div>
+                  <a class="new" href="{{ url_for('LoginPage') }}">ログインの方はこちら &#0187;</a>
                 </div>
               </div>
             </div>

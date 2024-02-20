@@ -77,17 +77,18 @@
       </div>
     </div>
 
-    <!-- 絶対に消すな -->
-    <div id="kesuna"></div>
-    <!-- 絶対に消すな -->
-
-      <div id="hiddenArea">
-        <!-- <h1>カテゴリ</h1> -->
+    <div class="cate-box">
+      <img id="cate_closebtn" src="../static/images/x01_cate.svg">
+      <div class="cate-wrap">
+        <div class="cate-title">
+          <h1>CATEGORY</h1>
+          <p class="sub-cate">商品を探す</p>
+        </div>
         <div class="tab">
           <ul class="tab-list">
             <li class="tab-list-item is-btn-active">レディース</li>
             <li class="tab-list-item">メンズ</li>
-            <li class="tab-list-item">インテリア/家具</li>
+            <li class="tab-list-item">インテリア/家電</li>
             <li class="tab-list-item">ホビー</li>
             <li class="tab-list-item">その他</li>
           </ul>
@@ -246,11 +247,14 @@
                 </ul>
               </div>
             </div>
-
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- 絶対に消すな -->
+    <div id="kesuna"></div>
+    <!-- 絶対に消すな -->
 
 
     <div id="box">
@@ -403,5 +407,13 @@
     {{ style | safe }}
 
   </body>
+  <!-- 検索用 -->
+  <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+
+  <!-- カテゴリ-clickしたら開く用 -->
+  <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
+  
+  <!-- カテゴリ用 -->
+  <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
 
 </html>

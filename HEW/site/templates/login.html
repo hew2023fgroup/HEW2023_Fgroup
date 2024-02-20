@@ -13,6 +13,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
 
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500&display=swap" rel="stylesheet">
+    
     <!-- JQuery本体 CDN -->
     <!-- <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script> -->
 
@@ -52,6 +57,8 @@
                   <div class="btn-box">
                     <input type="submit" value="ログインする" id="btn">
                   </div>
+
+                  <a class="new" href="{{ url_for('RegistrationPage') }}">新規会員登録の方はこちら &#0187;</a>
                 </div>
 
               </div>

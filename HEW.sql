@@ -324,4 +324,11 @@ INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo05.png
 INSERT INTO Layout(Name) VALUES("メインカラー");
 INSERT INTO Layout(Name) VALUES("背景色");
 INSERT INTO Layout(Name) VALUES("文字色");
-INSERT INTO Layout(Name) VALUES("スライドショー画像");
+INSERT INTO Layout(Name) VALUES("スライドショー画像1");
+INSERT INTO Layout(Name) VALUES("スライドショー画像2");
+INSERT INTO Layout(Name) VALUES("スライドショー画像3");
+INSERT INTO Layout(Name) VALUES("スライドショー画像4");
+
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#000', 3, 1), ('static/images/slide/slide01.jpg', 4, 1), ('static/images/slide/slide05.jpg', 5, 1), ('static/images/slide/slide08.jpg', 6, 1), ('static/images/slide/slide10.jpg', 7, 1);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#000', 3, 2), ('static/images/slide/slide01.jpg', 4, 2), ('static/images/slide/slide05.jpg', 5, 2), ('static/images/slide/slide08.jpg', 6, 2), ('static/images/slide/slide10.jpg', 7, 2);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#000', 3, 3), ('static/images/slide/slide01.jpg', 4, 3), ('static/images/slide/slide05.jpg', 5, 3), ('static/images/slide/slide08.jpg', 6, 3), ('static/images/slide/slide10.jpg', 7, 3);
