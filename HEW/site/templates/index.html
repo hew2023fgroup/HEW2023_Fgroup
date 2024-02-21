@@ -28,6 +28,7 @@
   </head>
 
   <body>
+    <div id="footer-container">
 
     <nav id="main-nav">
       <div class="main-nav-box">
@@ -82,7 +83,7 @@
       <img id="cate_closebtn" src="../static/images/x01_cate.svg">
       <div class="cate-wrap">
         <div class="cate-title">
-          <h1>CATEGORY</h1>
+          <h2>CATEGORY</h2>
           <p class="sub-cate">商品を探す</p>
         </div>
         <div class="tab">
@@ -402,6 +403,7 @@
     <!-- レイアウト編集 -->
     {{ style | safe }}
 
+    </div>
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>

@@ -182,7 +182,7 @@ ul li{
   cursor: pointer;
   border-radius: 0 10px 0 0;
   font-size: 0.9rem;
-  color: #fff;
+  color: #fff !important;
   background-color: red;
   border: none;
   outline: none;
@@ -200,7 +200,7 @@ ul li{
 .dli-plus {
   display: inline-block;
   vertical-align: middle;
-  color: #fff;
+  color: #fff !important;
   line-height: 1;
   width: 1em;
   height: 0.1em;
@@ -342,8 +342,7 @@ div#product-info h3::after{
 .rate-form label{
   position: relative;
   padding: 0 1px;
-  color: #ccc;
-  /* cursor: pointer; */
+  color: #ccc !important;
   font-size: 25px;
 }
 .rate-form label:hover {
