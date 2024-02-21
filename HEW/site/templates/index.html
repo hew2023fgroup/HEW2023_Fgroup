@@ -55,7 +55,7 @@
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
             <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
             <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
-            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
         </div>
       </div>
@@ -275,46 +275,50 @@
                 </div>
               </div>
               <div class="image-container">
-                <img src="../static/images/slide01.jpg" alt="小物の画像" class="image">
+                <!-- <img src="../static/images/slide01.jpg" alt="小物の画像" class="image"> -->
+                <img src="{{ slide_value[0][0] }}" alt="小物の画像" class="image">
               </div>
             </div>
             <div class="slide">
               <div class="slide-content">
                 <div class="caption">
-                  <div class="title">VARIA-FREE</div>
+                  <div class="title" id="title">VARIA-FREE</div>
                   <div class="text">
                     <p></p>
                   </div>
                 </div>
               </div>
               <div class="image-container">
-                <img src="../static/images/slide08.jpg" alt="自転車の画像" class="image">
+                <!-- <img src="../static/images/slide08.jpg" alt="自転車の画像" class="image"> -->
+                <img src="{{ slide_value[1][0] }}" alt="自転車の画像" class="image">
               </div>
             </div>
             <div class="slide">
               <div class="slide-content">
                 <div class="caption">
-                  <div class="title">VARIA-FREE</div>
+                  <div class="title" id="title">VARIA-FREE</div>
                   <div class="text">
                     <p></p>
                   </div>
                 </div>
               </div>
               <div class="image-container">
-                <img src="../static/images/slide05.jpg" alt="インテリアの画像" class="image">
+                <!-- <img src="../static/images/slide05.jpg" alt="インテリアの画像" class="image"> -->
+                <img src="{{ slide_value[2][0] }}" alt="インテリアの画像" class="image">
               </div>
             </div>
             <div class="slide">
               <div class="slide-content">
                 <div class="caption">
-                  <div class="title">VARIA-FREE</div>
+                  <div class="title" id="title">VARIA-FREE</div>
                   <div class="text">
                     <p></p>
                   </div>
                 </div>
               </div>
               <div class="image-container">
-                <img src="../static/images/slide10.jpg" alt="服の画像" class="image">
+                <!-- <img src="../static/images/slide10.jpg" alt="服の画像" class="image"> -->
+                <img src="{{ slide_value[3][0] }}" alt="服の画像" class="image">
               </div>
             </div>
           </div>
@@ -391,9 +395,12 @@
 
 
     <footer>
-      <h1>#VariaFree</h1>
+      <p class="footer01">#VariaFree</p>
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
+
+    <!-- レイアウト編集 -->
+    {{ style | safe }}
 
   </body>
   <!-- 検索用 -->
