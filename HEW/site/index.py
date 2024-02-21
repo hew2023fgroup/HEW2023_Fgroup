@@ -52,8 +52,8 @@ def Registration():
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
         VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#000', 3, {0}), 
-        ('static/images/slide/slide01.jpg', 4, {0}), ('static/images/slide/slide05.jpg', 4, {0}), 
-        ('static/images/slide/slide08.jpg', 4, {0}), ('static/images/slide/slide10.jpg', 4, {0});
+        ('static/images/slide/slide01.jpg', 4, {0}), ('static/images/slide/slide05.jpg', 5, {0}), 
+        ('static/images/slide/slide08.jpg', 6, {0}), ('static/images/slide/slide10.jpg', 7, {0});
         '''.format(id)
         cursor.execute(Layout_Insert)
         
@@ -170,13 +170,15 @@ def Login():
             session['simple'] = simple_value
             
             Slide_Select = '''
-            SELECT Numerical, NumericalID FROM Numerical
-            WHERE AccountID = {0} AND LayoutID = 4;
+            SELECT Numerical, NumericalID 
+            FROM Numerical
+            WHERE AccountID = {0} 
+            AND LayoutID IN (4, 5, 6, 7);
             '''.format(you[0][0])
             cursor.execute(Slide_Select)
             print('実行:',Slide_Select)
             slide_value = cursor.fetchall()
-            print(slide_value)
+            print('slide_session:',slide_value)
             session['slideimg'] = slide_value
             
             # CLOSE
@@ -1199,6 +1201,7 @@ def MyPage():
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    print('icon:',icon)
     
     # 平均評価値のSELECTx2
     evalscore_sql = '''
@@ -2022,9 +2025,9 @@ def LayoutPage():
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
         slide_value = session.get('slideimg')
+        print('slide_value:',slide_value)
         ids = [slide_value[0][1],slide_value[1][1],slide_value[2][1],slide_value[3][1]]
         
-            
         # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
@@ -2042,7 +2045,10 @@ def LayoutPage():
                 slideshow = '1'
                 sellimg = '1'
                 sellprice = '1'
-                slideimgs = None
+                slideimg1 =  None
+                slideimg2 =  None
+                slideimg3 =  None
+                slideimg4 =  None
                 slide_value = [
                     ('static/images/slide/slide01.jpg',), ('static/images/slide/slide05.jpg',), 
                     ('static/images/slide/slide08.jpg',), ('static/images/slide/slide10.jpg',)
@@ -2055,28 +2061,54 @@ def LayoutPage():
                 slideshow = request.form['slideshow']
                 sellimg = request.form['sellimg']
                 sellprice = request.form['sellprice']
-                slideimgs = request.files.getlist('slideimgs')
-                print('slide:',slideimgs)
                 
                 # 画像保存
                 upload_path = "static/images/slide/"
-                if not (len(slideimgs) == 1 and slideimgs[0].filename == ''):
-                    imgs = []
-                    for slideimg in slideimgs:
-                        img_path = os.path.join(upload_path, slideimg.filename)
-                        slideimg.save(img_path)
-                        imgs.append(img_path)
+                imgs = []
+                # 1
+                slideimg1 = request.files.get('slideimg1')
+                if slideimg1.filename == '':
+                    slideimg1 = slide_value[0][0]
+                    imgs.append(slideimg1)
                 else:
-                    imgs = None 
+                    img_path = os.path.join(upload_path, slideimg1.filename)
+                    slideimg1.save(img_path)
+                    imgs.append(img_path)
+                # 2
+                slideimg2 = request.files.get('slideimg2')
+                if slideimg2.filename == '':
+                    slideimg2 = slide_value[1][0]
+                    imgs.append(slideimg2)
+                else:
+                    img_path = os.path.join(upload_path, slideimg2.filename)
+                    slideimg2.save(img_path)
+                    imgs.append(img_path)
+                # 3
+                slideimg3 = request.files.get('slideimg3')
+                if slideimg3.filename == '':
+                    slideimg3 = slide_value[2][0]
+                    imgs.append(slideimg3)
+                else:
+                    img_path = os.path.join(upload_path, slideimg3.filename)
+                    slideimg3.save(img_path)
+                    imgs.append(img_path)
+                # 4
+                slideimg4 = request.files.get('slideimg4')
+                if slideimg4.filename == '':
+                    slideimg4 = slide_value[3][0]
+                    imgs.append(slideimg4)
+                else:
+                    img_path = os.path.join(upload_path, slideimg4.filename)
+                    slideimg4.save(img_path)
+                    imgs.append(img_path)
                 print('imgs:',imgs)
                 
-                # ids = [4, 5, 6, 7]
-                # imgs = ['static/images/slide/slide-2 (3).jpg', 'static/images/slide/slide-2 (1).jpg', 'static/images/slide/slide-2 (2).jpg', 'static/images/slide/slide-2 (4).jpg']
+                # update
                 for img,id in zip(imgs,ids):
                     Slideimg_Update = '''
                     UPDATE Numerical
                     SET Numerical = '{0}'
-                    WHERE NumericalID = {1} AND LayoutID = 4 AND AccountID = {2} ;
+                    WHERE NumericalID = {1} AND AccountID = {2} ;
                     '''.format(img,id,AccountID)
                     cursor.execute(Slideimg_Update)
                     print('実行:',Slideimg_Update)
@@ -2153,10 +2185,11 @@ def LayoutPage():
         session['simple'] = simple_value
         
         Slide_Select = '''
-        SELECT Numerical, NumericalID
-        FROM Numerical
-        WHERE LayoutID = 4 AND AccountID = {0};
-        '''.format(AccountID)
+        SELECT Numerical, NumericalID 
+            FROM Numerical
+            WHERE AccountID = {0} 
+            AND LayoutID IN (4, 5, 6, 7);
+            '''.format(AccountID)
         cursor.execute(Slide_Select)
         print('実行:',Slide_Select)
         slide_value = cursor.fetchall()
