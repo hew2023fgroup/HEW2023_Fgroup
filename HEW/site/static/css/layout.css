@@ -157,7 +157,7 @@ main#m-layout h2::after{
 
 
 div#contents{
-  width: 410px;
+  width: 450px;
   padding: 0 0 0 10px;
 }
 .contents-detail{
@@ -165,8 +165,12 @@ div#contents{
   margin: 0 0 15px 0;
   align-items: center;
   justify-content: space-between;
+
+  /* background-color: pink; */
 }
 .contents-detail p{}
+
+/*----------色変えのINPUT----------*/
 .textbox-001{
   margin: 0 0 0 0;
   min-width: 200px;
@@ -181,6 +185,29 @@ div#contents{
 .textbox-001::placeholder {
   color: #999;
   text-align: center;
+}
+
+
+
+.contents-detail01{
+  width: 440px;
+  margin: 0 0 15px 0;
+  display: flex;
+  justify-content: space-between;
+
+  /* background-color: #f5f5f5; */
+}
+.radio-box{
+  display: flex; /* オンオフを横に並べる */
+  width: 200px;
+  /* background-color: rgb(131, 131, 151); */
+}
+.radio-detail{
+  display: flex;
+  align-items: center;
+}
+.radio-left{
+  margin-right: 15px;
 }
 
 /*                    リセットと保存ボタン                    */
