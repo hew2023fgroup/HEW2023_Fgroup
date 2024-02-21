@@ -208,8 +208,12 @@ body, body p {
   color: black;
 }
 /* openクラスが追加されたときの文字色 */
-html.open_cate body, html.open_cate body p {
-  color: white;
+html.open_cate body,
+html.open_cate body p,
+html.open_cate body h2,
+html.open_cate body .tab-list-item,
+html.open_cate body span{
+  color: white !important;
 }
 .cate-box{
   position: fixed;
@@ -247,7 +251,7 @@ top: 0;
   margin: 0 auto;
   text-align: center;
 }
-.cate-box h1{
+.cate-box h2{
   font-size: 2rem;
   letter-spacing: 0.5rem;
 }
@@ -261,8 +265,10 @@ top: 0;
 /*---------------------SEARCH----------------------*/
 /*-------------------------------------------------*/
 /* openクラスが追加されたときの文字色 */
-.open body, .open body p {
-  color: white;
+.open body,
+.open body p,
+.open body h1{
+  color: white !important;
 }
 .search-box{
   position: fixed;
@@ -316,7 +322,6 @@ top: 0;
   width: 200px;
   margin: 0 auto;
   text-align: center;
-/*  background-color: red;*/
 }
 .search-box h1{
   font-size: 2rem;
