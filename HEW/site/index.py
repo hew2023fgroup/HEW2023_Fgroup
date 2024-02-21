@@ -51,7 +51,7 @@ def Registration():
         
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
-        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#000', 3, {0}), 
+        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#000', 6, {0}), ('#FFF', 7, {0}), 
         ('static/images/slide/slide01.jpg', 4, {0}), ('static/images/slide/slide05.jpg', 5, {0}), 
         ('static/images/slide/slide08.jpg', 6, {0}), ('static/images/slide/slide10.jpg', 7, {0});
         '''.format(id)
@@ -173,7 +173,7 @@ def Login():
             SELECT Numerical, NumericalID 
             FROM Numerical
             WHERE AccountID = {0} 
-            AND LayoutID IN (4, 5, 6, 7);
+            AND LayoutID IN (8, 9, 10, 11);
             '''.format(you[0][0])
             cursor.execute(Slide_Select)
             print('実行:',Slide_Select)
@@ -209,36 +209,34 @@ def SellPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *:not(input){{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
             .btn05{{
-                background-color: {0} !important
+                background-color: {3} !important
             }}
         </style>
-    '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+    '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -271,36 +269,34 @@ def SellConfirm():
 
         style = '''
             <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
+                *:not(input){{
+                    color: {4} !important;
                 }}
                 html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
+                    background-color: {2} !important;
                 }}
                 .left-nav p {{
                     color: #000 !important;
                 }}
-                .right-nav ul li a {{
+                .right-nav ul li a, .right-nav ul li p{{
                     color: #000 !important;
                 }}
-                a.nav-sell {{
-                    color: #fff !important;
+                #btn{{
+                    background-color: {0} !important;
+                    color: {1} !important;
+                }}
+                footer {{
+                    background-color: {5} !important;
+                }}
+                footer p{{
+                    color: {6} !important;
                 }}
                 .btn05{{
-                    background-color: {0} !important
+                    background-color: {3} !important
                 }}
             </style>
-            '''.format(layout_value[0][1], layout_value[1][1], 
-                   layout_value[2][1])
+            '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
 
         # アイコンSELECT
         ProfIMG_Select = '''
@@ -578,33 +574,34 @@ def Buy():
 
         style = '''
             <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
+                *:not(input){{
+                    color: {4} !important;
                 }}
                 html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
+                    background-color: {2} !important;
                 }}
                 .left-nav p {{
                     color: #000 !important;
                 }}
-                .right-nav ul li a {{
+                .right-nav ul li a, .right-nav ul li p{{
                     color: #000 !important;
                 }}
-                a.nav-sell {{
-                    color: #fff !important;
+                #btn{{
+                    background-color: {0} !important;
+                    color: {1} !important;
+                }}
+                footer {{
+                    background-color: {5} !important;
+                }}
+                footer p{{
+                    color: {6} !important;
+                }}
+                .which_btn02 {{
+                    background-color: {3} !important;
                 }}
             </style>
-            '''.format(layout_value[0][1], layout_value[1][1], 
-                   layout_value[2][1])
+            '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
             
         # アイコンSELECT
         ProfIMG_Select = '''
@@ -786,39 +783,40 @@ def BuyCompPage(BuyID):
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
-        layout_value = session.get('layout')
-        print('layout:',layout_value)
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
 
-        style = '''
-            <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
-                }}
-                html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a {{
-                    color: #000 !important;
-                }}
-                a.nav-sell {{
-                    color: #fff !important;
-                }}
-            </style>
-            '''.format(layout_value[0][1], layout_value[1][1], 
-                   layout_value[2][1])
-        
+    style = '''
+        <style>
+            *{{
+                color: {4} !important;
+            }}
+            html {{
+                background-color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a, .right-nav ul li p{{
+                color: #000 !important;
+            }}
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
+            }}
+            .which_btn02 {{
+                background-color: {3} !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
+    
     # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
@@ -903,41 +901,44 @@ def IndexPage():
     if layout_value != []:
         style = '''
             <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
+                *{{
+                    color: {4} !important;
                 }}
                 html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
+                    background-color: {2} !important;
                 }}
                 .left-nav p {{
                     color: #000 !important;
                 }}
-                .right-nav ul li a {{
+                .right-nav ul li a, .right-nav ul li p{{
                     color: #000 !important;
                 }}
-                a.nav-sell {{
-                    color: #fff !important;
+                #btn{{
+                    background-color: {0} !important;
+                    color: {1} !important;
+                }}
+                footer {{
+                    background-color: {5} !important;
+                }}
+                footer p{{
+                    color: {6} !important;
+                }}
+                .slideshow .slide-content {{
+                    color: {1} !important;
                 }}
                 .slideshow{{
-                    display: {3} !important;
+                    display: {7} !important;
                 }}
                 .product img{{
-                    display: {4} !important;
+                    display: {8} !important;
                 }}
                 .price-box{{
-                    display: {5} !important;
+                    display: {9} !important;
                 }}
             </style>
-        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], simple_value[0], simple_value[1], simple_value[2])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1], 
+                   simple_value[0], simple_value[1], simple_value[2])
     else: 
         style = None
         slide_value = None
@@ -1007,38 +1008,39 @@ def ProductPage(sellid):
         layout_value = session.get('layout')
         print('layout:',layout_value)
 
-        style = '''
-            <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
-                }}
-                html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a {{
-                    color: #000 !important;
-                }}
-                a.nav-sell {{
-                    color: #fff !important;
-                }}
-                .shopping form button{{
-                    background-color: {0} !important
-                }}
-            </style>
-            '''.format(layout_value[0][1], layout_value[1][1], 
-                   layout_value[2][1])
+    style = '''
+        <style>
+            *{{
+                color: {4} !important;
+            }}
+            html {{
+                background-color: {2} !important;
+            }}
+            .left-nav p {{
+                color: #000 !important;
+            }}
+            .right-nav ul li a, .right-nav ul li p{{
+                color: #000 !important;
+            }}
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
+            }}
+            .btn05{{
+                background-color: {3} !important
+            }}
+            .shopping form button{{
+                background-color: {3} !important
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1163,36 +1165,34 @@ def MyPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *:not(label,button,input){{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
             }}
-            .bar{{
-                background-color: {0} !important
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
+            }}
+            .bar {{
+                background-color: {3} !important;
             }}
         </style>
-    '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1311,33 +1311,31 @@ def FavoritePage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1367,33 +1365,31 @@ def ViewlogPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1424,33 +1420,31 @@ def SellListPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1495,33 +1489,31 @@ def BuyListPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1554,33 +1546,31 @@ def SavesearchPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1611,33 +1601,31 @@ def DraftPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -1682,33 +1670,31 @@ def PersonalPage():
     
     style = '''
         <style>
-            .nav-sell {{
-                background-color: {0} !important;
-            }}
-            .which_btn02 {{
-                background-color: {0} !important;
-            }}
-            footer {{
-                background-color: {0} !important;
+            *{{
+                color: {4} !important;
             }}
             html {{
-                background-color: {1} !important;
-            }}
-            * {{
-                color: {2} !important;
+                background-color: {2} !important;
             }}
             .left-nav p {{
                 color: #000 !important;
             }}
-            .right-nav ul li a {{
+            .right-nav ul li a, .right-nav ul li p{{
                 color: #000 !important;
             }}
-            a.nav-sell {{
-                color: #fff !important;
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
             }}
         </style>
-        '''.format(layout_value[0][1], layout_value[1][1], 
-               layout_value[2][1])
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
     # アイコンSELECT
     ProfIMG_Select = '''
@@ -2039,9 +2025,13 @@ def LayoutPage():
         if request.method == 'POST':
             # リセットの時
             if request.form['layout_action'] == 'reset':
+                navbtn_color = '#ff0000'
+                navtxt_color = '#ffffff'
                 main_color = '#ff0000'
                 wall_color = '#ffffff'
                 text_color = '#000000'
+                footer_color = '#000000'
+                footertxt_color = '#ffffff'
                 slideshow = '1'
                 sellimg = '1'
                 sellprice = '1'
@@ -2049,15 +2039,19 @@ def LayoutPage():
                 slideimg2 =  None
                 slideimg3 =  None
                 slideimg4 =  None
-                slide_value = [
-                    ('static/images/slide/slide01.jpg',), ('static/images/slide/slide05.jpg',), 
-                    ('static/images/slide/slide08.jpg',), ('static/images/slide/slide10.jpg',)
+                imgs = [
+                    'static/images/slide/slide01.jpg', 'static/images/slide/slide05.jpg', 
+                    'static/images/slide/slide08.jpg', 'static/images/slide/slide10.jpg'
                     ]
             # 入力内容保存の時
             elif request.form['layout_action'] == 'submit':
+                navbtn_color = request.form['navbtn_color']
+                navtxt_color = request.form['navtxt_color']
                 main_color = request.form['main_color']
                 wall_color = request.form['wall_color']
                 text_color = request.form['text_color']
+                footer_color = request.form['footer_color']
+                footertxt_color = request.form['footertxt_color']
                 slideshow = request.form['slideshow']
                 sellimg = request.form['sellimg']
                 sellprice = request.form['sellprice']
@@ -2103,41 +2097,73 @@ def LayoutPage():
                     imgs.append(img_path)
                 print('imgs:',imgs)
                 
-                # update
-                for img,id in zip(imgs,ids):
-                    Slideimg_Update = '''
-                    UPDATE Numerical
-                    SET Numerical = '{0}'
-                    WHERE NumericalID = {1} AND AccountID = {2} ;
-                    '''.format(img,id,AccountID)
-                    cursor.execute(Slideimg_Update)
-                    print('実行:',Slideimg_Update)
+            # update
+            for img,id in zip(imgs,ids):
+                Slideimg_Update = '''
+                UPDATE Numerical
+                SET Numerical = '{0}'
+                WHERE NumericalID = {1} AND AccountID = {2} ;
+                '''.format(img,id,AccountID)
+                cursor.execute(Slideimg_Update)
+                print('実行:',Slideimg_Update)
                     
                 
             # SQL アップデート
-            MainColor_Update = '''
+            NavBtnColor_Update = '''
             UPDATE Numerical
             SET Numerical = '{0}'
             WHERE AccountID = {1} AND LayoutID = 1
-            '''.format(main_color, AccountID)
-            cursor.execute(MainColor_Update)
-            print('実行:',MainColor_Update)
+            '''.format(navbtn_color, AccountID)
+            cursor.execute(NavBtnColor_Update)
+            print('実行:',NavBtnColor_Update)
+            
+            NavTxtColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 2
+            '''.format(navtxt_color, AccountID)
+            cursor.execute(NavTxtColor_Update)
+            print('実行:',NavTxtColor_Update)
             
             WallColor_Update = '''
             UPDATE Numerical
             SET Numerical = '{0}'
-            WHERE AccountID = {1} AND LayoutID = 2
+            WHERE AccountID = {1} AND LayoutID = 3
             '''.format(wall_color, AccountID)
             cursor.execute(WallColor_Update)
             print('実行:',WallColor_Update)
             
+            MainColor_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 4
+            '''.format(main_color, AccountID)
+            cursor.execute(MainColor_Update)
+            print('実行:',MainColor_Update)
+            
             TextColor_Update = '''
             UPDATE Numerical
             SET Numerical = '{0}'
-            WHERE AccountID = {1} AND LayoutID = 3
+            WHERE AccountID = {1} AND LayoutID = 5
             '''.format(text_color, AccountID)
             cursor.execute(TextColor_Update)
             print('実行:',TextColor_Update)
+            
+            Footer_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 6
+            '''.format(footer_color, AccountID)
+            cursor.execute(Footer_Update)
+            print('実行:',Footer_Update)
+            
+            FooterTxt_Update = '''
+            UPDATE Numerical
+            SET Numerical = '{0}'
+            WHERE AccountID = {1} AND LayoutID = 7
+            '''.format(footertxt_color, AccountID)
+            cursor.execute(FooterTxt_Update)
+            print('実行:',FooterTxt_Update)
             
             Slideshow_Update = '''
             UPDATE Account
@@ -2188,44 +2214,45 @@ def LayoutPage():
         SELECT Numerical, NumericalID 
             FROM Numerical
             WHERE AccountID = {0} 
-            AND LayoutID IN (4, 5, 6, 7);
+            AND LayoutID IN (8, 9, 10, 11);
             '''.format(AccountID)
         cursor.execute(Slide_Select)
         print('実行:',Slide_Select)
         slide_value = cursor.fetchall()
         session['slideimg'] = slide_value
-        
-        
+
         # スタイルタグ
         style = '''
             <style>
-                .nav-sell {{
-                    background-color: {0} !important;
-                }}
-                .which_btn02 {{
-                    background-color: {0} !important;
-                }}
-                footer {{
-                    background-color: {0} !important;
+                * {{
+                    color: {4} !important;
                 }}
                 html {{
-                    background-color: {1} !important;
-                }}
-                * {{
-                    color: {2} !important;
+                    background-color: {2} !important;
                 }}
                 .left-nav p {{
                     color: #000 !important;
                 }}
-                .right-nav ul li a {{
+                .right-nav ul li a, .right-nav ul li p{{
                     color: #000 !important;
                 }}
-                a.nav-sell {{
-                    color: #fff !important;
+                #btn{{
+                    background-color: {0} !important;
+                    color: {1} !important;
+                }}
+                .which_btn02{{
+                    background-color: {3} !important;
+                }}
+                footer {{
+                    background-color: {5} !important;
+                }}
+                footer p{{
+                    color: {6} !important;
                 }}
             </style>
-        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1])
-        
+            '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
+
         conn.commit()
         cursor.close()
         conn.close()

@@ -54,7 +54,7 @@
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
             <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
             <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
-            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
         </div>
       </div>
@@ -291,16 +291,32 @@
           <div id="contents">
             <!-- 削除したい padding: 8px 10px; -->
             <div class="contents-detail">
-              <p>メインカラー</p>
-              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[0][1] }}" name="main_color">
+              <p>ナビボタン色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[0][1] }}" name="navbtn_color">
+            </div>
+            <div class="contents-detail">
+              <p>ナビテキスト色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[1][1] }}" name="navtxt_color">
+            </div>
+            <div class="contents-detail">
+              <p>メイン色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[3][1] }}" name="main_color">
             </div>
             <div class="contents-detail">
               <p>背景色</p>
-              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[1][1] }}" name="wall_color">
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[2][1] }}" name="wall_color">
             </div>
             <div class="contents-detail">
               <p>文字色</p>
-              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[2][1] }}" name="text_color">
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[4][1] }}" name="text_color">
+            </div>
+            <div class="contents-detail">
+              <p>フッター背景色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[5][1] }}" name="footer_color">
+            </div>
+            <div class="contents-detail">
+              <p>フッター文字色</p>
+              <input type="color" class="textbox-001" placeholder="#F00" value="{{ layout_value[6][1] }}" name="footertxt_color">
             </div>
             <div class="contents-detail">
               <p>スライドショーの表示</p>
