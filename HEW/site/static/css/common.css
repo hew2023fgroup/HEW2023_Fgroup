@@ -51,6 +51,10 @@ nav#main-nav::after{
 }
 
 /*---------------アイコン 名前---------------*/
+.left-nav a{
+  border-radius: 50%;
+  display: block;
+}
 .left-nav figure{
   padding: 0 17px 0 17px;
 }
@@ -59,6 +63,7 @@ nav#main-nav::after{
   height: 60px;
   border-radius: 50%;
   object-fit: scale-down;
+  background-color: #F0F4FF;
 }
 .left-nav p{
   margin: 0 0 0 25px;
