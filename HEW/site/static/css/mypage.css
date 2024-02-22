@@ -85,10 +85,17 @@ main#m-mypage{
 .prof_detail{
   text-align: center;
 }
-.prof_detail img{
+.pprof-wrap{
+  display: block;
+}
+.pprof-wrap figure{}
+.pprof-wrap figure img{
   border-radius: 50%;
-  max-width: 140px;
-  max-height: 140px;
+  width: 140px;
+  height: 140px;
+  object-fit: scale-down;
+  text-align: center;
+  background-color: #F0F4FF;
 }
 .prof_detail .name{
   margin: 20px 0 0 0;

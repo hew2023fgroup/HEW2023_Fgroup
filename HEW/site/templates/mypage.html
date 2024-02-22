@@ -284,17 +284,18 @@
 
           <div class="prof_detail">
             
-            <figure id="prof_icon">
-              <a class="" href="{{ url_for('MyPage') }}">
+            <div class="pprof-wrap">
+              <figure id="prof_icon">
                 {% if icon != None %}
                 <!-- css -->
                 <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+
                 {% elif icon == None %}
                 <!-- css -->
                 <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
                 {% endif %}
-              </a>
-            </figure>
+              </figure>
+            </div>
 
             <p class="name">{{ UserName }}</p>
             <div class="rate-form">
