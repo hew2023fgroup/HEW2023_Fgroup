@@ -323,7 +323,7 @@
           <div class="edit-nickname">
             <p class="txt">ニックネーム</p>
               <form action="/change_username" method="post">
-              <input type="text" class="textbox-001" name="username" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
+              <input type="text" class="textbox-001" name="username" autocomplete="off" placeholder="ニックネーム" value="{{ AccountInfo[0] }}">
               <button type="submit">変更</button>
               {% if name_error %}
               <!-- css -->
@@ -345,7 +345,7 @@
               <label for="post">郵便番号</label><br>
               <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
               <label for="address">住所</label><br>
-              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+              <input type="text" class="textbox-001" autocomplete="off" placeholder="住所" name="address" name="address" required>
               <button type="submit">登録</button>
             </form>
             {% else %}
@@ -364,9 +364,9 @@
 
             <form action="/add_address" method="post">
               <label for="post">郵便番号</label><br>
-              <input type="text" class="textbox-001" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
+              <input type="text" class="textbox-001" autocomplete="off" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
               <label for="address">住所</label><br>
-              <input type="text" class="textbox-001" placeholder="住所" name="address" name="address" required>
+              <input type="text" class="textbox-001" autocomplete="off" placeholder="住所" name="address" name="address" required>
               <button type="submit">追加</button>
             </form>
             {% endif %}
@@ -380,7 +380,7 @@
 
           <form action="/change_mail" method="post">
             <p class="txt">メールアドレス</p>
-            <input type="text" class="textbox-001" placeholder="メールアドレス" value="{{ AccountInfo[6] }}" name="mailaddress">
+            <input type="text" class="textbox-001" autocomplete="off" placeholder="メールアドレス" value="{{ AccountInfo[6] }}" name="mailaddress">
             <button type="submit">変更</button>
             {% if mail_error %}
             <!-- css -->
@@ -411,11 +411,11 @@
           {% if AccountInfo[4] and AccountInfo[5] != '未登録' %}
           <form action="/change_fullname" method="post">
             <label for="kanjiname">氏名</label><br>
-            <input type="text" class="textbox-001" name="kanjiname" id="kanjiname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
+            <input type="text" class="textbox-001" autocomplete="off" name="kanjiname" id="kanjiname" placeholder="氏名" value="{{ AccountInfo[4] }}" required><br>
             <label for="furigana">カタカナ</label><br>
-            <input type="text" class="textbox-001" placeholder="シメイ" name="furigana" id="furigana" value="{{ AccountInfo[5] }}" required><br>
+            <input type="text" class="textbox-001" autocomplete="off" placeholder="シメイ" name="furigana" id="furigana" value="{{ AccountInfo[5] }}" required><br>
             <label for="birthday">生年月日</label><br>
-            <input type="date" class="textbox-001" placeholder="生年月日" name="birthday" id="birthday" value="{{ AccountInfo[2] }}" required>
+            <input type="date" class="textbox-001" autocomplete="off" placeholder="生年月日" name="birthday" id="birthday" value="{{ AccountInfo[2] }}" required>
             <button type="submit">変更</button>
           </form>
 
