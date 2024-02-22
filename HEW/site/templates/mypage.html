@@ -283,14 +283,15 @@
           <div class="prof_detail">
             
             <figure id="prof_icon">
-              {% if icon != None %}
-              <!-- css -->
-              <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
-
-              {% elif icon == None %}
-              <!-- css -->
-              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
-              {% endif %}
+              <a class="" href="{{ url_for('MyPage') }}">
+                {% if icon != None %}
+                <!-- css -->
+                <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+                {% elif icon == None %}
+                <!-- css -->
+                <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+                {% endif %}
+              </a>
             </figure>
 
             <p class="name">{{ UserName }}</p>
