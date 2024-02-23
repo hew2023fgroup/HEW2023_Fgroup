@@ -136,6 +136,9 @@ main#m-personal h1::after{
   height: 130px;
   border-radius: 50%;
   object-fit: scale-down;
+  cursor: pointer;
+  background-color: #F0F4FF;
+  text-align: center;
 }
 
 

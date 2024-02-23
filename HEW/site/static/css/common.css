@@ -10,6 +10,11 @@ input{
 button{
   font-family: 'Zen Kaku Gothic New', sans-serif !important;
 }
+div#footer-container{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 /*-------------------------------------------------*/
 /*-----------------------NAV-----------------------*/
@@ -46,6 +51,10 @@ nav#main-nav::after{
 }
 
 /*---------------アイコン 名前---------------*/
+.left-nav a{
+  border-radius: 50%;
+  display: block;
+}
 .left-nav figure{
   padding: 0 17px 0 17px;
 }
@@ -54,6 +63,7 @@ nav#main-nav::after{
   height: 60px;
   border-radius: 50%;
   object-fit: scale-down;
+  background-color: #F0F4FF;
 }
 .left-nav p{
   margin: 0 0 0 25px;
@@ -208,12 +218,16 @@ body, body p {
   color: black;
 }
 /* openクラスが追加されたときの文字色 */
-html.open_cate body, html.open_cate body p {
-  color: white;
+html.open_cate body,
+html.open_cate body p,
+html.open_cate body h1,
+html.open_cate body .tab-list-item,
+html.open_cate body span{
+  color: white !important;
 }
 .cate-box{
   position: fixed;
-  top: -100%;
+  top: -120%;
   left: 0;
   width: 100%;
   height: 100vh;
@@ -261,8 +275,10 @@ top: 0;
 /*---------------------SEARCH----------------------*/
 /*-------------------------------------------------*/
 /* openクラスが追加されたときの文字色 */
-.open body, .open body p {
-  color: white;
+.open body,
+.open body p,
+.open body h1{
+  color: white !important;
 }
 .search-box{
   position: fixed;
@@ -316,7 +332,6 @@ top: 0;
   width: 200px;
   margin: 0 auto;
   text-align: center;
-/*  background-color: red;*/
 }
 .search-box h1{
   font-size: 2rem;
@@ -376,6 +391,7 @@ top: 0;
 
 
 footer{
+  margin-top: auto;
   padding: 80px 0 80px 0;
   text-align: center;
   background-color: #000;
@@ -398,9 +414,10 @@ footer p{
   position: relative;
 }
 .product_area h1{
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: normal;
-  margin: 0 0 20px 13px;
+  margin: 0 0 35px 13px;
+  letter-spacing: 0.1rem;
 }
 .product_area h2{
   font-size: 1.2rem;
@@ -414,7 +431,7 @@ footer p{
   width: 1200px;
   height: 0px;
   position: absolute;
-  top: 25px;
+  top: 30px;
   left: 0px;
   border-bottom: 1px solid #a9a9a9;
 }
@@ -435,7 +452,7 @@ footer p{
   width: 1200px;
   height: 0px;
   position: absolute;
-  bottom: 0px;
+  bottom: 30px;
   left: 0px;
   border-bottom: 1px solid #a9a9a9;
 }
@@ -480,4 +497,3 @@ footer p{
 }
 .mark{}
 .price{}
-
