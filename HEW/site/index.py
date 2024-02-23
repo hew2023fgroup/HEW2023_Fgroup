@@ -1145,6 +1145,11 @@ def ProductPage(sellid):
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName)
     
+# /search
+@app.route('/search')
+def Search():
+    return print('aa')
+    
 # #########################################
 # マイページ
 # #########################################
