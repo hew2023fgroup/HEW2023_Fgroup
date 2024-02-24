@@ -1225,10 +1225,11 @@ def Search():
         print('ワード:',search_word)
         
         Sellname_Select = '''
-        SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name
+        SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name, Tag.Name
         FROM Sell
         JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
         JOIN Mcategory ON Scategory.McategoryID = Mcategory.McategoryID
+        JOIN Tag ON Tag.SellID = Sell.SellID
         WHERE Sell.AccountID <> {0}; 
         '''.format(AccountID)
         
@@ -1241,12 +1242,13 @@ def Search():
                 "ID": item[0],
                 "Name": item[1],
                 "S": item[2],
-                "M": item[3]
+                "M": item[3],
+                "Tag": item[4]
             }
             sell_listInDict.append(result_dict)
         
         hit_items = [item['ID'] for item in sell_listInDict if search_word 
-                        in item['Name'] or search_word in item['S'] or search_word in item['M']]
+                        in item['Name'] or search_word in item['S'] or search_word in item['M'] or search_word in item['Tag']]
         print('ヒットID:',hit_items)
 
         sells = []
@@ -1265,7 +1267,8 @@ def Search():
             cursor.execute(SellInfo_Select)
             sellinfo = cursor.fetchone()
             if sellinfo != None:
-                sells.append(sellinfo)
+                if sellinfo not in set(sells):
+                    sells.append(sellinfo)
                 
         if search_word:  # search_wordが空欄でない場合
             Search_Insert = '''
