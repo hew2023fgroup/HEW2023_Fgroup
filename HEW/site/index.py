@@ -986,13 +986,21 @@ def IndexPage():
     cursor.execute(SellInfo_Select)
     sells = cursor.fetchall()
     
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
     return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
                            UserName=UserName, style=style, layout_value=layout_value, 
-                           slide_value=slide_value)
+                           slide_value=slide_value,words=words)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
@@ -1212,7 +1220,7 @@ def Search():
         '''.format(AccountID)
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
-
+        
         search_word = request.form['search_word']
         print('ワード:',search_word)
         
@@ -1259,11 +1267,12 @@ def Search():
             if sellinfo != None:
                 sells.append(sellinfo)
                 
-        Search_Insert = '''
-        INSERT INTO Search(Word, AccountID)
-        VALUES('{0}', {1})
-        '''.format(search_word,AccountID)
-        cursor.execute(Search_Insert)
+        if search_word:  # search_wordが空欄でない場合
+            Search_Insert = '''
+            INSERT INTO Search(Word, AccountID)
+            VALUES('{0}', {1})
+            '''.format(search_word, AccountID)
+            cursor.execute(Search_Insert)
         
         conn.commit()
         cursor.close()
@@ -1371,7 +1380,7 @@ def CateSearch():
         Search_Insert = '''
         INSERT INTO Search(Word, AccountID)
         VALUES('{0}', {1})
-        '''.format(search_word,AccountID)
+        '''.format(search_word, AccountID)
         cursor.execute(Search_Insert)
         
         conn.commit()
