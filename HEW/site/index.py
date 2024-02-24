@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, jsonify
 import mysql.connector,os,random,ast
 from datetime import datetime, timedelta
 
@@ -1070,6 +1070,13 @@ def ProductPage(sellid):
     cursor.execute(info)
     products = cursor.fetchall()
     
+    # test-------------------------
+    sql = '''
+    select * from sell where SellID = {0};
+    '''.format(sellid)
+    cursor.execute(sql)
+    record = cursor.fetchone()
+    
     # 関数割り当て
     imgs = [img[0] for img in products] 
     name = products[0][1]
@@ -1149,7 +1156,7 @@ def ProductPage(sellid):
     conn.close()
     return render_template(
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
-        price=price, sellid=sellid, scategory=scategory, style=style,
+        price=price, sellid=sellid, scategory=scategory, style=style, record=record,
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName)
     
@@ -1392,6 +1399,47 @@ def CateSearch():
     
     return render_template('search.html',icon=icon,UserName=UserName,style=style,
                            search_word=search_word,sells=sells)
+    
+# /data
+@app.route("/data", methods=['POST'])
+def get_data():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+        
+    # フォームから送信されたデータを取得
+    SellID = request.form['1']
+    Name = request.form['2']
+    Price = request.form['3']
+    TaxID = request.form['4']
+    PostageID = request.form['5']
+    StatusID = request.form['6']
+    Overview = request.form['7']
+    ScategoryID = request.form['8']
+    AccountID = request.form['9']
+    datetime = request.form['10']
+    draft = request.form['11']
+    
+    # 取得したデータをカンマで区切った文字列にする
+    # data_string = ','.join([SellID])
+    data_string = ','.join([SellID, Name, Price, TaxID, PostageID, StatusID, Overview, ScategoryID, AccountID, datetime, draft])
+    
+    Nice_Insert = '''
+    INSERT INTO Nice(AccountID, SellID)
+    VALUES({0},{1})
+    '''.format(AccountID,SellID)
+    cursor.execute(Nice_Insert)
+        
+    conn.commit()
+    cursor.close()
+    conn.close()
+    # 加工したデータをJSON形式で返す
+    return jsonify({'data': data_string})
+
 
 # #########################################
 # マイページ
