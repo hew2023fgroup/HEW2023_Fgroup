@@ -1146,9 +1146,125 @@ def ProductPage(sellid):
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName)
     
 # /search
-@app.route('/search')
+@app.route('/search', methods=['POST'])
 def Search():
-    return print('aa')
+    if request.method == 'POST':
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+        
+        layout_value = session.get('layout')
+        simple_value = list(session.get('simple'))
+    
+        if simple_value[0] == 0:
+            simple_value[0] = 'None'
+        if simple_value[1] == 0:
+            simple_value[1] = 'None'
+        if simple_value[2] == 0:
+            simple_value[2] = 'None'
+        
+        if layout_value != []:
+            style = '''
+                <style>
+                    *{{
+                        color: {4} !important;
+                    }}
+                    html {{
+                        background-color: {2} !important;
+                    }}
+                    .left-nav p {{
+                        color: #000 !important;
+                    }}
+                    .right-nav ul li a, .right-nav ul li p{{
+                        color: #000 !important;
+                    }}
+                    #btn{{
+                        background-color: {0} !important;
+                        color: {1} !important;
+                    }}
+                    footer {{
+                        background-color: {5} !important;
+                    }}
+                    footer p{{
+                        color: {6} !important;
+                    }}
+                    .product img{{
+                        display: {7} !important;
+                    }}
+                    .price-box{{
+                        display: {8} !important;
+                    }}
+                </style>
+            '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                       layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1], 
+                       simple_value[1], simple_value[2])
+        else: 
+            style = None
+            slide_value = None
+
+        # アイコンSELECT
+        ProfIMG_Select = '''
+        SELECT ProfIMG FROM Account
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(ProfIMG_Select)
+        icon = cursor.fetchone()[0]
+
+        search_word = request.form['search_word']
+        print('ワード:',search_word)
+        
+        Sellname_Select = '''
+        SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name
+        FROM Sell
+        JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
+        JOIN Mcategory ON Scategory.McategoryID = Mcategory.McategoryID
+        WHERE Sell.AccountID <> {0}; 
+        '''.format(AccountID)
+        
+        cursor.execute(Sellname_Select)
+        sell_word = cursor.fetchall()
+        
+        sell_listInDict = []
+        for item in sell_word:
+            result_dict = {
+                "ID": item[0],
+                "Name": item[1],
+                "S": item[2],
+                "M": item[3]
+            }
+            sell_listInDict.append(result_dict)
+        
+        hit_items = [item['ID'] for item in sell_listInDict if search_word 
+                        in item['Name'] or search_word in item['S'] or search_word in item['M']]
+        print('ヒットID:',hit_items)
+
+        sells = []
+        for id in hit_items:
+            SellInfo_Select = '''
+            SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+            FROM Sell
+            JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+            LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+            WHERE SellIMG.ThumbnailFlg = 0x01 
+            AND Sell.SellID = {0} 
+            AND Buy.SellID IS NULL 
+            AND Sell.Draft = 0x01;
+            '''.format(id)
+            print('実行:',SellInfo_Select)
+            cursor.execute(SellInfo_Select)
+            sellinfo = cursor.fetchone()
+            if sellinfo != None:
+                sells.append(sellinfo)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+    
+    return render_template('search.html',icon=icon,UserName=UserName,sells=sells,search_word=search_word,style=style)
     
 # #########################################
 # マイページ
