@@ -81,6 +81,17 @@
           </label>
         </form>
       </div>
+
+      <form action="/search" method="post">
+        <ul>
+          {% for word in words %}
+          <li>
+            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
+            <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+          </li>
+          {% endfor %}
+        </ul>
+      </form>
     </div>
 
     <div class="cate-box">
