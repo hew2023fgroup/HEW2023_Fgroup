@@ -1258,6 +1258,12 @@ def Search():
             sellinfo = cursor.fetchone()
             if sellinfo != None:
                 sells.append(sellinfo)
+                
+        Search_Insert = '''
+        INSERT INTO Search(Word, AccountID)
+        VALUES('{0}', {1})
+        '''.format(search_word,AccountID)
+        cursor.execute(Search_Insert)
         
         conn.commit()
         cursor.close()
@@ -1361,6 +1367,16 @@ def CateSearch():
         '''.format(select)
         cursor.execute(Category_Select)
         search_word = cursor.fetchone()[0]
+                
+        Search_Insert = '''
+        INSERT INTO Search(Word, AccountID)
+        VALUES('{0}', {1})
+        '''.format(search_word,AccountID)
+        cursor.execute(Search_Insert)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
     
     return render_template('search.html',icon=icon,UserName=UserName,style=style,
                            search_word=search_word,sells=sells)
