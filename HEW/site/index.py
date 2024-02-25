@@ -974,14 +974,20 @@ def IndexPage():
     # タプル
     ids_top10 = tuple(x[0] for x in ids_top10)
     ids_top10 = tuple(ids_top10)
+    print(ids_top10)
     
     SellInfo_Select = '''
     SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID != {0} AND Sell.SellID IN {1};
-    '''.format(AccountID,ids_top10)
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID != {0} 
+    AND Sell.SellID IN ({1})
+    ORDER BY FIELD(Sell.SellID, {1});
+    '''.format(AccountID,','.join(map(str, ids_top10)))
     print('実行:',SellInfo_Select)
     cursor.execute(SellInfo_Select)
     sells = cursor.fetchall()
@@ -998,9 +1004,10 @@ def IndexPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("index.html", sells=sells, TablePage=TablePage, icon=icon, 
-                           UserName=UserName, style=style, layout_value=layout_value, 
-                           slide_value=slide_value,words=words)
+    return render_template(
+        "index.html", sells=sells, TablePage=TablePage, icon=icon, 
+        UserName=UserName, style=style, layout_value=layout_value, 
+        slide_value=slide_value,words=words)
 
 # /product/<sellid>
 @app.route('/product/<sellid>')
@@ -1420,20 +1427,37 @@ def get_data():
     StatusID = request.form['6']
     Overview = request.form['7']
     ScategoryID = request.form['8']
-    AccountID = request.form['9']
+    sell_AccountID = request.form['9']
     datetime = request.form['10']
     draft = request.form['11']
     
     # 取得したデータをカンマで区切った文字列にする
     # data_string = ','.join([SellID])
-    data_string = ','.join([SellID, Name, Price, TaxID, PostageID, StatusID, Overview, ScategoryID, AccountID, datetime, draft])
+    data_string = ','.join([SellID, Name, Price, TaxID, PostageID, StatusID, Overview, ScategoryID, sell_AccountID, datetime, draft])
     
-    Nice_Insert = '''
-    INSERT INTO Nice(AccountID, SellID)
-    VALUES({0},{1})
-    '''.format(AccountID,SellID)
-    cursor.execute(Nice_Insert)
-        
+    Nice_Select = '''
+    SELECT SellID FROM Nice
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Nice_Select)
+    nice = cursor.fetchall()
+    nices = [item[0] for item in nice]
+    
+    if int(SellID) not in nices:
+        Nice_Insert = '''
+        INSERT INTO Nice(AccountID, SellID)
+        VALUES({0},{1});
+        '''.format(AccountID,SellID)
+        cursor.execute(Nice_Insert)
+        print('実行:',Nice_Insert)
+    else:
+        Nice_Delete = '''
+        DELETE FROM Nice
+        WHERE AccountID = {0} AND SellID = {1};
+        '''.format(AccountID,SellID)
+        cursor.execute(Nice_Delete)
+        print('実行:',Nice_Delete)
+    
     conn.commit()
     cursor.close()
     conn.close()
@@ -1640,10 +1664,35 @@ def FavoritePage():
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    Nice_Select = '''
+    SELECT SellID FROM Nice
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Nice_Select)
+    nice = cursor.fetchall()
+    nices = [item[0] for item in nice]
+    
+    Sell_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01
+    AND Sell.SellID IN ({0});
+    '''.format(','.join(map(str, nices)))
+    cursor.execute(Sell_Select)
+    print('実行:',Sell_Select)
+    sellinfo = cursor.fetchall()
+    print(sellinfo)
+    
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("favorite.html", UserName=UserName, icon=icon, layout_value=layout_value, style=style)
+    return render_template(
+        "favorite.html", UserName=UserName, sellinfo=sellinfo,
+        icon=icon, layout_value=layout_value, style=style)
 
 # /viewlog
 @app.route('/viewlog')
