@@ -209,7 +209,7 @@ def SellPage():
     
     style = '''
         <style>
-            *:not(input){{
+            *:not(input,#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -269,7 +269,7 @@ def SellConfirm():
 
         style = '''
             <style>
-                *:not(input){{
+                *:not(input,#searchInput){{
                     color: {4} !important;
                 }}
                 html {{
@@ -574,7 +574,7 @@ def Buy():
 
         style = '''
             <style>
-                *:not(input){{
+                *:not(input,#searchInput){{
                     color: {4} !important;
                 }}
                 html {{
@@ -788,7 +788,7 @@ def BuyCompPage(BuyID):
 
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -901,7 +901,7 @@ def IndexPage():
     if layout_value != []:
         style = '''
             <style>
-                *{{
+                *:not(#searchInput){{
                     color: {4} !important;
                 }}
                 html {{
@@ -1025,7 +1025,7 @@ def ProductPage(sellid):
 
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1205,7 +1205,7 @@ def Search():
         if layout_value != []:
             style = '''
                 <style>
-                    *{{
+                    *:not(#searchInput){{
                         color: {4} !important;
                     }}
                     html {{
@@ -1336,7 +1336,7 @@ def CateSearch():
         if layout_value != []:
             style = '''
                 <style>
-                    *{{
+                    *:not(#searchInput){{
                         color: {4} !important;
                     }}
                     html {{
@@ -1644,7 +1644,7 @@ def FavoritePage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1726,7 +1726,7 @@ def ViewlogPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1781,7 +1781,7 @@ def SellListPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1850,7 +1850,7 @@ def BuyListPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1907,7 +1907,7 @@ def SavesearchPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -1962,7 +1962,7 @@ def DraftPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -2031,7 +2031,7 @@ def PersonalPage():
     
     style = '''
         <style>
-            *{{
+            *:not(#searchInput){{
                 color: {4} !important;
             }}
             html {{
@@ -2585,7 +2585,7 @@ def LayoutPage():
         # スタイルタグ
         style = '''
             <style>
-                * {{
+                *:not(#searchInput) {{
                     color: {4} !important;
                 }}
                 html {{
