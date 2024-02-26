@@ -195,9 +195,9 @@ INSERT INTO Status(Name) VALUES("全体的に状態が悪い");
 
 INSERT INTO Tax(Section,Tax) VALUES("課税対象",10);
 
-INSERT INTO Postage(Size,Price) VALUES("大",1650);
-INSERT INTO Postage(Size,Price) VALUES("中",1350);
-INSERT INTO Postage(Size,Price) VALUES("小",1060);
+INSERT INTO Postage(Size,Price) VALUES("大",165);
+INSERT INTO Postage(Size,Price) VALUES("中",135);
+INSERT INTO Postage(Size,Price) VALUES("小",106);
 
 INSERT INTO Mcategory(Name) VALUES("レディース");
 INSERT INTO Mcategory(Name) VALUES("メンズ");
