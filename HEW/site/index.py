@@ -1083,6 +1083,19 @@ def ProductPage(sellid):
     '''.format(sellid)
     cursor.execute(sql)
     record = cursor.fetchone()
+    # -----------------------------
+    
+    # ブクマ済
+    Nice_Select = '''
+    SELECT * FROM Nice
+    WHERE SellID = {0}
+    AND AccountID = {1};
+    '''.format(sellid,AccountID)
+    cursor.execute(Nice_Select)
+    if cursor.fetchone():
+        nice = True
+    else:
+        nice = False
     
     # 関数割り当て
     imgs = [img[0] for img in products] 
@@ -1165,7 +1178,7 @@ def ProductPage(sellid):
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
         price=price, sellid=sellid, scategory=scategory, style=style, record=record,
         status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
-        error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName)
+        error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName, nice=nice)
     
 # /search
 @app.route('/search', methods=['POST'])

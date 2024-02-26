@@ -34,37 +34,60 @@
         $(document).ready(function(){
             // ブックマーク画像をクリックした時の処理
             $('#bookmark').on('click', function(event){
-                
-                if(flag == true){
-                    // フォーム内のデータを取得
-                    var formData = {};
-                    $('#form input[type="hidden"]').each(function(){
-                        formData[$(this).attr("id")] = $(this).val();
-                    });
-                
-                    // Ajax通信
-                    $.ajax({
-                        type: 'POST',
-                        url: '/data',
-                        data: formData,
-                        success: function(data){
-                            // 取得したデータを処理する
-                            console.log(data);  // データをコンソールに表示（デバッグ用）
-                            // 取得したデータをHTML上に表示する
-                            $('#dataDisplay').html(data.data);
-                        },
-                        error: function(xhr, status, error){
-                            console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
-                        }
-                    });
-                }else {
-                    $('#dataDisplay').html('');
-                }
-                
-                event.preventDefault();
-            });
-        });
+              const bookmark = document.getElementById("bookmark");
+              const bookmarkImg = document.getElementById("bookmarkImg");
+              if (bookmarkImg.src.endsWith("on.png")) {
+                bookmarkImg.src = "../static/images/off.png";
+
+                // フォーム内のデータを取得
+                var formData = {};
+                $('#form input[type="hidden"]').each(function(){
+                    formData[$(this).attr("id")] = $(this).val();
+                });
+        
+                // Ajax通信
+                $.ajax({
+                    type: 'POST',
+                    url: '/data',
+                    data: formData,
+                    success: function(data){
+                        console.log(data);
+                        // 取得したデータをHTML上に表示する
+                        $('#dataDisplay').html(data.data);
+                    },
+                    error: function(xhr, status, error){
+                        console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
+                    }
+                });
+            } else if (bookmarkImg.src.endsWith("off.png")) {
+                bookmarkImg.src = "../static/images/on.png";
+
+                // フォーム内のデータを取得
+                var formData = {};
+                $('#form input[type="hidden"]').each(function(){
+                    formData[$(this).attr("id")] = $(this).val();
+                });
+        
+                // Ajax通信
+                $.ajax({
+                    type: 'POST',
+                    url: '/data',
+                    data: formData,
+                    success: function(data){
+                        console.log(data);
+                        // 取得したデータをHTML上に表示する
+                        $('#dataDisplay').html(data.data);
+                    },
+                    error: function(xhr, status, error){
+                        console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
+                    }
+                });
+            }
+              event.preventDefault();
+          });
+      });
     </script>
+
   </head>
   
   <body>
@@ -372,9 +395,20 @@
               {% for record in record %}
               <input type="hidden" value="{{record}}" id="{{loop.index}}">
               {% endfor %}
-              <figure>
-                  <img id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
+              <figure id="bookmark">
+                {% if nice == True %}
+                <img id="bookmarkImg" src="../static/images/on.png" alt="ブックマーク">
+                {% elif nice == False %}
+                <img id="bookmarkImg" src="../static/images/off.png" alt="ブックマーク">
+                {% endif %}
               </figure>
+              <!-- <figure>
+                  {% if nice == True %}
+                  <img style="background-color: #fff;" id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
+                  {% elif nice == False %}
+                  <img id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
+                  {% endif %}
+              </figure> -->
           </form>
         </div>
         
@@ -509,6 +543,7 @@
     {{ style | safe }}
     
   </body>
+  <!-- ブクマ -->
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
 
