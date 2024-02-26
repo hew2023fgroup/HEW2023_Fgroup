@@ -348,10 +348,10 @@
 
           <div id="mypage_nav">
             <ul>
-              <li><a href="favorite.html"><img src="../static/images/bookmarks-mypage.svg"><p>ブックマーク一覧</p></a></li>
-              <li><a href="saved_search.html"><img src="../static/images/magnifying-mypage.svg"><p>保存した検索条件</p></a></li>
-              <li><a href="buy_list.html"><img src="../static/images/buy.png"><p>購入した商品</p></a></li>
-              <li><a href="sell_list.html"><img src="../static/images/sell.png"><p>出品した商品</p></a></li>
+              <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/bookmarks-mypage.svg"><p>ブックマーク一覧</p></a></li>
+              <li><a href="{{ url_for('SavesearchPage') }}"><img src="../static/images/magnifying-mypage.svg"><p>保存した検索条件</p></a></li>
+              <li><a href="{{ url_for('BuyListPage') }}"><img src="../static/images/buy.png"><p>購入した商品</p></a></li>
+              <li><a href="{{ url_for('SellListPage') }}"><img src="../static/images/sell.png"><p>出品した商品</p></a></li>
             </ul>
           </div>
           
