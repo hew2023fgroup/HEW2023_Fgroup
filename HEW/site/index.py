@@ -929,10 +929,7 @@ def IndexPage():
                 .slideshow{{
                     display: {7} !important;
                 }}
-                .grid-product img{{
-                    display: {8} !important;
-                }}
-                .list-product img{{
+                #sellimg{{
                     display: {8} !important;
                 }}
                 .price-box{{

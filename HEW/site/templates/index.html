@@ -389,7 +389,7 @@
             <div class="grid-product">
               <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
                 <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px">
+                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
                 </figure>
                 <p>{{ row[1] }}</p>
                 <div class="price-box">
@@ -410,7 +410,7 @@
             <div class="list-product">
               <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
                 <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px">
+                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
                 </figure>
                 <div class="list-product-exa">
                   <p>{{ row[1] }}</p>
