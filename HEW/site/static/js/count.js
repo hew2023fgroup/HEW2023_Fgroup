@@ -1,5 +1,6 @@
 // class名を指定して要素を取得
 var priceElements = document.getElementsByClassName("price");
+var priceElements = document.getElementsByClassName("list-price");
 
 // 三桁ごとにカンマを挿入する関数
 function addCommas(number) {

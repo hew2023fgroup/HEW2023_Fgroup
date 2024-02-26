@@ -409,22 +409,17 @@ footer p{
 
 /*                    TOP_MAIN                    */
 .product_area{
-  margin: 0 auto 0 auto;
+  /* margin: 0 auto 0 auto; */
+  margin: 0 auto 50px auto;
   width: 1200px;
-  position: relative;
+  /* position: relative; */
 }
-.product_area h1{
+/* .product_area h1{
   font-size: 1.3rem;
   font-weight: normal;
   margin: 0 0 35px 13px;
   letter-spacing: 0.1rem;
 }
-.product_area h2{
-  font-size: 1.2rem;
-  font-weight: normal;
-  margin: 0 0 20px 13px;
-}
-
 .product_area h1::before{
   content: "";
   display: block;
@@ -434,17 +429,177 @@ footer p{
   top: 30px;
   left: 0px;
   border-bottom: 1px solid #a9a9a9;
+} */
+
+
+.DisplayBox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.DisplayBox h1{
+  font-size: 1.3rem;
+  font-weight: normal;
+  margin: 0 0 0 20px;
+  position: relative;
+}
+.DisplayBox h1::before{
+  content: "";
+  display: block;
+  width: 1200px;
+  height: 0px;
+  position: absolute;
+  left: -20px;
+  bottom: -18px;
+  border-bottom: 2px solid pink;
+}
+.DisplayForm{
+  margin: 0 20px 0 0 ;
+  display: flex;
+  align-items: center;
+}
+.DisplayForm p{
+  margin: 0 5px 0 0;
+}
+.grid_img{
+  margin-right: 2px;
+  width: 33px;
+  height: 33px;
+  cursor: pointer;
+  border: 1px solid #E0ECFF;
+}
+.list_img{
+  margin-left: 2px;
+  width: 33px;
+  height: 33px;
+  cursor: pointer;
+  border: 1px solid #E0ECFF;
+}
+div#gridView{
+  margin: 20px 0 0 0;
+  padding: 0 10px;
+/*  background-color: blue;*/
+}
+div#listView{
+  margin: 20px 0 0 0;
+  padding: 0 10px;
 }
 
+/*----------------------------------------------------------------*/
+/*--------------------------Grid-Product--------------------------*/
+/*----------------------------------------------------------------*/
+.grid-wrap-product{
+  display: flex;
+  flex-wrap: wrap;
+  width: auto;
+  margin: 0 auto 0 auto;
+}
+.grid-product{
+  width: 20%;
+  padding: 10px 13px 10px 13px;
+  margin: 0 0 10px 0;
+}
+.grid-product a{
+  text-decoration: none;
+  color: #000;
+}
+.grid-product a figure{
+  overflow: hidden;
+  background-color: #a9a9a9;
+  text-align: center;
+}
+.grid-product a figure img{
+  max-width: 214px;
+  height: 214px;
+  object-fit: scale-down;
+}
+.grid-product a p{
+  margin: 8px 0 4px 0;
+  font-size: 0.85rem;
+  line-height: 20px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.price-box{
+  display: flex;
+  font-size: 0.9rem;
+}
+.mark{}
+.price{}
+
+
+
+/*--------------------------------------*/
+/*-------------List-Product-------------*/
+/*--------------------------------------*/
+.list-wrap-product{}
+.list-product{
+  margin-bottom: 20px;
+  position: relative;
+}
+.list-product::after{
+  content: "";
+  display: block;
+  width: 1200px;
+  height: 0px;
+  position: absolute;
+  left: -20px;
+  bottom: -10px;
+  border-bottom: 2px solid pink;
+}
+.list-product a{
+  display: flex;
+  text-decoration: none;
+  color: #000;
+}
+.list-product a figure{
+  /* width: 160px; */
+  /* height: 160px; */
+  overflow: hidden;
+  background-color: #a9a9a9;
+  text-align: center;
+}
+.list-product a figure img{
+  max-width: 160px;
+  height: 160px;
+  object-fit: scale-down;
+}
+.list-product-exa{
+  margin: 0 0 0 20px;
+  width: 1000px;
+}
+.list-product-exa p{
+  padding: 10px 0;
+  font-size: 1.2rem;
+}
+.list-price-box{
+  display: flex;
+  align-items: center;
+  margin: 20px 0 0 0;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.list-mark{}
+.list-price{}
+.product-tax{
+  margin: 0 0 0 5px;
+  font-size: 1rem;
+} */
+
+
+
+
+
+
+/* 
 .wrap_product{
   display: flex;
-  flex-wrap: wrap;/* 考えて改行しましょう */
-  /* width: 1100px; */
+  flex-wrap: wrap;
   width: auto;
   margin: 0 auto 50px auto;
   padding: 0 0 0 0;
-
-/*  background-color: #ddd;*/
 }
 .wrap_product::after{
   content: "";
@@ -470,7 +625,7 @@ footer p{
 }
 .wrap_product .product a figure{
   overflow: hidden;
-  background-color: #a9a9a9;/*  商品余白の色   */
+  background-color: #a9a9a9;
   text-align: center;
 }
 .wrap_product .product a figure img{
@@ -481,19 +636,18 @@ footer p{
 .wrap_product .product a p{
   margin: 8px 0 4px 0;
   font-size: 0.85rem;
-  line-height: 20px;
+  line-height: 20px; */
 
   /*                 文字数制限 2行まで                 */
-  overflow: hidden;
+  /* overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* 任意の行数を指定 */
+  -webkit-line-clamp: 2; */
 }
 /*                    値段                    */
-.price-box{
+/* .price-box{
   display: flex;
-/*  margin: 0 0 6px 0;*/
   font-size: 0.9rem;
 }
 .mark{}
-.price{}
+.price{} */
