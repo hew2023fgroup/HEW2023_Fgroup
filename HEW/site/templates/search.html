@@ -28,6 +28,7 @@
   </head>
 
   <body>
+    <div id="footer-container">
     
     <nav id="main-nav">
       <div class="main-nav-box">
@@ -284,7 +285,7 @@
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
 
-    <div id="box">
+    <!-- <div id="box">
 
       <nav id="search_nav">
         <ul>
@@ -295,12 +296,12 @@
           <li><a href="">送料の負担</a></li>
           <li><a href="">販売状況</a></li>
         </ul>
-      </nav>
+      </nav> -->
 
       <main id="m-search">
         <h1>「{{ search_word }}」の検索結果</h1>
 
-        <div class="main-display">
+        <!-- <div class="main-display">
           <p><input type="checkbox" name="riyu" value="2">販売中のみ表示</p>
 
           <label class="selectbox">
@@ -316,7 +317,7 @@
           <div class="keep">
             <a href="#">この条件を保存する</a>
           </div>
-        </div>
+        </div> -->
 
         <div class="wrap_product_search">
 
@@ -341,7 +342,7 @@
 
       </main>
 
-    </div>
+    <!-- </div> -->
 
 
     <footer>
@@ -352,6 +353,8 @@
     <!-- レイアウト編集 -->
     {{ style | safe }}
 
+
+    </div>
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
@@ -361,5 +364,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
+  <!-- 値段3桁ごとにカンマ -->
+  <script src="{{ url_for('static', filename='js/count.js') }}"></script>
 
 </html>
