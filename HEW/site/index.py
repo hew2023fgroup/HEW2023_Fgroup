@@ -52,8 +52,8 @@ def Registration():
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
         VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#000', 6, {0}), ('#FFF', 7, {0}), 
-        ('static/images/slide/slide01.jpg', 4, {0}), ('static/images/slide/slide05.jpg', 5, {0}), 
-        ('static/images/slide/slide08.jpg', 6, {0}), ('static/images/slide/slide10.jpg', 7, {0});
+        ('static/images/slide/slide01.jpg', 8, {0}), ('static/images/slide/slide05.jpg', 9, {0}), 
+        ('static/images/slide/slide08.jpg', 10, {0}), ('static/images/slide/slide10.jpg', 11, {0});
         '''.format(id)
         cursor.execute(Layout_Insert)
         
@@ -1634,7 +1634,7 @@ def FavoritePage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # セッション取得 
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -1684,21 +1684,24 @@ def FavoritePage():
     '''.format(AccountID)
     cursor.execute(Nice_Select)
     nice = cursor.fetchall()
-    nices = [item[0] for item in nice]
+    if nice == []:
+        sellinfo = None
+    else:
+        nices = [item[0] for item in nice]
     
-    Sell_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL 
-    AND SellIMG.ThumbnailFlg = 0x01
-    AND Sell.SellID IN ({0});
-    '''.format(','.join(map(str, nices)))
-    cursor.execute(Sell_Select)
-    print('実行:',Sell_Select)
-    sellinfo = cursor.fetchall()
-    print(sellinfo)
+        Sell_Select = '''
+        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+        FROM Sell
+        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+        LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+        WHERE Buy.SellID IS NULL 
+        AND SellIMG.ThumbnailFlg = 0x01
+        AND Sell.SellID IN ({0});
+        '''.format(','.join(map(str, nices)))
+        cursor.execute(Sell_Select)
+        print('実行:',Sell_Select)
+        sellinfo = cursor.fetchall()
+        print(sellinfo)
     
     conn.commit()
     cursor.close()
