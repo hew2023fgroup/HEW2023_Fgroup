@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Varia Free</title>
+    <script src="{{ url_for('static', filename='js/jquery/jquery-3.6.4.js') }}"></script>
+
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
@@ -27,6 +29,65 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // ブックマーク画像をクリックした時の処理
+            $('#bookmark').on('click', function(event){
+              const bookmark = document.getElementById("bookmark");
+              const bookmarkImg = document.getElementById("bookmarkImg");
+              if (bookmarkImg.src.endsWith("on.png")) {
+                bookmarkImg.src = "../static/images/off.png";
+
+                // フォーム内のデータを取得
+                var formData = {};
+                $('#form input[type="hidden"]').each(function(){
+                    formData[$(this).attr("id")] = $(this).val();
+                });
+        
+                // Ajax通信
+                $.ajax({
+                    type: 'POST',
+                    url: '/data',
+                    data: formData,
+                    success: function(data){
+                        console.log(data);
+                        // 取得したデータをHTML上に表示する
+                        $('#dataDisplay').html(data.data);
+                    },
+                    error: function(xhr, status, error){
+                        console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
+                    }
+                });
+            } else if (bookmarkImg.src.endsWith("off.png")) {
+                bookmarkImg.src = "../static/images/on.png";
+
+                // フォーム内のデータを取得
+                var formData = {};
+                $('#form input[type="hidden"]').each(function(){
+                    formData[$(this).attr("id")] = $(this).val();
+                });
+        
+                // Ajax通信
+                $.ajax({
+                    type: 'POST',
+                    url: '/data',
+                    data: formData,
+                    success: function(data){
+                        console.log(data);
+                        // 取得したデータをHTML上に表示する
+                        $('#dataDisplay').html(data.data);
+                    },
+                    error: function(xhr, status, error){
+                        console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
+                    }
+                });
+            }
+              event.preventDefault();
+          });
+      });
+    </script>
+
   </head>
   
   <body>
@@ -330,10 +391,24 @@
             </div>
           </form>
 
-          <form>
-            <figure>
-             <img src="../static/images/bookmarks-light.svg">
-            </figure>
+          <form id="form">
+              {% for record in record %}
+              <input type="hidden" value="{{record}}" id="{{loop.index}}">
+              {% endfor %}
+              <figure id="bookmark">
+                {% if nice == True %}
+                <img id="bookmarkImg" src="../static/images/on.png" alt="ブックマーク">
+                {% elif nice == False %}
+                <img id="bookmarkImg" src="../static/images/off.png" alt="ブックマーク">
+                {% endif %}
+              </figure>
+              <!-- <figure>
+                  {% if nice == True %}
+                  <img style="background-color: #fff;" id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
+                  {% elif nice == False %}
+                  <img id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
+                  {% endif %}
+              </figure> -->
           </form>
         </div>
         
@@ -468,6 +543,7 @@
     {{ style | safe }}
     
   </body>
+  <!-- ブクマ -->
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
 

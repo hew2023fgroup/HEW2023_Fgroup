@@ -64,3 +64,16 @@ $(function() {
     });
   });
 });
+
+const bookmark = document.getElementById("bookmark");
+// flagがtrueのときはデータを取得、falseのときはデータを削除
+var flag = false;
+function colorChange(){
+    // classListでクラスを取得(今回はaquaクラスを取得)
+    // toggleでクラスを付け外しする
+    bookmark.classList.toggle("aqua");
+    // flagを反転
+    flag = !flag;
+    console.log(flag);
+}
+bookmark.addEventListener("click", colorChange);
