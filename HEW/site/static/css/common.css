@@ -206,11 +206,15 @@ div#kesuna{
   margin: 13px 0 13px 0;
   font-weight: lighter;
   font-size: 0.9rem;
-  cursor: pointer;
 }
-.s-category span:hover{
-  text-decoration: underline;
-  text-underline-offset: 1px;
+.s-category span button{
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.s-category span button:hover{
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 
@@ -222,12 +226,13 @@ html.open_cate body,
 html.open_cate body p,
 html.open_cate body h1,
 html.open_cate body .tab-list-item,
-html.open_cate body span{
+html.open_cate body span,
+html.open_cate body span button{
   color: white !important;
 }
 .cate-box{
   position: fixed;
-  top: -120%;
+  top: -150%;
   left: 0;
   width: 100%;
   height: 100vh;
@@ -254,7 +259,7 @@ top: 0;
 .open_cate{}
 .cate-wrap{
   width: 900px;
-  margin: 130px auto 0;
+  margin: 100px auto 0;
 }
 .cate-title{
   width: 300px;
@@ -282,7 +287,7 @@ top: 0;
 }
 .search-box{
   position: fixed;
-  top: -120%;
+  top: -150%;
   left: 0;
   width: 100%;
   height: 100vh;
