@@ -209,7 +209,7 @@ def SellPage():
     
     style = '''
         <style>
-            *:not(input,#searchInput){{
+            *:not(input,#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -269,7 +269,7 @@ def SellConfirm():
 
         style = '''
             <style>
-                *:not(input,#searchInput){{
+                *:not(input,#searchInput,footer p){{
                     color: {4} !important;
                 }}
                 html {{
@@ -306,22 +306,11 @@ def SellConfirm():
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
         
-        # ========== フォーム ==========
-        # メイン画像
-        # sellimg_main = request.files.get('sellimg-main')
-        
-        # サブ画像(任意
-        # sellimgs_sub = request.files.getlist('sellimg-sub')
-        # if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
-        #     print('フォーム:サブ画像は空です')
-            
-            
-        # 新画像
+        # 画像
         input_imgs = request.files.getlist('uploadInput')
         select = request.form['select']
         print('new:',input_imgs)
         print('select',select)
-            
             
         # 商品名
         selltit = request.form['selltit']
@@ -379,25 +368,7 @@ def SellConfirm():
         
 
         # ========== 画像処理 ==========
-        # 保存先パス
         upload_path = "static/images/sell/"
-
-        # サムネイルファイル保存
-        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        # sellimg_main.save(mainimg_path)
-
-        # サブファイル保存(送信した画像数分imgsへ挿入)
-        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
-        #     imgs = []
-        #     for sellimg in sellimgs_sub:
-        #         img_path = os.path.join(upload_path, sellimg.filename)
-        #         sellimg.save(img_path)
-        #         imgs.append(img_path)
-        # else:
-        #     imgs = None
-        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
-        
-        #new
         if not (len(input_imgs) == 1 and input_imgs[0].filename == ''):
             imgs = []
             for sellimg in input_imgs:
@@ -409,7 +380,6 @@ def SellConfirm():
         # ========== 画像処理 ==========
             
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
-        # form_data = [mainimg_path,imgs,selltit,overview,scategoryid,postage,status,price]
         form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
         # 住所
@@ -427,8 +397,6 @@ def SellConfirm():
         conn.commit()
         cursor.close()
         conn.close()
-        # return render_template('sell_confirm.html', icon=icon, UserName=UserName,
-        #         mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
                 imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags,
                 style=style, layout_value=layout_value)
@@ -447,17 +415,6 @@ def Sell():
         
         # ========== フォーム ==========
         # メイン画像
-        # sellimg_main = request.form['sellimg-main']
-        # print("メイン：",sellimg_main)
-        
-        # サブ画像(任意
-        # if request.form.getlist('image_paths[]'):
-        #     sellimgs_sub = request.form.getlist('image_paths[]')
-        #     print("サブ：",sellimgs_sub)
-        # else:
-        #     sellimgs_sub = None
-        #     print('フォーム:サブ画像が未入力')
-            
         images = request.form['images']
         images = ast.literal_eval(images)
         print('images:',images)
@@ -513,14 +470,6 @@ def Sell():
             WHERE SellID = {0};
             '''.format(sellid)
             cursor.execute(Draft_Update)
-
-        # サブファイルのINSERT(sellimgs_subの数分同じSellIDでINSERT)
-        # if sellimgs_sub:
-        #     for subimg in sellimgs_sub:
-        #        subimg_sql = '''
-        #        INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
-        #        '''.format(subimg, sellid)
-        #        cursor.execute(subimg_sql)
     
         if images:
             for img in images:
@@ -528,13 +477,7 @@ def Sell():
                INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, 0);
                '''.format(img, sellid)
                cursor.execute(sellimg_insert)
-        
-        # サムネイルファイルのINSERT
-        # mainimg_sql = '''
-        # INSERT INTO 
-        # SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
-        # '''.format(sellimg_main, sellid)
-        # cursor.execute(mainimg_sql)
+
         thumbnail_update = '''
         UPDATE SellIMG 
         SET ThumbnailFlg = 1 
@@ -574,7 +517,7 @@ def Buy():
 
         style = '''
             <style>
-                *:not(input,#searchInput){{
+                *:not(input,#searchInput,footer p){{
                     color: {4} !important;
                 }}
                 html {{
@@ -788,7 +731,7 @@ def BuyCompPage(BuyID):
 
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -828,9 +771,10 @@ def BuyCompPage(BuyID):
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("buy_comp.html", MailAddress=MailAddress, 
-                           style=style, layout_value=layout_value,
-                           BuyID=BuyID, icon=icon, UserName=UserName)
+    return render_template(
+        "buy_comp.html", MailAddress=MailAddress, 
+        style=style, layout_value=layout_value,
+        BuyID=BuyID, icon=icon, UserName=UserName)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])
@@ -901,7 +845,7 @@ def IndexPage():
     if layout_value != []:
         style = '''
             <style>
-                *:not(#searchInput){{
+                *:not(#searchInput,footer p,#title){{
                     color: {4} !important;
                 }}
                 html {{
@@ -1025,7 +969,7 @@ def ProductPage(sellid):
 
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1498,7 +1442,7 @@ def MyPage():
     
     style = '''
         <style>
-            *:not(label,button,input){{
+            *:not(label,button,input,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1644,7 +1588,7 @@ def FavoritePage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1726,7 +1670,7 @@ def ViewlogPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1762,8 +1706,9 @@ def ViewlogPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("viewlog.html", UserName=UserName, icon=icon,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "viewlog.html", UserName=UserName, icon=icon,
+        style=style, layout_value=layout_value)
 
 # /sell_list
 @app.route('/sell_list')
@@ -1781,7 +1726,7 @@ def SellListPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1850,7 +1795,7 @@ def BuyListPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1907,7 +1852,7 @@ def SavesearchPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -1943,8 +1888,9 @@ def SavesearchPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("saved_search.html", UserName=UserName, icon=icon,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "saved_search.html", UserName=UserName, icon=icon,
+        style=style, layout_value=layout_value)
     
 # /draft_list
 @app.route('/draft_list')
@@ -1962,7 +1908,7 @@ def DraftPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -2031,7 +1977,7 @@ def PersonalPage():
     
     style = '''
         <style>
-            *:not(#searchInput){{
+            *:not(#searchInput,footer p){{
                 color: {4} !important;
             }}
             html {{
@@ -2585,7 +2531,7 @@ def LayoutPage():
         # スタイルタグ
         style = '''
             <style>
-                *:not(#searchInput) {{
+                *:not(#searchInput,footer p) {{
                     color: {4} !important;
                 }}
                 html {{

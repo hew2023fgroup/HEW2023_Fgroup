@@ -235,7 +235,6 @@ div#contents{
   font-size: 1rem;
   display: block;
   border-radius: 5px;
-  border: 1px solid #000;
   cursor: pointer;
 }
 .which ul li button:hover{
@@ -245,7 +244,7 @@ div#contents{
 .which_btn01{}
 .which_btn01 button{
   border: 1px solid #000;
-  /* border: none; */
+  border: 1px solid #000;
   background-color: white !important;
   color: #000;
 }
@@ -253,7 +252,7 @@ div#contents{
 .which_btn03 button{
   background-color: red  !important;
   color: #FFF !important;
-  border: none;
+  border: None;
   border-radius: 5px;
   overflow: hidden;
 }
