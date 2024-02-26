@@ -365,7 +365,11 @@
       
       <div class="intro">
         <p class="intro_name">{{ name }}</p>
-        <span>¥ {{ price }}</span>
+        <!-- <span>¥ {{ price }}</span> -->
+
+        <div class="product-price-box">
+          <span class="product-mark">¥</span><span class="product-detail-price">{{ price }}</span>
+        </div>
         <div class="intro_detail_box">
           <p class="intro_detail">※こちらの価格には消費税が含まれています。</p>
         </div>
@@ -553,9 +557,9 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
-  
-  <!-- gift 数字カウント -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 値段3桁ごとにカンマ -->
+  <script src="{{ url_for('static', filename='js/count.js') }}"></script>
   
   <!-- スライドショー -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
