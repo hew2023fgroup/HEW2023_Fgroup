@@ -355,14 +355,19 @@ top: 0;
   overflow: hidden;
   border: 1px solid #f0f4f4;
   border-radius: 3px;
-  width: 750px;
+  /* width: 750px; */
+  width: 795px;
   margin: 100px auto 0;
+}
+.search-form-4 label{
+  display: flex;
 }
 
 .search-form-4 input {
   width: 750px;
   height: 45px;
-  padding: 30px 35px;
+  /* padding: 30px 35px; */
+  padding: 30px 35px 30px 5px;
   border: none;
   box-sizing: border-box;
   font-size: 1em;
@@ -378,6 +383,7 @@ top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 30px 0;
   width: 45px;
   height: 45px;
   border: none;
