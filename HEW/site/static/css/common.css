@@ -232,7 +232,7 @@ html.open_cate body span button{
 }
 .cate-box{
   position: fixed;
-  top: -150%;
+  top: -120%;
   left: 0;
   width: 100%;
   height: 100vh;
@@ -259,7 +259,7 @@ top: 0;
 .open_cate{}
 .cate-wrap{
   width: 900px;
-  margin: 100px auto 0;
+  margin: 130px auto 0;
 }
 .cate-title{
   width: 300px;
@@ -287,7 +287,7 @@ top: 0;
 }
 .search-box{
   position: fixed;
-  top: -150%;
+  top: -120%;
   left: 0;
   width: 100%;
   height: 100vh;
