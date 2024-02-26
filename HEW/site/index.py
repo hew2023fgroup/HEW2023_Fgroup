@@ -873,10 +873,13 @@ def IndexPage():
                 .slideshow{{
                     display: {7} !important;
                 }}
-                .product img{{
+                #sellimg{{
                     display: {8} !important;
                 }}
                 .price-box{{
+                    display: {9} !important;
+                }}
+                .list-price-box{{
                     display: {9} !important;
                 }}
             </style>
