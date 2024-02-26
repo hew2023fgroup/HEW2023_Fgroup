@@ -169,6 +169,9 @@ div#contents{
   /* background-color: pink; */
 }
 .contents-detail p{}
+.contents-detail input{
+  cursor: pointer;
+}
 
 /*----------色変えのINPUT----------*/
 .textbox-001{
@@ -194,7 +197,6 @@ div#contents{
   margin: 0 0 15px 0;
   display: flex;
   justify-content: space-between;
-
   /* background-color: #f5f5f5; */
 }
 .radio-box{
@@ -205,6 +207,12 @@ div#contents{
 .radio-detail{
   display: flex;
   align-items: center;
+}
+.radio-detail input{
+  cursor: pointer;
+}
+.radio-detail label{
+  cursor: pointer;
 }
 .radio-left{
   margin-right: 15px;
