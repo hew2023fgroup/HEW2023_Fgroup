@@ -1634,7 +1634,7 @@ def FavoritePage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # セッション取得 
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
