@@ -36,8 +36,8 @@
             $('#bookmark').on('click', function(event){
               const bookmark = document.getElementById("bookmark");
               const bookmarkImg = document.getElementById("bookmarkImg");
-              if (bookmarkImg.src.endsWith("on.png")) {
-                bookmarkImg.src = "../static/images/off.png";
+              if (bookmarkImg.src.endsWith("on.svg")) {
+                bookmarkImg.src = "../static/images/off.svg";
 
                 // フォーム内のデータを取得
                 var formData = {};
@@ -59,8 +59,8 @@
                         console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
                     }
                 });
-            } else if (bookmarkImg.src.endsWith("off.png")) {
-                bookmarkImg.src = "../static/images/on.png";
+            } else if (bookmarkImg.src.endsWith("off.svg")) {
+                bookmarkImg.src = "../static/images/on.svg";
 
                 // フォーム内のデータを取得
                 var formData = {};
@@ -389,7 +389,7 @@
           <form action="/buy" method="post" class="shopBtn">
             <input type="hidden" name="SellID" value="{{ sellid }}">
             <div class="kari">
-              <button type="submit" >購入手続きへ</button>
+              <button type="submit" id="submit">購入手続きへ</button>
               <div class="plus-box">
                 <span class="dli-plus"></span>
               </div>
@@ -402,9 +402,9 @@
               {% endfor %}
               <figure id="bookmark">
                 {% if nice == True %}
-                <img id="bookmarkImg" src="../static/images/on.png" alt="ブックマーク">
+                <img id="bookmarkImg" src="../static/images/on.svg" alt="ブックマーク">
                 {% elif nice == False %}
-                <img id="bookmarkImg" src="../static/images/off.png" alt="ブックマーク">
+                <img id="bookmarkImg" src="../static/images/off.svg" alt="ブックマーク">
                 {% endif %}
               </figure>
               <!-- <figure>
@@ -489,9 +489,9 @@
               <div class="rate-form">
                 {% for i in range(5) %}
                 {% if i < 5 - avg_evalate %}
-                <label style="color:#ccc;">★</label>
+                <label style="color:#ccc !important;">★</label>
                 {% else %}
-                <label style="color:#ffcc00;">★</label>
+                <label style="color:#ffcc00 !important;">★</label>
                 {% endif %}
                 {% endfor %}
               </div>
