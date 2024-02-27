@@ -731,7 +731,7 @@ def BuyCompPage(BuyID):
 
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(#searchInput,footer p,.main-btn){{
                 color: {4} !important;
             }}
             html {{
