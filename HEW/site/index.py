@@ -1980,7 +1980,7 @@ def PersonalPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(#searchInput,footer p,input,button){{
                 color: {4} !important;
             }}
             html {{
