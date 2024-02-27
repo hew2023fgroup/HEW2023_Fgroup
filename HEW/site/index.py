@@ -1117,17 +1117,11 @@ def Search():
         if layout_value != []:
             style = '''
                 <style>
-                    *:not(#searchInput){{
+                    *:not((footer p,#title,nav *,.search-box *,.cate-box *){{
                         color: {4} !important;
                     }}
                     html {{
                         background-color: {2} !important;
-                    }}
-                    .left-nav p {{
-                        color: #000 !important;
-                    }}
-                    .right-nav ul li a, .right-nav ul li p{{
-                        color: #000 !important;
                     }}
                     #btn{{
                         background-color: {0} !important;
@@ -1248,17 +1242,11 @@ def CateSearch():
         if layout_value != []:
             style = '''
                 <style>
-                    *:not(#searchInput){{
+                    *:not((footer p,#title,nav *,.search-box *,.cate-box *){{
                         color: {4} !important;
                     }}
                     html {{
                         background-color: {2} !important;
-                    }}
-                    .left-nav p {{
-                        color: #000 !important;
-                    }}
-                    .right-nav ul li a, .right-nav ul li p{{
-                        color: #000 !important;
                     }}
                     #btn{{
                         background-color: {0} !important;
