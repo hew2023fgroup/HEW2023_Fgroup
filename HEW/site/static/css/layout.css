@@ -169,6 +169,9 @@ div#contents{
   /* background-color: pink; */
 }
 .contents-detail p{}
+.contents-detail input{
+  cursor: pointer;
+}
 
 /*----------色変えのINPUT----------*/
 .textbox-001{
@@ -194,7 +197,6 @@ div#contents{
   margin: 0 0 15px 0;
   display: flex;
   justify-content: space-between;
-
   /* background-color: #f5f5f5; */
 }
 .radio-box{
@@ -205,6 +207,12 @@ div#contents{
 .radio-detail{
   display: flex;
   align-items: center;
+}
+.radio-detail input{
+  cursor: pointer;
+}
+.radio-detail label{
+  cursor: pointer;
 }
 .radio-left{
   margin-right: 15px;
@@ -235,7 +243,6 @@ div#contents{
   font-size: 1rem;
   display: block;
   border-radius: 5px;
-  border: 1px solid #000;
   cursor: pointer;
 }
 .which ul li button:hover{
@@ -245,7 +252,7 @@ div#contents{
 .which_btn01{}
 .which_btn01 button{
   border: 1px solid #000;
-  /* border: none; */
+  border: 1px solid #000;
   background-color: white !important;
   color: #000;
 }
@@ -253,7 +260,7 @@ div#contents{
 .which_btn03 button{
   background-color: red  !important;
   color: #FFF !important;
-  border: none;
+  border: None;
   border-radius: 5px;
   overflow: hidden;
 }

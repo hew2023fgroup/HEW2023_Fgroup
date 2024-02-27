@@ -75,8 +75,9 @@
         </div>
         <form action="/search"  method="post" class="search-form-4">
           <label>
+            <button type="submit"></button>
             <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
-            <button type="submit">検索</button>
+            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
       </div>
@@ -290,7 +291,7 @@
       <nav id="third_nav">
         <ul>
           <li class="nav_title01">商品管理</li>
-          <li><a href="{{ url_for('FavoritePage') }}">お気に入り一覧</a></li>
+          <li><a href="{{ url_for('FavoritePage') }}">ブックマーク一覧</a></li>
           <li><a href="{{ url_for('ViewlogPage') }}">閲覧履歴</a></li>
           <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
           <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
@@ -305,7 +306,7 @@
       </nav>
 
       <main id="m-favorite">
-        <h1>いいね一覧</h1>
+        <h1>ブックマーク一覧</h1>
 
         <div class="favorite-product">
           {% if sellinfo %}

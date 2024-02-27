@@ -206,11 +206,15 @@ div#kesuna{
   margin: 13px 0 13px 0;
   font-weight: lighter;
   font-size: 0.9rem;
-  cursor: pointer;
 }
-.s-category span:hover{
-  text-decoration: underline;
-  text-underline-offset: 1px;
+.s-category span button{
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.s-category span button:hover{
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 
@@ -222,7 +226,8 @@ html.open_cate body,
 html.open_cate body p,
 html.open_cate body h1,
 html.open_cate body .tab-list-item,
-html.open_cate body span{
+html.open_cate body span,
+html.open_cate body span button{
   color: white !important;
 }
 .cate-box{
@@ -350,14 +355,19 @@ top: 0;
   overflow: hidden;
   border: 1px solid #f0f4f4;
   border-radius: 3px;
-  width: 750px;
+  /* width: 750px; */
+  width: 795px;
   margin: 100px auto 0;
+}
+.search-form-4 label{
+  display: flex;
 }
 
 .search-form-4 input {
   width: 750px;
   height: 45px;
-  padding: 30px 35px;
+  /* padding: 30px 35px; */
+  padding: 30px 35px 30px 5px;
   border: none;
   box-sizing: border-box;
   font-size: 1em;
@@ -373,6 +383,7 @@ top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 30px 0;
   width: 45px;
   height: 45px;
   border: none;
@@ -586,7 +597,7 @@ div#listView{
 .product-tax{
   margin: 0 0 0 5px;
   font-size: 1rem;
-} */
+}
 
 
 

@@ -28,6 +28,7 @@
   </head>
 
   <body>
+    <div id="footer-container">
     
     <nav id="main-nav">
       <div class="main-nav-box">
@@ -74,8 +75,9 @@
         </div>
         <form action="/search"  method="post" class="search-form-4">
           <label>
+            <button type="submit"></button>
             <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
-            <button type="submit">検索</button>
+            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
       </div>
@@ -283,64 +285,32 @@
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
 
-    <div id="box">
+    <main id="m-search">
+      <h1>「{{ search_word }}」の検索結果</h1>
 
-      <nav id="search_nav">
-        <ul>
-          <li class="search_nav_title">絞り込み</li>
-          <li><a href="">カテゴリー</a></li>
-          <li><a href="">価格</a></li>
-          <li><a href="">商品の状態</a></li>
-          <li><a href="">送料の負担</a></li>
-          <li><a href="">販売状況</a></li>
-        </ul>
-      </nav>
+      <div class="wrap_product_search">
 
-      <main id="m-search">
-        <h1>「{{ search_word }}」の検索結果</h1>
-
-        <div class="main-display">
-          <p><input type="checkbox" name="riyu" value="2">販売中のみ表示</p>
-
-          <label class="selectbox">
-            <select>
-              <option>おすすめ順</option>
-              <option>新しい順</option>
-              <option>価格の安い順</option>
-              <option>価格の高い順</option>
-              <option>いいね！順</option>
-            </select>
-          </label>
-
-          <div class="keep">
-            <a href="#">この条件を保存する</a>
-          </div>
+        {% for row in sells %}
+        <div class="product">
+          <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+            <figure>
+              <img src="{{ row[3] }}" alt="sellimg" width="215px">
+            </figure>
+              <p>{{ row[1] }}</p>
+              <!--値段表示変更-->
+              <!--<span>{{ row[2] }}</span>-->
+              
+              <div class="price-box">
+                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+              </div>
+          </a>
         </div>
+        {% endfor %}
 
-        <div class="wrap_product_search">
+      </div>
 
-          {% for row in sells %}
-          <div class="product">
-            <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-              <figure>
-                <img src="{{ row[3] }}" alt="sellimg" width="215px">
-              </figure>
-                <p>{{ row[1] }}</p>
-                <!--値段表示変更-->
-                <!--<span>{{ row[2] }}</span>-->
-                
-                <div class="price-box">
-                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-                </div>
-            </a>
-          </div>
-          {% endfor %}
+    </main>
 
-        </div>
-
-      </main>
-
-    </div>
 
 
     <footer>
@@ -351,6 +321,8 @@
     <!-- レイアウト編集 -->
     {{ style | safe }}
 
+
+    </div>
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
@@ -360,5 +332,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
+  <!-- 値段3桁ごとにカンマ -->
+  <script src="{{ url_for('static', filename='js/count.js') }}"></script>
 
 </html>

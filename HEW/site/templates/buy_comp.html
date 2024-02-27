@@ -38,10 +38,10 @@
             <a class="" href="{{ url_for('MyPage') }}">
               {% if icon != None %}
               <!-- css -->
-              <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+              <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像">
               {% elif icon == None %}
               <!-- css -->
-              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
               {% endif %}
             </a>
           </figure>
@@ -76,8 +76,9 @@
         </div>
         <form action="/search"  method="post" class="search-form-4">
           <label>
+            <button type="submit"></button>
             <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
-            <button type="submit">検索</button>
+            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
       </div>
@@ -308,8 +309,8 @@
 
       <div class="guidance-nav">
         <ul>
-          <li><a href="{{ url_for('IndexPage') }}">トップページへ</a></li>
-          <li><a href="{{ url_for('MyPage') }}">購入した商品へ</a></li>
+          <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li>
+          <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li>
         </ul>
       </div>
     </div>

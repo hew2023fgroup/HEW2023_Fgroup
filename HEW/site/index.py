@@ -209,17 +209,11 @@ def SellPage():
     
     style = '''
         <style>
-            *:not(input){{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -232,6 +226,7 @@ def SellPage():
                 color: {6} !important;
             }}
             .btn05{{
+                color: {1} !important;
                 background-color: {3} !important
             }}
         </style>
@@ -269,17 +264,11 @@ def SellConfirm():
 
         style = '''
             <style>
-                *:not(input){{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -292,6 +281,7 @@ def SellConfirm():
                     color: {6} !important;
                 }}
                 .btn05{{
+                    color: {1} !important;
                     background-color: {3} !important
                 }}
             </style>
@@ -306,22 +296,11 @@ def SellConfirm():
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
         
-        # ========== フォーム ==========
-        # メイン画像
-        # sellimg_main = request.files.get('sellimg-main')
-        
-        # サブ画像(任意
-        # sellimgs_sub = request.files.getlist('sellimg-sub')
-        # if len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == '':
-        #     print('フォーム:サブ画像は空です')
-            
-            
-        # 新画像
+        # 画像
         input_imgs = request.files.getlist('uploadInput')
         select = request.form['select']
         print('new:',input_imgs)
         print('select',select)
-            
             
         # 商品名
         selltit = request.form['selltit']
@@ -379,25 +358,7 @@ def SellConfirm():
         
 
         # ========== 画像処理 ==========
-        # 保存先パス
         upload_path = "static/images/sell/"
-
-        # サムネイルファイル保存
-        # mainimg_path =  os.path.join(upload_path, sellimg_main.filename)
-        # sellimg_main.save(mainimg_path)
-
-        # サブファイル保存(送信した画像数分imgsへ挿入)
-        # if not (len(sellimgs_sub) == 1 and sellimgs_sub[0].filename == ''):
-        #     imgs = []
-        #     for sellimg in sellimgs_sub:
-        #         img_path = os.path.join(upload_path, sellimg.filename)
-        #         sellimg.save(img_path)
-        #         imgs.append(img_path)
-        # else:
-        #     imgs = None
-        #     print('機能:サブ画像が未入力の為ファイルを保存しません')
-        
-        #new
         if not (len(input_imgs) == 1 and input_imgs[0].filename == ''):
             imgs = []
             for sellimg in input_imgs:
@@ -409,7 +370,6 @@ def SellConfirm():
         # ========== 画像処理 ==========
             
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
-        # form_data = [mainimg_path,imgs,selltit,overview,scategoryid,postage,status,price]
         form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
         # 住所
@@ -427,8 +387,6 @@ def SellConfirm():
         conn.commit()
         cursor.close()
         conn.close()
-        # return render_template('sell_confirm.html', icon=icon, UserName=UserName,
-        #         mainimg_path=mainimg_path, imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags)
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
                 imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags,
                 style=style, layout_value=layout_value)
@@ -447,17 +405,6 @@ def Sell():
         
         # ========== フォーム ==========
         # メイン画像
-        # sellimg_main = request.form['sellimg-main']
-        # print("メイン：",sellimg_main)
-        
-        # サブ画像(任意
-        # if request.form.getlist('image_paths[]'):
-        #     sellimgs_sub = request.form.getlist('image_paths[]')
-        #     print("サブ：",sellimgs_sub)
-        # else:
-        #     sellimgs_sub = None
-        #     print('フォーム:サブ画像が未入力')
-            
         images = request.form['images']
         images = ast.literal_eval(images)
         print('images:',images)
@@ -513,14 +460,6 @@ def Sell():
             WHERE SellID = {0};
             '''.format(sellid)
             cursor.execute(Draft_Update)
-
-        # サブファイルのINSERT(sellimgs_subの数分同じSellIDでINSERT)
-        # if sellimgs_sub:
-        #     for subimg in sellimgs_sub:
-        #        subimg_sql = '''
-        #        INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, b'0');
-        #        '''.format(subimg, sellid)
-        #        cursor.execute(subimg_sql)
     
         if images:
             for img in images:
@@ -528,13 +467,7 @@ def Sell():
                INSERT INTO SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}', {1}, 0);
                '''.format(img, sellid)
                cursor.execute(sellimg_insert)
-        
-        # サムネイルファイルのINSERT
-        # mainimg_sql = '''
-        # INSERT INTO 
-        # SellIMG (SellIMG, SellID, ThumbnailFlg) VALUES ('{0}',{1},b'1');
-        # '''.format(sellimg_main, sellid)
-        # cursor.execute(mainimg_sql)
+
         thumbnail_update = '''
         UPDATE SellIMG 
         SET ThumbnailFlg = 1 
@@ -574,17 +507,11 @@ def Buy():
 
         style = '''
             <style>
-                *:not(input){{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -597,6 +524,7 @@ def Buy():
                     color: {6} !important;
                 }}
                 .which_btn02 {{
+                    color: {1} !important;
                     background-color: {3} !important;
                 }}
             </style>
@@ -788,17 +716,11 @@ def BuyCompPage(BuyID):
 
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,.main-btn){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -809,9 +731,6 @@ def BuyCompPage(BuyID):
             }}
             footer p{{
                 color: {6} !important;
-            }}
-            .which_btn02 {{
-                background-color: {3} !important;
             }}
         </style>
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
@@ -828,9 +747,10 @@ def BuyCompPage(BuyID):
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("buy_comp.html", MailAddress=MailAddress, 
-                           style=style, layout_value=layout_value,
-                           BuyID=BuyID, icon=icon, UserName=UserName)
+    return render_template(
+        "buy_comp.html", MailAddress=MailAddress, 
+        style=style, layout_value=layout_value,
+        BuyID=BuyID, icon=icon, UserName=UserName)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])
@@ -901,17 +821,11 @@ def IndexPage():
     if layout_value != []:
         style = '''
             <style>
-                *{{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -1028,17 +942,11 @@ def ProductPage(sellid):
 
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,#submit,.dli-plus,.rate-form label){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1050,11 +958,12 @@ def ProductPage(sellid):
             footer p{{
                 color: {6} !important;
             }}
-            .btn05{{
+            .shopping form button{{
+                color: {1} !important;
                 background-color: {3} !important
             }}
-            .shopping form button{{
-                background-color: {3} !important
+            .dli-plus{{
+                color: {1} !important;
             }}
         </style>
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
@@ -1208,17 +1117,11 @@ def Search():
         if layout_value != []:
             style = '''
                 <style>
-                    *{{
+                    *:not((footer p,#title,nav *,.search-box *,.cate-box *){{
                         color: {4} !important;
                     }}
                     html {{
                         background-color: {2} !important;
-                    }}
-                    .left-nav p {{
-                        color: #000 !important;
-                    }}
-                    .right-nav ul li a, .right-nav ul li p{{
-                        color: #000 !important;
                     }}
                     #btn{{
                         background-color: {0} !important;
@@ -1339,17 +1242,11 @@ def CateSearch():
         if layout_value != []:
             style = '''
                 <style>
-                    *{{
+                    *:not((footer p,#title,nav *,.search-box *,.cate-box *){{
                         color: {4} !important;
                     }}
                     html {{
                         background-color: {2} !important;
-                    }}
-                    .left-nav p {{
-                        color: #000 !important;
-                    }}
-                    .right-nav ul li a, .right-nav ul li p{{
-                        color: #000 !important;
                     }}
                     #btn{{
                         background-color: {0} !important;
@@ -1501,17 +1398,11 @@ def MyPage():
     
     style = '''
         <style>
-            *:not(label,button,input){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,label,button,input){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1647,17 +1538,11 @@ def FavoritePage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1729,17 +1614,11 @@ def ViewlogPage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1765,8 +1644,9 @@ def ViewlogPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("viewlog.html", UserName=UserName, icon=icon,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "viewlog.html", UserName=UserName, icon=icon,
+        style=style, layout_value=layout_value)
 
 # /sell_list
 @app.route('/sell_list')
@@ -1784,17 +1664,11 @@ def SellListPage():
     
     style = '''
         <style>
-            *{{
+            *:notfooter p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1853,17 +1727,11 @@ def BuyListPage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1910,17 +1778,11 @@ def SavesearchPage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1946,8 +1808,9 @@ def SavesearchPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("saved_search.html", UserName=UserName, icon=icon,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "saved_search.html", UserName=UserName, icon=icon,
+        style=style, layout_value=layout_value)
     
 # /draft_list
 @app.route('/draft_list')
@@ -1965,17 +1828,11 @@ def DraftPage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -2034,17 +1891,11 @@ def PersonalPage():
     
     style = '''
         <style>
-            *{{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,input,button){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -2588,23 +2439,18 @@ def LayoutPage():
         # スタイルタグ
         style = '''
             <style>
-                * {{
+                *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,#reset-btn,#submit-btn,#btn) {{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
                 }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
-                }}
                 #btn{{
-                    background-color: {0} !important;
                     color: {1} !important;
+                    background-color: {0} !important;
                 }}
-                .which_btn02{{
+                #submit-btn{{
+                    color: {1} !important;
                     background-color: {3} !important;
                 }}
                 footer {{
