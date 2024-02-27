@@ -7,18 +7,14 @@ document.getElementById('searchInput').addEventListener('click', function() {
     }
 });
 
-
-// document.getElementById('searchInput').addEventListener('click', function() {
-//     var searchHistory = document.querySelector('.search-history');
-//     if (searchHistory.style.display === 'none') {
-//       searchHistory.style.display = 'block';
-//       setTimeout(function() {
-//         searchHistory.style.opacity = '1';
-//       }, 0);
-//     } else {
-//       searchHistory.style.opacity = '0';
-//       setTimeout(function() {
-//         searchHistory.style.display = 'none';
-//       }, 300);
-//     }
+// document.getElementById('closebtn').addEventListener('click', function() {
+//   var searchHistory = document.querySelector('.search-history');
+//   searchHistory.style.display = 'none';
 // });
+
+
+// document.getElementById("searchInput").addEventListener("keydown", function(event) {
+//   var searchHistory = document.querySelector('.search-history');
+//   searchHistory.style.display = 'none';
+// });
+
