@@ -209,17 +209,11 @@ def SellPage():
     
     style = '''
         <style>
-            *:not(input,#searchInput,footer p){{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -232,6 +226,7 @@ def SellPage():
                 color: {6} !important;
             }}
             .btn05{{
+                color: {1} !important;
                 background-color: {3} !important
             }}
         </style>
@@ -269,17 +264,11 @@ def SellConfirm():
 
         style = '''
             <style>
-                *:not(input,#searchInput,footer p){{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -292,6 +281,7 @@ def SellConfirm():
                     color: {6} !important;
                 }}
                 .btn05{{
+                    color: {1} !important;
                     background-color: {3} !important
                 }}
             </style>
@@ -517,17 +507,11 @@ def Buy():
 
         style = '''
             <style>
-                *:not(input,#searchInput,footer p){{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *,input){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -540,6 +524,7 @@ def Buy():
                     color: {6} !important;
                 }}
                 .which_btn02 {{
+                    color: {1} !important;
                     background-color: {3} !important;
                 }}
             </style>
@@ -731,17 +716,11 @@ def BuyCompPage(BuyID):
 
     style = '''
         <style>
-            *:not(#searchInput,footer p,.main-btn){{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,.main-btn){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -752,9 +731,6 @@ def BuyCompPage(BuyID):
             }}
             footer p{{
                 color: {6} !important;
-            }}
-            .which_btn02 {{
-                background-color: {3} !important;
             }}
         </style>
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
@@ -845,17 +821,11 @@ def IndexPage():
     if layout_value != []:
         style = '''
             <style>
-                *:not(#searchInput,footer p,#title){{
+                *:not(footer p,#title,nav *,.search-box *,.cate-box *){{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
-                }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -972,17 +942,11 @@ def ProductPage(sellid):
 
     style = '''
         <style>
-            *:not(#searchInput,footer p,#submit,.dli-plus,.rate-form label){{
+            *:not(footer p,#title,nav *,.search-box *,.cate-box *,#submit,.dli-plus,.rate-form label){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -994,11 +958,12 @@ def ProductPage(sellid):
             footer p{{
                 color: {6} !important;
             }}
-            .btn05{{
+            .shopping form button{{
+                color: {1} !important;
                 background-color: {3} !important
             }}
-            .shopping form button{{
-                background-color: {3} !important
+            .dli-plus{{
+                color: {1} !important;
             }}
         </style>
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
@@ -1445,17 +1410,11 @@ def MyPage():
     
     style = '''
         <style>
-            *:not(label,button,input,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,label,button,input){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1591,17 +1550,11 @@ def FavoritePage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1673,17 +1626,11 @@ def ViewlogPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1729,17 +1676,11 @@ def SellListPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:notfooter p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1798,17 +1739,11 @@ def BuyListPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1855,17 +1790,11 @@ def SavesearchPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1911,17 +1840,11 @@ def DraftPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -1980,17 +1903,11 @@ def PersonalPage():
     
     style = '''
         <style>
-            *:not(#searchInput,footer p,input,button){{
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,input,button){{
                 color: {4} !important;
             }}
             html {{
                 background-color: {2} !important;
-            }}
-            .left-nav p {{
-                color: #000 !important;
-            }}
-            .right-nav ul li a, .right-nav ul li p{{
-                color: #000 !important;
             }}
             #btn{{
                 background-color: {0} !important;
@@ -2534,23 +2451,18 @@ def LayoutPage():
         # スタイルタグ
         style = '''
             <style>
-                *:not(#searchInput,footer p) {{
+                *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *,#reset-btn,#submit-btn,#btn) {{
                     color: {4} !important;
                 }}
                 html {{
                     background-color: {2} !important;
                 }}
-                .left-nav p {{
-                    color: #000 !important;
-                }}
-                .right-nav ul li a, .right-nav ul li p{{
-                    color: #000 !important;
-                }}
                 #btn{{
-                    background-color: {0} !important;
                     color: {1} !important;
+                    background-color: {0} !important;
                 }}
-                .which_btn02{{
+                #submit-btn{{
+                    color: {1} !important;
                     background-color: {3} !important;
                 }}
                 footer {{
