@@ -389,7 +389,7 @@
           <form action="/buy" method="post" class="shopBtn">
             <input type="hidden" name="SellID" value="{{ sellid }}">
             <div class="kari">
-              <button type="submit" >購入手続きへ</button>
+              <button type="submit" id="submit">購入手続きへ</button>
               <div class="plus-box">
                 <span class="dli-plus"></span>
               </div>
@@ -489,9 +489,9 @@
               <div class="rate-form">
                 {% for i in range(5) %}
                 {% if i < 5 - avg_evalate %}
-                <label style="color:#ccc;">★</label>
+                <label style="color:#ccc !important;">★</label>
                 {% else %}
-                <label style="color:#ffcc00;">★</label>
+                <label style="color:#ffcc00 !important;">★</label>
                 {% endif %}
                 {% endfor %}
               </div>

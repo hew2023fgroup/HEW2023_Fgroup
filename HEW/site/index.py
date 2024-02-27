@@ -972,7 +972,7 @@ def ProductPage(sellid):
 
     style = '''
         <style>
-            *:not(#searchInput,footer p){{
+            *:not(#searchInput,footer p,#submit,.dli-plus,.rate-form label){{
                 color: {4} !important;
             }}
             html {{
