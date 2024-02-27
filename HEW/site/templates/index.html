@@ -63,7 +63,7 @@
         </div>
       </div>
     </nav>
-
+    
 
     <div class="search-box">
       <img id="closebtn" src="../static/images/x01.svg">
@@ -83,9 +83,10 @@
       </div>
 
       <form action="/search" method="post">
-        <ul>
+        <ul class="search-history" style="display: none;">
           {% for word in words %}
           <li>
+            
             <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
           </li>
@@ -496,6 +497,9 @@
   
   <!-- 値段3桁ごとにカンマ -->
   <script src="{{ url_for('static', filename='js/count.js') }}"></script>
+
+
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- /main slide/ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
