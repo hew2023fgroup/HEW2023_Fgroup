@@ -89,10 +89,13 @@ nav#main-nav::after{
 .right-nav ul li p{
   font-size: 1.2rem;
   cursor: pointer;
+  color: #000 !important;
+}
+p#hoverButton{
+  color: #000 !important;
 }
 .right-nav ul li a{
   text-decoration: none;
-/*  color: #000;*/
   font-size: 1.2rem;
 }
 .right-nav ul li a img{
@@ -402,40 +405,50 @@ top: 0;
 .search-history{
   width: 795px;
   margin: 0 auto;
-  padding: 7px 35px 7px 45px;
+  padding: 13px 30px 7px 30px;
+  border-radius: 0 0 3px 3px;
+  /* margin-top: 6px; */
 
   /* border-bottom: 1px solid #f0f4f4; */
   /* border-left: 1px solid #f0f4f4; */
   /* border-right: 1px solid #f0f4f4; */
   background-color: #303030;
-  /* background-color: #fff; */
-
-  /* background-color: pink; */
+}
+.search-his-title{
+  margin: 15px 0 0 0;
+  color: #f0f4f4;
 }
 .search-history li{
   /* width: 100px; */
   list-style: none;
-  padding: 3px 0 3px 0;
+  /* padding: 3px 0 3px 0; */
+  margin-bottom: 6px;
   /* display: block; */
   /* cursor: pointer; */
+  /* position: relative; */
 
   /* background-color: pink; */
 }
 .search-history li button{
-  width: 715px;
+  width: 735px;
   border: none;
   background: transparent;
   cursor: pointer;
   color: #f0f4f4 !important;
-  /* color: #000 !important; */
   font-size: 1rem;
   text-align: left;
   padding: 5px 0;
 
+  /* background-color: #ddd; */
+
   position: relative;
-  /* background-color: pink; */
 }
-.search-history li button::after{
+.search-history li button:hover{
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+
+.search-history li:not(:last-child) button::after{
   content: "";
   display: block;
   width: 100%;
@@ -443,8 +456,7 @@ top: 0;
   position: absolute;
   bottom: -3px;
   left: 0px;
-  border-bottom: 1px solid #F0F4FF;
-  /* border-bottom: 1px solid #000; */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 
