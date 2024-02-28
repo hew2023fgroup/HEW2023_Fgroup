@@ -1187,34 +1187,26 @@ def Search():
         print('ワード:',search_word)
         
         Sellname_Select = '''
-        SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name, Tag.Name
+        SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name, IFNULL(Tag.Name, 'なし')
         FROM Sell
         JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
         JOIN Mcategory ON Scategory.McategoryID = Mcategory.McategoryID
-        JOIN Tag ON Tag.SellID = Sell.SellID
-        WHERE Sell.AccountID <> {0}; 
-        '''.format(AccountID)
-        
+        LEFT JOIN Tag ON Tag.SellID = Sell.SellID
+        WHERE Sell.AccountID <> {0}
+        AND(Sell.Name LIKE "%{1}%" 
+        OR Tag.Name LIKE "%{1}%" 
+        OR Scategory.Name LIKE "%{1}%"
+        OR Mcategory.Name LIKE "%{1}%");
+        '''.format(AccountID,search_word)
         cursor.execute(Sellname_Select)
-        sell_word = cursor.fetchall()
+        print('実行:',Sellname_Select)
+        sells = cursor.fetchall()
+        print('sellword:',sells)
         
-        sell_listInDict = []
-        for item in sell_word:
-            result_dict = {
-                "ID": item[0],
-                "Name": item[1],
-                "S": item[2],
-                "M": item[3],
-                "Tag": item[4]
-            }
-            sell_listInDict.append(result_dict)
-        
-        hit_items = [item['ID'] for item in sell_listInDict if search_word 
-                        in item['Name'] or search_word in item['S'] or search_word in item['M'] or search_word in item['Tag']]
-        print('ヒットID:',hit_items)
-
+        ids = [id[0] for id in sells]
+    
         sells = []
-        for id in hit_items:
+        for id in ids:
             SellInfo_Select = '''
             SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
             FROM Sell
@@ -1228,23 +1220,27 @@ def Search():
             print('実行:',SellInfo_Select)
             cursor.execute(SellInfo_Select)
             sellinfo = cursor.fetchone()
+            
             if sellinfo != None:
                 if sellinfo not in set(sells):
                     sells.append(sellinfo)
-                
-        if search_word:  # search_wordが空欄でない場合
+        
+        # ワードが空欄のとき
+        if search_word:
             Search_Insert = '''
             INSERT INTO Search(Word, AccountID)
             VALUES('{0}', {1})
             '''.format(search_word, AccountID)
             cursor.execute(Search_Insert)
+        else:
+            sells = []
         
         conn.commit()
         cursor.close()
         conn.close()
     
     return render_template('search.html',icon=icon,UserName=UserName,
-                           sells=sells,search_word=search_word,style=style)
+                           sells=sells, search_word=search_word,style=style)
 
 # /category_search
 @app.route('/category_search',methods=['POST'])
