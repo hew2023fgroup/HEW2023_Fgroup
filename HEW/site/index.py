@@ -989,6 +989,35 @@ def ProductPage(sellid):
     cursor.execute(info)
     products = cursor.fetchall()
     
+    View_Select = '''
+    SELECT SellID
+    FROM View
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(View_Select)
+    print('実行:',View_Select)
+    view = cursor.fetchall()
+    view = [item[0] for item in view]
+    view = list(map(int, view))
+    print('view:',view)
+    print('sellid:',sellid)
+    if int(sellid) in view:
+        View_Delete = '''
+        DELETE FROM View
+        WHERE SellID = {0}
+        AND AccountID = {1};
+        '''.format(sellid,AccountID)
+        cursor.execute(View_Delete)
+    
+    # 履歴
+    View_Insert = '''
+    INSERT INTO View(AccountID, SellID) 
+    VALUE({0}, {1});
+    '''.format(AccountID,sellid)
+    cursor.execute(View_Insert)
+    print('実行:',View_Insert)
+    conn.commit()
+    
     # test-------------------------
     sql = '''
     select * from sell where SellID = {0};
@@ -1641,12 +1670,27 @@ def ViewlogPage():
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    View_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    JOIN View On Sell.SellID = View.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01
+    AND View.AccountID = {0}
+    ORDER BY ViewID DESC;
+    '''.format(AccountID)
+    cursor.execute(View_Select)
+    sellinfo = cursor.fetchall()
+    
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "viewlog.html", UserName=UserName, icon=icon,
-        style=style, layout_value=layout_value)
+        style=style, layout_value=layout_value, sellinfo=sellinfo)
 
 # /sell_list
 @app.route('/sell_list')
