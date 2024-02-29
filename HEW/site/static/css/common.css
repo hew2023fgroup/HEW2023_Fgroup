@@ -632,6 +632,7 @@ div#footer-wrap{
   height: 33px;
   cursor: pointer;
   border: 1px solid #E0ECFF;
+  background-color: #fff !important;
 }
 .list_img{
   margin-left: 2px;
@@ -639,6 +640,7 @@ div#footer-wrap{
   height: 33px;
   cursor: pointer;
   border: 1px solid #E0ECFF;
+  background-color: #fff !important;
 }
 div#gridView{
   margin: 20px 0 0 0;
