@@ -51,7 +51,7 @@ def Registration():
         
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
-        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#000', 6, {0}), ('#FFF', 7, {0}), 
+        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#333', 6, {0}), ('#FFF', 7, {0}), 
         ('static/images/slide/slide01.jpg', 8, {0}), ('static/images/slide/slide05.jpg', 9, {0}), 
         ('static/images/slide/slide08.jpg', 10, {0}), ('static/images/slide/slide10.jpg', 11, {0});
         '''.format(id)
