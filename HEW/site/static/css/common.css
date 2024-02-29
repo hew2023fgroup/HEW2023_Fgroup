@@ -491,7 +491,9 @@ img#search-delete-btn::after{
   /* border-bottom: 1px solid rgba(255, 255, 255, 0.5); */
   border-bottom: 1px solid #fff;
 }
-
+img#search-delete-btn:hover{
+  opacity: 0.5;
+}
 
 /* footer{
   margin-top: auto;
