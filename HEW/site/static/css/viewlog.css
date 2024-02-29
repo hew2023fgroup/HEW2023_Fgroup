@@ -4,7 +4,7 @@
 
 div#box{
   display: flex;
-  margin: 70pxs auto 100px auto;
+  margin: 70px auto 100px auto;
   width: 1200px;
 }
 
@@ -173,8 +173,9 @@ main#m-favorite h1{
 .price{}
 
 /*                    アクション                    */
-.action{
+/* .action{
   display: flex;
+  
 }
 .heart{}
 .comment{
@@ -188,4 +189,4 @@ main#m-favorite h1{
 }
 .num{
   font-size: 0.9rem;
-}
+} */

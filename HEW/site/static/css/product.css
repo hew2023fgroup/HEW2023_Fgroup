@@ -162,54 +162,45 @@ ul li{
 
 /*/                購入手続き                /*/
 .shopping{
-  /* width: 500px; */
   margin: 30px 0 0 0;
-  /* text-align: center; */
-  /* border: 1px solid #b6b5b5; */
-  /* border-radius: 0 10px 0 0; */
-  position: relative;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all  0.3s ease;
-  /* background-color: red; */
+  display: flex;
+  align-items: center;
 }
 .shopping form{}
 .shopping form input{}
+.shopping form .kari{
+  width: 440px;
+  position: relative;
+}
 .shopping form button{
-  width: 500px;
+  width: 100%;
   padding: 14px;
   cursor: pointer;
   border-radius: 0 10px 0 0;
   font-size: 0.9rem;
-  color: #fff;
+  color: #fff !important;
   background-color: red;
   border: none;
   outline: none;
 }
-/* .shopping a{
-  display: block;
-  display: flex;
-  justify-content: center;
-  padding: 17px;
-  text-decoration: none;
-  color: #fff;
-} */
-.shopping:hover{
-/*  background-color: #F2F2F2;*/
-opacity: 0.5;
+.shopBtn:hover{
+  opacity: 0.5;
 }
 
 .plus-box{
   position: absolute;
   top: 50%;
-  right: 0;
-  transform: translate(-90%,-50%)
+  right: 20px;
+  transform: translateY(-50%);
 }
 .dli-plus {
   display: inline-block;
   vertical-align: middle;
-  color: #fff;
+  color: #fff !important;
   line-height: 1;
   width: 1em;
   height: 0.1em;
@@ -230,6 +221,13 @@ opacity: 0.5;
 }
 .shopping a p{
   font-size: 0.9rem;
+}
+
+.shopping figure{
+  margin: 0 0 0 15px;
+}
+.shopping figure img{
+  cursor: pointer;
 }
 
 
@@ -344,8 +342,7 @@ div#product-info h3::after{
 .rate-form label{
   position: relative;
   padding: 0 1px;
-  color: #ccc;
-  /* cursor: pointer; */
+  color: #ccc !important;
   font-size: 25px;
 }
 .rate-form label:hover {

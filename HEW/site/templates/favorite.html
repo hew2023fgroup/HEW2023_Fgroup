@@ -33,10 +33,18 @@
     <nav id="main-nav">
       <div class="main-nav-box">
         <div class="left-nav">
-          <figure>
-            <img src="../static/images/cat.jpg">
+          <figure id="prof_icon">
+            <a class="" href="{{ url_for('MyPage') }}">
+              {% if icon != None %}
+              <!-- css -->
+              <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
+              {% elif icon == None %}
+              <!-- css -->
+              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              {% endif %}
+            </a>
           </figure>
-          <p>イッパイアッテナ様</p>
+          <p>{{ UserName }}様</p>
         </div>
 
         <figure>
@@ -48,8 +56,9 @@
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
-            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
+            <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
         </div>
       </div>
@@ -64,11 +73,211 @@
           <h1>SEARCH</h1>
           <p class="sub-sea">商品を探す</p>
         </div>
-        <form action="#" class="search-form-4">
+        <form action="/search"  method="post" class="search-form-4">
           <label>
-            <input type="text" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+            <button type="submit"></button>
+            <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
+      </div>
+
+      <form action="/search" method="post">
+        <ul>
+          {% for word in words %}
+          <li>
+            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
+            <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+          </li>
+          {% endfor %}
+        </ul>
+      </form>
+    </div>
+
+    <div class="cate-box">
+      <img id="cate_closebtn" src="../static/images/x01_cate.svg">
+      <div class="cate-wrap">
+        <div class="cate-title">
+          <h1>CATEGORY</h1>
+          <p class="sub-cate">商品を探す</p>
+        </div>
+        <div class="tab">
+          <ul class="tab-list">
+            <li class="tab-list-item is-btn-active">レディース</li>
+            <li class="tab-list-item">メンズ</li>
+            <li class="tab-list-item">インテリア/家電</li>
+            <li class="tab-list-item">ホビー</li>
+            <li class="tab-list-item">その他</li>
+          </ul>
+
+          <!-- コンテンツを構成するブロック -->
+          <div class="tab-contents-wrap">
+
+            <form action="/category_search" method="post">
+              <div class="tab-contents is-contents-active">
+                <div class="women-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">レディース</p>
+                      <!-- <div class="s-category">
+                        <span>トップス</span>
+                        <span>パンツ</span>
+                        <span>シューズ</span>
+                        <span>バッグ</span>
+                        <span>アクセサリー</span>
+                        <span>ファッション小物</span>
+                      </div> -->
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="1">トップス</button></span>
+                        <span><button type="submit" name="select" value="3">パンツ</button></span>
+                        <span><button type="submit" name="select" value="5">シューズ</button></span>
+                        <span><button type="submit" name="select" value="7">バッグ</button></span>
+                        <span><button type="submit" name="select" value="9">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="11">ファッション小物</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">ベビー・キッズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="13">ベビー服</button></span>
+                        <span><button type="submit" name="select" value="14">キッズ服</button></span>
+                        <span><button type="submit" name="select" value="15">キッズシューズ</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate03">
+                      <p class="cateTitle">コスメ/香水/美容</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="32">スキンケア</button></span>
+                        <span><button type="submit" name="select" value="33">ボディケア</button></span>
+                        <span><button type="submit" name="select" value="34">ヘアケア</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="tab-contents">
+                <div class="men-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">メンズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="2">トップス</button></span>
+                        <span><button type="submit" name="select" value="4">パンツ</button></span>
+                        <span><button type="submit" name="select" value="6">シューズ</button></span>
+                        <span><button type="submit" name="select" value="8">バッグ</button></span>
+                        <span><button type="submit" name="select" value="10">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="12">ファッション小物</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="tab-contents">
+                <div class="day-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">インテリア/住まい/小物</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="17">キッチン/食器</button></span>
+                        <span><button type="submit" name="select" value="18">家具/収納</button></span>
+                        <span><button type="submit" name="select" value="19">カーペット</button></span>
+                        <span><button type="submit" name="select" value="20">カーテン</button></span>
+                        <span><button type="submit" name="select" value="21">ライト</button></span>
+                        <span><button type="submit" name="select" value="22">インテリア小物</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">家電/スマホ/カメラ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="35">スマートフォン</button></span>
+                        <span><button type="submit" name="select" value="36">PC</button></span>
+                        <span><button type="submit" name="select" value="37">カメラ</button></span>
+                        <span><button type="submit" name="select" value="38">テレビ</button></span>
+                        <span><button type="submit" name="select" value="39">オーディオ</button></span>
+                        <span><button type="submit" name="select" value="40">生活家電</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="tab-contents">
+                <div class="hobby-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="27">おもちゃ</button></span>
+                        <span><button type="submit" name="select" value="28">コミック/アニメグッズ</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">本/音楽/ゲーム</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="23">本</button></span>
+                        <span><button type="submit" name="select" value="24">CD</button></span>
+                        <span><button type="submit" name="select" value="25">DVD</button></span>
+                        <span><button type="submit" name="select" value="26">テレビゲーム</button></span>
+                        <span><button type="submit" name="select" value="29">楽器/機材</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate03">
+                      <p class="cateTitle">スポーツ/レジャー</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="41">ゴルフ</button></span>
+                        <span><button type="submit" name="select" value="42">釣り</button></span>
+                        <span><button type="submit" name="select" value="43">野球</button></span>
+                        <span><button type="submit" name="select" value="44">サッカー</button></span>
+                        <span><button type="submit" name="select" value="45">テニス</button></span>
+                        <span><button type="submit" name="select" value="46">スノーボード</button></span>
+                        <span><button type="submit" name="select" value="47">アウトドア</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate04">
+                      <p class="cateTitle">ハンドメイド</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="48">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="49">ファッション/小物</button></span>
+                        <span><button type="submit" name="select" value="50">時計</button></span>
+                        <span><button type="submit" name="select" value="51">インテリア</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="tab-contents">
+                <div class="other-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">チケット</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="52">音楽</button></span>
+                        <span><button type="submit" name="select" value="53">スポーツ</button></span>
+                        <span><button type="submit" name="select" value="54">演劇</button></span>
+                        <span><button type="submit" name="select" value="55">映画</button></span>
+                        <span><button type="submit" name="select" value="56">優待券</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">その他</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="57">ペット用品</button></span>
+                        <span><button type="submit" name="select" value="58">食品</button></span>
+                        <span><button type="submit" name="select" value="59">日用品</button></span>
+                        <span><button type="submit" name="select" value="60">事務用品</button></span>
+                        <span><button type="submit" name="select" value="61">その他</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+            
+          </div>
+        </div>
       </div>
     </div>
 
@@ -76,322 +285,71 @@
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
 
-    <div id="hiddenArea">
-      <!-- <h1>カテゴリ</h1> -->
-      <div class="tab">
-        <ul class="tab-list">
-          <li class="tab-list-item is-btn-active">レディース</li>
-          <li class="tab-list-item">メンズ</li>
-          <li class="tab-list-item">インテリア/家具</li>
-          <li class="tab-list-item">ホビー</li>
-          <li class="tab-list-item">その他</li>
-        </ul>
-
-        <!-- コンテンツを構成するブロック -->
-        <div class="tab-contents-wrap">
-          <div class="tab-contents is-contents-active">
-            <div class="women-box">
-              <ul>
-                <li class="m-cate01">
-                  <p class="cateTitle">レディース</p>
-                  <div class="s-category">
-                    <span>トップス</span>
-                    <span>パンツ</span>
-                    <span>シューズ</span>
-                    <span>バッグ</span>
-                    <span>アクセサリー</span>
-                    <span>ファッション小物</span>
-                  </div>
-                </li>
-                <li class="m-cate02">
-                  <p class="cateTitle">ベビー・キッズ</p>
-                  <div class="s-category">
-                    <span>ベビー服</span>
-                    <span>キッズ服</span>
-                    <span>キッズシューズ</span>
-                  </div>
-                </li>
-                <li class="m-cate03">
-                  <p class="cateTitle">コスメ/香水/美容</p>
-                  <div class="s-category">
-                    <span>スキンケア</span>
-                    <span>ボディケア</span>
-                    <span>ヘアケア</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="tab-contents">
-            <div class="men-box">
-              <ul>
-                <li class="m-cate01">
-                  <p class="cateTitle">メンズ</p>
-                  <div class="s-category">
-                    <span>トップス</span>
-                    <span>パンツ</span>
-                    <span>シューズ</span>
-                    <span>バッグ</span>
-                    <span>アクセサリー</span>
-                    <span>ファッション小物</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="tab-contents">
-            <div class="day-box">
-              <ul>
-                <li class="m-cate01">
-                  <p class="cateTitle">インテリア/住まい/小物</p>
-                  <div class="s-category">
-                    <span>キッチン/食器</span>
-                    <span>家具/収納</span>
-                    <span>カーペット</span>
-                    <span>カーテン</span>
-                    <span>ライト</span>
-                    <span>インテリア小物</span>
-                  </div>
-                </li>
-                <li class="m-cate02">
-                  <p class="cateTitle">家電/スマホ/カメラ</p>
-                  <div class="s-category">
-                    <span>スマートフォン</span>
-                    <span>PC</span>
-                    <span>カメラ</span>
-                    <span>テレビ</span>
-                    <span>オーディオ</span>
-                    <span>生活家電</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="tab-contents">
-            <div class="hobby-box">
-              <ul>
-                <li class="m-cate01">
-                  <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
-                  <div class="s-category">
-                    <span>おもちゃ</span>
-                    <span>コミック/アニメグッズ</span>
-                  </div>
-                </li>
-                <li class="m-cate02">
-                  <p class="cateTitle">本/音楽/ゲーム</p>
-                  <div class="s-category">
-                    <span>本</span>
-                    <span>CD</span>
-                    <span>DVD</span>
-                    <span>テレビゲーム</span>
-                    <span>楽器/機材</span>
-                  </div>
-                </li>
-                <li class="m-cate03">
-                  <p class="cateTitle">スポーツ/レジャー</p>
-                  <div class="s-category">
-                    <span>ゴルフ</span>
-                    <span>釣り</span>
-                    <span>野球</span>
-                    <span>サッカー</span>
-                    <span>テニス</span>
-                    <span>スノーボード</span>
-                    <span>アウトドア</span>
-                  </div>
-                </li>
-                <li class="m-cate04">
-                  <p class="cateTitle">ハンドメイド</p>
-                  <div class="s-category">
-                    <span>アクセサリー</span>
-                    <span>ファッション/小物</span>
-                    <span>時計</span>
-                    <span>インテリア</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="tab-contents">
-            <div class="other-box">
-              <ul>
-                <li class="m-cate01">
-                  <p class="cateTitle">チケット</p>
-                  <div class="s-category">
-                    <span>音楽</span>
-                    <span>スポーツ</span>
-                    <span>演劇</span>
-                    <span>映画</span>
-                    <span>優待券</span>
-                  </div>
-                </li>
-                <li class="m-cate02">
-                  <p class="cateTitle">その他</p>
-                  <div class="s-category">
-                    <span>ペット用品</span>
-                    <span>食品</span>
-                    <span>日用品</span>
-                    <span>事務用品</span>
-                    <span>その他</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-
 
     <div id="box">
 
       <nav id="third_nav">
         <ul>
           <li class="nav_title01">商品管理</li>
-          <li><a href="favorite.html">いいね一覧</a></li>
-          <li><a href="viewlog.html">閲覧履歴</a></li>
-          <li><a href="sell_list.html">出品した商品</a></li>
-          <li><a href="buy_list.html">購入した商品</a></li>
-          <li><a href="saved_search.html">保存した検索条件</a></li>
-          <li><a href="#">下書き一覧</a></li>
+          <li><a href="{{ url_for('FavoritePage') }}">ブックマーク一覧</a></li>
+          <li><a href="{{ url_for('ViewlogPage') }}">閲覧履歴</a></li>
+          <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
+          <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
+          <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
 
           <li class="nav_title02">設定</li>
-          <li><a href="personal.html">個人情報編集</a></li>
-          <li><a href="layout.html">レイアウト編集</a></li>
-          <li><a href="login.html">ログアウト</a></li>
+          <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
+          <li><a href="{{ url_for('LayoutPage') }}">レイアウト編集</a></li>
+          <li><a href="{{ url_for('Logout') }}">ログアウト</a></li>
         </ul>
       </nav>
 
       <main id="m-favorite">
-        <h1>いいね一覧</h1>
+        <h1>ブックマーク一覧</h1>
 
         <div class="favorite-product">
+          {% if sellinfo %}
+            {% for row in sellinfo %}
+            <div class="product-box">
+              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
 
-          <div class="product-box">
-            <a href="product.html">
+                <div class="products">
+                  <figure>
+                    <img src="{{ row[3] }}">
+                  </figure>
 
-              <div class="products">
-                <figure>
-                  <img src="../static/images/sample02.png">
-                </figure>
+                  <div class="product-intro">
+                    <p class="product-name">{{ row[1] }}</p>
 
-                <div class="product-intro">
-                  <p class="product-name">二段 お弁当箱 赤 黒 二個 セット</p>
+                    <div class="price-box">
+                      <p class="mark">¥</p><p class="price">{{ row[2] }}</p>
+                    </div>
 
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">1480</p>
+                    <div class="action">
+                      <p class="heart">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
+                        <span class="num">0</span>
+                      </p>
+                      <p class="comment">
+                        <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
+                        <span class="num">0</span>
+                      </p>
+                      <p class="eye">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
+                        <span class="num">0</span>
+                      </p>
+                      <p class="time">
+                        <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M12.7,11.71V6a.7.7,0,1,0-1.4,0v6.29l4.45,4.45a.7.7,0,0,0,.49.2.74.74,0,0,0,.5-.2.71.71,0,0,0,0-1Z"></path><path class="cls-1" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path></svg>
+                        <span class="num">0時間前</span>
+                      </p>
+                    </div>
                   </div>
 
-                  <div class="action">
-                    <p class="heart">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="comment">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="eye">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
-                      <span class="num">70</span>
-                    </p>
-                    <p class="time">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M12.7,11.71V6a.7.7,0,1,0-1.4,0v6.29l4.45,4.45a.7.7,0,0,0,.49.2.74.74,0,0,0,.5-.2.71.71,0,0,0,0-1Z"></path><path class="cls-1" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path></svg>
-                      <span class="num">1時間前</span>
-                    </p>
-                  </div>
                 </div>
-
-              </div>
-            </a>
-          </div>
-
-
-
-          <div class="product-box">
-            <a href="product.html">
-
-              <div class="products">
-                <figure>
-                  <img src="../static/images/sample03.png">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">スーパーマリオメーカー２</p>
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">3700</p>
-                  </div>
-
-                  <div class="action">
-                    <p class="heart">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
-                      <span class="num">1</span>
-                    </p>
-                    <p class="comment">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="eye">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
-                      <span class="num">25</span>
-                    </p>
-                    <p class="time">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M12.7,11.71V6a.7.7,0,1,0-1.4,0v6.29l4.45,4.45a.7.7,0,0,0,.49.2.74.74,0,0,0,.5-.2.71.71,0,0,0,0-1Z"></path><path class="cls-1" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path></svg>
-                      <span class="num">5時間前</span>
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-            </a>
-          </div>
-
-
-
-          <div class="product-box">
-            <a href="product.html">
-
-              <div class="products">
-                <figure>
-                  <img src="../static/images/sample04.png">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">くじ引き堂 SAO ソードアートオンライン D賞 缶バッジ アスナ</p>
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">1380</p>
-                  </div>
-
-                  <div class="action">
-                    <p class="heart">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
-                      <span class="num">1</span>
-                    </p>
-                    <p class="comment">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="eye">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#000000}</style><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
-                      <span class="num">57</span>
-                    </p>
-                    <p class="time">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><!--?lit$0367286166$--><path class="cls-1" d="M12.7,11.71V6a.7.7,0,1,0-1.4,0v6.29l4.45,4.45a.7.7,0,0,0,.49.2.74.74,0,0,0,.5-.2.71.71,0,0,0,0-1Z"></path><path class="cls-1" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path></svg>
-                      <span class="num">10時間前</span>
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-            </a>
-          </div>
-
-
+              </a>
+            </div>
+            {% endfor %}
+          {% endif %}
 
         </div>
 
@@ -405,12 +363,15 @@
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
 
+    <!-- レイアウト編集 -->
+    {{ style | safe }}
+
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
 
-  <!-- カテゴリ-hoverしたら開く用 -->
-  <script src="{{ url_for('static', filename='js/category_hover_open.js') }}"></script>
+  <!-- カテゴリ-clickしたら開く用 -->
+  <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>

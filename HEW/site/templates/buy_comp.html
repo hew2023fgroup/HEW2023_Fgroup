@@ -34,10 +34,18 @@
     <nav id="main-nav">
       <div class="main-nav-box">
         <div class="left-nav">
-          <figure>
-            <img src="../static/images/cat.jpg">
+          <figure id="prof_icon">
+            <a class="" href="{{ url_for('MyPage') }}">
+              {% if icon != None %}
+              <!-- css -->
+              <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像">
+              {% elif icon == None %}
+              <!-- css -->
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              {% endif %}
+            </a>
           </figure>
-          <p>イッパイアッテナ様</p>
+          <p>{{ UserName }}様</p>
         </div>
 
         <figure>
@@ -49,8 +57,9 @@
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>
-            <li><a class="nav-sell" href="{{ url_for('SellPage') }}">出品</a></li>
+            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
+            <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
+            <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
         </div>
       </div>
@@ -65,20 +74,34 @@
           <h1>SEARCH</h1>
           <p class="sub-sea">商品を探す</p>
         </div>
-        <form action="#" class="search-form-4">
+        <form action="/search"  method="post" class="search-form-4">
           <label>
-            <input type="text" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+            <button type="submit"></button>
+            <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
+            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
       </div>
+
+      <form action="/search" method="post">
+        <ul>
+          {% for word in words %}
+          <li>
+            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
+            <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+          </li>
+          {% endfor %}
+        </ul>
+      </form>
     </div>
 
-    <!-- 絶対に消すな -->
-    <div id="kesuna"></div>
-    <!-- 絶対に消すな -->
-
-      <div id="hiddenArea">
-        <!-- <h1>カテゴリ</h1> -->
+    <div class="cate-box">
+      <img id="cate_closebtn" src="../static/images/x01_cate.svg">
+      <div class="cate-wrap">
+        <div class="cate-title">
+          <h1>CATEGORY</h1>
+          <p class="sub-cate">商品を探す</p>
+        </div>
         <div class="tab">
           <ul class="tab-list">
             <li class="tab-list-item is-btn-active">レディース</li>
@@ -90,163 +113,178 @@
 
           <!-- コンテンツを構成するブロック -->
           <div class="tab-contents-wrap">
-            <div class="tab-contents is-contents-active">
-              <div class="women-box">
-                <ul>
-                  <li class="m-cate01">
-                    <p class="cateTitle">レディース</p>
-                    <div class="s-category">
-                      <span>トップス</span>
-                      <span>パンツ</span>
-                      <span>シューズ</span>
-                      <span>バッグ</span>
-                      <span>アクセサリー</span>
-                      <span>ファッション小物</span>
-                    </div>
-                  </li>
-                  <li class="m-cate02">
-                    <p class="cateTitle">ベビー・キッズ</p>
-                    <div class="s-category">
-                      <span>ベビー服</span>
-                      <span>キッズ服</span>
-                      <span>キッズシューズ</span>
-                    </div>
-                  </li>
-                  <li class="m-cate03">
-                    <p class="cateTitle">コスメ/香水/美容</p>
-                    <div class="s-category">
-                      <span>スキンケア</span>
-                      <span>ボディケア</span>
-                      <span>ヘアケア</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
 
-            <div class="tab-contents">
-              <div class="men-box">
-                <ul>
-                  <li class="m-cate01">
-                    <p class="cateTitle">メンズ</p>
-                    <div class="s-category">
-                      <span>トップス</span>
-                      <span>パンツ</span>
-                      <span>シューズ</span>
-                      <span>バッグ</span>
-                      <span>アクセサリー</span>
-                      <span>ファッション小物</span>
-                    </div>
-                  </li>
-                </ul>
+            <form action="/category_search" method="post">
+              <div class="tab-contents is-contents-active">
+                <div class="women-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">レディース</p>
+                      <!-- <div class="s-category">
+                        <span>トップス</span>
+                        <span>パンツ</span>
+                        <span>シューズ</span>
+                        <span>バッグ</span>
+                        <span>アクセサリー</span>
+                        <span>ファッション小物</span>
+                      </div> -->
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="1">トップス</button></span>
+                        <span><button type="submit" name="select" value="3">パンツ</button></span>
+                        <span><button type="submit" name="select" value="5">シューズ</button></span>
+                        <span><button type="submit" name="select" value="7">バッグ</button></span>
+                        <span><button type="submit" name="select" value="9">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="11">ファッション小物</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">ベビー・キッズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="13">ベビー服</button></span>
+                        <span><button type="submit" name="select" value="14">キッズ服</button></span>
+                        <span><button type="submit" name="select" value="15">キッズシューズ</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate03">
+                      <p class="cateTitle">コスメ/香水/美容</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="32">スキンケア</button></span>
+                        <span><button type="submit" name="select" value="33">ボディケア</button></span>
+                        <span><button type="submit" name="select" value="34">ヘアケア</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
 
-            <div class="tab-contents">
-              <div class="day-box">
-                <ul>
-                  <li class="m-cate01">
-                    <p class="cateTitle">インテリア/住まい/小物</p>
-                    <div class="s-category">
-                      <span>キッチン/食器</span>
-                      <span>家具/収納</span>
-                      <span>カーペット</span>
-                      <span>カーテン</span>
-                      <span>ライト</span>
-                      <span>インテリア小物</span>
-                    </div>
-                  </li>
-                  <li class="m-cate02">
-                    <p class="cateTitle">家電/スマホ/カメラ</p>
-                    <div class="s-category">
-                      <span>スマートフォン</span>
-                      <span>PC</span>
-                      <span>カメラ</span>
-                      <span>テレビ</span>
-                      <span>オーディオ</span>
-                      <span>生活家電</span>
-                    </div>
-                  </li>
-                </ul>
+              <div class="tab-contents">
+                <div class="men-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">メンズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="2">トップス</button></span>
+                        <span><button type="submit" name="select" value="4">パンツ</button></span>
+                        <span><button type="submit" name="select" value="6">シューズ</button></span>
+                        <span><button type="submit" name="select" value="8">バッグ</button></span>
+                        <span><button type="submit" name="select" value="10">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="12">ファッション小物</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
 
-            <div class="tab-contents">
-              <div class="hobby-box">
-                <ul>
-                  <li class="m-cate01">
-                    <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
-                    <div class="s-category">
-                      <span>おもちゃ</span>
-                      <span>コミック/アニメグッズ</span>
-                    </div>
-                  </li>
-                  <li class="m-cate02">
-                    <p class="cateTitle">本/音楽/ゲーム</p>
-                    <div class="s-category">
-                      <span>本</span>
-                      <span>CD</span>
-                      <span>DVD</span>
-                      <span>テレビゲーム</span>
-                      <span>楽器/機材</span>
-                    </div>
-                  </li>
-                  <li class="m-cate03">
-                    <p class="cateTitle">スポーツ/レジャー</p>
-                    <div class="s-category">
-                      <span>ゴルフ</span>
-                      <span>釣り</span>
-                      <span>野球</span>
-                      <span>サッカー</span>
-                      <span>テニス</span>
-                      <span>スノーボード</span>
-                      <span>アウトドア</span>
-                    </div>
-                  </li>
-                  <li class="m-cate04">
-                    <p class="cateTitle">ハンドメイド</p>
-                    <div class="s-category">
-                      <span>アクセサリー</span>
-                      <span>ファッション/小物</span>
-                      <span>時計</span>
-                      <span>インテリア</span>
-                    </div>
-                  </li>
-                </ul>
+              <div class="tab-contents">
+                <div class="day-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">インテリア/住まい/小物</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="17">キッチン/食器</button></span>
+                        <span><button type="submit" name="select" value="18">家具/収納</button></span>
+                        <span><button type="submit" name="select" value="19">カーペット</button></span>
+                        <span><button type="submit" name="select" value="20">カーテン</button></span>
+                        <span><button type="submit" name="select" value="21">ライト</button></span>
+                        <span><button type="submit" name="select" value="22">インテリア小物</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">家電/スマホ/カメラ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="35">スマートフォン</button></span>
+                        <span><button type="submit" name="select" value="36">PC</button></span>
+                        <span><button type="submit" name="select" value="37">カメラ</button></span>
+                        <span><button type="submit" name="select" value="38">テレビ</button></span>
+                        <span><button type="submit" name="select" value="39">オーディオ</button></span>
+                        <span><button type="submit" name="select" value="40">生活家電</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
 
-            <div class="tab-contents">
-              <div class="other-box">
-                <ul>
-                  <li class="m-cate01">
-                    <p class="cateTitle">チケット</p>
-                    <div class="s-category">
-                      <span>音楽</span>
-                      <span>スポーツ</span>
-                      <span>演劇</span>
-                      <span>映画</span>
-                      <span>優待券</span>
-                    </div>
-                  </li>
-                  <li class="m-cate02">
-                    <p class="cateTitle">その他</p>
-                    <div class="s-category">
-                      <span>ペット用品</span>
-                      <span>食品</span>
-                      <span>日用品</span>
-                      <span>事務用品</span>
-                      <span>その他</span>
-                    </div>
-                  </li>
-                </ul>
+              <div class="tab-contents">
+                <div class="hobby-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">おもちゃ/ホビー/グッズ</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="27">おもちゃ</button></span>
+                        <span><button type="submit" name="select" value="28">コミック/アニメグッズ</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">本/音楽/ゲーム</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="23">本</button></span>
+                        <span><button type="submit" name="select" value="24">CD</button></span>
+                        <span><button type="submit" name="select" value="25">DVD</button></span>
+                        <span><button type="submit" name="select" value="26">テレビゲーム</button></span>
+                        <span><button type="submit" name="select" value="29">楽器/機材</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate03">
+                      <p class="cateTitle">スポーツ/レジャー</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="41">ゴルフ</button></span>
+                        <span><button type="submit" name="select" value="42">釣り</button></span>
+                        <span><button type="submit" name="select" value="43">野球</button></span>
+                        <span><button type="submit" name="select" value="44">サッカー</button></span>
+                        <span><button type="submit" name="select" value="45">テニス</button></span>
+                        <span><button type="submit" name="select" value="46">スノーボード</button></span>
+                        <span><button type="submit" name="select" value="47">アウトドア</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate04">
+                      <p class="cateTitle">ハンドメイド</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="48">アクセサリー</button></span>
+                        <span><button type="submit" name="select" value="49">ファッション/小物</button></span>
+                        <span><button type="submit" name="select" value="50">時計</button></span>
+                        <span><button type="submit" name="select" value="51">インテリア</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
 
+              <div class="tab-contents">
+                <div class="other-box">
+                  <ul>
+                    <li class="m-cate01">
+                      <p class="cateTitle">チケット</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="52">音楽</button></span>
+                        <span><button type="submit" name="select" value="53">スポーツ</button></span>
+                        <span><button type="submit" name="select" value="54">演劇</button></span>
+                        <span><button type="submit" name="select" value="55">映画</button></span>
+                        <span><button type="submit" name="select" value="56">優待券</button></span>
+                      </div>
+                    </li>
+                    <li class="m-cate02">
+                      <p class="cateTitle">その他</p>
+                      <div class="s-category">
+                        <span><button type="submit" name="select" value="57">ペット用品</button></span>
+                        <span><button type="submit" name="select" value="58">食品</button></span>
+                        <span><button type="submit" name="select" value="59">日用品</button></span>
+                        <span><button type="submit" name="select" value="60">事務用品</button></span>
+                        <span><button type="submit" name="select" value="61">その他</button></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+            
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- 絶対に消すな -->
+    <div id="kesuna"></div>
+    <!-- 絶対に消すな -->
 
     <div class="shopping-box">
       <div class="shopping-tag">
@@ -271,8 +309,8 @@
 
       <div class="guidance-nav">
         <ul>
-          <li><a href="{{ url_for('IndexPage') }}">トップページへ</a></li>
-          <li><a href="{{ url_for('MyPage') }}">購入した商品へ</a></li>
+          <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li>
+          <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li>
         </ul>
       </div>
     </div>
@@ -282,12 +320,15 @@
       <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
     </footer>
 
+    <!-- レイアウト編集 -->
+    {{ style | safe }}
+
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
 
-  <!-- カテゴリ-hoverしたら開く用 -->
-  <script src="{{ url_for('static', filename='js/category_hover_open.js') }}"></script>
+  <!-- カテゴリ-clickしたら開く用 -->
+  <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>

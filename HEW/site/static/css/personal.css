@@ -72,6 +72,9 @@ div#box nav#third_nav ul li a::after{
   transform: rotate(45deg);
 }
 
+button{
+  cursor: pointer;
+}
 
 
 /*                   PERSONAL-MAIN                     */
@@ -136,6 +139,9 @@ main#m-personal h1::after{
   height: 130px;
   border-radius: 50%;
   object-fit: scale-down;
+  cursor: pointer;
+  background-color: #F0F4FF;
+  text-align: center;
 }
 
 

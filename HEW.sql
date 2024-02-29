@@ -12,7 +12,10 @@ CREATE TABLE `Account` (
   `KanjiName` varchar(255),
   `Furigana` varchar(255),
   `RegistDate` datetime DEFAULT (now()),
-  `Money` int
+  `Money` int,
+  `SimpleThumbFlg` bit(1) DEFAULT 1,
+  `SimplePriceFlg` bit(1) DEFAULT 1,
+  `SlideShowFlg` bit(1) DEFAULT 1
 );
 
 CREATE TABLE `Sex` (
@@ -192,9 +195,9 @@ INSERT INTO Status(Name) VALUES("全体的に状態が悪い");
 
 INSERT INTO Tax(Section,Tax) VALUES("課税対象",10);
 
-INSERT INTO Postage(Size,Price) VALUES("大",1650);
-INSERT INTO Postage(Size,Price) VALUES("中",1350);
-INSERT INTO Postage(Size,Price) VALUES("小",1060);
+INSERT INTO Postage(Size,Price) VALUES("大",165);
+INSERT INTO Postage(Size,Price) VALUES("中",135);
+INSERT INTO Postage(Size,Price) VALUES("小",106);
 
 INSERT INTO Mcategory(Name) VALUES("レディース");
 INSERT INTO Mcategory(Name) VALUES("メンズ");
@@ -272,9 +275,64 @@ INSERT INTO Scategory(Name,McategoryID) VALUES("事務用品",12);
 INSERT INTO Scategory(Name,McategoryID) VALUES("その他",12);
 
 INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("hogehoge","P@ssw0rd","2001-01-01",1,"sample@gmail.com","HAL太郎","ハルタロウ",3000);
+INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test","P@ssw0rd","2011-02-02",2,"sample_test@gmail.com","テスト太郎","テストタロウ",5000);
+INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test2","P@ssw0rd","2000-08-10",1,"sample_test2@gmail.com","近藤雅仁","コンドウマサト",2000);
 
 INSERT INTO Address(Address,POST,AccountID) VALUES("愛知県名古屋市中村区名駅4-27-1HAL名古屋","450-0002",1);
+INSERT INTO Address(Address,POST,AccountID) VALUES("福島県本宮市本宮雲雀田","349-7",1);
+INSERT INTO Address(Address,POST,AccountID) VALUES("青森県むつ市脇野沢赤坂","790-17",2);
+INSERT INTO Address(Address,POST,AccountID) VALUES("岡山県新見市神郷下神代","901-15",3);
 
-INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("Sample商品データ",2000,1,2,2,"サンプルデータです。最終的には削除するデータです。",6,1,0);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("Sample商品データ",2000,1,2,2,"サンプルデータです。最終的には削除するデータです。",6,1,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("PS5",6000,1,1,1,"使ってたPS5なんですけど使わなくなったので売ります",26,1,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("コナン缶バッジ",800,1,3,2,"被ったので一枚どうですか？",28,1,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("お弁当箱",1500,1,3,1,"自作のお弁当箱どうですか？",17,1,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("マリオメーカー2",3000,1,3,2,"接続不良なし",26,1,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("缶バッジ アスナ",1800,1,3,1,"誰か欲しい人どうぞ",28,2,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("ディズニー 帽子",3000,1,3,3,"娘のおさがりでよければだれか買ってくれませんか？",16,2,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("アスナの缶バッジ",2000,1,3,1,"未開封です。",28,2,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("キリトの缶バッジ",2000,1,3,2,"未開封です。",28,2,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAO缶バッジセット",2500,1,3,1,"アリシゼーション仲良し組です",28,2,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("シノンのイラスト色紙",3000,1,3,2,"一度は言ってみたい武器名ランキング第一位、ウルティマラティオへカートⅡ",28,3,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("自作バッグ",5000,1,2,1,"バッグ作ってみました。どうですか？",7,3,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("スタバ タンブラー",3000,1,2,2,"使ってましたがちゃんと洗いました。",17,3,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("タンブラー 幽霊",3000,1,2,1,"未使用です",17,3,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("チップとデールのタンブラー",3400,1,2,2,"使わなくなったので売りたいと思います。",17,3,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAO色紙",3000,1,3,1,"SAO最高！",28,1,0);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAOプログレッシブ第五巻",1300,1,3,2,"読み終えたので誰か欲しい人に売ります。",23,2,0);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAOプログレッシブ第四巻",1300,1,3,2,"読み終わったのでだれかどうですか？",23,3,0);
 
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/Product (1).jpeg",1);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample.png",2);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample01.png",3);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample02.png",4);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample03.png",5);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample04.png",6);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample05.png",7);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample06.png",8);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample07.png",9);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample08.png",10);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample09.png",11);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/pro_detail01.jpg",12);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo06.png",13);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo08.png",14);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo09.png",15);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo01.png",16);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo04.png",17);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo05.png",18);
+
+INSERT INTO Layout(Name) VALUES("navボタン色");
+INSERT INTO Layout(Name) VALUES("nav文字色");
+INSERT INTO Layout(Name) VALUES("main背景色");
+INSERT INTO Layout(Name) VALUES("mainボタン色");
+INSERT INTO Layout(Name) VALUES("main文字色");
+INSERT INTO Layout(Name) VALUES("footer背景色");
+INSERT INTO Layout(Name) VALUES("footer文字色");
+INSERT INTO Layout(Name) VALUES("スライドショー画像1");
+INSERT INTO Layout(Name) VALUES("スライドショー画像2");
+INSERT INTO Layout(Name) VALUES("スライドショー画像3");
+INSERT INTO Layout(Name) VALUES("スライドショー画像4");
+
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#FFF', 3, 1), ('#F00', 4, 1), ('#000', 5, 1), ('#000', 6, 1), ('#FFF', 7, 1), ('static/images/slide/slide01.jpg', 8, 1), ('static/images/slide/slide05.jpg', 9, 1), ('static/images/slide/slide08.jpg', 10, 1), ('static/images/slide/slide10.jpg', 11, 1);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#FFF', 3, 2), ('#F00', 4, 2), ('#000', 5, 2), ('#000', 6, 2), ('#FFF', 7, 2), ('static/images/slide/slide01.jpg', 8, 2), ('static/images/slide/slide05.jpg', 9, 2), ('static/images/slide/slide08.jpg', 10, 2), ('static/images/slide/slide10.jpg', 11, 2);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#FFF', 3, 3), ('#F00', 4, 3), ('#000', 5, 3), ('#000', 6, 3), ('#FFF', 7, 3), ('static/images/slide/slide01.jpg', 8, 3), ('static/images/slide/slide05.jpg', 9, 3), ('static/images/slide/slide08.jpg', 10, 3), ('static/images/slide/slide10.jpg', 11, 3);
