@@ -2539,8 +2539,9 @@ def LayoutPage():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
-                               layout_value=layout_value, simple_value=simple_value)
+        return render_template(
+            'layout.html', UserName=UserName, icon=icon, style=style, 
+            layout_value=layout_value, simple_value=simple_value)
 
 # /logout
 @app.route('/logout')
