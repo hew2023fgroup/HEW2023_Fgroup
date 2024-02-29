@@ -116,7 +116,7 @@ main#m-mypage{
   position: relative;
   padding: 0 1px;
   color: #ccc;
-  cursor: pointer;
+  /* cursor: pointer; */
   font-size: 25px;
 }
 .rate-form label:hover {
