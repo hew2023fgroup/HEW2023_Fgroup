@@ -827,6 +827,9 @@ def IndexPage():
                 html {{
                     background-color: {2} !important;
                 }}
+                .DisplayBox h1::before {{
+                    border-bottom: 2px solid {3} !important;
+                }}
                 #btn{{
                     background-color: {0} !important;
                     color: {1} !important;
