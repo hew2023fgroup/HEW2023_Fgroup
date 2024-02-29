@@ -28,20 +28,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
     
-  <style>
-    .rating span {
-      display: inline-block;
-      position: relative;
-      width: 1.1em;
-      color: gray; /* 初期の星の色 */
-    }
-    .rating span:hover:before,
-    .rating span:hover ~ span:before {
-      content: "\2605";
-      position: absolute;
-      color: yellow; /* ホバー時の星の色 */
-    }
-  </style>
   </head>
 
   <body>
@@ -311,60 +297,59 @@
 
       <h1>ご購入ありがとうございました！</h1>
 
-      <div class="sell-info">
-        <figure id="prof_icon">
-          {% if icon != None %}
-          <!-- css -->
-          <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
-          {% elif icon == None %}
-          <!-- css -->
-          <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
-          {% endif %}
-        </figure>
-        
-        <div class="sell-info-detail">
-          <p>名前</p>
-          <div class="rate-form">
-            <div class="rating">
-              <span onclick="rate(1)" id="star1">★</span>
-              <span onclick="rate(2)" id="star2">★</span>
-              <span onclick="rate(3)" id="star3">★</span>
-              <span onclick="rate(4)" id="star4">★</span>
-              <span onclick="rate(5)" id="star5">★</span>
+      <form action="/evaluate" method="post">
+        <div class="sell-info">
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <!-- css -->
+            <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
+            {% elif icon == None %}
+            <!-- css -->
+            <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
+            {% endif %}
+          </figure>
+          
+          <div class="sell-info-detail">
+            <p>名前</p>
+              <input type="number" name="rate" min="0.5" max="5" step="0.5">
+              <input type="hidden" name="buyid" value="{{ BuyID }}">
             </div>
-            <p id="selectedRating"></p>
+            
+          </div>
+          
+          <!-- <div class="order-number-box">
+            <p>お客様のご注文番号：<span>{{ BuyID }}</span></p>
+          </div> -->
+          
+          <div class="guidance">
+            <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
+            <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
+            <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
+            <p class="customer-mail">{{ MailAddress }}</p>
+          </div>
+          
+          <div class="guidance-nav">
+            <!-- <ul>
+              <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li>
+              <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li>
+            </ul> -->
+            <ul>
+              <li><button type="submit" name="submit" class="main-btn" value="index">トップページ</button></li>
+              <li><button type="submit" name="submit" class="main-btn" value="buylist">購入した商品へ</button></li>
+            </ul>
+          </div>
         </div>
-        
-      </div>
-
-      <!-- <div class="order-number-box">
-        <p>お客様のご注文番号：<span>{{ BuyID }}</span></p>
-      </div> -->
-
-      <div class="guidance">
-        <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
-        <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
-        <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
-        <p class="customer-mail">{{ MailAddress }}</p>
-      </div>
-
-      <div class="guidance-nav">
-        <ul>
-          <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li>
-          <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <footer>
-      <div id="footer-wrap">
-
-        <div class="footer-left">
-          <!-- <img src="images/footer-tittle.svg"> -->
-          <!-- <img src="images/footer-tittle-touka.svg"> -->
-          <img class="footer-tittle" src="../static/images/footer-touka.svg">
-          <div class="sns-box">
-            <img class="footer-icon01" src="../static/images/instagram.svg">
+      </form>
+      
+      <footer>
+        <div id="footer-wrap">
+          
+          <div class="footer-left">
+            <!-- <img src="images/footer-tittle.svg"> -->
+            <!-- <img src="images/footer-tittle-touka.svg"> -->
+            <img class="footer-tittle" src="../static/images/footer-touka.svg">
+            <div class="sns-box">
+              <img class="footer-icon01" src="../static/images/instagram.svg">
             <img class="footer-icon02" src="../static/images/facebook.svg">
             <img class="footer-icon03" src="../static/images/twitter.svg">
           </div>

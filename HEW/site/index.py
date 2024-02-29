@@ -761,6 +761,7 @@ def Evaluate():
         
         buyid = request.form['buyid']
         eval = request.form['rate']
+        submit = request.form['submit']
         
         # 評価値のUPDATE
         eval_sql = '''
@@ -769,12 +770,15 @@ def Evaluate():
         WHERE BuyID = {1};
         '''.format(eval, buyid)
         cursor.execute(eval_sql)
-        
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('IndexPage'))
+        
+        if submit == 'index':
+            return redirect(url_for('IndexPage'))
+        elif submit == 'buylist':
+            return redirect(url_for('BuyListPage'))
 
 # #########################################
 # トップ
