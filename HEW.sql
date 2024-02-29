@@ -77,7 +77,7 @@ CREATE TABLE `Buy` (
   `BuyID` int PRIMARY KEY AUTO_INCREMENT,
   `SellID` int,
   `AccountID` int,
-  `Review` int,
+  `Review` float,
   `Datetime` datetime DEFAULT (now())
 );
 
