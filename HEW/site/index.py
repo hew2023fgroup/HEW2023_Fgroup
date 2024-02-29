@@ -1078,6 +1078,7 @@ def ProductPage(sellid):
     if avg_evalate is None:
         avg_evalate = 0
     
+    # タグのSELECT
     Tag_Select = '''
     SELECT Name FROM Tag
     WHERE SellID = {0};
@@ -1086,6 +1087,7 @@ def ProductPage(sellid):
     tags = cursor.fetchall()
     tags = [item[0] for item in tags]
     
+    # カテゴリーのSELECT
     Category_Select = '''
     SELECT SCategoryID FROM Scategory
     WHERE Name = '{0}';
@@ -1114,6 +1116,16 @@ def ProductPage(sellid):
     cursor.execute(sells)
     sells = cursor.fetchall()
     
+    # 購入済み
+    Buy_Select = '''
+    SELECT BuyID 
+    FROM Buy
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(Buy_Select)
+    bought = cursor.fetchone()
+    print('bought:',bought)
+    
     # CLOSE
     conn.commit()
     cursor.close()
@@ -1121,7 +1133,7 @@ def ProductPage(sellid):
     return render_template(
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
         price=price, sellid=sellid, scategory=scategory, style=style, record=record,
-        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
+        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, bought=bought,
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName, nice=nice)
     
 # /search
@@ -1742,7 +1754,10 @@ def SellListPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID = {0};
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Sell_Select)
     Sells = cursor.fetchall()
@@ -1751,8 +1766,9 @@ def SellListPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('sell_list.html',Sells=Sells, icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'sell_list.html',Sells=Sells, icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value)
 
 # /buy_list
 @app.route('/buy_list')
@@ -1798,12 +1814,26 @@ def BuyListPage():
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    Buy_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NOT NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Buy.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Buy_Select)
+    Buys = cursor.fetchall()
+    print('buy:',Buys)
     
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('buy_list.html',icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'buy_list.html',icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value,Buys=Buys)
 
 # /savesearch
 @app.route('/savesearch')

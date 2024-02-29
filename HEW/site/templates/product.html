@@ -384,6 +384,7 @@
           </form>
         </div>-->
 
+        {% if bought == None %}
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
           <form action="/buy" method="post" class="shopBtn">
@@ -395,27 +396,34 @@
               </div>
             </div>
           </form>
-
+          
           <form id="form">
-              {% for record in record %}
-              <input type="hidden" value="{{record}}" id="{{loop.index}}">
-              {% endfor %}
-              <figure id="bookmark">
-                {% if nice == True %}
-                <img id="bookmarkImg" src="../static/images/on.svg" alt="ブックマーク">
-                {% elif nice == False %}
-                <img id="bookmarkImg" src="../static/images/off.svg" alt="ブックマーク">
-                {% endif %}
-              </figure>
-              <!-- <figure>
-                  {% if nice == True %}
-                  <img style="background-color: #fff;" id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
-                  {% elif nice == False %}
-                  <img id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
-                  {% endif %}
-              </figure> -->
+            {% for record in record %}
+            <input type="hidden" value="{{record}}" id="{{loop.index}}">
+            {% endfor %}
+            <figure id="bookmark">
+              {% if nice == True %}
+              <img id="bookmarkImg" src="../static/images/on.svg" alt="ブックマーク">
+              {% elif nice == False %}
+              <img id="bookmarkImg" src="../static/images/off.svg" alt="ブックマーク">
+              {% endif %}
+            </figure>
           </form>
         </div>
+        {% else %}
+        <div class="shopping">
+          <!-- formタグ, buttonタグへ変更 -->
+          <form class="shopBtn">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
+            <div class="kari">
+              <button type="submit" id="submit">SOLD OUT</button>
+              <div class="plus-box">
+                <span class="dli-plus"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        {% endif %}
         
         
         <div id="product-explain">
