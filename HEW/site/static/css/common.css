@@ -563,10 +563,11 @@ div#footer-wrap{
 .copyRight-box{
 /*  background-color: pink;*/
   position: absolute;
-  right: 50px;
+  right: 70px;
   bottom: 70px;
 }
 .copyRight{
+  font-size: 0.9rem;
   color: #fff;
 }
 
