@@ -375,14 +375,12 @@
             </div>
           </div>
 
-          <div id="point-money-box">
-            <!-- チャージ用フォームの追加 -->
-            <!-- onsubmit="" で下のscriptタグの実行 変更可 -->
-            <!-- style="" でcss付与 変更可 -->
+          <div class="point-charge-box">            
             <form action="/charge" method="post" onsubmit="return Submit();">
               <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" style="margin: 0px; padding: 4px">
               <input type="submit" value="入金" style="margin-right: 30px;">
             </form>
+
             <form action="/charge" method="post" onsubmit="return Submit();">
               <button type="submit" name="charge" value="1000" style="margin: 0px; padding:1px 8px;">+1000円</button>
               <button type="submit" name="charge" value="2000" style="margin: 0px; padding:1px 8px;">+2000円</button>
@@ -395,7 +393,6 @@
                   return confirm('チャージしますか？');
               }
             </script>
-
           </div>
 
         </div>
@@ -408,9 +405,7 @@
       <div id="footer-wrap">
 
         <div class="footer-left">
-          <!-- <img src="images/footer-tittle.svg"> -->
-          <!-- <img src="images/footer-tittle-touka.svg"> -->
-          <img class="footer-tittle" src="static/images/footer-touka.svg">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="static/images/footer-touka.svg"></a>
           <div class="sns-box">
             <img class="footer-icon01" src="../static/images/instagram.svg">
             <img class="footer-icon02" src="../static/images/facebook.svg">
