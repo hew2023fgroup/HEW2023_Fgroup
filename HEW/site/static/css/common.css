@@ -105,7 +105,9 @@ p#hoverButton{
 .book-mark{
   width: 35px;
   height: 35px;
-  /* margin-right: 5px; */
+}
+.book-mark:hover{
+  opacity: 0.5;
 }
 .underline{
   color: #000;
@@ -129,6 +131,9 @@ p#hoverButton{
   line-height: 30px;
   border-radius: 5px;
   color: #fff;
+}
+.nav-sell:hover{
+  opacity: 0.5;
 }
 
 /*――――――！絶対に消すな！――――――*/
@@ -309,6 +314,9 @@ width: 32px;
 height: 32px;
 cursor: pointer;
 z-index: 9999;
+}
+img#navbtn:hover{
+  opacity: 0.5;
 }
 img#closebtn{
   position: fixed;
