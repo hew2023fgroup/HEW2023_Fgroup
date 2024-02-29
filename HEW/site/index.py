@@ -2318,7 +2318,7 @@ def LayoutPage():
                 main_color = '#ff0000'
                 wall_color = '#ffffff'
                 text_color = '#000000'
-                footer_color = '#000000'
+                footer_color = '#333333'
                 footertxt_color = '#ffffff'
                 slideshow = '1'
                 sellimg = '1'
