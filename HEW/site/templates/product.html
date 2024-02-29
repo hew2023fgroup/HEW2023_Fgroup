@@ -495,13 +495,17 @@
             <div class="sell-info-detail">
               <p>{{ sell_acc[1] }}</p>
               <div class="rate-form">
-                {% for i in range(5) %}
-                {% if i < 5 - avg_evalate %}
-                <label style="color:#ccc !important;">★</label>
-                {% else %}
-                <label style="color:#ffcc00 !important;">★</label>
-                {% endif %}
-                {% endfor %}
+                <div class="rate-container" style="display: flex;">
+                  {% for i in range(rate[0]) %}
+                      <img src="../static/images/rate1.svg" alt="1" style="max-width: 25px;">
+                  {% endfor %}
+                  {% for i in range(rate[1]) %}
+                      <img src="../static/images/rate05.svg" alt="0.5" style="max-width: 25px;">
+                  {% endfor %}
+                  {% for i in range(rate[2]) %}
+                      <img src="../static/images/rate0.svg" alt="0" style="max-width: 25px;">
+                  {% endfor %}
+                </div>
               </div>
             </div>
             
