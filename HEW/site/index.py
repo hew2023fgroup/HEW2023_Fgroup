@@ -1478,7 +1478,7 @@ def MyPage():
     icon = cursor.fetchone()[0]
     print('icon:',icon)
     
-    # 平均評価値のSELECTx2
+    # 評価値
     evalscore_sql = '''
     SELECT ROUND(AVG(Review),1) 
     FROM Buy 
@@ -1486,6 +1486,8 @@ def MyPage():
     '''.format(AccountID)
     cursor.execute(evalscore_sql)
     rate = cursor.fetchone()[0]
+    if rate == None:
+        rate = 0
     halfrate = rate % 1
     halfrate = 1 if halfrate == 0.5 else 0
     lastrate = 5 - rate
@@ -1514,8 +1516,6 @@ def MyPage():
     money = money[0]
     if money == None:
         money = int(0)
-    
-    # rate = [2, 1, 2]
     
     # CLOSE
     conn.commit()
