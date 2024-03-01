@@ -243,6 +243,7 @@ def SellPage():
     
     if request.args.get('sellid'):
         sellid = request.args.get('sellid')
+        
         Sell_Select = '''
         SELECT Sell.SellID, Sell.ScategoryID, Scategory.Name, 
         Sell.StatusID, Status.Name, Sell.Name, Sell.Overview, 
@@ -270,12 +271,26 @@ def SellPage():
             print('tags:',tags)
         else:
             tags = None
+            
+        SellIMG_Select = '''
+        SELECT SellIMG
+        FROM SellIMG
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(SellIMG_Select)
+        get_imgs = cursor.fetchall()
+        if get_imgs:
+            imgs = [item[0] for item in get_imgs]
+            print('imgs:',imgs)
+        else:
+            imgs = None
+        
     
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
-        "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo,
+        "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo, imgs=imgs,
         style=style, layout_value=layout_value, sellid=sellid, tags=tags)
 
 # /sell_confirm

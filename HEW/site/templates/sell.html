@@ -306,20 +306,16 @@
             <!--ここが今回新しい画像アップロードする機構-->
             <div class="container">
               <div id="previewContainer">
-                {% if sellinfo %}
-                <img src="{{ sellinfo[] }}" alt="" class="preview-image" id="thumbnail" style="border: 3px solid rgb(252, 148, 175);">
+                {% if imgs %}
+                  {% for img in imgs %}
+                  <img src="{{ img }}" alt="" class="preview-image" id="thumbnail" style="border: 3px solid rgb(252, 148, 175);">
+                  {% endfor %}
                 {% endif %}
               </div>
               <div id="imagePreview" ondrop="drop(event)" ondragover="allowDrop(event)">
-                {% if sellinfo %}
-                  ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
-                  サムネイルを選択してください
-                  <input type="file" name="uploadInput" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
-                {% else %}
                 ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
                 サムネイルを選択してください
                 <input type="file" name="uploadInput" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
-                {% endif %}
               </div>
               <input type="text" name="select" id="select" value="" hidden required >
           </div>
