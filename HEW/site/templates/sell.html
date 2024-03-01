@@ -24,36 +24,6 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-  <script>
-      var counter = 0; // カウンターを初期化
-
-      function addInput() {
-          if (counter >= 20) return; // 20個を超える場合は追加しない
-          
-          var container = document.getElementById("container");
-          
-          // 新しいinput要素を作成
-          var input = document.createElement("input");
-          input.type = "text";
-          input.value = "#";
-          input.style = "margin:3px";
-          input.name = "tag" + counter; // 新しいname属性を設定
-
-          // 削除ボタンを作成
-          var deleteButton = document.createElement("button");
-          deleteButton.textContent = "-";
-          deleteButton.type = "button";
-          deleteButton.onclick = function() {
-              container.removeChild(input);
-              container.removeChild(deleteButton);
-          };
-
-          container.appendChild(input);
-          container.appendChild(deleteButton);
-          
-          counter++; // カウンターを増加
-      }
-  </script>
 
   </head>
 
@@ -335,16 +305,22 @@
 
             <!--ここが今回新しい画像アップロードする機構-->
             <div class="container">
-              <div id="previewContainer"></div>
-              <!-- <h2>複数の画像をアップロードする</h2> -->
+              <div id="previewContainer">
+                {% if sellinfo %}
+                <img src="{{ sellinfo[] }}" alt="" class="preview-image" id="thumbnail" style="border: 3px solid rgb(252, 148, 175);">
+                {% endif %}
+              </div>
               <div id="imagePreview" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% if sellinfo %}
                   ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
                   サムネイルを選択してください
                   <input type="file" name="uploadInput" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
-              </div>        
-              <!-- ここにサムネイルを表示している -->
-              <!-- <div id="thumbnailContainer"></div> -->
-
+                {% else %}
+                ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
+                サムネイルを選択してください
+                <input type="file" name="uploadInput" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
+                {% endif %}
+              </div>
               <input type="text" name="select" id="select" value="" hidden required >
           </div>
 
@@ -358,7 +334,7 @@
               <select name="scategoryid" id="scategoryid" required>
                 <!-- 下書き処理 -->
                 {% if sellinfo %}
-                <option value="{{ sellinfo[15] }}" selected>{{ sellinfo[16] }}</option>
+                <option value="{{ sellinfo[1] }}" selected>{{ sellinfo[2] }}</option>
                 {% else %}
                 <option value="" disabled selected>選択してください</option>
                 {% endif %}
@@ -431,7 +407,7 @@
               <select name="status" id="status" required>
                 <!-- 下書き処理 -->
                 {% if sellinfo %}
-                <option value="{{ sellinfo[18] }}" selected>{{ sellinfo[19] }}</option>
+                <option value="{{ sellinfo[3] }}" selected>{{ sellinfo[4] }}</option>
                 {% else %}
                 <option value="" disabled selected>選択してください</option>
                 {% endif %}
@@ -450,7 +426,7 @@
             <p class="title">商品名(70文字以内)</p>
             <!-- 下書き処理 -->
             {% if sellid %}
-            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" value="{{ sellinfo[1] }}" required>
+            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" value="{{ sellinfo[5] }}" required>
             {% else %}
             <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
             {% endif %}
@@ -466,6 +442,12 @@
           <h4>タグ</h4>
             <div id="container">
                 <!-- ボタンを押したらinput追加 -->
+                {% if tags %}
+                {% for tag in tags %}
+                <input type="text" name="tag{{ loop.index0 }}" style="margin: 3px;" value="{{ tag }}">
+                <button type="button">-</button>
+                {% endfor %}
+                {% endif %}
             </div>
             <br>
             <button type="button" onclick="addInput()">+</button>
@@ -478,7 +460,7 @@
               <select name="postage" id="postage" required>
                 <!-- 下書き処理 -->
                 {% if sellinfo %}
-                <option value="{{ sellinfo[20] }}" disabled selected>{{ sellinfo[21] }}</option>
+                <option value="{{ sellinfo[7] }}" disabled selected>{{ sellinfo[8] }}</option>
                 {% else %}
                 <option value="" disabled selected>選択してください</option>
                 {% endif %}
@@ -494,7 +476,7 @@
             <p class="title">販売価格(¥300〜9,999,999)</p>
             <!-- 下書き処理 -->
             {% if sellinfo %}
-            <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" value="{{ sellinfo[2] }}" required>
+            <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" value="{{ sellinfo[9] }}" required>
             {% else %}
             <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" required>
             {% endif %}
@@ -552,6 +534,9 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+
+  <!-- タグ用 -->
+  <script src="{{ url_for('static', filename='js/addtag.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>

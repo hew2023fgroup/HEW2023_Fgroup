@@ -244,7 +244,9 @@ def SellPage():
     if request.args.get('sellid'):
         sellid = request.args.get('sellid')
         Sell_Select = '''
-        SELECT * 
+        SELECT Sell.SellID, Sell.ScategoryID, Scategory.Name, 
+        Sell.StatusID, Status.Name, Sell.Name, Sell.Overview, 
+        Sell.PostageID, Postage.Size, Sell.Price
         FROM Sell
         JOIN SellIMG ON Sell.SellID = SellIMG.SellID
         JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
@@ -255,15 +257,26 @@ def SellPage():
         cursor.execute(Sell_Select)
         print('実行:',Sell_Select)
         sellinfo = cursor.fetchone()
-        print('sellinfo:',sellinfo)
         
+        Tag_Select = '''
+        SELECT Name
+        FROM Tag
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Tag_Select)
+        get_tags = cursor.fetchall()
+        if get_tags:
+            tags = [item[0] for item in get_tags]
+            print('tags:',tags)
+        else:
+            tags = None
     
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo,
-        style=style, layout_value=layout_value, sellid=sellid)
+        style=style, layout_value=layout_value, sellid=sellid, tags=tags)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
