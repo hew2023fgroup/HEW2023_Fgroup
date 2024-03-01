@@ -301,6 +301,11 @@
       <form action="/evaluate" method="post">
 
         <div class="estimation-box">
+          <div class="estimation-title">
+            <p>取引の評価</p>
+            <span>(必須)</span>
+          </div>
+          
           <figure id="prof_icon">
             {% if icon != None %}
             <!-- css -->
@@ -311,11 +316,32 @@
             {% endif %}
           </figure>
 
-          <div class="sell-info-detail">
+          <div class="estimation">
             <!-- <p>名前</p> -->
-            <p>イッパイアッテナ様</p>
-            <input type="number" name="rate" min="0.5" max="5" step="0.5">
-            <input type="hidden" name="buyid" value="{{ BuyID }}">
+            <p class="estimation-name">イッパイアッテナ様</p>
+
+            <div class="evaliate-exa-box">
+              <div class="evaliate-exa">
+                <img src="../static/images/sun.svg" alt="">
+                <p class="evaliate-num">５：</p>
+                <p>よい出品者でした</p>  
+              </div>
+              <div class="evaliate-exa">
+                <img src="../static/images/cloud-sun.svg" alt="">
+                <p class="evaliate-num">３：</p>
+                <p>ふつうの出品者でした</p>
+              </div>
+              <div class="evaliate-exa">
+                <img src="../static/images/umbrella.svg" alt="">
+                <p class="evaliate-num">０.５：</p>
+                <p>わるい出品者でした</p>
+              </div>
+            </div>            
+
+            <div class="estimation-detail">
+              <input type="number" name="rate" min="0.5" max="5" step="0.5" placeholder="５">
+              <input type="hidden" name="buyid" value="{{ BuyID }}">
+            </div>
           </div>
         </div>
 

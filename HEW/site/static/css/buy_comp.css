@@ -24,20 +24,70 @@
   background-color: #f3f4f6;
 }
 .shopping-box h1{
-  margin: 100px 0 50px 0;
-  font-size: 2.5rem;
+  margin: 70px 0 50px 0;
+  font-size: 2.3rem;
   font-weight: normal;
   text-align: center;
 }
 
 .estimation-box{
-  background-color: #ddd;
+  width: 500px;
+  margin: 0 auto 0 auto;
+  /* text-align: center; */
+  /* background-color: #ddd; */
 }
-.estimation-box figure{}
+.estimation-title{
+  display: flex;
+  align-items: center;
+}
+.estimation-title p{}
+.estimation-title span{
+  margin: 0 0 0 8px;
+  font-size: 0.9rem;
+}
+
+
+.estimation-box figure{
+  text-align: center;
+}
 .estimation-box figure img{
   border-radius: 50%;
 }
 
+.estimation{
+  /* background-color: pink; */
+}
+.estimation-name{
+  margin: 10px 0;
+  text-align: center;
+}
+.evaliate-exa-box{
+  margin: 0 auto;
+  width: fit-content;
+}
+.evaliate-exa{
+  display: flex;
+  align-items: center;
+  margin: 0 auto 5px auto;
+}
+.evaliate-exa img{
+  width: 32px;
+  height: auto;
+}
+.evaliate-num{
+  width: 55px;
+  text-align: right;
+}
+.estimation-detail{
+  margin: 10px 0 0 0;
+  text-align: center;
+}
+.estimation-detail input{
+  width: 100px;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 1.1rem;
+}
 
 
 /* .order-number-box{
@@ -99,3 +149,7 @@
   background: #fff !important;
   color: #333333 !important;
 } */
+
+
+
+
