@@ -1,3 +1,5 @@
+// 出品ページのタグINPUTするタグを追加しています
+
 var container = document.getElementById("container");
 var counter = container.querySelectorAll('input[type="text"][name^="tag"]').length;
 
