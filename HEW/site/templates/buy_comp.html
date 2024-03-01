@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shop02.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buy_comp.css') }}">
 
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+    
   </head>
 
   <body>
@@ -285,6 +286,7 @@
     <!-- 絶対に消すな -->
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
+    <!-- -------------------------------------------------------------- -->
 
     <div class="shopping-box">
       <div class="shopping-tag">
@@ -296,31 +298,124 @@
 
       <h1>ご購入ありがとうございました！</h1>
 
-      <div class="order-number-box">
-        <p>お客様のご注文番号：<span>{{ BuyID }}</span></p>
-      </div>
+      <form action="/evaluate" method="post">
 
-      <div class="guidance">
-        <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
-        <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
-        <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
-        <p class="customer-mail">{{ MailAddress }}</p>
-      </div>
+        <div class="estimation-box">
+          <div class="estimation-title">
+            <p>取引の評価</p>
+            <span>(必須)</span>
+          </div>
+          
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <!-- css -->
+            <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
+            {% elif icon == None %}
+            <!-- css -->
+            <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
+            {% endif %}
+          </figure>
 
-      <div class="guidance-nav">
-        <ul>
-          <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li>
-          <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li>
-        </ul>
-      </div>
+          <div class="estimation">
+            <!-- <p>名前</p> -->
+            <p class="estimation-name">イッパイアッテナ様</p>
+
+            <div class="evaliate-exa-box">
+              <div class="evaliate-exa">
+                <img src="../static/images/sun.svg" alt="">
+                <p class="evaliate-num">５：</p>
+                <p>よい出品者でした</p>  
+              </div>
+              <div class="evaliate-exa">
+                <img src="../static/images/cloud-sun.svg" alt="">
+                <p class="evaliate-num">３：</p>
+                <p>ふつうの出品者でした</p>
+              </div>
+              <div class="evaliate-exa">
+                <img src="../static/images/umbrella.svg" alt="">
+                <p class="evaliate-num">０.５：</p>
+                <p>わるい出品者でした</p>
+              </div>
+            </div>            
+
+            <div class="estimation-detail">
+              <input type="number" name="rate" min="0.5" max="5" step="0.5" placeholder="５">
+              <input type="hidden" name="buyid" value="{{ BuyID }}">
+            </div>
+          </div>
+        </div>
+
+        <div class="guidance">
+          <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
+          <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
+          <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
+          <p class="customer-mail">sample@gmail.com</p>
+        </div>
+
+        <div class="guidance-nav">
+          <ul>
+            <!-- <li><a href="{{ url_for('IndexPage') }}" class="main-btn">トップページへ</a></li> -->
+            <!-- <li><a href="{{ url_for('MyPage') }}" class="main-btn">購入した商品へ</a></li> -->
+            <li><button type="submit" name="submit" class="main-btn" value="index">トップページ</button></li>
+            <li><button type="submit" name="submit" class="main-btn" value="buylist">購入した商品へ</button></li>
+          </ul>
+        </div>
+
+      </form>
+
     </div>
 
+    <!-- -------------------------------------------------------------- -->
+
+    <!-- <div class="shopping-box">
+      <div class="shopping-tag">
+        <ul>
+          <li>ご購入内容確認</li>
+          <li class="nowPage">ご購入完了</li>
+        </ul>
+      </div>
+
+      <h1>ご購入ありがとうございました！</h1> -->
+
+      <!-- <form action="/evaluate" method="post">
+        <div class="sell-info">
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
+            {% elif icon == None %}
+            <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
+            {% endif %}
+          </figure>
+          
+          <div class="sell-info-detail">
+            <p>名前</p>
+              <input type="number" name="rate" min="0.5" max="5" step="0.5">
+              <input type="hidden" name="buyid" value="{{ BuyID }}">
+            </div>
+            
+          </div>
+          
+          <div class="guidance">
+            <p>お客様のご購入を承りましたのでご案内申しあげます。</p>
+            <p>ご購入が確定しますと、以下メールアドレス宛にご購入完了メールをお送りしますので、必ずご確認ください。</p>
+            <p>「マイページ」の「購入した商品」でご購入内容をご確認いただけます。</p>
+            <p class="customer-mail">{{ MailAddress }}</p>
+          </div>
+          
+          <div class="guidance-nav">
+            <ul>
+              <li><button type="submit" name="submit" class="main-btn" value="index">トップページ</button></li>
+              <li><button type="submit" name="submit" class="main-btn" value="buylist">購入した商品へ</button></li>
+            </ul>
+          </div>
+
+        </div>
+      </form> -->
+      
     <footer>
       <div id="footer-wrap">
-
+          
         <div class="footer-left">
-          <!-- <img src="images/footer-tittle.svg"> -->
-          <!-- <img src="images/footer-tittle-touka.svg"> -->
           <img class="footer-tittle" src="../static/images/footer-touka.svg">
           <div class="sns-box">
             <img class="footer-icon01" src="../static/images/instagram.svg">
@@ -354,6 +449,27 @@
     {{ style | safe }}
 
   </body>
+
+  <script>
+    let selectedRating = 0;
+
+    function rate(stars) {
+      selectedRating = stars;
+      document.getElementById("selectedRating").innerText = "選択された評価: " + selectedRating + "つ";
+      
+      // 選択された星の色を変更
+      for (let i = 1; i <= 5; i++) {
+        const starElement = document.getElementById("star" + i);
+        if (starElement) {
+          if (i <= stars) {
+            starElement.style.color = "yellow";
+          } else {
+            starElement.style.color = "gray";
+          }
+        }
+      }
+    }
+  </script>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
 

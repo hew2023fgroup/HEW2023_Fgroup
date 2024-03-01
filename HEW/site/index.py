@@ -51,7 +51,7 @@ def Registration():
         
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
-        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#000', 6, {0}), ('#FFF', 7, {0}), 
+        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#333', 6, {0}), ('#FFF', 7, {0}), 
         ('static/images/slide/slide01.jpg', 8, {0}), ('static/images/slide/slide05.jpg', 9, {0}), 
         ('static/images/slide/slide08.jpg', 10, {0}), ('static/images/slide/slide10.jpg', 11, {0});
         '''.format(id)
@@ -761,6 +761,7 @@ def Evaluate():
         
         buyid = request.form['buyid']
         eval = request.form['rate']
+        submit = request.form['submit']
         
         # 評価値のUPDATE
         eval_sql = '''
@@ -769,12 +770,15 @@ def Evaluate():
         WHERE BuyID = {1};
         '''.format(eval, buyid)
         cursor.execute(eval_sql)
-        
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('IndexPage'))
+        
+        if submit == 'index':
+            return redirect(url_for('IndexPage'))
+        elif submit == 'buylist':
+            return redirect(url_for('BuyListPage'))
 
 # #########################################
 # トップ
@@ -1069,14 +1073,18 @@ def ProductPage(sellid):
     
     # 平均評価値のSELECTx2
     evalscore_sql = '''
-    SELECT AVG(Review) 
+    SELECT ROUND(AVG(Review),1)
     FROM Buy 
     WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
     '''.format(sell_acc[0])
     cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
+    rate = cursor.fetchone()[0]
+    if rate == None:
+        rate = 0
+    halfrate = rate % 1
+    halfrate = 1 if halfrate == 0.5 else 0
+    lastrate = 5 - rate
+    rate = [int(rate), halfrate, int(lastrate)]
     
     # タグのSELECT
     Tag_Select = '''
@@ -1133,7 +1141,7 @@ def ProductPage(sellid):
     return render_template(
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
         price=price, sellid=sellid, scategory=scategory, style=style, record=record,
-        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, bought=bought,
+        status=status, rate=rate, sell_acc=sell_acc, sells=sells, bought=bought,
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName, nice=nice)
     
 # /search
@@ -1470,16 +1478,20 @@ def MyPage():
     icon = cursor.fetchone()[0]
     print('icon:',icon)
     
-    # 平均評価値のSELECTx2
+    # 評価値
     evalscore_sql = '''
-    SELECT AVG(Review) 
+    SELECT ROUND(AVG(Review),1) 
     FROM Buy 
     WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
     '''.format(AccountID)
     cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
+    rate = cursor.fetchone()[0]
+    if rate == None:
+        rate = 0
+    halfrate = rate % 1
+    halfrate = 1 if halfrate == 0.5 else 0
+    lastrate = 5 - rate
+    rate = [int(rate), halfrate, int(lastrate)]
     
     # 売り上げSELECT
     proc_sql = '''
@@ -1511,8 +1523,8 @@ def MyPage():
     conn.close()
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate, icon=icon, 
-        style=style, layout_value=layout_value)
+        UserName=UserName, icon=icon, 
+        style=style, layout_value=layout_value, rate=rate)
     
 # /charge
 @app.route('/charge', methods=['POST'])
@@ -2318,7 +2330,7 @@ def LayoutPage():
                 main_color = '#ff0000'
                 wall_color = '#ffffff'
                 text_color = '#000000'
-                footer_color = '#000000'
+                footer_color = '#333333'
                 footertxt_color = '#ffffff'
                 slideshow = '1'
                 sellimg = '1'
@@ -2539,8 +2551,9 @@ def LayoutPage():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
-                               layout_value=layout_value, simple_value=simple_value)
+        return render_template(
+            'layout.html', UserName=UserName, icon=icon, style=style, 
+            layout_value=layout_value, simple_value=simple_value)
 
 # /logout
 @app.route('/logout')
