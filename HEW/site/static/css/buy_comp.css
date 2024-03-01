@@ -31,10 +31,15 @@
 }
 
 .estimation-box{
-  width: 500px;
+  width: 540px;
   margin: 0 auto 0 auto;
-  /* text-align: center; */
-  /* background-color: #ddd; */
+  padding: 10px 30px;
+
+  /* background-color: #f3f4f6; */
+
+  /* border: 1px #f3f4f6 solid; */
+  /* box-shadow: 0 0 2.5px #d0d0d0; */
+  border-radius: 5px;
 }
 .estimation-title{
   display: flex;
