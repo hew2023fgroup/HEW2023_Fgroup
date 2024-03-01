@@ -241,11 +241,29 @@ def SellPage():
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    if request.args.get('sellid'):
+        sellid = request.args.get('sellid')
+        Sell_Select = '''
+        SELECT * 
+        FROM Sell
+        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+        JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
+        JOIN Status ON Sell.StatusID = Status.StatusID
+        JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Sell.SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Sell_Select)
+        print('実行:',Sell_Select)
+        sellinfo = cursor.fetchone()
+        print('sellinfo:',sellinfo)
+        
+    
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("sell.html",icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo,
+        style=style, layout_value=layout_value, sellid=sellid)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
@@ -1948,7 +1966,10 @@ def DraftPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x00 
+    AND Sell.AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Draft_Select)
     Drafts = cursor.fetchall()
@@ -1957,8 +1978,9 @@ def DraftPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value)
         
 # /personal
 @app.route('/personal')
