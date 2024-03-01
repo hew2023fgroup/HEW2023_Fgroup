@@ -300,20 +300,23 @@
 
       <form action="/evaluate" method="post">
 
-        <figure id="prof_icon">
-          {% if icon != None %}
-          <!-- css -->
-          <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
-          {% elif icon == None %}
-          <!-- css -->
-          <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
-          {% endif %}
-        </figure>
+        <div class="estimation-box">
+          <figure id="prof_icon">
+            {% if icon != None %}
+            <!-- css -->
+            <img src="../{{ icon }}" id="profile-image" alt="プロフィール画像" style="max-width: 80px;">
+            {% elif icon == None %}
+            <!-- css -->
+            <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像" style="max-width: 80px;">
+            {% endif %}
+          </figure>
 
-        <div class="sell-info-detail">
-          <p>名前</p>
-          <input type="number" name="rate" min="0.5" max="5" step="0.5">
-          <input type="hidden" name="buyid" value="{{ BuyID }}">
+          <div class="sell-info-detail">
+            <!-- <p>名前</p> -->
+            <p>イッパイアッテナ様</p>
+            <input type="number" name="rate" min="0.5" max="5" step="0.5">
+            <input type="hidden" name="buyid" value="{{ BuyID }}">
+          </div>
         </div>
 
         <div class="guidance">

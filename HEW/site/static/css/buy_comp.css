@@ -30,7 +30,13 @@
   text-align: center;
 }
 
-
+.estimation-box{
+  background-color: #ddd;
+}
+.estimation-box figure{}
+.estimation-box figure img{
+  border-radius: 50%;
+}
 
 
 
@@ -63,7 +69,23 @@
   display: inline-block;
   margin: 0 10px 0 10px;
 }
-.guidance-nav ul li a{
+.guidance-nav ul li button{
+  padding: 13px 60px 13px 60px;
+  text-decoration: none;
+  color: #f3f4f6 !important;
+  background-color: #333333 !important;
+  border: 1px solid #333333 !important;
+  border-radius: 5px;
+  transition: all .3s ease-out;
+  cursor: pointer;
+}
+.guidance-nav ul li button:hover{
+  border: 1px solid #333333 !important;
+  background: #fff !important;
+  color: #333333 !important;
+}
+
+/* .guidance-nav ul li a{
   padding: 10px 60px 10px 60px;
   text-decoration: none;
   color: #f3f4f6 !important;
@@ -76,4 +98,4 @@
   border: 1px solid #333333 !important;
   background: #fff !important;
   color: #333333 !important;
-}
+} */
