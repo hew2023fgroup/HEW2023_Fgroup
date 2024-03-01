@@ -317,7 +317,11 @@
 
     <main id="m-sell">
 
+      {% if sellid %}
+      <h1>下書きの出品</h1>
+      {% else %}
       <h1>商品の出品</h1>
+      {% endif %}
 
       <form action="/sell_confirm" method="POST" enctype="multipart/form-data">
 
@@ -352,7 +356,12 @@
             <p class="title">カテゴリー</p>
             <label class="selectbox">
               <select name="scategoryid" id="scategoryid" required>
+                <!-- 下書き処理 -->
+                {% if sellinfo %}
+                <option value="{{ sellinfo[15] }}" selected>{{ sellinfo[16] }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
                 <option value="1">トップス レディース</option>
                 <option value="2">トップス メンズ</option>
                 <option value="3">パンツ レディース</option>
@@ -420,7 +429,12 @@
             <p class="title">商品の状態</p>
             <label class="selectbox">
               <select name="status" id="status" required>
+                <!-- 下書き処理 -->
+                {% if sellinfo %}
+                <option value="{{ sellinfo[18] }}" selected>{{ sellinfo[19] }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
                 <option value="1">新品、未使用</option>
                 <option value="2">未使用に近い</option>
                 <option value="3">目立った傷汚れなし</option>
@@ -434,9 +448,18 @@
         <div class="intro">
             <h3>商品名と説明</h3>
             <p class="title">商品名(70文字以内)</p>
+            <!-- 下書き処理 -->
+            {% if sellid %}
+            <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" value="{{ sellinfo[1] }}" required>
+            {% else %}
             <input type="text"  name="selltit" id="selltit" class="textbox-001" placeholder="商品名" maxlength="70" required>
+            {% endif %}
             <p class="title">商品の説明(500文字以内)</p>
+            {% if sellid %}
+            <input type="text" class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500" value="{{ sellinfo[6] }}">
+            {% else %}
             <textarea class="textbox-002" name="overview" id="overview" placeholder="色、素材、重さ、定価、など" maxlength="500"></textarea>
+            {% endif %}
         </div>
 
         <div class="delivery">
@@ -453,7 +476,12 @@
             <p class="title">出品者負担 出品する商品の重さ</p>
             <label class="selectbox">
               <select name="postage" id="postage" required>
+                <!-- 下書き処理 -->
+                {% if sellinfo %}
+                <option value="{{ sellinfo[20] }}" disabled selected>{{ sellinfo[21] }}</option>
+                {% else %}
                 <option value="" disabled selected>選択してください</option>
+                {% endif %}
                 <option value="3">小(~ 3kg未満)</option>
                 <option value="2">中(3kg以上 ~ 10kg未満)</option>
                 <option value="1">大(10kg以上 ~)</option>
@@ -464,7 +492,12 @@
         <div class="price">
             <h5>販売価格</h5>
             <p class="title">販売価格(¥300〜9,999,999)</p>
+            <!-- 下書き処理 -->
+            {% if sellinfo %}
+            <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" value="{{ sellinfo[2] }}" required>
+            {% else %}
             <input type="number" name="price" id="price" class="textbox-003" min="300" max="9999999" placeholder="300" required>
+            {% endif %}
         </div>
         <div class="sell">
 
