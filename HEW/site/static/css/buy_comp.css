@@ -92,6 +92,11 @@
   text-align: center;
   font-size: 1.1rem;
 }
+.estimation-detail input::-webkit-outer-spin-button,
+.estimation-detail input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
 /* .order-number-box{
