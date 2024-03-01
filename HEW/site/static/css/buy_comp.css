@@ -44,6 +44,7 @@
 .estimation-title span{
   margin: 0 0 0 8px;
   font-size: 0.9rem;
+  /* color: #fff !important; */
 }
 
 
@@ -60,9 +61,11 @@
 .estimation-name{
   margin: 10px 0;
   text-align: center;
+  font-size: 1.1rem;
 }
 .evaliate-exa-box{
   margin: 0 auto;
+  padding: 15px 0 10px;
   width: fit-content;
 }
 .evaliate-exa{
@@ -76,6 +79,7 @@
 }
 .evaliate-num{
   width: 55px;
+  margin: 0 0 0 10px;
   text-align: right;
 }
 .estimation-detail{
