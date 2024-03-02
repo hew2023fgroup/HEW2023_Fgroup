@@ -429,11 +429,12 @@
               {% endif %} -->
               
               <!-- 確認用のチェックボックス -->
-              <input type="checkbox" id="confirmation" required>
-              <label for="confirmation">上記の情報を確認しました</label><br>
+              <div class="checkbox-box">
+                <input type="checkbox" id="confirmation" required>
+                <label for="confirmation">上記の情報を確認しました</label><br>
+              </div>
 
               <li><button type="submit" id="Button" name="sell_action" class="btn05" value="sell">出品する</button></li>
-
               <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
               <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
             </ul>
