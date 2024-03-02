@@ -1,0 +1,236 @@
+@charset "utf-8";
+
+/* 共通のスタイル */
+body{
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+}
+
+/*.section .oneArea{
+  margin-bottom: 300px;
+}*/
+
+div#box{
+  width: 1200px;
+  margin: 70px auto 0;
+  display: flex;
+}
+
+div#box nav#third_nav{
+  width: 250px;
+  height: auto;
+/*  background-color: pink;*/
+}
+div#box nav#third_nav ul{
+  list-style-type: none;
+}
+div#box nav#third_nav ul li{
+  margin: 0 0 13px 0;
+  position: relative;
+}
+div#box nav#third_nav ul li::after{
+  content: "";
+  display: block;
+  width: 250px;
+  height: 0px;
+  position: absolute;
+  bottom: -7px;
+  left: 0px;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+li#s_02{
+  padding: 0 0 10px 10px;
+  font-size: 1.2rem;
+}
+
+div#box nav#third_nav ul li a{
+  padding: 13px 0 0 10px;
+  width: 240px;
+  height: 30px;
+  display: block;
+
+  text-decoration: none;
+  color: #000;
+  font-size: 1rem;
+
+  position: relative;
+}
+div#box nav#third_nav ul li a:hover{
+  background-color: #f5f5f5;
+}
+div#box nav#third_nav ul li a::after{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  margin: auto;
+  content: "";
+  vertical-align: middle;
+  width: 0.4em;   /* arrow size */
+  height: 0.4em;  /* arrow size */
+  border-top: 1px solid #808080;  /* thickness, color */
+  border-right: 1px solid #808080;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+
+
+
+
+main#guide-box{
+  width: 900px;
+  height: auto;
+  margin: 0 0 0 50px;
+}
+
+/*-----------------------------------------------*/
+/*--------------------共通部分--------------------*/
+/*-----------------------------------------------*/
+.title-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e8f8ff !important;
+}
+.one_title{
+  padding: 12px 0 12px 5px;
+}
+.button{
+  padding: 12px 15px 12px 0;
+  text-decoration: none;
+  color: #000;
+}
+.button:hover{
+  opacity: 0.5;
+}
+
+
+/*--------------------ご購入方法--------------------*/
+div#s_02_1{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+}
+.guide-detail-box{
+  display: flex;
+  position: relative;
+  margin-bottom: 20px;
+}
+.guide-detail-box:not(:last-child)::after{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: -10px;
+  left: 0px;
+  border-bottom: 1px solid pink;
+}
+.step-wrap{
+  width: calc(100% / 2);
+}
+.step-box{
+  display: flex;
+  align-items: center;
+  margin: 20px 0 0 0;
+}
+.step{
+  border: 1.5px solid pink;
+  padding: 7px 5px;
+}
+.step-tittle{
+  margin: 0 0 0 20px;
+}
+.step-exa{
+  padding: 30px 0 0 0;
+}
+.step-exa p{
+  line-height: 20px;
+}
+div#s_02_1 figure{
+  width: calc(100% / 2);
+  padding: 20px 0 20px 10px;
+}
+div#s_02_1 figure img{
+  border: 1px #a9a9a9 solid;
+  width: 100%;
+}
+.step-exa p{}
+.step-exa .product-exa{
+  margin: 20px 0 0 0;
+}
+.step-exa .product-exa p{}
+
+.exa01{
+  margin: 20px 0 0 0;
+}
+.exa02{
+  margin: 20px 0 0 0;
+}
+
+
+/*--------------------ご購入方法--------------------*/
+div#s_02_2{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+/*  height: 1000px;*/
+}
+div#s_02_2 figure{
+  width: calc(100% / 2);
+  padding: 20px 0 20px 10px;
+}
+div#s_02_2 figure img{
+  border: 1px #a9a9a9 solid;
+  width: 100%;
+}
+.img02{
+  margin: 15px 0 0 0;
+}
+
+
+/*--------------------ご出品方法--------------------*/
+div#s_02_3{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+  height: 500px;
+}
+
+
+/*--------------------売上金・サービス内マネー--------------------*/
+div#s_02_4{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+  height: 500px;
+}
+
+/*--------------------会員登録・ログイン--------------------*/
+div#s_02_5{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+}
+.login-new-wrap{
+  margin: 20px 0 0 0;
+}
+.login-new-wrap p{
+  line-height: 20px;
+}
+
+/*--------------------個人情報の登録・変更--------------------*/
+div#s_02_6{
+  margin: 0 0 50px 0;
+  padding: 0 0 0 15px;
+/*  height: 500px;*/
+}
+
+div#s_02_6 figure{
+  width: calc(100% / 2);
+  padding: 20px 0 20px 10px;
+}
+div#s_02_6 figure img{
+  border: 1px #a9a9a9 solid;
+  width: 100%;
+}
+
+
+

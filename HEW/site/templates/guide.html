@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_slide.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/guide.css') }}">
     
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +28,7 @@
   </head>
 
   <body>
-    <div id="footer-container">
-
+    
     <nav id="main-nav">
       <div class="main-nav-box">
         <div class="left-nav">
@@ -52,7 +51,7 @@
         </figure>
         <div class="right-nav">
           <ul>
-            <!--<li class="underline"><a href="" id="hoverButton">テーブル</a></li>-->
+            <!-- <li class="underline"><a href="" id="hoverButton">テーブル</a></li> -->
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
@@ -63,7 +62,7 @@
         </div>
       </div>
     </nav>
-    
+
 
     <div class="search-box">
       <img id="closebtn" src="../static/images/x01.svg">
@@ -83,13 +82,11 @@
       </div>
 
       <form action="/search" method="post">
-        <ul class="search-history" style="display: none;">
+        <ul>
           {% for word in words %}
           <li>
-            
             <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
-            <img src="../static/images/search-x.svg"  id="search-delete-btn" alt="">
           </li>
           {% endfor %}
         </ul>
@@ -287,200 +284,256 @@
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
 
-    <!---------- MAIN-SLIDE ---------->
-    <div class="main-content">
-      <section class="slideshow">
-        <div class="slideshow-inner">
-          <div class="slides">
-            <div class="slide is-active ">
-              <div class="slide-content">
-                <div class="caption">
-                  <div class="title" id="title">VARIA-FREE</div>
-                  <div class="text">
-                    <p></p>
-                  </div>
-    <!--                   <a href="#" class="btn">
-                    <span class="btn-inner">well come</span>
-                  </a> -->
-                </div>
-              </div>
-              <div class="image-container">
-                <!-- <img src="../static/images/slide01.jpg" alt="小物の画像" class="image"> -->
-                <img src="{{ slide_value[0][0] }}" alt="小物の画像" class="image">
-              </div>
+    
+    <div id="box">
+
+        <nav id="third_nav">
+          <ul>
+            <li id="s_02">ご利用ガイド</li>
+            <li><a href="#s_02_1">ご購入方法</a></li>
+            <li><a href="#s_02_2">ご出品方法</a></li>
+            <li><a href="#s_02_3">送料・配送</a></li>
+            <li><a href="#s_02_4">売上金・サービス内マネー</a></li>
+            <li><a href="#s_02_5">会員登録・ログイン</a></li>
+            <li><a href="#s_02_6">個人情報の登録・変更</a></li>
+          </ul>
+        </nav>
+  
+  
+        <main id="guide-box">
+  
+          <div id="s_02_1">
+            <div class="title-box">
+              <p class="one_title">１．ご購入方法</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
             </div>
-            <div class="slide">
-              <div class="slide-content">
-                <div class="caption">
-                  <div class="title" id="title">VARIA-FREE</div>
-                  <div class="text">
-                    <p></p>
-                  </div>
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">商品の検索・選択</p>
+                </div>
+                <div class="step-exa">
+                  <p>キーワード検索やカテゴリーを指定、もしくは商品一覧から商品を見つけ、商品詳細ページに遷移します。</p>
+                  <!-- <p>商品を確認し、よろしければ「購入手続きへ」ボタンを押して次の手順に進みます。</p> -->
                 </div>
               </div>
-              <div class="image-container">
-                <!-- <img src="../static/images/slide08.jpg" alt="自転車の画像" class="image"> -->
-                <img src="{{ slide_value[1][0] }}" alt="自転車の画像" class="image">
-              </div>
+              <figure>
+                <img src="../static/images/guide01.png">
+              </figure>
             </div>
-            <div class="slide">
-              <div class="slide-content">
-                <div class="caption">
-                  <div class="title" id="title">VARIA-FREE</div>
-                  <div class="text">
-                    <p></p>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">「購入手続きへ」をクリック</p>
+                </div>
+                <div class="step-exa">
+                  <!-- <p>キーワード検索やカテゴリーを指定、もしくは商品一覧から商品を見つけ、商品詳細ページに遷移します。</p> -->
+                  <p>商品を確認し、よろしければ「購入手続きへ」ボタンを押して次の手順に進みます。</p>
+                  <div class="product-exa">
+                    <p>【 購入前に以下を必ずご確認ください 】</p>
+                    <p>‣金額</p>
+                    <p>‣商品説明</p>
+                    <p>‣商品状態</p>
                   </div>
                 </div>
               </div>
-              <div class="image-container">
-                <!-- <img src="../static/images/slide05.jpg" alt="インテリアの画像" class="image"> -->
-                <img src="{{ slide_value[2][0] }}" alt="インテリアの画像" class="image">
-              </div>
+              <figure>
+                <img src="../static/images/guide04.png">
+              </figure>
             </div>
-            <div class="slide">
-              <div class="slide-content">
-                <div class="caption">
-                  <div class="title" id="title">VARIA-FREE</div>
-                  <div class="text">
-                    <p></p>
-                  </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">お届け先住所の選択・内容の確認</p>
+                </div>
+                <div class="step-exa">
+                  <p>購入内容確認画面にて、お届け先住所を選択し、内容のご確認してください。</p>
+                  <p class="exa01">確認ができましたら、チェックボックスをチェックした後に「購入を確定する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご購入手続きが完了しました。</p>
                 </div>
               </div>
-              <div class="image-container">
-                <!-- <img src="../static/images/slide10.jpg" alt="服の画像" class="image"> -->
-                <img src="{{ slide_value[3][0] }}" alt="服の画像" class="image">
-              </div>
+              <figure>
+                <img src="../static/images/guide05.png">
+              </figure>
             </div>
           </div>
-          <div class="pagination">
-            <div class="item is-active">
-              <span class="icon">1</span>
+  
+          <div id="s_02_2">
+            <div class="title-box">
+              <p class="one_title">２．ご出品方法について</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
             </div>
-            <div class="item">
-              <span class="icon">2</span>
-            </div>
-            <div class="item">
-              <span class="icon">3</span>
-            </div>
-            <div class="item">
-              <span class="icon">4</span>
-            </div>
-          </div>
-          <div class="arrows">
-            <div class="arrow prev">
-              <span class="svg svg-arrow-left">
-                <svg version="1.1" id="svg4-Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="26px" viewBox="0 0 14 26" enable-background="new 0 0 14 26" xml:space="preserve"> <path d="M13,26c-0.256,0-0.512-0.098-0.707-0.293l-12-12c-0.391-0.391-0.391-1.023,0-1.414l12-12c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414L2.414,13l11.293,11.293c0.391,0.391,0.391,1.023,0,1.414C13.512,25.902,13.256,26,13,26z"/> </svg>
-                <span class="alt sr-only"></span>
-              </span>
-            </div>
-            <div class="arrow next">
-              <span class="svg svg-arrow-right">
-                <svg version="1.1" id="svg5-Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="26px" viewBox="0 0 14 26" enable-background="new 0 0 14 26" xml:space="preserve"> <path d="M1,0c0.256,0,0.512,0.098,0.707,0.293l12,12c0.391,0.391,0.391,1.023,0,1.414l-12,12c-0.391,0.391-1.023,0.391-1.414,0s-0.391-1.023,0-1.414L11.586,13L0.293,1.707c-0.391-0.391-0.391-1.023,0-1.414C0.488,0.098,0.744,0,1,0z"/> </svg>
-                <span class="alt sr-only"></span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-    <!---------- MAIN-SLIDE ---------->
-
-
-
-    <main class="product_area">
-      <!--<h1>おすすめ商品</h1>-->
-      <!--<h1>商品一覧</h1>-->
-      <div class="DisplayBox">
-        <h1>商品一覧</h1>
-        <div class="DisplayForm">
-          <p>表示形式：</p>
-          <img class="grid_img" src="../static/images/grid_black.svg" alt="グリッド表示" onclick="switchTo('grid')">
-          <img class="list_img" src="../static/images/list_black.svg" alt="リスト表示" onclick="switchTo('list')">
-        </div>
-      </div>
-
-      <!-- <div class="wrap_product"> -->
-
-        <!-- <div class="product">
-          <a href="product.html">
-            <figure>
-              <img src="../static/images/doraemon.png" alt="">
-            </figure>
-            <p>VICKIE MINI SAFFIANO LEATHER〈ビッキー レザーミニトート〉ブラック</p>
-            <span>¥18,700</span>
-          </a>
-        </div> -->
-
-        <div id="gridView">
-          <div class="grid-wrap-product">
-
-            {% for row in sells %}
-            <div class="grid-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <p>{{ row[1] }}</p>
-                <div class="price-box">
-                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">写真の選択</p>
                 </div>
-              </a>
-            </div>
-            {% endfor %}
-
-          </div>
-        </div>
-
-
-        <div id="listView" style="display: none;">
-          <div class="list-wrap-product">
-
-            {% for row in sells %}
-            <div class="list-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <div class="list-product-exa">
-                  <p>{{ row[1] }}</p>
-                  <div class="list-price-box">
-                    <span class="list-mark">¥</span><span class="list-price">{{ row[2] }}</span>
-                    <span class="product-tax">(税込)</span>
-                  </div>
+                <div class="step-exa">
+                  <p>写真を複数枚選択し、その中から一枚だけ出品時のサムネイルを選んでください。</p>
+                  <p class="exa01">間違えた写真を選んでしまった場合は、写真右上の×ボタンを押すことで削除できます。</p>
                 </div>
-              </a>
+              </div>
+              <figure>
+                <img src="../static/images/guide06.png">
+              </figure>
             </div>
-            {% endfor %}
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">商品の説明を入力</p>
+                </div>
+                <div class="step-exa">
+                  <p>商品の説明を入力してください。</p>
+                  <p class="exa01">カテゴリーと商品の状態、商品名と商品の説明などをできるだけ詳細を入力して商品の魅力を伝えてください。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide07.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">出品内容の確認</p>
+                </div>
+                <div class="step-exa">
+                  <p>すべての項目の入力・設定の確認が完了しましたら、出品者ご自身の住所を選択してください。</p>
+                  <p class="exa01">その後、「上記の情報を確認しました」をチェックし、「出品する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご出品手続きが完了しました。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide08.png">
+                <img class="img02" src="../static/images/guide09.png">
+              </figure>
+            </div>
   
           </div>
-        </div>
-        
-
-
-        <!-- 以下for文の追加(仮) -->
-        <!-- {% for row in sells %}
-        <div class="product">
-          <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-            <figure>
-              <img src="{{ row[3] }}" alt="sellimg" width="215px">
-            </figure>
-              <p>{{ row[1] }}</p>
-              <span>{{ row[2] }}</span>
-              
-              <div class="price-box">
-                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+  
+          <div id="s_02_3">
+            <div class="title-box">
+              <p class="one_title">３．送料・配送</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+          </div>
+  
+          <div id="s_02_4">
+            <div class="title-box">
+              <p class="one_title">４．売上金・サービス内マネー</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+          </div>
+  
+          <div id="s_02_5">
+            <div class="title-box">
+              <p class="one_title">５．会員登録・ログイン</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="login-new-wrap">
+              <p>【会員登録されていない方】</p>
+              <p>新規会員登録ページでユーザーネーム、メールアドレスとパスワードを入力して新規会員登録をしてください。</p>
+  
+              <p class="exa01">【会員登録がお済みの方】</p>
+              <p>ログインページから登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+              <p class="exa02">入会費・年会費は無料です。</p>
+            </div>
+          </div>
+  
+          <div id="s_02_6">
+            <div class="title-box">
+              <p class="one_title">６．個人情報の登録・変更</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">画像・ユーザーネームの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【画像の変更】</p>
+                  <p>画像を選択して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【ユーザーネームの変更】</p>
+                  <p>ユーザーネームを入力して「変更」ボタンを押してください。</p>
+                </div>
               </div>
-          </a>
-        </div>
-        {% endfor %} -->
-      
-    </main>
-
-
-    <!-- <footer>
-      <p class="footer01">#VariaFree</p>
-      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
-    </footer> -->
+              <figure>
+                <img src="../static/images/guide10.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">住所の追加・削除</p>
+                </div>
+                <div class="step-exa">
+                  <p>【住所の追加】</p>
+                  <p>郵便番号、住所を入力して「追加」ボタンを押してください。</p>
+                  <p class="exa01">【住所の削除】</p>
+                  <p>住所一覧から「削除」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide11.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">メールアドレス・パスワードの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【メールアドレスの変更】</p>
+                  <p>新しいメールアドレスを入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【パスワードの変更】</p>
+                  <p>現在のパスワードを入力した後、新しいパスワードを入力して「変更」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide12.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP４</p>
+                  <p class="step-tittle">個人情報の変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【氏名・生年月日の変更】</p>
+                  <p>氏名・カナ、生年月日を入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【性別の変更】</p>
+                  <p>男性、女性、秘密から選択して「変更」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべての個人情報の登録・変更作業が完了しました。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide13.png">
+              </figure>
+            </div>
+          </div>
+        </main>
+  
+      </div>
 
 
     <footer>
@@ -498,9 +551,7 @@
           <p class="guide-tittle">ご利用ガイド</p>
           <div class="guide-box">
             <div class="gaido-left">
-              <!-- ここから下のようにguide.htmlに飛ぶようにお願いしたいです。 -->
-              <!-- <a href="guide.html"><p>ご購入方法</p></a> 一番上だけでお願いします。 -->
-              <a href="guide.html"><p>ご購入方法</p></a>
+              <a href=""><p>ご購入方法</p></a>
               <a href=""><p>ご出品方法</p></a>
               <a href=""><p>送料・配送</p></a>              
             </div>
@@ -521,7 +572,6 @@
     <!-- レイアウト編集 -->
     {{ style | safe }}
 
-    </div>
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
@@ -531,19 +581,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
-  
-  <!-- 値段3桁ごとにカンマ -->
-  <script src="{{ url_for('static', filename='js/count.js') }}"></script>
 
-
-  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
-
-  <!-- /main slide/ -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
-  <script src="{{ url_for('static', filename='js/main_slide.js') }}"></script>
-
-  <!-- 商品一覧 grid list -->
-  <script src="{{ url_for('static', filename='js/grid_list.js') }}"></script>
+  <!-- ガイド用 -->
+  <script src="{{ url_for('static', filename='js/guide.js') }}"></script>
 
 </html>
