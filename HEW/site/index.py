@@ -739,7 +739,10 @@ def PayPage():
             conn.commit()
             cursor.close()
             conn.close()
-            return redirect(url_for('BuyCompPage', BuyID=BuyID, icon=icon, UserName=UserName))
+            return redirect(
+                url_for(
+                    'BuyCompPage', BuyID=BuyID,
+                    icon=icon, UserName=UserName, SellID=SellID))
         
         # 所持金が足りない
         else:
@@ -790,13 +793,25 @@ def BuyCompPage(BuyID):
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    SellUserName_SELECT = '''
+    SELECT Account.UserName
+    FROM Account
+    JOIN Sell ON Account.AccountID = Sell.AccountID
+    JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.BuyID = {0};
+    '''.format(BuyID)
+    cursor.execute(SellUserName_SELECT)
+    print('実行:',SellUserName_SELECT)
+    sell_username = cursor.fetchone()[0]
+    
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "buy_comp.html", MailAddress=MailAddress, 
         style=style, layout_value=layout_value,
-        BuyID=BuyID, icon=icon, UserName=UserName)
+        BuyID=BuyID, icon=icon, UserName=UserName,
+        sell_username=sell_username)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])

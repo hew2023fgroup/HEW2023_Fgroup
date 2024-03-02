@@ -24,14 +24,84 @@
   background-color: #f3f4f6;
 }
 .shopping-box h1{
-  margin: 100px 0 50px 0;
-  font-size: 2.5rem;
+  margin: 70px 0 50px 0;
+  font-size: 2.3rem;
   font-weight: normal;
   text-align: center;
 }
 
+.estimation-box{
+  width: 540px;
+  margin: 0 auto 0 auto;
+  padding: 10px 30px;
+
+  /* background-color: #f3f4f6; */
+
+  /* border: 1px #f3f4f6 solid; */
+  /* box-shadow: 0 0 2.5px #d0d0d0; */
+  border-radius: 5px;
+}
+.estimation-title{
+  display: flex;
+  align-items: center;
+}
+.estimation-title p{}
+.estimation-title span{
+  margin: 0 0 0 8px;
+  font-size: 0.9rem;
+  /* color: #fff !important; */
+}
 
 
+.estimation-box figure{
+  text-align: center;
+}
+.estimation-box figure img{
+  border-radius: 50%;
+}
+
+.estimation{
+  /* background-color: pink; */
+}
+.estimation-name{
+  margin: 10px 0;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.evaliate-exa-box{
+  margin: 0 auto;
+  padding: 15px 0 10px;
+  width: fit-content;
+}
+.evaliate-exa{
+  display: flex;
+  align-items: center;
+  margin: 0 auto 5px auto;
+}
+.evaliate-exa img{
+  width: 32px;
+  height: auto;
+}
+.evaliate-num{
+  width: 55px;
+  margin: 0 0 0 10px;
+  text-align: right;
+}
+.estimation-detail{
+  margin: 10px 0 0 0;
+  text-align: center;
+}
+.estimation-detail input{
+  width: 100px;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.estimation-detail input::-webkit-outer-spin-button,
+.estimation-detail input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
 /* .order-number-box{
@@ -63,7 +133,23 @@
   display: inline-block;
   margin: 0 10px 0 10px;
 }
-.guidance-nav ul li a{
+.guidance-nav ul li button{
+  padding: 13px 60px 13px 60px;
+  text-decoration: none;
+  color: #f3f4f6 !important;
+  background-color: #333333 !important;
+  border: 1px solid #333333 !important;
+  border-radius: 5px;
+  transition: all .3s ease-out;
+  cursor: pointer;
+}
+.guidance-nav ul li button:hover{
+  border: 1px solid #333333 !important;
+  background: #fff !important;
+  color: #333333 !important;
+}
+
+/* .guidance-nav ul li a{
   padding: 10px 60px 10px 60px;
   text-decoration: none;
   color: #f3f4f6 !important;
@@ -76,4 +162,8 @@
   border: 1px solid #333333 !important;
   background: #fff !important;
   color: #333333 !important;
-}
+} */
+
+
+
+

@@ -52,11 +52,9 @@
         </figure>
         <div class="right-nav">
           <ul>
-            <!-- <li class="underline"><a href="" id="hoverButton">テーブル</a></li> -->
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
             <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
             <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
@@ -360,9 +358,7 @@
       <div id="footer-wrap">
 
         <div class="footer-left">
-          <!-- <img src="images/footer-tittle.svg"> -->
-          <!-- <img src="images/footer-tittle-touka.svg"> -->
-          <img class="footer-tittle" src="../static/images/footer-touka.svg">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
           <div class="sns-box">
             <img class="footer-icon01" src="../static/images/instagram.svg">
             <img class="footer-icon02" src="../static/images/facebook.svg">
@@ -373,13 +369,13 @@
           <p class="guide-tittle">ご利用ガイド</p>
           <div class="guide-box">
             <div class="gaido-left">
-              <p>ご購入方法</p>
-              <p>ご出品方法</p>
-              <p>送料・配送</p>
+              <a href=""><p>ご購入方法</p></a>
+              <a href=""><p>ご出品方法</p></a>
+              <a href=""><p>送料・配送</p></a>              
             </div>
             <div class="gaido-right">
-              <p>売上金・サービス内マネー</p>
-              <p>会員登録・ログイン</p>
+              <a href=""><p>売上金・サービス内マネー</p></a>
+              <a href=""><p>会員登録・ログイン</p></a>              
             </div>
           </div>
         </div>

@@ -143,7 +143,9 @@ main#m-personal h1::after{
   background-color: #F0F4FF;
   text-align: center;
 }
-
+.edit-nickname{
+  margin: 20px 0 0 0;
+}
 
 
 
