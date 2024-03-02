@@ -92,7 +92,7 @@ main#guide-box{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #e8f8ff;
+  background-color: #e8f8ff !important;
 }
 .one_title{
   padding: 12px 0 12px 5px;
