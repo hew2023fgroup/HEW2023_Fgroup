@@ -105,7 +105,9 @@ p#hoverButton{
 .book-mark{
   width: 35px;
   height: 35px;
-  /* margin-right: 5px; */
+}
+.book-mark:hover{
+  opacity: 0.5;
 }
 .underline{
   color: #000;
@@ -129,6 +131,9 @@ p#hoverButton{
   line-height: 30px;
   border-radius: 5px;
   color: #fff;
+}
+.nav-sell:hover{
+  opacity: 0.5;
 }
 
 /*――――――！絶対に消すな！――――――*/
@@ -309,6 +314,9 @@ width: 32px;
 height: 32px;
 cursor: pointer;
 z-index: 9999;
+}
+img#navbtn:hover{
+  opacity: 0.5;
 }
 img#closebtn{
   position: fixed;
@@ -543,6 +551,9 @@ div#footer-wrap{
   width: 330px;
   justify-content: space-between;
 }
+.guide-box a{
+  text-decoration: none;
+}
 .footer-right p{
   line-height: 25px;
   color: #fff;
@@ -553,7 +564,7 @@ div#footer-wrap{
 .copyRight-box{
 /*  background-color: pink;*/
   position: absolute;
-  right: 50px;
+  right: 70px;
   bottom: 70px;
 }
 .copyRight{
