@@ -293,9 +293,16 @@ h1{
   background-color: red;
   color: #fff;
 } */
+.checkbox-box{
+  margin: 40px 0 0 0;
+}
+input#confirmation{}
 .btn05 {
-      background-color: #fff;
-      color: #000;
+  background-color: #fff;
+  color: #000;
+}
+button#Button{
+  color: #fff !important;
 }
 .btn06{
   color: #000;
