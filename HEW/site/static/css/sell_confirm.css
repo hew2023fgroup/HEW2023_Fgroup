@@ -9,7 +9,7 @@ ul li{
 main#m-sell{
   width: 650px;
   height: auto;
-  margin: 0 auto 0 auto;
+  margin: 70px auto 0 auto;
 }
 
 
@@ -82,13 +82,13 @@ h1{
 }
 .detail p{}
 .detail ul{
-  margin: 70px 0 8px 0;
+  margin: 10px 0 10px 0;
 }
 .detail ul li{
   list-style: none;
 }
 .detail ul li p{
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 .selectbox{
   display: inline-flex;
