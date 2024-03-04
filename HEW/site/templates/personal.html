@@ -390,7 +390,7 @@
               <label for="post">郵便番号</label><br>
               <input type="text" class="textbox-001" autocomplete="off" name="post" id="post" pattern="\d{3}-\d{4}" title="郵便番号はXXX-XXXXの形式で入力してください" placeholder="郵便番号" required><br>
               <label for="address">住所</label><br>
-              <input type="text" class="textbox-001" autocomplete="off" placeholder="住所" name="address" name="address" required>
+              <input type="text" class="textbox-001" autocomplete="off" placeholder="住所" id="address" name="address" required>
               <button type="submit">追加</button>
             </form>
             {% endif %}
@@ -525,5 +525,7 @@
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
 
+  <!-- 住所自動入力 -->
+  <script src="{{ url_for('static', filename='js/address_auto.js') }}"></script>
 
 </html>

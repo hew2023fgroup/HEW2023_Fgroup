@@ -5,9 +5,6 @@ body{
   font-family: 'Zen Kaku Gothic New', sans-serif;
 }
 
-/*.section .oneArea{
-  margin-bottom: 300px;
-}*/
 
 div#box{
   width: 1200px;
@@ -18,7 +15,6 @@ div#box{
 div#box nav#third_nav{
   width: 250px;
   height: auto;
-/*  background-color: pink;*/
 }
 div#box nav#third_nav ul{
   list-style-type: none;
@@ -75,10 +71,6 @@ div#box nav#third_nav ul li a::after{
 }
 
 
-
-
-
-
 main#guide-box{
   width: 900px;
   height: auto;
@@ -92,7 +84,7 @@ main#guide-box{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #e8f8ff !important;
+  background-color: #e8f8ff;
 }
 .one_title{
   padding: 12px 0 12px 5px;
@@ -106,11 +98,12 @@ main#guide-box{
   opacity: 0.5;
 }
 
-
 /*--------------------ご購入方法--------------------*/
-div#s_02_1{
+div#guideBuy{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
+  padding-top: 140px;
+  margin-top:-140px;
 }
 .guide-detail-box{
   display: flex;
@@ -148,11 +141,11 @@ div#s_02_1{
 .step-exa p{
   line-height: 20px;
 }
-div#s_02_1 figure{
+div#guideBuy figure{
   width: calc(100% / 2);
   padding: 20px 0 20px 10px;
 }
-div#s_02_1 figure img{
+div#guideBuy figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
 }
@@ -171,16 +164,17 @@ div#s_02_1 figure img{
 
 
 /*--------------------ご購入方法--------------------*/
-div#s_02_2{
+div#guideSell{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-/*  height: 1000px;*/
+  padding-top: 140px;
+  margin-top:-140px;
 }
-div#s_02_2 figure{
+div#guideSell figure{
   width: calc(100% / 2);
   padding: 20px 0 20px 10px;
 }
-div#s_02_2 figure img{
+div#guideSell figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
 }
@@ -189,25 +183,49 @@ div#s_02_2 figure img{
 }
 
 
-/*--------------------ご出品方法--------------------*/
-div#s_02_3{
+/*--------------------送料・配送--------------------*/
+div#guidePostage{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-  height: 500px;
+  padding-top: 140px;
+  margin-top:-140px;
+}
+.postage-wrap{
+  margin: 20px 0 0 0;
+}
+.postage-wrap p{
+  line-height: 20px;
+}
+.postage-box{
+  display: flex;
+  align-items: center;
+}
+.kg{
+  margin: 0 0 0 7px;
+  width: 150px;
 }
 
 
 /*--------------------売上金・サービス内マネー--------------------*/
-div#s_02_4{
+div#guideMoney{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-  height: 500px;
+  padding-top: 140px;
+  margin-top:-140px;
+}
+.money-wrap{
+  margin: 20px 0 0 0;
+}
+.money-wrap p{
+  line-height: 20px;
 }
 
 /*--------------------会員登録・ログイン--------------------*/
-div#s_02_5{
+div#guideUser{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
+  padding-top: 140px;
+  margin-top:-140px;
 }
 .login-new-wrap{
   margin: 20px 0 0 0;
@@ -217,20 +235,17 @@ div#s_02_5{
 }
 
 /*--------------------個人情報の登録・変更--------------------*/
-div#s_02_6{
+div#guidePersonal{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-/*  height: 500px;*/
+  padding-top: 140px;
+  margin-top:-140px;
 }
-
-div#s_02_6 figure{
+div#guidePersonal figure{
   width: calc(100% / 2);
   padding: 20px 0 20px 10px;
 }
-div#s_02_6 figure img{
+div#guidePersonal figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
 }
-
-
-
