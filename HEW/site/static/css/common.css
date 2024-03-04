@@ -554,6 +554,9 @@ div#footer-wrap{
 .guide-box a{
   text-decoration: none;
 }
+.guide-box a p:hover{
+  color: rgba(255, 255, 255, 0.7) !important;
+}
 .footer-right p{
   line-height: 25px;
   color: #fff;
