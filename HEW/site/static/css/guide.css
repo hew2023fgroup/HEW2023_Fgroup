@@ -5,10 +5,6 @@ body{
   font-family: 'Zen Kaku Gothic New', sans-serif;
 }
 
-/*.section .oneArea{
-  margin-bottom: 300px;
-}*/
-
 div#box{
   width: 1200px;
   margin: 70px auto 0;
@@ -174,7 +170,6 @@ div#s_02_1 figure img{
 div#s_02_2{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-/*  height: 1000px;*/
 }
 div#s_02_2 figure{
   width: calc(100% / 2);
@@ -189,11 +184,24 @@ div#s_02_2 figure img{
 }
 
 
-/*--------------------ご出品方法--------------------*/
+/*--------------------送料--------------------*/
 div#s_02_3{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-  height: 500px;
+}
+.postage-wrap{
+  margin: 20px 0 0 0;
+}
+.postage-wrap p{
+  line-height: 20px;
+}
+.postage-box{
+  display: flex;
+  align-items: center;
+}
+.kg{
+  margin: 0 0 0 7px;
+  width: 150px;
 }
 
 
@@ -201,7 +209,12 @@ div#s_02_3{
 div#s_02_4{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-  height: 500px;
+}
+.money-wrap{
+  margin: 20px 0 0 0;
+}
+.money-wrap p{
+  line-height: 20px;
 }
 
 /*--------------------会員登録・ログイン--------------------*/
@@ -220,9 +233,7 @@ div#s_02_5{
 div#s_02_6{
   margin: 0 0 50px 0;
   padding: 0 0 0 15px;
-/*  height: 500px;*/
 }
-
 div#s_02_6 figure{
   width: calc(100% / 2);
   padding: 20px 0 20px 10px;
