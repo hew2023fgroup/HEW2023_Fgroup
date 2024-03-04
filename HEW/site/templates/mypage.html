@@ -323,6 +323,7 @@
 
             <p class="name">{{ UserName }}</p>
           </div>
+
           <div class="rate-form">
               <div class="rate-container" style="display: flex;">
                 {% for i in range(rate[0]) %}
@@ -335,7 +336,6 @@
                     <img src="static/images/rate0.svg" alt="0" style="max-width: 25px;">
                 {% endfor %}
               </div>
-
           </div>
 
           <div id="mypage_nav">
@@ -368,10 +368,7 @@
             </div>
           </div>
 
-          <div id="point-money-box">
-            <!-- チャージ用フォームの追加 -->
-            <!-- onsubmit="" で下のscriptタグの実行 変更可 -->
-            <!-- style="" でcss付与 変更可 -->
+          <!-- <div id="point-money-box">
             <form action="/charge" method="post" onsubmit="return Submit();">
               <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" style="margin: 0px; padding: 4px">
               <input type="submit" value="入金" style="margin-right: 30px;">
@@ -382,13 +379,31 @@
               <button type="submit" name="charge" value="3000" style="margin: 0px; padding:1px 8px;">+3000円</button>
             </form>
             
-            <!-- 確認用 -->
             <script>
               function Submit() {
                   return confirm('チャージしますか？');
               }
             </script>
+          </div> -->
 
+          <div id="charge-wrap">
+            <div class="chargebox">
+              <form action="/charge" method="post" onsubmit="return Submit();">
+                <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力">
+                <input type="submit" value="チャージする" class="payBtn">
+              </form>
+              <form action="/charge" method="post" onsubmit="return Submit();">
+                <button class="chargeBtn" type="submit" name="charge" value="1000">+1,000円</button>
+                <button class="chargeBtn" type="submit" name="charge" value="2000">+2,000円</button>
+                <button class="chargeBtn" type="submit" name="charge" value="3000">+3,000円</button>
+              </form>
+            </div>
+
+            <script>
+              function Submit() {
+                  return confirm('チャージしますか？');
+              }
+            </script>
           </div>
 
         </div>
