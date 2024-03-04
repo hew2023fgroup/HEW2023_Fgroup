@@ -475,9 +475,15 @@
         <div class="footer-left">
           <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
           <div class="sns-box">
-            <img class="footer-icon01" src="../static/images/instagram.svg">
-            <img class="footer-icon02" src="../static/images/facebook.svg">
-            <img class="footer-icon03" src="../static/images/twitter.svg">
+            <a href="https://www.instagram.com/hal.ac.jp/" target="_blank">
+              <img class="footer-icon01" src="../static/images/instagram.svg">
+            </a>
+            <a href="https://www.facebook.com/halnagoya/?locale=ja_JP" target="_blank">
+              <img class="footer-icon02" src="../static/images/facebook.svg">
+            </a>
+            <a href="https://twitter.com/hal_nagoya?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">
+              <img class="footer-icon03" src="../static/images/twitter.svg">
+            </a>
           </div>
         </div>
         <div class="footer-right">
@@ -512,6 +518,9 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
@@ -521,9 +530,6 @@
   
   <!-- 値段3桁ごとにカンマ -->
   <script src="{{ url_for('static', filename='js/count.js') }}"></script>
-
-
-  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- /main slide/ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
