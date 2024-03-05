@@ -249,7 +249,6 @@ def SellPage():
         Sell.StatusID, Status.Name, Sell.Name, Sell.Overview, 
         Sell.PostageID, Postage.Size, Sell.Price
         FROM Sell
-        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
         JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
         JOIN Status ON Sell.StatusID = Status.StatusID
         JOIN Postage ON Sell.PostageID = Postage.PostageID
@@ -258,6 +257,7 @@ def SellPage():
         cursor.execute(Sell_Select)
         print('実行:',Sell_Select)
         sellinfo = cursor.fetchone()
+        print('sellinfo:',sellinfo)
         
         Tag_Select = '''
         SELECT Name
@@ -284,6 +284,13 @@ def SellPage():
             print('imgs:',imgs)
         else:
             imgs = None
+            
+    else:
+        print('sellid なし')
+        sellid = None
+        sellinfo = None
+        imgs = None
+        tags = None
         
     
     conn.commit()
@@ -297,6 +304,14 @@ def SellPage():
 @app.route('/sell_confirm', methods=['POST'])
 def SellConfirm():
     if request.method == 'POST':
+        
+        if  request.args.get('sellid'):
+            print('あるあるあるあるあるあるあるあるあるある')
+            sellid = request.args.get('sellid')
+            return redirect(url_for('DelDraftImg',sellid=sellid))
+        else:
+            print('なしなしなしなしなしなしなしなしなしなし')
+        
         conn = conn_db()
         cursor = conn.cursor()
         
@@ -2024,6 +2039,29 @@ def DraftPage():
     return render_template(
         'draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
         style=style, layout_value=layout_value)
+   
+# /deleteimg
+@app.route('/deleteimg', methods=['GET'])
+def DelDraftImg():
+    print('''
+          /deleteimg が実行
+          ''')
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    sellid = request.args.get('sellid')
+    
+    SellIMG_Delete = '''
+    DELETE FROM SellIMG
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(SellIMG_Delete)
+    print('実行:',SellIMG_Delete)
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('SellPage', sellid=sellid))
         
 # /personal
 @app.route('/personal')

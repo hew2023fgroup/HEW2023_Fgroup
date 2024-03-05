@@ -24,7 +24,25 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-
+    <script type="text/javascript">
+      $(document).ready(function(){
+          // ボタンがクリックされた時の処理
+          $('#del_img').on('click', function(event){
+              // ボタンタグに入った値を取得
+              var sellid = $(this).val();
+    
+              // Ajax通信
+              $.ajax({
+                  type: 'POST',
+                  url: '/deleteimg',
+                  data: {sellid: sellid}, // sellidをデータとして追加
+                  error: function(xhr, status, error){
+                      console.error("Ajaxリクエスト中にエラーが発生しました: " + status, error);
+                  }
+              });
+          });
+      });
+    </script>
   </head>
 
   <body>
@@ -293,31 +311,37 @@
       <h1>商品の出品</h1>
       {% endif %}
 
-      <form action="/sell_confirm" method="POST" enctype="multipart/form-data">
+      <form action="/sell_confirm" method="POST" enctype="multipart/form-data" id="sellinfoForm">
 
         <div class="sell-images">
             <p class="title">出品画像</p>
-            <!-- <p>サムネイル(単数)</p> -->
-            <!-- <input type="file" name="sellimg-main" id="sellimg-main" accept="image/*" required> -->
-
-            <!-- <p>その他(複数可, 任意)</p> -->
-            <!-- <input type="file" name="sellimg-sub" id="sellimg-sub" accept="image/*" multiple> -->
-
-            <!--ここが今回新しい画像アップロードする機構-->
             <div class="container">
               <div id="previewContainer">
+
                 {% if imgs %}
                   {% for img in imgs %}
                   <img src="{{ img }}" alt="" class="preview-image" id="thumbnail" style="border: 3px solid rgb(252, 148, 175);">
                   {% endfor %}
                 {% endif %}
+                
               </div>
+
+              {% if imgs %}
+              <fieldset>
+                <form action="/deleteimg" method="post" id="deleteimgForm">
+                  <input type="hidden" name="sellid" value="{{ sellid }}">
+                  <button type="submit" id="" value="{{ sellid }}">画像を選びなおす</button>
+                </form>
+              </fieldset>
+              {% else %}
               <div id="imagePreview" ondrop="drop(event)" ondragover="allowDrop(event)">
                 ＋ ドラッグ＆ドロップまたはクリックして画像をアップロード<br><br>
                 サムネイルを選択してください
                 <input type="file" name="uploadInput" id="uploadInput" accept="image/*" multiple onchange="previewImages(event)">
               </div>
-              <input type="text" name="select" id="select" value="" hidden required >
+              <input type="text" name="select" id="select" value="" hidden required>
+              {% endif %}
+
           </div>
 
 
