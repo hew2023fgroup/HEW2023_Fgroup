@@ -324,7 +324,6 @@
             <p class="title">出品画像</p>
             <div class="container">
               <div id="previewContainer">
-                
                 {% if imgs %}
                   {% for img in imgs %}
                     {% if loop.index == 1 %}
@@ -333,9 +332,7 @@
                       <img src="{{ img }}" alt="" class="preview-image">
                     {% endif %}
                   {% endfor %}
-                {% endif %}
-
-                
+                {% endif %}                
               </div>
               
               <div id="imagePreview" ondrop="drop(event)" ondragover="allowDrop(event)">
@@ -534,7 +531,6 @@
 
         </div>
         <div class="sell">
-
           <ul>
             <li><input class="btn05" type="submit" value="確認する"></li>
           </ul>
@@ -560,13 +556,14 @@
           <p class="guide-tittle">ご利用ガイド</p>
           <div class="guide-box">
             <div class="gaido-left">
-              <a href=""><p>ご購入方法</p></a>
-              <a href=""><p>ご出品方法</p></a>
-              <a href=""><p>送料・配送</p></a>              
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
             </div>
             <div class="gaido-right">
-              <a href=""><p>売上金・サービス内マネー</p></a>
-              <a href=""><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
             </div>
           </div>
         </div>
