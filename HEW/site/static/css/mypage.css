@@ -275,7 +275,9 @@ input#charge:focus {
   cursor: pointer;
   color: #3155A6;
   border: 1px #6495ED solid;
+  transition: 0.3s;
 }
 .chargeBtn:hover{
-  opacity: 0.5;
+  background-color: #6495ED;
+  color: #fff;
 }
