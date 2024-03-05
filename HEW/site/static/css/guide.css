@@ -148,6 +148,10 @@ div#guideBuy figure{
 div#guideBuy figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
+  cursor: pointer;
+}
+div#guideBuy figure img:hover{
+  opacity: 0.6;
 }
 .step-exa p{}
 .step-exa .product-exa{
@@ -177,6 +181,10 @@ div#guideSell figure{
 div#guideSell figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
+  cursor: pointer;
+}
+div#guideSell figure img:hover{
+  opacity: 0.6;
 }
 .img02{
   margin: 15px 0 0 0;
@@ -248,4 +256,8 @@ div#guidePersonal figure{
 div#guidePersonal figure img{
   border: 1px #a9a9a9 solid;
   width: 100%;
+  cursor: pointer;
+}
+div#guidePersonal figure img:hover{
+  opacity: 0.6;
 }
