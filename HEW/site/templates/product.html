@@ -26,6 +26,26 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      $(document).ready(function(){
+          $(".search-delete-btn").click(function(){
+              var wordToDelete = $(this).data("word");
+              $.ajax({
+                  type: "POST",
+                  url: "/delete_word",
+                  data: { word: wordToDelete },
+                  success: function(response){
+                      // 成功時
+                      location.reload();
+                      
+                  },
+                  error: function(){
+                      // エラー時
+                  }
+              });
+          });
+      });
+    </script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
@@ -145,11 +165,11 @@
       </div>
 
       <form action="/search" method="post">
-        <ul>
+        <ul class="search-history" style="display: none;">
           {% for word in words %}
           <li>
-            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
@@ -383,7 +403,22 @@
             </div>
           </form>
         </div>-->
-
+        
+        {% if cantbuy == True %}
+        <div class="shopping">
+          <!-- formタグ, buttonタグへ変更 -->
+          <form class="shopBtn">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
+            <div class="kari">
+              <button type="submit" id="submit">あなたの商品です</button>
+              <div class="plus-box">
+                <span class="dli-plus"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        {% elif bought == None %}
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
           <form action="/buy" method="post" class="shopBtn">
@@ -395,27 +430,35 @@
               </div>
             </div>
           </form>
-
+          
           <form id="form">
-              {% for record in record %}
-              <input type="hidden" value="{{record}}" id="{{loop.index}}">
-              {% endfor %}
-              <figure id="bookmark">
-                {% if nice == True %}
-                <img id="bookmarkImg" src="../static/images/on.svg" alt="ブックマーク">
-                {% elif nice == False %}
-                <img id="bookmarkImg" src="../static/images/off.svg" alt="ブックマーク">
-                {% endif %}
-              </figure>
-              <!-- <figure>
-                  {% if nice == True %}
-                  <img style="background-color: #fff;" id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
-                  {% elif nice == False %}
-                  <img id="bookmark" src="../static/images/bookmarks-light.svg" alt="ブックマーク">
-                  {% endif %}
-              </figure> -->
+            {% for record in record %}
+            <input type="hidden" value="{{record}}" id="{{loop.index}}">
+            {% endfor %}
+            <figure id="bookmark">
+              {% if nice == True %}
+              <img id="bookmarkImg" src="../static/images/on.svg" alt="ブックマーク">
+              {% elif nice == False %}
+              <img id="bookmarkImg" src="../static/images/off.svg" alt="ブックマーク">
+              {% endif %}
+            </figure>
           </form>
         </div>
+
+        {% else %}
+        <div class="shopping">
+          <!-- formタグ, buttonタグへ変更 -->
+          <form class="shopBtn">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
+            <div class="kari">
+              <button type="submit" id="submit">SOLD OUT</button>
+              <div class="plus-box">
+                <span class="dli-plus"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        {% endif %}
         
         
         <div id="product-explain">
@@ -487,13 +530,17 @@
             <div class="sell-info-detail">
               <p>{{ sell_acc[1] }}</p>
               <div class="rate-form">
-                {% for i in range(5) %}
-                {% if i < 5 - avg_evalate %}
-                <label style="color:#ccc !important;">★</label>
-                {% else %}
-                <label style="color:#ffcc00 !important;">★</label>
-                {% endif %}
-                {% endfor %}
+                <div class="rate-container" style="display: flex;">
+                  {% for i in range(rate[0]) %}
+                      <img src="../static/images/rate1.svg" alt="1" style="max-width: 25px;">
+                  {% endfor %}
+                  {% for i in range(rate[1]) %}
+                      <img src="../static/images/rate05.svg" alt="0.5" style="max-width: 25px;">
+                  {% endfor %}
+                  {% for i in range(rate[2]) %}
+                      <img src="../static/images/rate0.svg" alt="0" style="max-width: 25px;">
+                  {% endfor %}
+                </div>
               </div>
             </div>
             
@@ -540,8 +587,37 @@
     </div>
     
     <footer>
-      <p class="footer01">#VariaFree</p>
-      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+      <div id="footer-wrap">
+
+        <div class="footer-left">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
+          <!-- <div class="sns-box">
+            <img class="footer-icon01" src="../static/images/instagram.svg">
+            <img class="footer-icon02" src="../static/images/facebook.svg">
+            <img class="footer-icon03" src="../static/images/twitter.svg">
+          </div> -->
+        </div>
+        <div class="footer-right">
+          <p class="guide-tittle">ご利用ガイド</p>
+          <div class="guide-box">
+            <div class="gaido-left">
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
+            </div>
+            <div class="gaido-right">
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
+            </div>
+          </div>
+        </div>
+
+        <div class="copyRight-box">
+          <p class="copyRight">2024 &copy; Copyright F group. ALL rights reserved.</p>
+        </div>
+
+      </div>
     </footer>
 
     <!-- レイアウト編集 -->
@@ -551,6 +627,8 @@
   <!-- ブクマ -->
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>

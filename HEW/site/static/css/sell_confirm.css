@@ -9,7 +9,7 @@ ul li{
 main#m-sell{
   width: 650px;
   height: auto;
-  margin: 0 auto 0 auto;
+  margin: 70px auto 0 auto;
 }
 
 
@@ -82,13 +82,13 @@ h1{
 }
 .detail p{}
 .detail ul{
-  margin: 70px 0 8px 0;
+  margin: 0 0 8px 0;
 }
 .detail ul li{
   list-style: none;
 }
 .detail ul li p{
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 .selectbox{
   display: inline-flex;
@@ -201,6 +201,19 @@ h1{
   font-weight: normal;
   font-size: 1.1rem;
 }
+.ownerAddress{
+  max-width: 450px;
+  padding: 5px; 
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+.ownerAddress input{
+  cursor: pointer;
+}
+.ownerAddress label{
+  margin-left: 5px;
+}
 .now_address{
   font-size: 1rem;
 }
@@ -282,17 +295,28 @@ h1{
   cursor: pointer;
   font-size: 1rem;
   border: 1px solid #a9a9a9;
+  border-radius: 5px;
 }
 .sell ul li button a{
   text-decoration: none;
 }
 .sell ul li button:hover{
-  opacity: 0.7;
+  opacity: 0.5;
 }
-/* .btn05{
-  background-color: red;
-  color: #fff;
-} */
+.checkbox-box{
+  margin: 0 auto;
+  margin-top: 30px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+input#confirmation{
+  cursor: pointer;
+}
+button#Button{
+  color: #fff !important;
+}
 .btn05 {
       background-color: #fff;
       color: #000;

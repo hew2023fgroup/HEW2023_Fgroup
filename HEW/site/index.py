@@ -19,7 +19,7 @@ def conn_db():
 
 # セッション鍵
 app.secret_key="abcdefghijklmn"
-    
+
 # #########################################
 # ログイン
 # #########################################
@@ -51,7 +51,7 @@ def Registration():
         
         Layout_Insert = '''
         INSERT INTO Numerical(Numerical, LayoutID, AccountID)
-        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#000', 6, {0}), ('#FFF', 7, {0}), 
+        VALUES('#F00', 1, {0}), ('#FFF', 2, {0}), ('#FFF', 3, {0}), ('#F00', 4, {0}), ('#000', 5, {0}), ('#333', 6, {0}), ('#FFF', 7, {0}), 
         ('static/images/slide/slide01.jpg', 8, {0}), ('static/images/slide/slide05.jpg', 9, {0}), 
         ('static/images/slide/slide08.jpg', 10, {0}), ('static/images/slide/slide10.jpg', 11, {0});
         '''.format(id)
@@ -200,12 +200,12 @@ def Login():
 def SellPage():
     conn = conn_db()
     cursor = conn.cursor()
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -233,7 +233,6 @@ def SellPage():
     '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
@@ -241,20 +240,83 @@ def SellPage():
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
+    
+    if request.args.get('sellid'):
+        sellid = request.args.get('sellid')
+        
+        Sell_Select = '''
+        SELECT Sell.SellID, Sell.ScategoryID, Scategory.Name, 
+        Sell.StatusID, Status.Name, Sell.Name, Sell.Overview, 
+        Sell.PostageID, Postage.Size, Sell.Price
+        FROM Sell
+        JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
+        JOIN Status ON Sell.StatusID = Status.StatusID
+        JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Sell.SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Sell_Select)
+        print('実行:',Sell_Select)
+        sellinfo = cursor.fetchone()
+        print('sellinfo:',sellinfo)
+        
+        Tag_Select = '''
+        SELECT Name
+        FROM Tag
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Tag_Select)
+        get_tags = cursor.fetchall()
+        if get_tags:
+            tags = [item[0] for item in get_tags]
+            print('tags:',tags)
+        else:
+            tags = None
+            
+        SellIMG_Select = '''
+        SELECT SellIMG
+        FROM SellIMG
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(SellIMG_Select)
+        get_imgs = cursor.fetchall()
+        if get_imgs:
+            imgs = [item[0] for item in get_imgs]
+            print('imgs:',imgs)
+        else:
+            imgs = None
+            
+    else:
+        print('sellid なし')
+        sellid = None
+        sellinfo = None
+        imgs = None
+        tags = None
+        
+    
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("sell.html",icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo, imgs=imgs,
+        style=style, layout_value=layout_value, sellid=sellid, tags=tags, words=words)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
 def SellConfirm():
     if request.method == 'POST':
+        
         conn = conn_db()
         cursor = conn.cursor()
         
-        # セッション取得
+        # 固定処理 ====================
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
@@ -288,19 +350,31 @@ def SellConfirm():
             '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
 
-        # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
         WHERE AccountID = {0};
         '''.format(AccountID)
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
+    
+        Search_Select = '''
+        SELECT Word FROM Search
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Search_Select)
+        words = list(cursor.fetchall())
+        words = [word[0] for word in words]
+        # 固定処理 ====================
+        
         
         # 画像
         input_imgs = request.files.getlist('uploadInput')
-        select = request.form['select']
         print('new:',input_imgs)
-        print('select',select)
+        if request.form['select']:
+            select = request.form['select']
+            print('select:',select)
+        else:
+            select = None
             
         # 商品名
         selltit = request.form['selltit']
@@ -324,6 +398,7 @@ def SellConfirm():
             
         # カテゴリー
         scategoryid = request.form['scategoryid']
+        print('category:',scategoryid)
         SCategory_Select = '''
         SELECT Name
         FROM Scategory
@@ -334,6 +409,7 @@ def SellConfirm():
             
         # サイズ
         postage = request.form['postage']
+        print('postage:',postage)
         Postage_Select = '''
         SELECT Size
         FROM Postage
@@ -369,6 +445,21 @@ def SellConfirm():
             imgs = None 
         # ========== 画像処理 ==========
             
+        
+        if request.form['select']:
+            print('下書きの画像処理')
+            sellid = None
+        else:
+            sellid = request.form['sellid']
+            SellIMG_Select = '''
+            SELECT SellIMG 
+            FROM SellIMG
+            WHERE SellID = {0};
+            '''.format(sellid)
+            cursor.execute(SellIMG_Select)
+            sellimgs = cursor.fetchall()
+            imgs = [img[0] for img in sellimgs]
+            
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
         form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
@@ -389,7 +480,7 @@ def SellConfirm():
         conn.close()
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
                 imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags,
-                style=style, layout_value=layout_value)
+                style=style, layout_value=layout_value, sellid=sellid, words=words)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -402,6 +493,15 @@ def Sell():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+        
+        draftid = request.form['sellid']
+        if draftid != 'None':
+            print('sellid:',draftid)
+            Sell_Update = '''
+            UPDATE sell SET draft = 1 WHERE SellID = {0};
+            '''.format(draftid)
+            cursor.execute(Sell_Update)
+            return redirect(url_for('IndexPage'))
         
         # ========== フォーム ==========
         # メイン画像
@@ -497,7 +597,7 @@ def Buy():
         conn = conn_db()
         cursor = conn.cursor()
         
-        # セッション取得
+        # 固定処理 ====================
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
@@ -531,13 +631,21 @@ def Buy():
             '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                 layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
             
-        # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
         WHERE AccountID = {0};
         '''.format(AccountID)
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
+        
+        Search_Select = '''
+        SELECT Word FROM Search
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Search_Select)
+        words = list(cursor.fetchall())
+        words = [word[0] for word in words]
+        # 固定処理 ====================
         
         SellID = request.form['SellID']
         
@@ -579,7 +687,7 @@ def Buy():
         return render_template(
             'pay_comp.html', Sell_Info=Sell_Info[0], Account_Info=Account_Info, icon=icon,
             UserName=UserName, Total_Price=Total_Price, SellID=SellID, After48H=After48H,
-            After24H=After24H, style=style, layout_value=layout_value)
+            After24H=After24H, style=style, layout_value=layout_value, words=words)
 
 # /pay
 @app.route('/pay', methods=['POST'])
@@ -693,7 +801,10 @@ def PayPage():
             conn.commit()
             cursor.close()
             conn.close()
-            return redirect(url_for('BuyCompPage', BuyID=BuyID, icon=icon, UserName=UserName))
+            return redirect(
+                url_for(
+                    'BuyCompPage', BuyID=BuyID,
+                    icon=icon, UserName=UserName, SellID=SellID))
         
         # 所持金が足りない
         else:
@@ -706,13 +817,12 @@ def BuyCompPage(BuyID):
     conn = conn_db()
     cursor = conn.cursor()
 
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
 
     style = '''
         <style>
@@ -736,7 +846,6 @@ def BuyCompPage(BuyID):
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
@@ -744,13 +853,34 @@ def BuyCompPage(BuyID):
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
+    
+    SellUserName_SELECT = '''
+    SELECT Account.UserName
+    FROM Account
+    JOIN Sell ON Account.AccountID = Sell.AccountID
+    JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.BuyID = {0};
+    '''.format(BuyID)
+    cursor.execute(SellUserName_SELECT)
+    print('実行:',SellUserName_SELECT)
+    sell_username = cursor.fetchone()[0]
+    
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "buy_comp.html", MailAddress=MailAddress, 
         style=style, layout_value=layout_value,
-        BuyID=BuyID, icon=icon, UserName=UserName)
+        BuyID=BuyID, icon=icon, UserName=UserName,
+        sell_username=sell_username, words=words)
     
 # /evaluate
 @app.route('/evaluate', methods=['POST'])
@@ -761,6 +891,7 @@ def Evaluate():
         
         buyid = request.form['buyid']
         eval = request.form['rate']
+        submit = request.form['submit']
         
         # 評価値のUPDATE
         eval_sql = '''
@@ -769,12 +900,15 @@ def Evaluate():
         WHERE BuyID = {1};
         '''.format(eval, buyid)
         cursor.execute(eval_sql)
-        
         # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
-        return redirect(url_for('IndexPage'))
+        
+        if submit == 'index':
+            return redirect(url_for('IndexPage'))
+        elif submit == 'buylist':
+            return redirect(url_for('BuyListPage'))
 
 # #########################################
 # トップ
@@ -791,6 +925,7 @@ def IndexPage():
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -807,9 +942,6 @@ def IndexPage():
     layout_value = session.get('layout')
     simple_value = list(session.get('simple'))
     slide_value = session.get('slideimg')
-    print('layout:',layout_value)
-    print('simple:',simple_value)
-    print('slide:',slide_value)
     
     if simple_value[0] == 0:
         simple_value[0] = 'None'
@@ -826,6 +958,9 @@ def IndexPage():
                 }}
                 html {{
                     background-color: {2} !important;
+                }}
+                .DisplayBox h1::before ,.list-product::after{{
+                    border-bottom: 2px solid {3} !important;
                 }}
                 #btn{{
                     background-color: {0} !important;
@@ -860,14 +995,13 @@ def IndexPage():
         style = None
         slide_value = None
 
-    
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    # 固定処理 ====================
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -884,6 +1018,7 @@ def IndexPage():
     cursor.execute(SellID_Select)
     ids = cursor.fetchall()
     
+    
     # シャッフル
     random.shuffle(ids)
     # top#10
@@ -893,21 +1028,26 @@ def IndexPage():
     ids_top10 = tuple(ids_top10)
     print(ids_top10)
     
-    SellInfo_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL 
-    AND SellIMG.ThumbnailFlg = 0x01 
-    AND Sell.Draft = 0x01 
-    AND Sell.AccountID != {0} 
-    AND Sell.SellID IN ({1})
-    ORDER BY FIELD(Sell.SellID, {1});
-    '''.format(AccountID,','.join(map(str, ids_top10)))
-    print('実行:',SellInfo_Select)
-    cursor.execute(SellInfo_Select)
-    sells = cursor.fetchall()
+    if ids_top10:
+        SellInfo_Select = '''
+        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+        FROM Sell
+        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+        LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+        WHERE Buy.SellID IS NULL 
+        AND SellIMG.ThumbnailFlg = 0x01 
+        AND Sell.Draft = 0x01 
+        AND Sell.AccountID != {0} 
+        AND Sell.SellID IN ({1})
+        ORDER BY FIELD(Sell.SellID, {1});
+        '''.format(AccountID,','.join(map(str, ids_top10)))
+        print('実行:',SellInfo_Select)
+        cursor.execute(SellInfo_Select)
+        sells = cursor.fetchall()
+    else:
+        sells = None
+        
+    print('sells:',sells)
     
     Search_Select = '''
     SELECT Word FROM Search
@@ -933,6 +1073,7 @@ def ProductPage(sellid):
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -969,13 +1110,21 @@ def ProductPage(sellid):
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                 layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     myicon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     # 商品情報のSELECT
     info = '''
@@ -1066,15 +1215,20 @@ def ProductPage(sellid):
     
     # 平均評価値のSELECTx2
     evalscore_sql = '''
-    SELECT AVG(Review) 
+    SELECT ROUND(AVG(Review),1)
     FROM Buy 
     WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
     '''.format(sell_acc[0])
     cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
+    rate = cursor.fetchone()[0]
+    if rate == None:
+        rate = 0
+    halfrate = rate % 1
+    halfrate = 1 if halfrate == 0.5 else 0
+    lastrate = 5 - rate
+    rate = [int(rate), halfrate, int(lastrate)]
     
+    # タグのSELECT
     Tag_Select = '''
     SELECT Name FROM Tag
     WHERE SellID = {0};
@@ -1083,6 +1237,7 @@ def ProductPage(sellid):
     tags = cursor.fetchall()
     tags = [item[0] for item in tags]
     
+    # カテゴリーのSELECT
     Category_Select = '''
     SELECT SCategoryID FROM Scategory
     WHERE Name = '{0}';
@@ -1111,16 +1266,32 @@ def ProductPage(sellid):
     cursor.execute(sells)
     sells = cursor.fetchall()
     
+    # 購入済み
+    Buy_Select = '''
+    SELECT BuyID 
+    FROM Buy
+    WHERE SellID = {0};
+    '''.format(sellid)
+    cursor.execute(Buy_Select)
+    bought = cursor.fetchone()
+    print('bought:',bought)
+    
+    if AccountID == sell_acc[0]:
+        cantbuy = True
+        print(cantbuy)
+    else:
+        cantbuy = False
+    
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
-        price=price, sellid=sellid, scategory=scategory, style=style, record=record,
-        status=status, avg_evalate=avg_evalate, sell_acc=sell_acc, sells=sells, 
+        price=price, sellid=sellid, scategory=scategory, style=style, record=record, cantbuy=cantbuy,
+        status=status, rate=rate, sell_acc=sell_acc, sells=sells, bought=bought, words=words,
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName, nice=nice)
-    
+ 
 # /search
 @app.route('/search', methods=['POST'])
 def Search():
@@ -1128,7 +1299,7 @@ def Search():
         conn = conn_db()
         cursor = conn.cursor()
         
-        # セッション取得
+        # 固定処理 ====================
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
@@ -1175,16 +1346,17 @@ def Search():
         else: 
             style = None
 
-        # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
         WHERE AccountID = {0};
         '''.format(AccountID)
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
+        # 固定処理 ====================
         
         search_word = request.form['search_word']
-        print('ワード:',search_word)
+        if search_word == '':
+            return redirect(url_for('IndexPage'))
         
         Sellname_Select = '''
         SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name, IFNULL(Tag.Name, 'なし')
@@ -1201,7 +1373,6 @@ def Search():
         cursor.execute(Sellname_Select)
         print('実行:',Sellname_Select)
         sells = cursor.fetchall()
-        print('sellword:',sells)
         
         ids = [id[0] for id in sells]
     
@@ -1225,23 +1396,72 @@ def Search():
                 if sellinfo not in set(sells):
                     sells.append(sellinfo)
         
-        # ワードが空欄のとき
+        # ワードINSERT
         if search_word:
-            Search_Insert = '''
-            INSERT INTO Search(Word, AccountID)
-            VALUES('{0}', {1})
-            '''.format(search_word, AccountID)
-            cursor.execute(Search_Insert)
+            Search_Select = '''
+            SELECT Word FROM Search
+            WHERE AccountID = {0};
+            '''.format(AccountID)
+            cursor.execute(Search_Select)
+            words = cursor.fetchall()
+            wordslist = [word[0] for word in words]
+            
+            # ワード重複
+            if search_word not in wordslist:
+                Search_Insert = '''
+                INSERT INTO Search(Word, AccountID)
+                VALUES('{0}', {1})
+                '''.format(search_word, AccountID)
+                cursor.execute(Search_Insert)
+                
+            Search_Select = '''
+            SELECT Word FROM Search
+            WHERE AccountID = {0};
+            '''.format(AccountID)
+            cursor.execute(Search_Select)
+            words = cursor.fetchall()
+            wordslist = [word[0] for word in words]
+            words = wordslist
+            
         else:
+            words = None
             sells = []
         
         conn.commit()
         cursor.close()
         conn.close()
     
-    return render_template('search.html',icon=icon,UserName=UserName,
-                           sells=sells, search_word=search_word,style=style)
+    return render_template(
+        'search.html',icon=icon,UserName=UserName, words=words,
+        sells=sells, search_word=search_word,style=style)
 
+# /delete_word
+@app.route('/delete_word', methods=['POST'])
+def DeleteWord():
+    if request.method == 'POST':
+        
+        # セッション取得
+        you_list = session.get('you')
+        if you_list:
+            AccountID, UserName, MailAddress = you_list[0]
+            
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        word = request.form['word']
+        Search_Delete = '''
+        DELETE FROM Search
+        WHERE AccountID = {0}
+        AND Word = '{1}';
+        '''.format(AccountID,word)
+        cursor.execute(Search_Delete)
+        print('実行:',Search_Delete)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+    return '検索履歴の項目を削除しました'
+        
 # /category_search
 @app.route('/category_search',methods=['POST'])
 def CateSearch():
@@ -1413,7 +1633,7 @@ def MyPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -1446,25 +1666,36 @@ def MyPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
-    print('icon:',icon)
     
-    # 平均評価値のSELECTx2
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
+    
+    # 評価値
     evalscore_sql = '''
-    SELECT AVG(Review) 
+    SELECT ROUND(AVG(Review),1) 
     FROM Buy 
     WHERE SellID IN (SELECT SellID FROM Sell WHERE AccountID = {0});
     '''.format(AccountID)
     cursor.execute(evalscore_sql)
-    avg_evalate = cursor.fetchone()[0]
-    if avg_evalate is None:
-        avg_evalate = 0
+    rate = cursor.fetchone()[0]
+    if rate == None:
+        rate = 0
+    halfrate = rate % 1
+    halfrate = 1 if halfrate == 0.5 else 0
+    lastrate = 5 - rate
+    rate = [int(rate), halfrate, int(lastrate)]
     
     # 売り上げSELECT
     proc_sql = '''
@@ -1496,8 +1727,8 @@ def MyPage():
     conn.close()
     return render_template(
         "mypage.html", proceed=proceed, money=money, 
-        UserName=UserName, avg_evalate=avg_evalate, icon=icon, 
-        style=style, layout_value=layout_value)
+        UserName=UserName, icon=icon, words=words,
+        style=style, layout_value=layout_value, rate=rate)
     
 # /charge
 @app.route('/charge', methods=['POST'])
@@ -1553,13 +1784,12 @@ def FavoritePage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得 
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -1583,13 +1813,21 @@ def FavoritePage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     Nice_Select = '''
     SELECT SellID FROM Nice
@@ -1621,7 +1859,7 @@ def FavoritePage():
     conn.close()
     return render_template(
         "favorite.html", UserName=UserName, sellinfo=sellinfo,
-        icon=icon, layout_value=layout_value, style=style)
+        icon=icon, layout_value=layout_value, style=style, words=words)
 
 # /viewlog
 @app.route('/viewlog')
@@ -1629,13 +1867,12 @@ def ViewlogPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -1659,13 +1896,21 @@ def ViewlogPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
         
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     View_Select = '''
     SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
@@ -1685,7 +1930,7 @@ def ViewlogPage():
     cursor.close()
     conn.close()
     return render_template(
-        "viewlog.html", UserName=UserName, icon=icon,
+        "viewlog.html", UserName=UserName, icon=icon, words=words,
         style=style, layout_value=layout_value, sellinfo=sellinfo)
 
 # /sell_list
@@ -1694,13 +1939,12 @@ def SellListPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -1724,13 +1968,21 @@ def SellListPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     # 下書き取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きでない、商品を出したのが自分。
@@ -1739,7 +1991,10 @@ def SellListPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x01 AND Sell.AccountID = {0};
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Sell.AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Sell_Select)
     Sells = cursor.fetchall()
@@ -1748,8 +2003,9 @@ def SellListPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('sell_list.html',Sells=Sells, icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'sell_list.html',Sells=Sells, icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value, words=words)
 
 # /buy_list
 @app.route('/buy_list')
@@ -1757,13 +2013,12 @@ def BuyListPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -1787,7 +2042,6 @@ def BuyListPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
@@ -1795,12 +2049,35 @@ def BuyListPage():
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
+    
+    Buy_Select = '''
+    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+    FROM Sell
+    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+    WHERE Buy.SellID IS NOT NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x01 
+    AND Buy.AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Buy_Select)
+    Buys = cursor.fetchall()
+    print('buy:',Buys)
     
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('buy_list.html',icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'buy_list.html',icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value,Buys=Buys, words=words)
 
 # /savesearch
 @app.route('/savesearch')
@@ -1858,13 +2135,12 @@ def DraftPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
     
     layout_value = session.get('layout')
-    print('layout:',layout_value)
     
     style = '''
         <style>
@@ -1888,13 +2164,21 @@ def DraftPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     # 下書き取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きである、商品を出したのが自分。
@@ -1903,7 +2187,10 @@ def DraftPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x00 
+    AND Sell.AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Draft_Select)
     Drafts = cursor.fetchall()
@@ -1912,8 +2199,33 @@ def DraftPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value, words=words)
+   
+# /deleteimg
+@app.route('/deleteimg', methods=['POST'])
+def DelDraftImg():
+    if request.method == 'POST':
+        print('''
+            /deleteimg が実行
+            ''')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        sellid = request.form['sellid']
+        
+        SellIMG_Delete = '''
+        DELETE FROM SellIMG
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(SellIMG_Delete)
+        print('実行:',SellIMG_Delete)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('SellPage', sellid=sellid))
         
 # /personal
 @app.route('/personal')
@@ -1921,7 +2233,7 @@ def PersonalPage():
     conn = conn_db()
     cursor = conn.cursor()
     
-    # セッション取得
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -1951,13 +2263,21 @@ def PersonalPage():
         '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
                    layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
     
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
     
     name_error = request.args.get('error', None)
     pass_error = request.args.get('pass_error',None)
@@ -1988,10 +2308,11 @@ def PersonalPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
-                           MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, 
-                           icon=icon, UserName=UserName, mail_error=mail_error,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'personal.html', AccountInfo=AccountInfo, AddressInfo=AddressInfo, 
+        MailAddress=MailAddress, name_error=name_error, pass_error=pass_error, 
+        icon=icon, UserName=UserName, mail_error=mail_error, words=words,
+        style=style, layout_value=layout_value)
     
 # /change_icon
 @app.route('/change_icon', methods=['POST'])
@@ -2261,21 +2582,29 @@ def LayoutPage():
         conn = conn_db()
         cursor = conn.cursor()
         
-        # セッション取得
+        # 固定処理 ====================
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+            
         slide_value = session.get('slideimg')
-        print('slide_value:',slide_value)
         ids = [slide_value[0][1],slide_value[1][1],slide_value[2][1],slide_value[3][1]]
         
-        # アイコンSELECT
         ProfIMG_Select = '''
         SELECT ProfIMG FROM Account
         WHERE AccountID = {0};
         '''.format(AccountID)
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
+        
+        Search_Select = '''
+        SELECT Word FROM Search
+        WHERE AccountID = {0};
+        '''.format(AccountID)
+        cursor.execute(Search_Select)
+        words = list(cursor.fetchall())
+        words = [word[0] for word in words]
+        # 固定処理 ====================
         
         if request.method == 'POST':
             # リセットの時
@@ -2285,7 +2614,7 @@ def LayoutPage():
                 main_color = '#ff0000'
                 wall_color = '#ffffff'
                 text_color = '#000000'
-                footer_color = '#000000'
+                footer_color = '#333333'
                 footertxt_color = '#ffffff'
                 slideshow = '1'
                 sellimg = '1'
@@ -2506,8 +2835,9 @@ def LayoutPage():
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('layout.html', UserName=UserName, icon=icon, style=style, 
-                               layout_value=layout_value, simple_value=simple_value)
+        return render_template(
+            'layout.html', UserName=UserName, icon=icon, style=style, 
+            layout_value=layout_value, simple_value=simple_value, words=words)
 
 # /logout
 @app.route('/logout')
@@ -3205,6 +3535,66 @@ def DB_Search():
         cursor.close()
         conn.close()
         return render_template('DB_Search.html', Search=Search,TableName=TableName)
+
+
+
+# ガイドページ
+@app.route('/guide')
+def Guide():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # 固定処理 ====================
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    
+    style = '''
+        <style>
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
+                color: {4} !important;
+            }}
+            html {{
+                background-color: {2} !important;
+            }}
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
+            
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+    
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+    # 固定処理 ====================
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template(
+        'guide.html',icon=icon,UserName=UserName,style=style,
+        words=words)
 
 # 実行
 if __name__ == ("__main__"):

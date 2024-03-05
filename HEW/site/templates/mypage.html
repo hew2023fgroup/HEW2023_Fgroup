@@ -24,6 +24,26 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      $(document).ready(function(){
+          $(".search-delete-btn").click(function(){
+              var wordToDelete = $(this).data("word");
+              $.ajax({
+                  type: "POST",
+                  url: "/delete_word",
+                  data: { word: wordToDelete },
+                  success: function(response){
+                      // 成功時
+                      location.reload();
+                      
+                  },
+                  error: function(){
+                      // エラー時
+                  }
+              });
+          });
+      });
+    </script>
 
   </head>
 
@@ -39,7 +59,7 @@
               <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
               {% elif icon == None %}
               <!-- css -->
-              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
               {% endif %}
             </a>
           </figure>
@@ -82,11 +102,11 @@
       </div>
 
       <form action="/search" method="post">
-        <ul>
+        <ul class="search-history" style="display: none;">
           {% for word in words %}
           <li>
-            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
@@ -313,7 +333,7 @@
                 {% if icon != None %}
                 <!-- css -->
                 <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
-
+                
                 {% elif icon == None %}
                 <!-- css -->
                 <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
@@ -322,27 +342,20 @@
             </div>
 
             <p class="name">{{ UserName }}</p>
-            <div class="rate-form">
-              <!-- <input id="star5" type="radio" name="rate" value="5">
-              <label for="star5">★</label>
-              <input id="star4" type="radio" name="rate" value="4">
-              <label for="star4">★</label>
-              <input id="star3" type="radio" name="rate" value="3">
-              <label for="star3">★</label>
-              <input id="star2" type="radio" name="rate" value="2">
-              <label for="star2">★</label>
-              <input id="star1" type="radio" name="rate" value="1">
-              <label for="star1">★</label> -->
-              
-              <!-- 雑な表示の仕方 -->
-              {% for i in range(5) %}
-                {% if i < 5 - avg_evalate %}
-                <label style="color:#ccc;">★</label>
-                {% else %}
-                <label style="color:#ffcc00;">★</label>
-                {% endif %}
-              {% endfor %}
-            </div>
+          </div>
+
+          <div class="rate-form">
+              <div class="rate-container" style="display: flex;">
+                {% for i in range(rate[0]) %}
+                    <img src="static/images/rate1.svg" alt="1" style="max-width: 25px;">
+                {% endfor %}
+                {% for i in range(rate[1]) %}
+                    <img src="static/images/rate05.svg" alt="0.5" style="max-width: 25px;">
+                {% endfor %}
+                {% for i in range(rate[2]) %}
+                    <img src="static/images/rate0.svg" alt="0" style="max-width: 25px;">
+                {% endfor %}
+              </div>
           </div>
 
           <div id="mypage_nav">
@@ -375,10 +388,7 @@
             </div>
           </div>
 
-          <div id="point-money-box">
-            <!-- チャージ用フォームの追加 -->
-            <!-- onsubmit="" で下のscriptタグの実行 変更可 -->
-            <!-- style="" でcss付与 変更可 -->
+          <!-- <div id="point-money-box">
             <form action="/charge" method="post" onsubmit="return Submit();">
               <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" style="margin: 0px; padding: 4px">
               <input type="submit" value="入金" style="margin-right: 30px;">
@@ -389,13 +399,31 @@
               <button type="submit" name="charge" value="3000" style="margin: 0px; padding:1px 8px;">+3000円</button>
             </form>
             
-            <!-- 確認用 -->
             <script>
               function Submit() {
                   return confirm('チャージしますか？');
               }
             </script>
+          </div> -->
 
+          <div id="charge-wrap">
+            <div class="chargebox">
+              <form action="/charge" method="post" onsubmit="return Submit();">
+                <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" autocomplete="off">
+                <input type="submit" value="チャージする" class="payBtn">
+              </form>
+              <form action="/charge" method="post" onsubmit="return Submit();">
+                <button class="chargeBtn" type="submit" name="charge" value="1000">+1,000円</button>
+                <button class="chargeBtn" type="submit" name="charge" value="2000">+2,000円</button>
+                <button class="chargeBtn" type="submit" name="charge" value="3000">+3,000円</button>
+              </form>
+            </div>
+
+            <script>
+              function Submit() {
+                  return confirm('チャージしますか？');
+              }
+            </script>
           </div>
 
         </div>
@@ -405,8 +433,37 @@
 
 
     <footer>
-      <p class="footer01">#VariaFree</p>
-      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+      <div id="footer-wrap">
+
+        <div class="footer-left">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
+          <!-- <div class="sns-box">
+            <img class="footer-icon01" src="../static/images/instagram.svg">
+            <img class="footer-icon02" src="../static/images/facebook.svg">
+            <img class="footer-icon03" src="../static/images/twitter.svg">
+          </div> -->
+        </div>
+        <div class="footer-right">
+          <p class="guide-tittle">ご利用ガイド</p>
+          <div class="guide-box">
+            <div class="gaido-left">
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
+            </div>
+            <div class="gaido-right">
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
+            </div>
+          </div>
+        </div>
+
+        <div class="copyRight-box">
+          <p class="copyRight">2024 &copy; Copyright F group. ALL rights reserved.</p>
+        </div>
+
+      </div>
     </footer>
 
     <!-- レイアウト編集 -->
@@ -415,6 +472,8 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>

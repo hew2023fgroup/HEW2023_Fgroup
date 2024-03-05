@@ -24,6 +24,26 @@
  
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      $(document).ready(function(){
+          $(".search-delete-btn").click(function(){
+              var wordToDelete = $(this).data("word");
+              $.ajax({
+                  type: "POST",
+                  url: "/delete_word",
+                  data: { word: wordToDelete },
+                  success: function(response){
+                      // 成功時
+                      location.reload();
+                      
+                  },
+                  error: function(){
+                      // エラー時
+                  }
+              });
+          });
+      });
+    </script>
 
     <!-- .css 変えても駄目だった -->
     <style>
@@ -51,7 +71,7 @@
               <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
               {% elif icon == None %}
               <!-- css -->
-              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
               {% endif %}
             </a>
           </figure>
@@ -94,11 +114,11 @@
       </div>
 
       <form action="/search" method="post">
-        <ul>
+        <ul class="search-history" style="display: none;">
           {% for word in words %}
           <li>
-            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
@@ -376,19 +396,14 @@
           <p class="title">現在住所</p>
 
           {% if Address != None %}
-          <!-- <p>郵便番号</p>
-          <p class="now_address">{{ Address[0][1] }}</p>
-          <p>住所</p>
-          <p class="now_address">{{ Address[0][0] }}</p>
-          <input type="checkbox" disabled checked> -->
 
           <!-- 一覧のラジオボタン表示 -->
           <fieldset>
             {% for id, address, post in Address %}
             <!-- css -->
-            <div  style="background-color:#eee; width:450px; padding:5px; margin-bottom:5px;">
+            <div class="ownerAddress">
               <input type="radio" name="sel_addr" id="sel_addr" value="{{ id }}" title="住所を選択してください" required>
-              <label for="sel_addr"><br>
+              <label for="sel_addr">
                 <span>&#12306;</span>{{ post }}<br>
                 {{ address }}
               </label>
@@ -406,12 +421,11 @@
 
         <div class="sell">
           <ul>
-              <!-- <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}"> -->
-              <!-- {% if form_data[1] != None %}
-                {% for path in form_data[1] %}
-                  <input type="hidden" name="image_paths[]" value="{{ path }}">
-                {% endfor %}
-              {% endif %} -->
+              {% if sellid %}
+              <input type="hidden" name="sellid" value="{{ sellid }}">
+              {% else %}
+              <input type="hidden" name="sellid" value="None">
+              {% endif %}
               <input type="hidden" name="images" value="{{ imgs }}">
               <input type="hidden" name="select" value="{{ select }}">
               <input type="hidden" name="selltit" value="{{ form_data[1] }}">
@@ -429,14 +443,15 @@
               {% endif %} -->
               
               <!-- 確認用のチェックボックス -->
-              <input type="checkbox" id="confirmation" required>
-              <label for="confirmation">上記の情報を確認しました</label><br>
+              <div class="checkbox-box">
+                <input type="checkbox" id="confirmation" required>
+                <label for="confirmation">上記の情報を確認しました</label>
+              </div>
 
               <li><button type="submit" id="Button" name="sell_action" class="btn05" value="sell">出品する</button></li>
-
               <li><button class="btn06"><a href="{{ url_for('SellPage') }}">入力画面に戻る</a></button></li>
               <li><button type="submit" name="sell_action" class="btn06" value="draft">下書きに保存する</button></li>
-            </ul>
+          </ul>
         </div>
       </form>
         
@@ -444,8 +459,37 @@
     
     
     <footer>
-      <p class="footer01">#VariaFree</p>
-      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+      <div id="footer-wrap">
+
+        <div class="footer-left">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
+          <!-- <div class="sns-box">
+            <img class="footer-icon01" src="../static/images/instagram.svg">
+            <img class="footer-icon02" src="../static/images/facebook.svg">
+            <img class="footer-icon03" src="../static/images/twitter.svg">
+          </div> -->
+        </div>
+        <div class="footer-right">
+          <p class="guide-tittle">ご利用ガイド</p>
+          <div class="guide-box">
+            <div class="gaido-left">
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
+            </div>
+            <div class="gaido-right">
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
+            </div>
+          </div>
+        </div>
+
+        <div class="copyRight-box">
+          <p class="copyRight">2024 &copy; Copyright F group. ALL rights reserved.</p>
+        </div>
+
+      </div>
     </footer>
 
     <!-- レイアウト編集 -->
@@ -471,6 +515,8 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>

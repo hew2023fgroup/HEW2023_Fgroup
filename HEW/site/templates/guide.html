@@ -12,8 +12,8 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sell_list.css') }}">
-
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/guide.css') }}">
+    
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,26 +24,11 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
-    <script>
-      $(document).ready(function(){
-          $(".search-delete-btn").click(function(){
-              var wordToDelete = $(this).data("word");
-              $.ajax({
-                  type: "POST",
-                  url: "/delete_word",
-                  data: { word: wordToDelete },
-                  success: function(response){
-                      // 成功時
-                      location.reload();
-                      
-                  },
-                  error: function(){
-                      // エラー時
-                  }
-              });
-          });
-      });
-    </script>
+
+    <!-- 画像ポップアップ -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/lity.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/lity.js') }}"></script>
 
   </head>
 
@@ -304,74 +289,281 @@
     <div id="kesuna"></div>
     <!-- 絶対に消すな -->
 
+    
     <div id="box">
 
-      <nav id="third_nav">
-        <ul>
-          <li class="nav_title01">商品管理</li>
-          <li><a href="{{ url_for('FavoritePage') }}">ブックマーク一覧</a></li>
-          <li><a href="{{ url_for('ViewlogPage') }}">閲覧履歴</a></li>
-          <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
-          <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
-          <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
-
-          <li class="nav_title02">設定</li>
-          <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
-          <li><a href="{{ url_for('LayoutPage') }}">レイアウト編集</a></li>
-          <li><a href="{{ url_for('Logout') }}">ログアウト</a></li>
-        </ul>
-      </nav>
-
-      <main id="m-favorite">
-        <h1>出品した商品</h1>
-
-        <div class="favorite-product">
-
-          {% for row in Sells %}
-          <div class="product-box">
-            <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-
-              <div class="products">
-                <figure>
-                  <img src="{{ row[3] }}">
-                </figure>
-
-                <div class="product-intro">
-                  <p class="product-name">{{ row[1] }}</p>
-
-                  <div class="price-box">
-                    <p class="mark">¥</p><p class="price">{{ row[2] }}</p>
-                  </div>
-
-                  <!-- <div class="action">
-                    <p class="heart">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20c0 0-.1-.1-.1-.1c0 0 0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="comment">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><path class="cls-1" d="M14.08,21a.69.69,0,0,1-.55-.26l-2.92-3.65H5.5A2.53,2.53,0,0,1,3,14.53v-9A2.53,2.53,0,0,1,5.5,3h13A2.53,2.53,0,0,1,21,5.57v9a2.53,2.53,0,0,1-2.49,2.56H14.78V20.3a.7.7,0,0,1-.47.66A.66.66,0,0,1,14.08,21ZM5.5,4.41A1.13,1.13,0,0,0,4.41,5.57v9A1.13,1.13,0,0,0,5.5,15.69H11a.7.7,0,0,1,.55.27l1.88,2.34V16.39a.7.7,0,0,1,.7-.7h4.45a1.13,1.13,0,0,0,1.09-1.16v-9a1.13,1.13,0,0,0-1.09-1.16Z"></path></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="eye">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><style>svg{fill:#000000}</style><path d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"/></svg>
-                      <span class="num">0</span>
-                    </p>
-                    <p class="time">
-                      <svg fillrule="evenodd" viewBox="0 0 24 24" class="icon primary" width="16" height="16"><path class="cls-1" d="M12.7,11.71V6a.7.7,0,1,0-1.4,0v6.29l4.45,4.45a.7.7,0,0,0,.49.2.74.74,0,0,0,.5-.2.71.71,0,0,0,0-1Z"></path><path class="cls-1" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18.6A8.6,8.6,0,1,1,20.6,12,8.61,8.61,0,0,1,12,20.6Z"></path></svg>
-                      <span class="num">0時間前</span>
-                    </p>
-                  </div> -->
+        <nav id="third_nav">
+          <ul>
+            <li id="s_02">ご利用ガイド</li>
+            <li><a href="#s_02_1">ご購入方法</a></li>
+            <li><a href="#s_02_2">ご出品方法</a></li>
+            <li><a href="#s_02_3">送料</a></li>
+            <li><a href="#s_02_4">売上金・サービス内マネー</a></li>
+            <li><a href="#s_02_5">会員登録・ログイン</a></li>
+            <li><a href="#s_02_6">個人情報の登録・変更</a></li>
+          </ul>
+        </nav>
+  
+  
+        <main id="guide-box">
+  
+          <div id="guideBuy">
+            <div class="title-box" id="s_02_1">
+              <p class="one_title">１．ご購入方法</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">商品の検索・選択</p>
                 </div>
-
+                <div class="step-exa">
+                  <p>キーワード検索やカテゴリーを指定、もしくは商品一覧から商品を見つけ、商品詳細ページに遷移します。</p>
+                </div>
               </div>
-            </a>
+              <figure>
+                <img src="../static/images/guide01.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">「購入手続きへ」をクリック</p>
+                </div>
+                <div class="step-exa">
+                  <p>商品を確認し、よろしければ「購入手続きへ」ボタンを押して次の手順に進みます。</p>
+                  <div class="product-exa">
+                    <p>【 購入前に以下を必ずご確認ください 】</p>
+                    <p>‣金額</p>
+                    <p>‣商品説明</p>
+                    <p>‣商品状態</p>
+                  </div>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide04.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">お届け先住所の選択・内容の確認</p>
+                </div>
+                <div class="step-exa">
+                  <p>購入内容確認画面にて、お届け先住所を選択し、内容のご確認してください。</p>
+                  <p class="exa01">確認ができましたら、チェックボックスをチェックした後に「購入を確定する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご購入手続きが完了しました。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide05.png" data-lity>
+              </figure>
+            </div>
           </div>
-          {% endfor %}
-        </div>
-
-      </main>
-
-    </div>
+  
+          <div id="guideSell">
+            <div class="title-box" id="s_02_2">
+              <p class="one_title">２．ご出品方法について</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">写真の選択</p>
+                </div>
+                <div class="step-exa">
+                  <p>写真を複数枚選択し、その中から一枚だけ出品時のサムネイルを選んでください。</p>
+                  <p class="exa01">間違えた写真を選んでしまった場合は、写真右上の×ボタンを押すことで削除できます。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide06.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">商品の説明を入力</p>
+                </div>
+                <div class="step-exa">
+                  <p>商品の説明を入力してください。</p>
+                  <p class="exa01">カテゴリーと商品の状態、商品名と商品の説明などをできるだけ詳細を入力して商品の魅力を伝えてください。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide07.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">出品内容の確認</p>
+                </div>
+                <div class="step-exa">
+                  <p>すべての項目の入力・設定の確認が完了しましたら、出品者ご自身の住所を選択してください。</p>
+                  <p class="exa01">その後、「上記の情報を確認しました」をチェックし、「出品する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご出品手続きが完了しました。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide08.png">
+                <img class="img02" src="../static/images/guide09.png" data-lity>
+              </figure>
+            </div>
+  
+          </div>
+  
+          <div id="guidePostage">
+            <div class="title-box" id="s_02_3">
+              <p class="one_title">３．送料</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="postage-wrap">
+              <p>【送料】</p>
+              <p>※送料は出品者様の自己負担になっております。</p>
+              <div class="postage-box">
+                <p>‣小</p>
+                <p class="kg">(~３kg未満)</p>
+                <p>：１０６円</p>
+              </div>
+              <div class="postage-box">
+                <p>‣中</p>
+                <p class="kg">(3kg以上~10kg未満)</p>
+                <p>：１３５円</p>
+              </div>
+              <div class="postage-box">
+                <p>‣大</p>
+                <p class="kg">(10kg以上~)</p>
+                <p>：１６５円</p>
+              </div>
+            </div>
+          </div>
+  
+          <div id="guideMoney">
+            <div class="title-box" id="s_02_4">
+              <p class="one_title">４．売上金・サービス内マネー</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="money-wrap">
+              <p>【売上金】</p>
+              <p>当サイトで商品を販売して得た販売利益にあたります。</p>
+  
+              <p class="exa01">【サービス内マネー】</p>
+              <p>当サイトで商品を購入する時に必要となるお金です。</p>
+              <p>マイページからチャージすることが可能となっております。</p>
+            </div>
+          </div>
+  
+          <div id="guideUser">
+            <div class="title-box" id="s_02_5">
+              <p class="one_title">５．会員登録・ログイン</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="login-new-wrap">
+              <p>【会員登録されていない方】</p>
+              <p>新規会員登録ページでユーザーネーム、メールアドレスとパスワードを入力して新規会員登録をしてください。</p>
+  
+              <p class="exa01">【会員登録がお済みの方】</p>
+              <p>ログインページから登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+              <p class="exa02">入会費・年会費は無料です。</p>
+            </div>
+          </div>
+  
+          <div id="guidePersonal">
+            <div class="title-box" id="s_02_6">
+              <p class="one_title">６．個人情報の登録・変更</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">画像・ユーザーネームの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【画像の変更】</p>
+                  <p>画像を選択して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【ユーザーネームの変更】</p>
+                  <p>ユーザーネームを入力して「変更」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide10.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">住所の追加・削除</p>
+                </div>
+                <div class="step-exa">
+                  <p>【住所の追加】</p>
+                  <p>郵便番号、住所を入力して「追加」ボタンを押してください。</p>
+                  <p class="exa01">【住所の削除】</p>
+                  <p>住所一覧から「削除」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide11.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">メールアドレス・パスワードの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【メールアドレスの変更】</p>
+                  <p>新しいメールアドレスを入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【パスワードの変更】</p>
+                  <p>現在のパスワードを入力した後、新しいパスワードを入力して「変更」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide12.png" data-lity>
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP４</p>
+                  <p class="step-tittle">個人情報の変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【氏名・生年月日の変更】</p>
+                  <p>氏名・カナ、生年月日を入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【性別の変更】</p>
+                  <p>男性、女性、秘密から選択して「変更」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべての個人情報の登録・変更作業が完了しました。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide13.png" data-lity>
+              </figure>
+            </div>
+          </div>
+        </main>
+  
+      </div>
 
 
     <footer>
@@ -389,14 +581,14 @@
           <p class="guide-tittle">ご利用ガイド</p>
           <div class="guide-box">
             <div class="gaido-left">
-              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
-              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
-              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
+              <a href="#s_02_1"><p>ご購入方法</p></a>
+              <a href="#s_02_2"><p>ご出品方法</p></a>
+              <a href="#s_02_3"><p>送料</p></a>              
             </div>
             <div class="gaido-right">
-              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
-              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
-              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
+              <a href="#s_02_4"><p>売上金・サービス内マネー</p></a>
+              <a href="#s_02_5"><p>会員登録・ログイン</p></a>
+              <a href="#s_02_6"><p>個人情報の登録・変更</p></a>
             </div>
           </div>
         </div>
@@ -422,5 +614,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
+  <!-- ガイド用 -->
+  <script src="{{ url_for('static', filename='js/guide.js') }}"></script>
 
 </html>

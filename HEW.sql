@@ -77,7 +77,7 @@ CREATE TABLE `Buy` (
   `BuyID` int PRIMARY KEY AUTO_INCREMENT,
   `SellID` int,
   `AccountID` int,
-  `Review` int,
+  `Review` float,
   `Datetime` datetime DEFAULT (now())
 );
 
@@ -333,6 +333,6 @@ INSERT INTO Layout(Name) VALUES("スライドショー画像2");
 INSERT INTO Layout(Name) VALUES("スライドショー画像3");
 INSERT INTO Layout(Name) VALUES("スライドショー画像4");
 
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#FFF', 3, 1), ('#F00', 4, 1), ('#000', 5, 1), ('#000', 6, 1), ('#FFF', 7, 1), ('static/images/slide/slide01.jpg', 8, 1), ('static/images/slide/slide05.jpg', 9, 1), ('static/images/slide/slide08.jpg', 10, 1), ('static/images/slide/slide10.jpg', 11, 1);
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#FFF', 3, 2), ('#F00', 4, 2), ('#000', 5, 2), ('#000', 6, 2), ('#FFF', 7, 2), ('static/images/slide/slide01.jpg', 8, 2), ('static/images/slide/slide05.jpg', 9, 2), ('static/images/slide/slide08.jpg', 10, 2), ('static/images/slide/slide10.jpg', 11, 2);
-INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#FFF', 3, 3), ('#F00', 4, 3), ('#000', 5, 3), ('#000', 6, 3), ('#FFF', 7, 3), ('static/images/slide/slide01.jpg', 8, 3), ('static/images/slide/slide05.jpg', 9, 3), ('static/images/slide/slide08.jpg', 10, 3), ('static/images/slide/slide10.jpg', 11, 3);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#FFF', 3, 1), ('#F00', 4, 1), ('#000', 5, 1), ('#333', 6, 1), ('#FFF', 7, 1), ('static/images/slide/slide01.jpg', 8, 1), ('static/images/slide/slide05.jpg', 9, 1), ('static/images/slide/slide08.jpg', 10, 1), ('static/images/slide/slide10.jpg', 11, 1);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#FFF', 3, 2), ('#F00', 4, 2), ('#000', 5, 2), ('#333', 6, 2), ('#FFF', 7, 2), ('static/images/slide/slide01.jpg', 8, 2), ('static/images/slide/slide05.jpg', 9, 2), ('static/images/slide/slide08.jpg', 10, 2), ('static/images/slide/slide10.jpg', 11, 2);
+INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#FFF', 3, 3), ('#F00', 4, 3), ('#000', 5, 3), ('#333', 6, 3), ('#FFF', 7, 3), ('static/images/slide/slide01.jpg', 8, 3), ('static/images/slide/slide05.jpg', 9, 3), ('static/images/slide/slide08.jpg', 10, 3), ('static/images/slide/slide10.jpg', 11, 3);

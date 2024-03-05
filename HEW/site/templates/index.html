@@ -24,6 +24,26 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      $(document).ready(function(){
+          $(".search-delete-btn").click(function(){
+              var wordToDelete = $(this).data("word");
+              $.ajax({
+                  type: "POST",
+                  url: "/delete_word",
+                  data: { word: wordToDelete },
+                  success: function(response){
+                      // 成功時
+                      location.reload();
+                      
+                  },
+                  error: function(){
+                      // エラー時
+                  }
+              });
+          });
+      });
+    </script>
 
   </head>
 
@@ -40,7 +60,7 @@
               <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
               {% elif icon == None %}
               <!-- css -->
-              <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
+              <img src="../static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
               {% endif %}
             </a>
           </figure>
@@ -52,11 +72,9 @@
         </figure>
         <div class="right-nav">
           <ul>
-            <!--<li class="underline"><a href="" id="hoverButton">テーブル</a></li>-->
             <li class="underline"><p id="hoverButton">カテゴリ</p></li>
             <li class="underline"><a class="nav-maypage" href="{{ url_for('MyPage') }}">マイページ</a></li>
             <li><img id="navbtn" src="../static/images/magnifying-glass-light.svg"></li>
-            <!--<li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/heart-light.svg"></a></li>-->
             <li><a href="{{ url_for('FavoritePage') }}"><img class="book-mark" src="../static/images/bookmarks-light.svg"></a></li>
             <li><a class="nav-sell" href="{{ url_for('SellPage') }}" id="btn">出品</a></li>
           </ul>
@@ -67,7 +85,6 @@
 
     <div class="search-box">
       <img id="closebtn" src="../static/images/x01.svg">
-      <!-- <img id="closebtn" src="images/x.svg"> -->
       <div class="search-wrap">
         <div class="search-title">
           <h1>SEARCH</h1>
@@ -77,19 +94,16 @@
           <label>
             <button type="submit"></button>
             <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
-            <!-- <button type="submit">検索</button> -->
           </label>
         </form>
       </div>
 
       <form action="/search" method="post">
         <ul class="search-history" style="display: none;">
-          <!-- <li class="search-his-title">検索履歴</li> -->
           {% for word in words %}
           <li>
-            
-            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
@@ -388,7 +402,6 @@
 
 
     <main class="product_area">
-      <!--<h1>おすすめ商品</h1>-->
       <!--<h1>商品一覧</h1>-->
       <div class="DisplayBox">
         <h1>商品一覧</h1>
@@ -413,20 +426,21 @@
 
         <div id="gridView">
           <div class="grid-wrap-product">
-
-            {% for row in sells %}
-            <div class="grid-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <p>{{ row[1] }}</p>
-                <div class="price-box">
-                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-                </div>
-              </a>
-            </div>
-            {% endfor %}
+            {% if sells %}
+              {% for row in sells %}
+              <div class="grid-product">
+                <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+                  <figure>
+                    <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
+                  </figure>
+                  <p>{{ row[1] }}</p>
+                  <div class="price-box">
+                    <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            {% endif %}
 
           </div>
         </div>
@@ -434,52 +448,69 @@
 
         <div id="listView" style="display: none;">
           <div class="list-wrap-product">
-
-            {% for row in sells %}
-            <div class="list-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <div class="list-product-exa">
-                  <p>{{ row[1] }}</p>
-                  <div class="list-price-box">
-                    <span class="list-mark">¥</span><span class="list-price">{{ row[2] }}</span>
-                    <span class="product-tax">(税込)</span>
+            
+            {% if sells %}
+              {% for row in sells %}
+              <div class="list-product">
+                <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+                  <figure>
+                    <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
+                  </figure>
+                  <div class="list-product-exa">
+                    <p>{{ row[1] }}</p>
+                    <div class="list-price-box">
+                      <span class="list-mark">¥</span><span class="list-price">{{ row[2] }}</span>
+                      <span class="product-tax">(税込)</span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>
-            {% endfor %}
+                </a>
+              </div>
+              {% endfor %}
+            {% endif %}
   
           </div>
         </div>
-        
-
-
-        <!-- 以下for文の追加(仮) -->
-        <!-- {% for row in sells %}
-        <div class="product">
-          <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-            <figure>
-              <img src="{{ row[3] }}" alt="sellimg" width="215px">
-            </figure>
-              <p>{{ row[1] }}</p>
-              <span>{{ row[2] }}</span>
-              
-              <div class="price-box">
-                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-              </div>
-          </a>
-        </div>
-        {% endfor %} -->
       
     </main>
 
-
     <footer>
-      <p class="footer01">#VariaFree</p>
-      <p>2023 &copy; Copyright F group. ALL rights reserved.</p>
+      <div id="footer-wrap">
+
+        <div class="footer-left">
+          <a href="{{ url_for('IndexPage') }}"><img class="footer-tittle" src="../static/images/footer-touka.svg"></a>
+          <!-- <div class="sns-box">
+            <a href="https://www.instagram.com/hal.ac.jp/" target="_blank">
+              <img class="footer-icon01" src="../static/images/instagram.svg">
+            </a>
+            <a href="https://www.facebook.com/halnagoya/?locale=ja_JP" target="_blank">
+              <img class="footer-icon02" src="../static/images/facebook.svg">
+            </a>
+            <a href="https://twitter.com/hal_nagoya?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">
+              <img class="footer-icon03" src="../static/images/twitter.svg">
+            </a>
+          </div> -->
+        </div>
+        <div class="footer-right">
+          <p class="guide-tittle">ご利用ガイド</p>
+          <div class="guide-box">
+            <div class="gaido-left">
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
+            </div>
+            <div class="gaido-right">
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
+            </div>
+          </div>
+        </div>
+
+        <div class="copyRight-box">
+          <p class="copyRight">2024 &copy; Copyright F group. ALL rights reserved.</p>
+        </div>
+
+      </div>
     </footer>
 
     <!-- レイアウト編集 -->
@@ -489,6 +520,9 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
@@ -498,9 +532,6 @@
   
   <!-- 値段3桁ごとにカンマ -->
   <script src="{{ url_for('static', filename='js/count.js') }}"></script>
-
-
-  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- /main slide/ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
