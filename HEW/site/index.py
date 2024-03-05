@@ -1276,13 +1276,19 @@ def ProductPage(sellid):
     bought = cursor.fetchone()
     print('bought:',bought)
     
+    if AccountID == sell_acc[0]:
+        cantbuy = True
+        print(cantbuy)
+    else:
+        cantbuy = False
+    
     # CLOSE
     conn.commit()
     cursor.close()
     conn.close()
     return render_template(
         "product.html",imgs=imgs, name=name, overview=overview, layout_value=layout_value,
-        price=price, sellid=sellid, scategory=scategory, style=style, record=record,
+        price=price, sellid=sellid, scategory=scategory, style=style, record=record, cantbuy=cantbuy,
         status=status, rate=rate, sell_acc=sell_acc, sells=sells, bought=bought, words=words,
         error=error, tags=tags, icon=icon, myicon=myicon, UserName=UserName, nice=nice)
  
@@ -1349,7 +1355,8 @@ def Search():
         # 固定処理 ====================
         
         search_word = request.form['search_word']
-        print('ワード:',search_word)
+        if search_word == '':
+            return redirect(url_for('IndexPage'))
         
         Sellname_Select = '''
         SELECT Sell.SellID, Sell.Name, Scategory.Name, Mcategory.Name, IFNULL(Tag.Name, 'なし')
@@ -1398,7 +1405,6 @@ def Search():
             cursor.execute(Search_Select)
             words = cursor.fetchall()
             wordslist = [word[0] for word in words]
-            words = wordslist
             
             # ワード重複
             if search_word not in wordslist:
@@ -1407,7 +1413,18 @@ def Search():
                 VALUES('{0}', {1})
                 '''.format(search_word, AccountID)
                 cursor.execute(Search_Insert)
+                
+            Search_Select = '''
+            SELECT Word FROM Search
+            WHERE AccountID = {0};
+            '''.format(AccountID)
+            cursor.execute(Search_Select)
+            words = cursor.fetchall()
+            wordslist = [word[0] for word in words]
+            words = wordslist
+            
         else:
+            words = None
             sells = []
         
         conn.commit()

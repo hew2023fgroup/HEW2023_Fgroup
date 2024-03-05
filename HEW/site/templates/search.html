@@ -93,7 +93,7 @@
           <h1>SEARCH</h1>
           <p class="sub-sea">商品を探す</p>
         </div>
-        <form action="/search"  method="post" class="search-form-4">
+        <form action="/search"  method="post" class="search-form-4" onsubmit="return handleSubmit();">
           <label>
             <button type="submit"></button>
             <input type="text" name="search_word" id="searchInput" autocomplete="off" placeholder="お探しの商品・キーワードをご入力ください">
@@ -104,12 +104,14 @@
 
       <form action="/search" method="post">
         <ul class="search-history" style="display: none;">
-          {% for word in words %}
-          <li>
-            <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
-            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
-          </li>
-          {% endfor %}
+          {% if words %}
+            {% for word in words %}
+            <li>
+              <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+              <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
+            </li>
+            {% endfor %}
+          {% endif %}
         </ul>
       </form>
     </div>
