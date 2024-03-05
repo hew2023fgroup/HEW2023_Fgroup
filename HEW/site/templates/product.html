@@ -403,8 +403,22 @@
             </div>
           </form>
         </div>-->
-
-        {% if bought == None %}
+        
+        {% if cantbuy == True %}
+        <div class="shopping">
+          <!-- formタグ, buttonタグへ変更 -->
+          <form class="shopBtn">
+            <input type="hidden" name="SellID" value="{{ sellid }}">
+            <div class="kari">
+              <button type="submit" id="submit">あなたの商品です</button>
+              <div class="plus-box">
+                <span class="dli-plus"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        {% elif bought == None %}
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
           <form action="/buy" method="post" class="shopBtn">
@@ -430,6 +444,7 @@
             </figure>
           </form>
         </div>
+
         {% else %}
         <div class="shopping">
           <!-- formタグ, buttonタグへ変更 -->
