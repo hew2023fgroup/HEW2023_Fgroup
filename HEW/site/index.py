@@ -241,16 +241,70 @@ def SellPage():
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
     
+    if request.args.get('sellid'):
+        sellid = request.args.get('sellid')
+        
+        Sell_Select = '''
+        SELECT Sell.SellID, Sell.ScategoryID, Scategory.Name, 
+        Sell.StatusID, Status.Name, Sell.Name, Sell.Overview, 
+        Sell.PostageID, Postage.Size, Sell.Price
+        FROM Sell
+        JOIN Scategory ON Sell.ScategoryID = Scategory.ScategoryID
+        JOIN Status ON Sell.StatusID = Status.StatusID
+        JOIN Postage ON Sell.PostageID = Postage.PostageID
+        WHERE Sell.SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Sell_Select)
+        print('実行:',Sell_Select)
+        sellinfo = cursor.fetchone()
+        print('sellinfo:',sellinfo)
+        
+        Tag_Select = '''
+        SELECT Name
+        FROM Tag
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(Tag_Select)
+        get_tags = cursor.fetchall()
+        if get_tags:
+            tags = [item[0] for item in get_tags]
+            print('tags:',tags)
+        else:
+            tags = None
+            
+        SellIMG_Select = '''
+        SELECT SellIMG
+        FROM SellIMG
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(SellIMG_Select)
+        get_imgs = cursor.fetchall()
+        if get_imgs:
+            imgs = [item[0] for item in get_imgs]
+            print('imgs:',imgs)
+        else:
+            imgs = None
+            
+    else:
+        print('sellid なし')
+        sellid = None
+        sellinfo = None
+        imgs = None
+        tags = None
+        
+    
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template("sell.html",icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        "sell.html",icon=icon, UserName=UserName, sellinfo=sellinfo, imgs=imgs,
+        style=style, layout_value=layout_value, sellid=sellid, tags=tags)
 
 # /sell_confirm
 @app.route('/sell_confirm', methods=['POST'])
 def SellConfirm():
     if request.method == 'POST':
+        
         conn = conn_db()
         cursor = conn.cursor()
         
@@ -296,11 +350,15 @@ def SellConfirm():
         cursor.execute(ProfIMG_Select)
         icon = cursor.fetchone()[0]
         
+        
         # 画像
         input_imgs = request.files.getlist('uploadInput')
-        select = request.form['select']
         print('new:',input_imgs)
-        print('select',select)
+        if request.form['select']:
+            select = request.form['select']
+            print('select:',select)
+        else:
+            select = None
             
         # 商品名
         selltit = request.form['selltit']
@@ -324,6 +382,7 @@ def SellConfirm():
             
         # カテゴリー
         scategoryid = request.form['scategoryid']
+        print('category:',scategoryid)
         SCategory_Select = '''
         SELECT Name
         FROM Scategory
@@ -334,6 +393,7 @@ def SellConfirm():
             
         # サイズ
         postage = request.form['postage']
+        print('postage:',postage)
         Postage_Select = '''
         SELECT Size
         FROM Postage
@@ -369,6 +429,21 @@ def SellConfirm():
             imgs = None 
         # ========== 画像処理 ==========
             
+        
+        if request.form['select']:
+            print('下書きの画像処理')
+            sellid = None
+        else:
+            sellid = request.form['sellid']
+            SellIMG_Select = '''
+            SELECT SellIMG 
+            FROM SellIMG
+            WHERE SellID = {0};
+            '''.format(sellid)
+            cursor.execute(SellIMG_Select)
+            sellimgs = cursor.fetchall()
+            imgs = [img[0] for img in sellimgs]
+            
         sell_data = [selltit,overview,SCategoryName,PostageSize,StatusName,price]
         form_data = [imgs,selltit,overview,scategoryid,postage,status,price]
         
@@ -389,7 +464,7 @@ def SellConfirm():
         conn.close()
         return render_template('sell_confirm.html', icon=icon, UserName=UserName,select=select,
                 imgs=imgs, sell_data=sell_data, form_data=form_data, Address=Address, tags=tags,
-                style=style, layout_value=layout_value)
+                style=style, layout_value=layout_value, sellid=sellid)
 
 # /sell/
 @app.route('/sell/', methods=['POST'])
@@ -402,6 +477,15 @@ def Sell():
         you_list = session.get('you')
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
+        
+        if request.form['sellid']:
+            
+            draftid = request.form['sellid']
+            Sell_Update = '''
+            UPDATE sell SET draft = 1 WHERE SellID = {0};
+            '''.format(draftid)
+            cursor.execute(Sell_Update)
+            return redirect(url_for('IndexPage'))
         
         # ========== フォーム ==========
         # メイン画像
@@ -1963,7 +2047,10 @@ def DraftPage():
     FROM Sell
     JOIN SellIMG ON Sell.SellID = SellIMG.SellID
     LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL AND SellIMG.ThumbnailFlg = 0x01 AND Sell.Draft = 0x00 AND Sell.AccountID = {0};
+    WHERE Buy.SellID IS NULL 
+    AND SellIMG.ThumbnailFlg = 0x01 
+    AND Sell.Draft = 0x00 
+    AND Sell.AccountID = {0};
     '''.format(AccountID)
     cursor.execute(Draft_Select)
     Drafts = cursor.fetchall()
@@ -1972,8 +2059,33 @@ def DraftPage():
     conn.commit()
     cursor.close()
     conn.close()
-    return render_template('draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
-                           style=style, layout_value=layout_value)
+    return render_template(
+        'draft_list.html',Drafts=Drafts,icon=icon, UserName=UserName,
+        style=style, layout_value=layout_value)
+   
+# /deleteimg
+@app.route('/deleteimg', methods=['POST'])
+def DelDraftImg():
+    if request.method == 'POST':
+        print('''
+            /deleteimg が実行
+            ''')
+        conn = conn_db()
+        cursor = conn.cursor()
+        
+        sellid = request.form['sellid']
+        
+        SellIMG_Delete = '''
+        DELETE FROM SellIMG
+        WHERE SellID = {0};
+        '''.format(sellid)
+        cursor.execute(SellIMG_Delete)
+        print('実行:',SellIMG_Delete)
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('SellPage', sellid=sellid))
         
 # /personal
 @app.route('/personal')

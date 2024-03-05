@@ -376,11 +376,6 @@
           <p class="title">現在住所</p>
 
           {% if Address != None %}
-          <!-- <p>郵便番号</p>
-          <p class="now_address">{{ Address[0][1] }}</p>
-          <p>住所</p>
-          <p class="now_address">{{ Address[0][0] }}</p>
-          <input type="checkbox" disabled checked> -->
 
           <!-- 一覧のラジオボタン表示 -->
           <fieldset>
@@ -406,12 +401,7 @@
 
         <div class="sell">
           <ul>
-              <!-- <input type="hidden" name="sellimg-main" value="{{ form_data[0] }}"> -->
-              <!-- {% if form_data[1] != None %}
-                {% for path in form_data[1] %}
-                  <input type="hidden" name="image_paths[]" value="{{ path }}">
-                {% endfor %}
-              {% endif %} -->
+              <input type="hidden" name="sellid" value="{{ sellid }}">
               <input type="hidden" name="images" value="{{ imgs }}">
               <input type="hidden" name="select" value="{{ select }}">
               <input type="hidden" name="selltit" value="{{ form_data[1] }}">
