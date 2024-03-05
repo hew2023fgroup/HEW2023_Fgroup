@@ -3379,6 +3379,57 @@ def DB_Search():
         conn.close()
         return render_template('DB_Search.html', Search=Search,TableName=TableName)
 
+
+
+# ガイドページ
+@app.route('/guide')
+def Guide():
+    conn = conn_db()
+    cursor = conn.cursor()
+    
+    # セッション取得
+    you_list = session.get('you')
+    if you_list:
+        AccountID, UserName, MailAddress = you_list[0]
+    
+    layout_value = session.get('layout')
+    print('layout:',layout_value)
+    
+    style = '''
+        <style>
+            *:not(footer p,#title,#main-nav *,.search-box *,.cate-box *){{
+                color: {4} !important;
+            }}
+            html {{
+                background-color: {2} !important;
+            }}
+            #btn{{
+                background-color: {0} !important;
+                color: {1} !important;
+            }}
+            footer {{
+                background-color: {5} !important;
+            }}
+            footer p{{
+                color: {6} !important;
+            }}
+        </style>
+        '''.format(layout_value[0][1], layout_value[1][1], layout_value[2][1], 
+                   layout_value[3][1], layout_value[4][1], layout_value[5][1], layout_value[6][1])
+            
+    # アイコンSELECT
+    ProfIMG_Select = '''
+    SELECT ProfIMG FROM Account
+    WHERE AccountID = {0};
+    '''.format(AccountID)
+    cursor.execute(ProfIMG_Select)
+    icon = cursor.fetchone()[0]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return render_template('guide.html',icon=icon,UserName=UserName,style=style)
+
 # 実行
 if __name__ == ("__main__"):
     app.run(host="localhost", port=8000, debug=True)
