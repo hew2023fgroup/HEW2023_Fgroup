@@ -13,6 +13,22 @@ textarea{
 button{
   font-family: 'Zen Kaku Gothic New', sans-serif !important;
 }
+select{
+  font-family: 'Zen Kaku Gothic New', sans-serif !important;
+}
+select, option{
+  cursor: pointer; /* リンクカーソル（カーソルを指にする） */
+}
+button#del_img{
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 5px;
+  border: 1px #000 solid;
+  background-color: transparent;
+}
+button#del_img:hover{
+  opacity: 0.6;
+}
 div#footer-container{
   display: flex;
   flex-direction: column;
