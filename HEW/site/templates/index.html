@@ -24,6 +24,26 @@
 
     <!-- jquery実行ファイル -->
     <!-- <script type="text/javascript" src="js/common.js"></script> -->
+    <script>
+      $(document).ready(function(){
+          $(".search-delete-btn").click(function(){
+              var wordToDelete = $(this).data("word");
+              $.ajax({
+                  type: "POST",
+                  url: "/delete_word",
+                  data: { word: wordToDelete },
+                  success: function(response){
+                      // 成功時
+                      location.reload();
+                      
+                  },
+                  error: function(){
+                      // エラー時
+                  }
+              });
+          });
+      });
+    </script>
 
   </head>
 
@@ -83,7 +103,7 @@
           {% for word in words %}
           <li>
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
-            <img src="../static/images/search-x.svg"  id="search-delete-btn" alt="">
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
