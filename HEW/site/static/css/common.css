@@ -416,11 +416,6 @@ top: 0;
   margin: 0 auto;
   padding: 13px 30px 7px 30px;
   border-radius: 0 0 3px 3px;
-  /* margin-top: 6px; */
-
-  /* border-bottom: 1px solid #f0f4f4; */
-  /* border-left: 1px solid #f0f4f4; */
-  /* border-right: 1px solid #f0f4f4; */
   background-color: #303030;
 }
 .search-history li{
@@ -491,26 +486,6 @@ img#search-delete-btn::after{
   /* border-bottom: 1px solid rgba(255, 255, 255, 0.5); */
   border-bottom: 1px solid #fff;
 }
-
-
-/* footer{
-  margin-top: auto;
-  padding: 80px 0 80px 0;
-  text-align: center;
-  background-color: #000;
-}
-footer .footer01{
-  margin: 0 0 10px 0;
-  color: #fff;
-  font-weight: normal;
-  font-size: 0.8rem;
-}
-footer p{
-  color: #fff;
-  font-size: 0.8rem;
-} */
-
-
 
 footer{
   padding: 50px 0 150px 0;
@@ -646,6 +621,7 @@ div#footer-wrap{
   height: 33px;
   cursor: pointer;
   border: 1px solid #E0ECFF;
+  background-color: #fff !important;
 }
 .list_img{
   margin-left: 2px;
@@ -653,6 +629,7 @@ div#footer-wrap{
   height: 33px;
   cursor: pointer;
   border: 1px solid #E0ECFF;
+  background-color: #fff !important;
 }
 div#gridView{
   margin: 20px 0 0 0;
@@ -686,11 +663,16 @@ div#listView{
   overflow: hidden;
   background-color: #a9a9a9;
   text-align: center;
+  border: 1px solid #E0ECFF;
 }
 .grid-product a figure img{
   max-width: 214px;
   height: 214px;
   object-fit: scale-down;
+}
+.grid-product a figure img:hover{
+  transform:scale(1.1);
+  transition:0.5s;
 }
 .grid-product a p{
   margin: 8px 0 4px 0;
@@ -734,16 +716,19 @@ div#listView{
   color: #000;
 }
 .list-product a figure{
-  /* width: 160px; */
-  /* height: 160px; */
   overflow: hidden;
   background-color: #a9a9a9;
   text-align: center;
+  border: 1px solid #E0ECFF;
 }
 .list-product a figure img{
   max-width: 160px;
   height: 160px;
   object-fit: scale-down;
+}
+.list-product a figure img:hover{
+  transform:scale(1.1);
+  transition:0.5s;
 }
 .list-product-exa{
   margin: 0 0 0 20px;
