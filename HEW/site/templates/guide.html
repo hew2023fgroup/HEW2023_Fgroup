@@ -82,11 +82,11 @@
       </div>
 
       <form action="/search" method="post">
-        <ul>
+        <ul class="search-history" style="display: none;">
           {% for word in words %}
           <li>
-            <!-- <button type="submit" value="{{ word }}" name="delete">&#10005;</button> -->
             <button type="submit" value="{{ word }}" name="search_word">{{ word }}</button>
+            <img src="../static/images/search-x.svg" class="search-delete-btn" alt="" data-word="{{ word }}">
           </li>
           {% endfor %}
         </ul>
@@ -601,6 +601,8 @@
   </body>
   <!-- 検索用 -->
   <script src="{{ url_for('static', filename='js/nav_search.js') }}"></script>
+  <!-- 検索履歴 -->
+  <script src="{{ url_for('static', filename='js/search-input.js') }}"></script>
 
   <!-- カテゴリ-clickしたら開く用 -->
   <script src="{{ url_for('static', filename='js/category_click.js') }}"></script>
