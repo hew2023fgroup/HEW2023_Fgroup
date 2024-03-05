@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/guide.css') }}">
     
     <!-- google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -287,129 +287,278 @@
     
     <div id="box">
 
-      <nav id="third_nav">
-        <ul>
-          <li class="nav_title01">商品管理</li>
-          <li><a href="{{ url_for('FavoritePage') }}">ブックマーク一覧</a></li>
-          <li><a href="{{ url_for('ViewlogPage') }}">閲覧履歴</a></li>
-          <li><a href="{{ url_for('SellListPage') }}">出品した商品</a></li>
-          <li><a href="{{ url_for('BuyListPage') }}">購入した商品</a></li>
-          <li><a href="{{ url_for('DraftPage') }}">下書き一覧</a></li>
-
-          <li class="nav_title02">設定</li>
-          <li><a href="{{ url_for('PersonalPage') }}">個人情報編集</a></li>
-          <li><a href="{{ url_for('LayoutPage') }}">レイアウト編集</a></li>
-          <li><a href="{{ url_for('Logout') }}">ログアウト</a></li>
-        </ul>
-      </nav>
-
-      <main id="m-mypage">
-        <div id="profile">
-
-          <div class="prof_detail">
-            
-            <div class="pprof-wrap">
-              <figure id="prof_icon">
-                {% if icon != None %}
-                <!-- css -->
-                <img src="{{ icon }}" id="profile-image" alt="プロフィール画像">
-                
-                {% elif icon == None %}
-                <!-- css -->
-                <img src="static/images/icon/default_icon.png"  id="profile-image" alt="初期画像">
-                {% endif %}
+        <nav id="third_nav">
+          <ul>
+            <li id="s_02">ご利用ガイド</li>
+            <li><a href="#s_02_1">ご購入方法</a></li>
+            <li><a href="#s_02_2">ご出品方法</a></li>
+            <li><a href="#s_02_3">送料</a></li>
+            <li><a href="#s_02_4">売上金・サービス内マネー</a></li>
+            <li><a href="#s_02_5">会員登録・ログイン</a></li>
+            <li><a href="#s_02_6">個人情報の登録・変更</a></li>
+          </ul>
+        </nav>
+  
+  
+        <main id="guide-box">
+  
+          <div id="guideBuy">
+            <div class="title-box" id="s_02_1">
+              <p class="one_title">１．ご購入方法</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">商品の検索・選択</p>
+                </div>
+                <div class="step-exa">
+                  <p>キーワード検索やカテゴリーを指定、もしくは商品一覧から商品を見つけ、商品詳細ページに遷移します。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide01.png">
               </figure>
             </div>
-
-            <p class="name">{{ UserName }}</p>
-          </div>
-
-          <div class="rate-form">
-              <div class="rate-container" style="display: flex;">
-                {% for i in range(rate[0]) %}
-                    <img src="static/images/rate1.svg" alt="1" style="max-width: 25px;">
-                {% endfor %}
-                {% for i in range(rate[1]) %}
-                    <img src="static/images/rate05.svg" alt="0.5" style="max-width: 25px;">
-                {% endfor %}
-                {% for i in range(rate[2]) %}
-                    <img src="static/images/rate0.svg" alt="0" style="max-width: 25px;">
-                {% endfor %}
-              </div>
-          </div>
-
-          <div id="mypage_nav">
-            <ul>
-              <li><a href="{{ url_for('FavoritePage') }}"><img src="../static/images/bookmarks-mypage.svg"><p>ブックマーク一覧</p></a></li>
-              <li><a href="{{ url_for('BuyListPage') }}"><img src="../static/images/buy.png"><p>購入した商品</p></a></li>
-              <li><a href="{{ url_for('SellListPage') }}"><img src="../static/images/sell.png"><p>出品した商品</p></a></li>
-            </ul>
-          </div>
-          
-          <div id="point-money-box">
-            <div class="bar"></div>
-            <div class="point-money">
-              <div class="money-box">
-                <p>売上金</p>
-                <div class="money">
-                  <p class="mark">¥</p>
-                  <span class="price">{{ proceed }}</span>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">「購入手続きへ」をクリック</p>
+                </div>
+                <div class="step-exa">
+                  <p>商品を確認し、よろしければ「購入手続きへ」ボタンを押して次の手順に進みます。</p>
+                  <div class="product-exa">
+                    <p>【 購入前に以下を必ずご確認ください 】</p>
+                    <p>‣金額</p>
+                    <p>‣商品説明</p>
+                    <p>‣商品状態</p>
+                  </div>
                 </div>
               </div>
-
-              <div class="point-box">
-                <p>サービス内マネー</p>
-                <div class="point">
-                  <p class="mark">¥</p>
-                  <!-- マネー表示修正 -->
-                  <span class="price">{{ money }}</span>
+              <figure>
+                <img src="../static/images/guide04.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">お届け先住所の選択・内容の確認</p>
                 </div>
+                <div class="step-exa">
+                  <p>購入内容確認画面にて、お届け先住所を選択し、内容のご確認してください。</p>
+                  <p class="exa01">確認ができましたら、チェックボックスをチェックした後に「購入を確定する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご購入手続きが完了しました。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide05.png">
+              </figure>
+            </div>
+          </div>
+  
+          <div id="guideSell">
+            <div class="title-box" id="s_02_2">
+              <p class="one_title">２．ご出品方法について</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">写真の選択</p>
+                </div>
+                <div class="step-exa">
+                  <p>写真を複数枚選択し、その中から一枚だけ出品時のサムネイルを選んでください。</p>
+                  <p class="exa01">間違えた写真を選んでしまった場合は、写真右上の×ボタンを押すことで削除できます。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide06.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">商品の説明を入力</p>
+                </div>
+                <div class="step-exa">
+                  <p>商品の説明を入力してください。</p>
+                  <p class="exa01">カテゴリーと商品の状態、商品名と商品の説明などをできるだけ詳細を入力して商品の魅力を伝えてください。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide07.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">出品内容の確認</p>
+                </div>
+                <div class="step-exa">
+                  <p>すべての項目の入力・設定の確認が完了しましたら、出品者ご自身の住所を選択してください。</p>
+                  <p class="exa01">その後、「上記の情報を確認しました」をチェックし、「出品する」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべてのご出品手続きが完了しました。</p>
+                  <p></p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide08.png">
+                <img class="img02" src="../static/images/guide09.png">
+              </figure>
+            </div>
+  
+          </div>
+  
+          <div id="guidePostage">
+            <div class="title-box" id="s_02_3">
+              <p class="one_title">３．送料</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="postage-wrap">
+              <p>【送料】</p>
+              <p>※送料は出品者様の自己負担になっております。</p>
+              <div class="postage-box">
+                <p>‣小</p>
+                <p class="kg">(~３kg未満)</p>
+                <p>：１０６円</p>
+              </div>
+              <div class="postage-box">
+                <p>‣中</p>
+                <p class="kg">(3kg以上~10kg未満)</p>
+                <p>：１３５円</p>
+              </div>
+              <div class="postage-box">
+                <p>‣大</p>
+                <p class="kg">(10kg以上~)</p>
+                <p>：１６５円</p>
               </div>
             </div>
           </div>
-
-          <!-- <div id="point-money-box">
-            <form action="/charge" method="post" onsubmit="return Submit();">
-              <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力" style="margin: 0px; padding: 4px">
-              <input type="submit" value="入金" style="margin-right: 30px;">
-            </form>
-            <form action="/charge" method="post" onsubmit="return Submit();">
-              <button type="submit" name="charge" value="1000" style="margin: 0px; padding:1px 8px;">+1000円</button>
-              <button type="submit" name="charge" value="2000" style="margin: 0px; padding:1px 8px;">+2000円</button>
-              <button type="submit" name="charge" value="3000" style="margin: 0px; padding:1px 8px;">+3000円</button>
-            </form>
-            
-            <script>
-              function Submit() {
-                  return confirm('チャージしますか？');
-              }
-            </script>
-          </div> -->
-
-          <div id="charge-wrap">
-            <div class="chargebox">
-              <form action="/charge" method="post" onsubmit="return Submit();">
-                <input type="text" name="charge" id="charge" placeholder="チャージ希望金額を入力">
-                <input type="submit" value="チャージする" class="payBtn">
-              </form>
-              <form action="/charge" method="post" onsubmit="return Submit();">
-                <button class="chargeBtn" type="submit" name="charge" value="1000">+1,000円</button>
-                <button class="chargeBtn" type="submit" name="charge" value="2000">+2,000円</button>
-                <button class="chargeBtn" type="submit" name="charge" value="3000">+3,000円</button>
-              </form>
+  
+          <div id="guideMoney">
+            <div class="title-box" id="s_02_4">
+              <p class="one_title">４．売上金・サービス内マネー</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
             </div>
-
-            <script>
-              function Submit() {
-                  return confirm('チャージしますか？');
-              }
-            </script>
+            <div class="money-wrap">
+              <p>【売上金】</p>
+              <p>当サイトで商品を販売して得た販売利益にあたります。</p>
+  
+              <p class="exa01">【サービス内マネー】</p>
+              <p>当サイトで商品を購入する時に必要となるお金です。</p>
+              <p>マイページからチャージすることが可能となっております。</p>
+            </div>
           </div>
-
-        </div>
-      </main>
-
-    </div>
+  
+          <div id="guideUser">
+            <div class="title-box" id="s_02_5">
+              <p class="one_title">５．会員登録・ログイン</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+            <div class="login-new-wrap">
+              <p>【会員登録されていない方】</p>
+              <p>新規会員登録ページでユーザーネーム、メールアドレスとパスワードを入力して新規会員登録をしてください。</p>
+  
+              <p class="exa01">【会員登録がお済みの方】</p>
+              <p>ログインページから登録時に入力されたメールアドレスとパスワードでログインしてください。</p>
+              <p class="exa02">入会費・年会費は無料です。</p>
+            </div>
+          </div>
+  
+          <div id="guidePersonal">
+            <div class="title-box" id="s_02_6">
+              <p class="one_title">６．個人情報の登録・変更</p>
+              <a class="button" href="#s_02">▲ メニューに戻る</a>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP１</p>
+                  <p class="step-tittle">画像・ユーザーネームの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【画像の変更】</p>
+                  <p>画像を選択して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【ユーザーネームの変更】</p>
+                  <p>ユーザーネームを入力して「変更」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide10.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP２</p>
+                  <p class="step-tittle">住所の追加・削除</p>
+                </div>
+                <div class="step-exa">
+                  <p>【住所の追加】</p>
+                  <p>郵便番号、住所を入力して「追加」ボタンを押してください。</p>
+                  <p class="exa01">【住所の削除】</p>
+                  <p>住所一覧から「削除」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide11.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP３</p>
+                  <p class="step-tittle">メールアドレス・パスワードの変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【メールアドレスの変更】</p>
+                  <p>新しいメールアドレスを入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【パスワードの変更】</p>
+                  <p>現在のパスワードを入力した後、新しいパスワードを入力して「変更」ボタンを押してください。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide12.png">
+              </figure>
+            </div>
+  
+            <div class="guide-detail-box">
+              <div class="step-wrap">
+                <div class="step-box">
+                  <p class="step">STEP４</p>
+                  <p class="step-tittle">個人情報の変更</p>
+                </div>
+                <div class="step-exa">
+                  <p>【氏名・生年月日の変更】</p>
+                  <p>氏名・カナ、生年月日を入力して「変更」ボタンを押してください。</p>
+                  <p class="exa01">【性別の変更】</p>
+                  <p>男性、女性、秘密から選択して「変更」ボタンを押してください。</p>
+                  <p class="exa02">これで、すべての個人情報の登録・変更作業が完了しました。</p>
+                </div>
+              </div>
+              <figure>
+                <img src="../static/images/guide13.png">
+              </figure>
+            </div>
+          </div>
+        </main>
+  
+      </div>
 
 
     <footer>
@@ -429,7 +578,7 @@
             <div class="gaido-left">
               <a href=""><p>ご購入方法</p></a>
               <a href=""><p>ご出品方法</p></a>
-              <a href=""><p>送料・配送</p></a>              
+              <a href=""><p>送料</p></a>              
             </div>
             <div class="gaido-right">
               <a href=""><p>売上金・サービス内マネー</p></a>
@@ -457,5 +606,8 @@
   
   <!-- カテゴリ用 -->
   <script src="{{ url_for('static', filename='js/category_tab.js') }}"></script>
+
+  <!-- ガイド用 -->
+  <script src="{{ url_for('static', filename='js/guide.js') }}"></script>
 
 </html>
