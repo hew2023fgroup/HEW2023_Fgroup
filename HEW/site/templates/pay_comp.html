@@ -450,13 +450,14 @@
           <p class="guide-tittle">ご利用ガイド</p>
           <div class="guide-box">
             <div class="gaido-left">
-              <a href=""><p>ご購入方法</p></a>
-              <a href=""><p>ご出品方法</p></a>
-              <a href=""><p>送料・配送</p></a>              
+              <a href="{{ url_for('Guide') }}#guideBuy"><p>ご購入方法</p></a>
+              <a href="{{ url_for('Guide') }}#guideSell"><p>ご出品方法</p></a>
+              <a href="{{ url_for('Guide') }}#guidePostage"><p>送料・配送</p></a>              
             </div>
             <div class="gaido-right">
-              <a href=""><p>売上金・サービス内マネー</p></a>
-              <a href=""><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guideMoney"><p>売上金・サービス内マネー</p></a>
+              <a href="{{ url_for('Guide') }}#guideUser"><p>会員登録・ログイン</p></a>              
+              <a href="{{ url_for('Guide') }}#guidePersonal"><p>個人情報の登録・変更</p></a>              
             </div>
           </div>
         </div>
