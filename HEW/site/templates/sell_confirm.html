@@ -401,7 +401,11 @@
 
         <div class="sell">
           <ul>
+              {% if sellid %}
               <input type="hidden" name="sellid" value="{{ sellid }}">
+              {% else %}
+              <input type="hidden" name="sellid" value="None">
+              {% endif %}
               <input type="hidden" name="images" value="{{ imgs }}">
               <input type="hidden" name="select" value="{{ select }}">
               <input type="hidden" name="selltit" value="{{ form_data[1] }}">

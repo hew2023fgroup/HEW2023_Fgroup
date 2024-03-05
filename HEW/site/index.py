@@ -478,9 +478,9 @@ def Sell():
         if you_list:
             AccountID, UserName, MailAddress = you_list[0]
         
-        if request.form['sellid']:
-            
-            draftid = request.form['sellid']
+        draftid = request.form['sellid']
+        if draftid != 'None':
+            print('sellid:',draftid)
             Sell_Update = '''
             UPDATE sell SET draft = 1 WHERE SellID = {0};
             '''.format(draftid)
