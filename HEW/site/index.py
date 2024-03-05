@@ -925,6 +925,7 @@ def IndexPage():
     conn = conn_db()
     cursor = conn.cursor()
     
+    # 固定処理 ====================
     you_list = session.get('you')
     if you_list:
         AccountID, UserName, MailAddress = you_list[0]
@@ -941,9 +942,6 @@ def IndexPage():
     layout_value = session.get('layout')
     simple_value = list(session.get('simple'))
     slide_value = session.get('slideimg')
-    print('layout:',layout_value)
-    print('simple:',simple_value)
-    print('slide:',slide_value)
     
     if simple_value[0] == 0:
         simple_value[0] = 'None'
@@ -997,14 +995,13 @@ def IndexPage():
         style = None
         slide_value = None
 
-    
-    # アイコンSELECT
     ProfIMG_Select = '''
     SELECT ProfIMG FROM Account
     WHERE AccountID = {0};
     '''.format(AccountID)
     cursor.execute(ProfIMG_Select)
     icon = cursor.fetchone()[0]
+    # 固定処理 ====================
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -1021,6 +1018,7 @@ def IndexPage():
     cursor.execute(SellID_Select)
     ids = cursor.fetchall()
     
+    
     # シャッフル
     random.shuffle(ids)
     # top#10
@@ -1030,21 +1028,26 @@ def IndexPage():
     ids_top10 = tuple(ids_top10)
     print(ids_top10)
     
-    SellInfo_Select = '''
-    SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
-    FROM Sell
-    JOIN SellIMG ON Sell.SellID = SellIMG.SellID
-    LEFT JOIN Buy ON Sell.SellID = Buy.SellID
-    WHERE Buy.SellID IS NULL 
-    AND SellIMG.ThumbnailFlg = 0x01 
-    AND Sell.Draft = 0x01 
-    AND Sell.AccountID != {0} 
-    AND Sell.SellID IN ({1})
-    ORDER BY FIELD(Sell.SellID, {1});
-    '''.format(AccountID,','.join(map(str, ids_top10)))
-    print('実行:',SellInfo_Select)
-    cursor.execute(SellInfo_Select)
-    sells = cursor.fetchall()
+    if ids_top10:
+        SellInfo_Select = '''
+        SELECT Sell.SellID, Sell.Name, Sell.Price, SellIMG.SellIMG
+        FROM Sell
+        JOIN SellIMG ON Sell.SellID = SellIMG.SellID
+        LEFT JOIN Buy ON Sell.SellID = Buy.SellID
+        WHERE Buy.SellID IS NULL 
+        AND SellIMG.ThumbnailFlg = 0x01 
+        AND Sell.Draft = 0x01 
+        AND Sell.AccountID != {0} 
+        AND Sell.SellID IN ({1})
+        ORDER BY FIELD(Sell.SellID, {1});
+        '''.format(AccountID,','.join(map(str, ids_top10)))
+        print('実行:',SellInfo_Select)
+        cursor.execute(SellInfo_Select)
+        sells = cursor.fetchall()
+    else:
+        sells = None
+        
+    print('sells:',sells)
     
     Search_Select = '''
     SELECT Word FROM Search

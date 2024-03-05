@@ -426,20 +426,21 @@
 
         <div id="gridView">
           <div class="grid-wrap-product">
-
-            {% for row in sells %}
-            <div class="grid-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <p>{{ row[1] }}</p>
-                <div class="price-box">
-                  <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-                </div>
-              </a>
-            </div>
-            {% endfor %}
+            {% if sells %}
+              {% for row in sells %}
+              <div class="grid-product">
+                <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+                  <figure>
+                    <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
+                  </figure>
+                  <p>{{ row[1] }}</p>
+                  <div class="price-box">
+                    <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+            {% endif %}
 
           </div>
         </div>
@@ -447,45 +448,28 @@
 
         <div id="listView" style="display: none;">
           <div class="list-wrap-product">
-
-            {% for row in sells %}
-            <div class="list-product">
-              <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-                <figure>
-                  <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
-                </figure>
-                <div class="list-product-exa">
-                  <p>{{ row[1] }}</p>
-                  <div class="list-price-box">
-                    <span class="list-mark">¥</span><span class="list-price">{{ row[2] }}</span>
-                    <span class="product-tax">(税込)</span>
+            
+            {% if sells %}
+              {% for row in sells %}
+              <div class="list-product">
+                <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
+                  <figure>
+                    <img src="{{ row[3] }}" alt="sellimg" width="215px" id="sellimg">
+                  </figure>
+                  <div class="list-product-exa">
+                    <p>{{ row[1] }}</p>
+                    <div class="list-price-box">
+                      <span class="list-mark">¥</span><span class="list-price">{{ row[2] }}</span>
+                      <span class="product-tax">(税込)</span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>
-            {% endfor %}
+                </a>
+              </div>
+              {% endfor %}
+            {% endif %}
   
           </div>
         </div>
-        
-
-
-        <!-- 以下for文の追加(仮) -->
-        <!-- {% for row in sells %}
-        <div class="product">
-          <a href="{{ url_for('ProductPage', sellid=row[0]) }}">
-            <figure>
-              <img src="{{ row[3] }}" alt="sellimg" width="215px">
-            </figure>
-              <p>{{ row[1] }}</p>
-              <span>{{ row[2] }}</span>
-              
-              <div class="price-box">
-                <span class="mark">¥</span><span class="price">{{ row[2] }}</span>
-              </div>
-          </a>
-        </div>
-        {% endfor %} -->
       
     </main>
 
