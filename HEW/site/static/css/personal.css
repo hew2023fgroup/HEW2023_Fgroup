@@ -100,6 +100,19 @@ main#m-personal h1::after{
   left: 0px;
   border-bottom: 1px solid #a9a9a9;
 }
+.edit-changeBtn{
+  padding: 3px 10px;
+  background-color: #fff;
+  /* color: #fff; */
+  border: 1px #000 solid;
+  border-radius: 5px;
+  transition: .2s ;
+}
+.edit-changeBtn:hover{
+  opacity: 0.6;
+  /* background-color: #636363; */
+  /* color: #fff; */
+}
 
 /*                タイトル テストボックス                  */
 .edit-title{
