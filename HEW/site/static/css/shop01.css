@@ -164,6 +164,16 @@ div#shopping-left{
   margin: 0 5px 0 0;
 }
 .post-Code span{}
+select#Address{
+  /* background-color: pink; */
+  margin: 5px 0 0 0;
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+select, option{
+  cursor: pointer; /* リンクカーソル（カーソルを指にする） */
+}
 
 
 /*          お届け日時          */
