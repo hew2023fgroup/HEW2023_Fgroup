@@ -1022,7 +1022,7 @@ def IndexPage():
     # シャッフル
     random.shuffle(ids)
     # top#10
-    ids_top10 = ids[:10]
+    ids_top10 = ids[:20]
     # タプル
     ids_top10 = tuple(x[0] for x in ids_top10)
     ids_top10 = tuple(ids_top10)

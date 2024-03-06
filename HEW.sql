@@ -277,11 +277,15 @@ INSERT INTO Scategory(Name,McategoryID) VALUES("その他",12);
 INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("hogehoge","P@ssw0rd","2001-01-01",1,"sample@gmail.com","HAL太郎","ハルタロウ",3000);
 INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test","P@ssw0rd","2011-02-02",2,"sample_test@gmail.com","テスト太郎","テストタロウ",5000);
 INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test2","P@ssw0rd","2000-08-10",1,"sample_test2@gmail.com","近藤雅仁","コンドウマサト",2000);
+INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test3","P@ssw0rd","2003-08-10",1,"sample_test3@gmail.com","岡郁也","オカイクヤ",40000000);
+INSERT INTO Account(UserName,Password,Birthday,SexID,MailAddress,KanjiName,Furigana,Money) VALUES("test4","P@ssw0rd","2005-08-10",1,"sample_test4@gmail.com","石油オーウ","セキユオウ",60000000);
 
 INSERT INTO Address(Address,POST,AccountID) VALUES("愛知県名古屋市中村区名駅4-27-1HAL名古屋","450-0002",1);
 INSERT INTO Address(Address,POST,AccountID) VALUES("福島県本宮市本宮雲雀田","349-7",1);
 INSERT INTO Address(Address,POST,AccountID) VALUES("青森県むつ市脇野沢赤坂","790-17",2);
 INSERT INTO Address(Address,POST,AccountID) VALUES("岡山県新見市神郷下神代","901-15",3);
+INSERT INTO Address(Address,POST,AccountID) VALUES("岐阜県白川村鳩谷517","501-5629",4);
+INSERT INTO Address(Address,POST,AccountID) VALUES("東京都 千代田区 千代田 1番1号","100-0001",5);
 
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("Sample商品データ",2000,1,2,2,"サンプルデータです。最終的には削除するデータです。",6,1,1);
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("PS5",6000,1,1,1,"使ってたPS5なんですけど使わなくなったので売ります",26,1,1);
@@ -301,6 +305,14 @@ INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,Accoun
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAO色紙",3000,1,3,1,"SAO最高！",28,1,0);
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAOプログレッシブ第五巻",1300,1,3,2,"読み終えたので誰か欲しい人に売ります。",23,2,0);
 INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("SAOプログレッシブ第四巻",1300,1,3,2,"読み終わったのでだれかどうですか？",23,3,0);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("ひぐらしのなく頃にオルゴール",13000,1,2,2,"いい音色を奏でます。1つ多く買ってしまった為、出品いたします。",51,4,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("トトロのぬいぐるみ",1000,1,2,2,"大きくなったので出品します。",28,4,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("ポムポムプリンぬいぐるみ",2000,1,2,2,"かわいいです。誰か引き取ってください",28,4,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("ちいかわグッズ",2500,1,2,2,"即購入でおまけのハッピーターンの粉つけます。",28,4,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("ちいかわ3種コレクション",2800,1,2,2,"good",28,4,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("電子レンジ",5800,1,2,2,"いまなら画像の肉調理してお届け",40,5,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("3番アイアン,右利き用",5000,1,2,3,"引退したので売ります",41,5,1);
+INSERT INTO Sell(Name,Price,TaxID,PostageID,StatusID,Overview,ScategoryID,AccountID,draft) VALUES("オムロン製、体重計",3000,1,2,1,"ダイエット成功したので売ります",41,5,1);
 
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/Product (1).jpeg",1);
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sample.png",2);
@@ -320,6 +332,26 @@ INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo09.png
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo01.png",16);
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo04.png",17);
 INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/saved-photo05.png",18);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell01_1.jpg",19);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell02_1.jpg",20);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell03_1.jpg",21);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell04_1.jpg",22);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell05_1.jpg",23);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell06_1.jpg",24);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell07_1.jpg",25);
+INSERT INTO SellIMG(SellIMG,SellID) VALUES("static/images/sell/sell08_1.jpg",26);
+
+
+
+INSERT INTO Tag(Name,SellID) VALUES("#オルゴール",19);
+INSERT INTO Tag(Name,SellID) VALUES("#トトロ",20);
+INSERT INTO Tag(Name,SellID) VALUES("#ポムポムプリン",21);
+INSERT INTO Tag(Name,SellID) VALUES("#ちいかわ",22);
+INSERT INTO Tag(Name,SellID) VALUES("#ちいかわ",23);
+INSERT INTO Tag(Name,SellID) VALUES("#電子レンジ",24);
+INSERT INTO Tag(Name,SellID) VALUES("#ゴルフ用品",25);
+INSERT INTO Tag(Name,SellID) VALUES("#体重計",26);
+
 
 INSERT INTO Layout(Name) VALUES("navボタン色");
 INSERT INTO Layout(Name) VALUES("nav文字色");
@@ -336,3 +368,4 @@ INSERT INTO Layout(Name) VALUES("スライドショー画像4");
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 1), ('#FFF', 2, 1), ('#FFF', 3, 1), ('#F00', 4, 1), ('#000', 5, 1), ('#333', 6, 1), ('#FFF', 7, 1), ('static/images/slide/slide01.jpg', 8, 1), ('static/images/slide/slide05.jpg', 9, 1), ('static/images/slide/slide08.jpg', 10, 1), ('static/images/slide/slide10.jpg', 11, 1);
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 2), ('#FFF', 2, 2), ('#FFF', 3, 2), ('#F00', 4, 2), ('#000', 5, 2), ('#333', 6, 2), ('#FFF', 7, 2), ('static/images/slide/slide01.jpg', 8, 2), ('static/images/slide/slide05.jpg', 9, 2), ('static/images/slide/slide08.jpg', 10, 2), ('static/images/slide/slide10.jpg', 11, 2);
 INSERT INTO Numerical(Numerical, LayoutID, AccountID) VALUES('#F00', 1, 3), ('#FFF', 2, 3), ('#FFF', 3, 3), ('#F00', 4, 3), ('#000', 5, 3), ('#333', 6, 3), ('#FFF', 7, 3), ('static/images/slide/slide01.jpg', 8, 3), ('static/images/slide/slide05.jpg', 9, 3), ('static/images/slide/slide08.jpg', 10, 3), ('static/images/slide/slide10.jpg', 11, 3);
+
