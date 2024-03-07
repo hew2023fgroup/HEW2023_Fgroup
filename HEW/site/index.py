@@ -25,14 +25,9 @@ app.secret_key="abcdefghijklmn"
 # #########################################
 
 # /register
-@app.route('/register')
+@app.route('/register',methods=['POST','GET'])
 def RegistrationPage():
     show_modal = False
-    return render_template("registration.html",show_modal=show_modal)
-
-# /register/
-@app.route('/register/', methods=['POST'])
-def Registration():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -41,12 +36,11 @@ def Registration():
         email = request.form['email']
         password = request.form['password']
         
-        # メールアドレス未登録のINSERT
-        sql = '''
-        INSERT INTO Account 
-        (UserName, Password, MailAddress) VALUES ('{0}', '{1}', '{2}');
+        Account_Insert = '''
+        INSERT INTO Account(UserName, Password, MailAddress) 
+        VALUES ('{0}', '{1}', '{2}');
         '''.format(username, password, email)
-        cursor.execute(sql)
+        cursor.execute(Account_Insert)
         id = cursor.lastrowid
         
         Layout_Insert = '''
@@ -57,11 +51,11 @@ def Registration():
         '''.format(id)
         cursor.execute(Layout_Insert)
         
-        # CLOSE
         conn.commit()
         cursor.close()
         conn.close()
         return render_template("login.html")
+    return render_template("registration.html",show_modal=show_modal)
 
 # /input
 @app.route('/input', methods=['POST'])
