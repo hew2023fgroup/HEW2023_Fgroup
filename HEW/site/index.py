@@ -107,13 +107,8 @@ def InputRegister():
         return render_template('registration.html',show_modal=show_modal, input_data=input_data, error=error, checks=checks)
     
 # /login
-@app.route('/login')
+@app.route('/login',methods=['POST'])
 def LoginPage():
-    return render_template("login.html")
-
-# /login/
-@app.route('/login/', methods=['POST'])
-def Login():
     if request.method == 'POST':
         conn = conn_db()
         cursor = conn.cursor()
@@ -121,70 +116,99 @@ def Login():
         email = request.form['email']
         password = request.form['password']
         
-        # パスワード認証のSELECT
-        sql = '''
+        Pas_Select = '''
         SELECT MailAddress, Password 
-        FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
+        FROM Account 
+        WHERE MailAddress = '{0}' 
+        AND Password = '{1}';
         '''.format(email, password)
-        cursor.execute(sql)
+        cursor.execute(Pas_Select)
         user = cursor.fetchone()
         
-        # 認証
         if user:
-            # 成功
-            get = '''
-            SELECT AccountID, UserName, MailAddress 
-            FROM Account WHERE MailAddress = '{0}' AND Password = '{1}';
+            Account_Select = '''
+            SELECT * 
+            FROM Account 
+            WHERE MailAddress = '{0}' 
+            AND Password = '{1}';
             '''.format(email, password)
-            cursor.execute(get)
-            you = cursor.fetchall()
+            cursor.execute(Account_Select)
+            conn_user = list(cursor.fetchone())
             
-            # セッションへログイン情報を保存
-            session['you'] = you
+            session['you'] = conn_user
+            print('セッション:',conn_user)
             
-            # セッションへレイアウト情報を保存
             Layout_Select = '''
             SELECT LayoutID, Numerical
             FROM Numerical
             WHERE AccountID = {0};
-            '''.format(you[0][0])
+            '''.format(conn_user[0])
             cursor.execute(Layout_Select)
-            print('実行:',Layout_Select)
             layout_value = cursor.fetchall()
             session['layout'] = layout_value
+            print('セッション:',layout_value)
 
             Simple_Select = '''
             SELECT SlideShowFlg, SimpleThumbFlg, SimplePriceFlg
             FROM Account
             WHERE AccountID = {0};
-            '''.format(you[0][0])
+            '''.format(conn_user[0])
             cursor.execute(Simple_Select)
-            print('実行:',Simple_Select)
             simple_value = list(cursor.fetchone())
             session['simple'] = simple_value
+            print('セッション:',simple_value)
             
             Slide_Select = '''
             SELECT Numerical, NumericalID 
             FROM Numerical
             WHERE AccountID = {0} 
             AND LayoutID IN (8, 9, 10, 11);
-            '''.format(you[0][0])
+            '''.format(conn_user[0])
             cursor.execute(Slide_Select)
-            print('実行:',Slide_Select)
             slide_value = cursor.fetchall()
-            print('slide_session:',slide_value)
             session['slideimg'] = slide_value
+            print('セッション:',slide_value)
             
-            # CLOSE
             conn.commit()
             cursor.close()
             conn.close()
             return redirect(url_for('IndexPage'))
         else:
-            # 失敗
             PassMessage = "ログインできませんでした。ご確認の上もう一度お試しください。"
-            return render_template("login.html", PassMessage=PassMessage)  
+            return render_template("login.html", PassMessage=PassMessage)
+    return render_template("login.html")
 
+# DEF Account()
+def Account(you):
+    conn = conn_db()
+    cursor = conn.cursor()
+
+    acc_dict = {
+        "AccountID":   you[0],
+        "UserName":    you[1],
+        "Password":    you[2],
+        "ProfileIMG":  you[3],
+        "BirthDay":    you[4],
+        "SexID":       you[5],
+        "MailAddress": you[6],
+        "Kanji":       you[7],
+        "Katakana":    you[8],
+        "Date":        you[9],
+        "Money":       you[10]
+    }
+
+    Search_Select = '''
+    SELECT Word FROM Search
+    WHERE AccountID = {0};
+    '''.format(acc_dict['AccountID'])
+    cursor.execute(Search_Select)
+    words = list(cursor.fetchall())
+    words = [word[0] for word in words]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return acc_dict, words
 # #########################################
 # 出品購入
 # #########################################
@@ -916,21 +940,18 @@ def TrendPage():
 # /index
 @app.route('/')
 def IndexPage():
+    conn_page = 'index'
     conn = conn_db()
     cursor = conn.cursor()
     
     # 固定処理 ====================
-    you_list = session.get('you')
-    if you_list:
-        AccountID, UserName, MailAddress = you_list[0]
-    if you_list == None:
-        return redirect(url_for('LoginPage'))
+    you = session.get('you')
+    Account_result = Account(you)
+    acc_dict, words = Account_result
     
-    if Admin(AccountID) == True:
-        print('Admin:True')
+    if Admin(you[0]) == True:
         TablePage = True
-    elif Admin(AccountID) == False:
-        print('Admin:False')
+    elif Admin(you[0]) == False:
         TablePage = False
     
     layout_value = session.get('layout')
@@ -988,14 +1009,9 @@ def IndexPage():
     else: 
         style = None
         slide_value = None
-
-    ProfIMG_Select = '''
-    SELECT ProfIMG FROM Account
-    WHERE AccountID = {0};
-    '''.format(AccountID)
-    cursor.execute(ProfIMG_Select)
-    icon = cursor.fetchone()[0]
     # 固定処理 ====================
+    if you == None:
+        return redirect(url_for('LoginPage'))
     
     # 出品取得のSELECT
     # 条件:購入がされていない、サムネイルがある、下書きではない。
@@ -1008,7 +1024,7 @@ def IndexPage():
     AND SellIMG.ThumbnailFlg = 0x01 
     AND Sell.Draft = 0x01 
     AND Sell.AccountID != {0};
-    '''.format(AccountID)
+    '''.format(acc_dict['AccountID'])
     cursor.execute(SellID_Select)
     ids = cursor.fetchall()
     
@@ -1034,7 +1050,7 @@ def IndexPage():
         AND Sell.AccountID != {0} 
         AND Sell.SellID IN ({1})
         ORDER BY FIELD(Sell.SellID, {1});
-        '''.format(AccountID,','.join(map(str, ids_top10)))
+        '''.format(acc_dict['AccountID'],','.join(map(str, ids_top10)))
         print('実行:',SellInfo_Select)
         cursor.execute(SellInfo_Select)
         sells = cursor.fetchall()
@@ -1046,7 +1062,7 @@ def IndexPage():
     Search_Select = '''
     SELECT Word FROM Search
     WHERE AccountID = {0};
-    '''.format(AccountID)
+    '''.format(acc_dict['AccountID'])
     cursor.execute(Search_Select)
     words = list(cursor.fetchall())
     words = [word[0] for word in words]
@@ -1056,8 +1072,8 @@ def IndexPage():
     cursor.close()
     conn.close()
     return render_template(
-        "index.html", sells=sells, TablePage=TablePage, icon=icon, 
-        UserName=UserName, style=style, layout_value=layout_value, 
+        "index.html", sells=sells, TablePage=TablePage, icon=acc_dict['ProfileIMG'], 
+        UserName=acc_dict['UserName'], style=style, layout_value=layout_value, 
         slide_value=slide_value,words=words)
 
 # /product/<sellid>
